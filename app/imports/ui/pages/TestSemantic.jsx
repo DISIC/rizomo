@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Accounts } from "meteor/accounts-base";
 import {
   Container,
   Form,
@@ -30,6 +31,18 @@ class TestSemantic extends React.Component {
     this.setState({ [name]: value });
   };
 
+  /** Handle Signup submission. Create user account and a profile entry, then redirect to the home page. */
+  submit = () => {
+    const { email, password } = this.state;
+    Accounts.createUser({ email, username: email, password }, err => {
+      if (err) {
+        this.setState({ error: err.reason });
+      } else {
+        this.setState({ error: "", redirectToReferer: true });
+      }
+    });
+  };
+
   /** Display the signup form. Redirect to add page after successful registration and login. */
   render() {
     return (
@@ -42,7 +55,7 @@ class TestSemantic extends React.Component {
             <Header as="h2" textAlign="center">
               Register your account
             </Header>
-            <Form>
+            <Form onSubmit={this.submit}>
               <Segment stacked>
                 <Form.Input
                   label="Email"
