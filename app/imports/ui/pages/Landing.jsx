@@ -18,6 +18,9 @@ class Landing extends React.Component {
           <li>
             <Link to="/testGrommet">test Grommet</Link>
           </li>
+          <li>
+            <Link to="/testBootstrap">test Bootstrap</Link>
+          </li>
         </ul>
       </div>
     );
