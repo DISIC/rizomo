@@ -1,0 +1,11 @@
+{
+  "api": {
+    "user": {
+      "unknownUser": "L'utilisateur n'existe pas.",
+      "unknownGroup": "Le groupe n'existe pas.",
+      "adminGroupNeeded": "Vous n'avez pas les droits d'administration sur ce groupe."
+    }
+  },
+  "components": {},
+  "pages": {}
+}
