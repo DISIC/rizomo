@@ -1,10 +1,12 @@
 import { Meteor } from "meteor/meteor";
 import { DDPRateLimiter } from "meteor/ddp-rate-limiter";
+import { _ } from "meteor/underscore";
+import SimpleSchema from "simpl-schema";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { Roles } from "meteor/alanning:roles";
 import i18n from "meteor/universe:i18n";
 
-import { Groups } from "./Group";
+import { Groups } from "./groups";
 
 export const createGroup = new ValidatedMethod({
   name: "group.createGroup",

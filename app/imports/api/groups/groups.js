@@ -3,9 +3,22 @@ import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 import { Tracker } from "meteor/tracker";
 
-import { Events } from "../event/Event";
+import { Events } from "../events/events";
 
 const Groups = new Mongo.Collection("groups");
+
+// Deny all client-side updates since we will be using methods to manage this collection
+Groups.deny({
+  insert() {
+    return true;
+  },
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
+  }
+});
 
 Groups.schema = new SimpleSchema(
   {
@@ -31,6 +44,20 @@ Groups.schema = new SimpleSchema(
   },
   { tracker: Tracker }
 );
+
+Groups.publicFields = {
+  name: 1,
+  info: 1,
+  note: 1,
+  active: 1,
+  groupPadID: 1,
+  digest: 1,
+  type: 1,
+  owner: 1,
+  admins: 1,
+  members: 1,
+  candidates: 1
+};
 
 Groups.helpers({
   getEvents() {

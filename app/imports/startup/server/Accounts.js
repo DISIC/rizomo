@@ -3,7 +3,7 @@ import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 
 // required: loads accounts customization before initial users creation
-import { AppRoles } from "../../api/user/User.js";
+import { AppRoles } from "../../api/users/users";
 
 /* eslint-disable no-console */
 
