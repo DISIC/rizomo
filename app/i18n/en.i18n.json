@@ -7,5 +7,17 @@
     }
   },
   "components": {},
-  "pages": {}
+  "pages": {
+    "TestSemantic": {
+      "registerAccount": "Register your account",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Email address",
+      "passwdLabel": "Password",
+      "passwdPlaceholder": "Password",
+      "returnSentence": "Already have an account? Return",
+      "returnLink": "here",
+      "registerError": "Registration was not successful",
+      "submit": "submit"
+    }
+  }
 }

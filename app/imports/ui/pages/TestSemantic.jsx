@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
+import i18n from "meteor/universe:i18n";
 import {
   Container,
   Form,
@@ -39,6 +40,7 @@ class TestSemantic extends React.Component {
         this.setState({ error: err.reason });
       } else {
         this.setState({ error: "", redirectToReferer: true });
+        this.setState({ email: "", password: "" });
       }
     });
   };
@@ -53,40 +55,43 @@ class TestSemantic extends React.Component {
         <Grid textAlign="center" verticalAlign="middle" centered columns={2}>
           <Grid.Column>
             <Header as="h2" textAlign="center">
-              Register your account
+              {i18n.__("pages.TestSemantic.registerAccount")}
             </Header>
             <Form onSubmit={this.submit}>
               <Segment stacked>
                 <Form.Input
-                  label="Email"
+                  label={i18n.__("pages.TestSemantic.emailLabel")}
                   icon="user"
                   iconPosition="left"
                   name="email"
                   type="email"
-                  placeholder="E-mail address"
+                  placeholder={i18n.__("pages.TestSemantic.emailPlaceholder")}
                   onChange={this.handleChange}
+                  value={this.state.email}
                 />
                 <Form.Input
-                  label="Password"
+                  label={i18n.__("pages.TestSemantic.passwdLabel")}
                   icon="lock"
                   iconPosition="left"
                   name="password"
-                  placeholder="Password"
+                  placeholder={i18n.__("pages.TestSemantic.passwdPlaceholder")}
                   type="password"
                   onChange={this.handleChange}
+                  value={this.state.password}
                 />
-                <Form.Button content="Submit" />
+                <Form.Button content={i18n.__("pages.TestSemantic.submit")} />
               </Segment>
             </Form>
             <Message>
-              Already have an account? Return <Link to="/">here</Link>
+              {i18n.__("pages.TestSemantic.returnSentence")}{" "}
+              <Link to="/">{i18n.__("pages.TestSemantic.returnLink")}</Link>
             </Message>
             {this.state.error === "" ? (
               ""
             ) : (
               <Message
                 error
-                header="Registration was not successful"
+                header={i18n.__("pages.TestSemantic.registerError")}
                 content={this.state.error}
               />
             )}

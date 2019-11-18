@@ -7,5 +7,17 @@
     }
   },
   "components": {},
-  "pages": {}
+  "pages": {
+    "TestSemantic": {
+      "registerAccount": "Enregistrez votre compte",
+      "emailLabel": "Email",
+      "emailPlaceholder": "addresse Email",
+      "passwdLabel": "Mot de passe",
+      "passwdPlaceholder": "Mot de passe",
+      "returnSentence": "Vous avez déjà un compte ? Revenir",
+      "returnLink": "à l'accueil",
+      "registerError": "L'enregistrement a échoué",
+      "submit": "Enregistrer"
+    }
+  }
 }
