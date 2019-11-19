@@ -145,13 +145,13 @@ const handleMouseDownPassword = event => {
               />
             </Grid>
             <Grid item xs={12}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined" fullWidth>
+            <FormControl variant="outlined" fullWidth required>
           <InputLabel htmlFor="outlined-adornment-password">Mot de passe</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             type={values.showPassword ? 'text' : 'password'}
             value={values.password}
-            
+            labelWidth={100}
             onChange={handleChange('password')}
             endAdornment={
               <InputAdornment position="end">
