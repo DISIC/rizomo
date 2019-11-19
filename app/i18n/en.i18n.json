@@ -1,7 +1,10 @@
 {
   "api": {
-    "user": {
+    "users": {
       "unknownUser": "User does not exist.",
+      "mustBeLoggedIn": "You must be logged in."
+    },
+    "groups": {
       "unknownGroup": "Group does not exist.",
       "adminGroupNeeded": "You don't have admin rights on this group."
     }

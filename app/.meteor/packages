@@ -25,3 +25,12 @@ aldeed:schema-index
 alanning:roles
 mdg:validated-method
 universe:i18n
+
+# testing
+xolvio:cleaner
+practicalmeteor:chai
+practicalmeteor:sinon
+meteortesting:mocha
+hwillson:stub-collections
+johanbrook:publication-collector
+dburles:factory

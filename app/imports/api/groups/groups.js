@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
+import { Factory } from "meteor/dburles:factory";
 import SimpleSchema from "simpl-schema";
 import { Tracker } from "meteor/tracker";
 
@@ -75,5 +76,14 @@ Groups.helpers({
 });
 
 Groups.attachSchema(Groups.schema);
+
+Factory.define("group", Groups, {
+  name: () => faker.random.alphanumeric(),
+  active: true,
+  type: 0,
+  admins: [],
+  members: [],
+  candidates: []
+});
 
 export { Groups };

@@ -11,7 +11,7 @@ import { Groups } from "../groups/groups";
 import "./users";
 
 export const setAdminOf = new ValidatedMethod({
-  name: "user.setAdminOf",
+  name: "users.setAdminOf",
   validate: new SimpleSchema({
     userId: { type: String, regEx: SimpleSchema.RegEx.Id },
     groupId: { type: String, regEx: SimpleSchema.RegEx.Id }
@@ -22,15 +22,15 @@ export const setAdminOf = new ValidatedMethod({
     const group = Groups.findOne({ _id: groupId });
     if (group == undefined) {
       throw new Meteor.Error(
-        "api.user.setAdminOf.unknownGroup",
-        i18n.__("api.user.unknownGroup")
+        "api.users.setAdminOf.unknownGroup",
+        i18n.__("api.groups.unknownGroup")
       );
     }
     const user = Meteor.users.findOne({ _id: userId });
     if (user == undefined) {
       throw new Meteor.Error(
-        "api.user.setAdminOf.unknownUser",
-        i18n.__("api.user.unknownUser")
+        "api.users.setAdminOf.unknownUser",
+        i18n.__("api.users.unknownUser")
       );
     }
     // check if current user has admin rights on group (or global admin)
@@ -39,8 +39,8 @@ export const setAdminOf = new ValidatedMethod({
       this.userId === group.owner;
     if (!authorized) {
       throw new Meteor.Error(
-        "api.user.setAdminOf.notPermitted",
-        i18n.__("api.user.adminGroupNeeded")
+        "api.users.setAdminOf.notPermitted",
+        i18n.__("api.groups.adminGroupNeeded")
       );
     }
     // add role to user collection
@@ -53,7 +53,7 @@ export const setAdminOf = new ValidatedMethod({
 });
 
 export const setMemberOf = new ValidatedMethod({
-  name: "user.setMemberOf",
+  name: "users.setMemberOf",
   validate: new SimpleSchema({
     userId: { type: String, regEx: SimpleSchema.RegEx.Id },
     groupId: { type: String, regEx: SimpleSchema.RegEx.Id }
@@ -64,15 +64,15 @@ export const setMemberOf = new ValidatedMethod({
     const group = Groups.findOne({ _id: groupId });
     if (group == undefined) {
       throw new Meteor.Error(
-        "api.user.setMemberOf.unknownGroup",
-        i18n.__("api.user.unknownGroup")
+        "api.users.setMemberOf.unknownGroup",
+        i18n.__("api.groups.unknownGroup")
       );
     }
     const user = Meteor.users.findOne({ _id: userId });
     if (user == undefined) {
       throw new Meteor.Error(
-        "api.user.setMemberOf.unknownUser",
-        i18n.__("api.user.unknownUser")
+        "api.users.setMemberOf.unknownUser",
+        i18n.__("api.users.unknownUser")
       );
     }
     // check if current user has admin rights on group (or global admin)
@@ -81,8 +81,8 @@ export const setMemberOf = new ValidatedMethod({
       this.userId === group.owner;
     if (!authorized) {
       throw new Meteor.Error(
-        "api.user.setMemberOf.notPermitted",
-        i18n.__("api.user.adminGroupNeeded")
+        "api.users.setMemberOf.notPermitted",
+        i18n.__("api.users.adminGroupNeeded")
       );
     }
     // add role to user collection
