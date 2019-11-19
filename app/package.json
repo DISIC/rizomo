@@ -13,6 +13,7 @@
     "@material-ui/icons": "^4.5.1",
     "bcrypt": "^3.0.6",
     "bootstrap": "^4.3.1",
+    "faker": "^4.1.0",
     "grommet": "^2.8.0",
     "grommet-theme-aruba": "^0.1.2",
     "grommet-theme-dxc": "^0.1.2",
@@ -33,7 +34,6 @@
     "mainModule": {
       "client": "client/main.jsx",
       "server": "server/main.js"
-    },
-    "testModule": "tests/main.js"
+    }
   }
 }

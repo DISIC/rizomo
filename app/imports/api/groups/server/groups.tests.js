@@ -15,7 +15,7 @@ import "./publications.js";
 describe("groups", function() {
   describe("mutators", function() {
     it("builds correctly from factory", function() {
-      const group = Factory.create("group");
+      const group = Factory.create("group", { owner: Random.id() });
       assert.typeOf(group, "object");
       assert.equal(group.active, true);
     });
@@ -30,8 +30,8 @@ describe("groups", function() {
     describe("groups.all", function() {
       it("sends all groups", function(done) {
         const collector = new PublicationCollector();
-        collector.collect("groups", collections => {
-          chai.assert.equal(collections.lists.length, 4);
+        collector.collect("groups.all", collections => {
+          chai.assert.equal(collections.groups.length, 4);
           done();
         });
       });
@@ -57,9 +57,9 @@ describe("groups", function() {
         // Throws if non owner/admin user, or logged out user, tries to delete the group
         createGroup._execute(
           { userId },
-          { name: "mongoupe", type: 0, info: "une info", note: "une note" }
+          { name: "mongroupe", type: 0, info: "une info", note: "une note" }
         );
-        group = Groups.findOne({ name: "mongroupe" });
+        const group = Groups.findOne({ name: "mongroupe" });
         assert.typeOf(group, "object");
         assert.equal(group.active, true);
         assert.equal(group.owner, userId);
@@ -77,7 +77,7 @@ describe("groups", function() {
         );
         assert.throws(
           () => {
-            removeGroup._execute({}, { listId });
+            removeGroup._execute({}, { groupId });
           },
           Meteor.Error,
           /api.groups.removeGroup.notPermitted/
