@@ -1,4 +1,6 @@
 import React from "react";
+
+import clsx from 'clsx';
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,16 +14,17 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      Your Website {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -48,23 +51,51 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
+
 export default function TestMaterial() {
   const classes = useStyles();
+const [values, setValues] = React.useState({
+  amount: '',
+  password: '',
+  weight: '',
+  weightRange: '',
+  showPassword: false,
+});
+const [structure, setStructure] = React.useState('');
+
+const inputLabel = React.useRef(null);
+const [labelWidth, setLabelWidth] = React.useState(0);
+React.useEffect(() => {
+  setLabelWidth(inputLabel.current.offsetWidth);
+}, []);
+
+const handleChangeStruct = event => {
+  setStructure(event.target.value);
+};
+
+
+const handleChange = prop => event => {
+  setValues({ ...values, [prop]: event.target.value });
+};
+
+const handleClickShowPassword = () => {
+  setValues({ ...values, showPassword: !values.showPassword });
+};
+
+const handleMouseDownPassword = event => {
+  event.preventDefault();
+};
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <h1>
-        <Link color="inherit" href="https://material-ui.com/">
-          MaterialUI
-        </Link>
-      </h1>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+        Création de votre compte
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -76,7 +107,7 @@ export default function TestMaterial() {
                 required
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label="Prénom"
                 autoFocus
               />
             </Grid>
@@ -86,7 +117,7 @@ export default function TestMaterial() {
                 required
                 fullWidth
                 id="lastName"
-                label="Last Name"
+                label="Nom"
                 name="lastName"
                 autoComplete="lname"
               />
@@ -97,7 +128,7 @@ export default function TestMaterial() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Courriel"
                 name="email"
                 autoComplete="email"
               />
@@ -107,19 +138,73 @@ export default function TestMaterial() {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                id="username"
+                label="Identifiant"
+                name="username"
+                autoComplete="username"
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
+            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined" fullWidth>
+          <InputLabel htmlFor="outlined-adornment-password">Mot de passe</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={values.showPassword ? 'text' : 'password'}
+            value={values.password}
+            
+            onChange={handleChange('password')}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="afficher ou masquer le mot de passe"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        </Grid>
+            <Grid item xs={12}>
+        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+        <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
+        Structure de rattachement
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          value={structure}
+          onChange={handleChangeStruct}
+          labelWidth={labelWidth}
+        >
+          <MenuItem value="">
+            <em>Aucune</em>
+          </MenuItem>
+          <MenuItem value="Ministère Education">Ministére Education</MenuItem>
+<MenuItem value="Education">Education</MenuItem>
+<MenuItem value="Auvergne-Rhône-Alpes">Région académique Auvergne-Rhône-Alpes</MenuItem>
+<MenuItem value="Bourgogne-Franche-Comté">Région académique Bourgogne-Franche-Comté</MenuItem>
+<MenuItem value="Bretagne">Région académique Bretagne</MenuItem>
+<MenuItem value="Centre-Val de Loire">Région académique Centre-Val de Loire</MenuItem>
+<MenuItem value="Corse">Région académique de Corse</MenuItem>
+<MenuItem value="Grand Est">Région académique Grand Est</MenuItem>
+<MenuItem value="Guadeloupe">Région académique de la Guadeloupe</MenuItem>
+<MenuItem value="Guyane">Région académique de la Guyane</MenuItem>
+<MenuItem value="Hauts-de-France">Région académique Hauts-de-France</MenuItem>
+<MenuItem value="Île-de-France">Région académique Île-de-France</MenuItem>
+<MenuItem value="Martinique">Région académique de Martinique</MenuItem>
+<MenuItem value="Normandie">Région académique Normandie</MenuItem>
+<MenuItem value="Nouvelle-Aquitaine">Région académique Nouvelle-Aquitaine</MenuItem>
+<MenuItem value="Occitanie">Région académique Occitanie</MenuItem>
+<MenuItem value="Pays de la Loire">Région académique Pays de la Loire</MenuItem>
+<MenuItem value="Provence-Alpes-Côte d'Azur">Région académique Provence-Alpes-Côte d'Azur</MenuItem>
+<MenuItem value="La Réunion">Région académique de La Réunion</MenuItem>
+<MenuItem value="Collectivité">Collectivité</MenuItem>
+<MenuItem value="Autre">Autre</MenuItem>
+        </Select>
+      </FormControl>
           </Grid>
           <Button
             type="submit"
@@ -128,20 +213,11 @@ export default function TestMaterial() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Inscription
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+            </Container>
   );
 }
