@@ -24,6 +24,54 @@ import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Zoom from '@material-ui/core/Zoom';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { green } from '@material-ui/core/colors';
+import Box from '@material-ui/core/Box';
+
+//-- Beginning Choice List --\\
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`action-tabpanel-${index}`}
+      aria-labelledby={`action-tab-${index}`}
+      {...other}
+    >
+      <Box p={3}>{children}</Box>
+    </Typography>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `action-tab-${index}`,
+    'aria-controls': `action-tabpanel-${index}`,
+  };
+}
+
+//-- Beginning Choice List --\\
 
 //-- Beginning function Body content --\\
 
@@ -49,9 +97,61 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const drawerWidth = 240;
 
 export default function PersistentDrawerLeft() {
+
+//-- Beginning function header --\\
+
+  const [state, setState] = React.useState({
+    checkedB: true,
+  });
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = name => event => {
+    setState({ ...state, [name]: event.target.checked });
+  };
+
+  const handleChangeValue = (event, newValue) => {
+    setValue(newValue);
+  };
+
+//-- End function switch --\\
+
+  const handleChangeIndex = index => {
+    setValue(index);
+  };
+
+  // Transition when choose between choices
+  
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
+const transitionDuration = {
+    enter: theme.transitions.duration.enteringScreen,
+    exit: theme.transitions.duration.leavingScreen,
+  };
+
+  const fabs = [
+    {
+      color: 'primary',
+      className: classes.fab,
+      icon: <AddIcon />,
+      label: 'Add',
+    },
+    {
+      color: 'secondary',
+      className: classes.fab,
+      icon: <EditIcon />,
+      label: 'Edit',
+    },
+    {
+      color: 'inherit',
+      className: clsx(classes.fab, classes.fabGreen),
+      icon: <UpIcon />,
+      label: 'Expand',
+    },
+  ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -126,6 +226,37 @@ export default function PersistentDrawerLeft() {
         [classes.contentShift]: open,
       })}
       >
+        <FormControlLabel
+        control={
+          <Switch
+            checked={state.checkedB}
+            onChange={handleChange('checkedB')}
+            value="checkedB"
+            color="primary"
+          />
+        }
+        label="Primary"
+        />
+
+      <AppBar className={classes.AppChoice}  position="static" color="default">
+        <Tabs
+          value={value}
+          onChange={handleChangeValue}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="fullWidth"
+          aria-label="action tabs example"
+        >
+          <Tab label="Mes outils" {...a11yProps(0)} />
+          <Tab label="Tout les outils" {...a11yProps(1)} />
+        </Tabs>
+      </AppBar>
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={value}
+        onChangeIndex={handleChangeIndex}
+      >
+        <TabPanel value={value} index={0} dir={theme.direction}>
         {/* Hero unit */}
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
@@ -185,6 +316,26 @@ export default function PersistentDrawerLeft() {
             ))}
           </Grid>
         </Container>
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          Item Two
+        </TabPanel>
+        </SwipeableViews>
+        {fabs.map((fab, index) => (
+        <Zoom
+          key={fab.color}
+          in={value === index}
+          timeout={transitionDuration}
+          style={{
+            transitionDelay: `${value === index ? transitionDuration.exit : 0}ms`,
+          }}
+          unmountOnExit
+        >
+          <Fab aria-label={fab.label} className={fab.className} color={fab.color}>
+            {fab.icon}
+          </Fab>
+        </Zoom>
+        ))}
       </main>
     </div>
   );
@@ -195,12 +346,19 @@ export default function PersistentDrawerLeft() {
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    position: 'relative'
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+  },
+  AppChoice : {
+    display: 'flex',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: "50%",
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -270,6 +428,18 @@ const useStyles = makeStyles(theme => ({
   },
   cardContent: {
     flexGrow: 1,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+  fabGreen: {
+    color: theme.palette.common.white,
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[600],
+    },
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
