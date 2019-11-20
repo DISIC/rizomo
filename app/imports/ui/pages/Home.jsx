@@ -96,7 +96,7 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const drawerWidth = 240;
 
-export default function PersistentDrawerLeft() {
+export default function Home() {
 
 //-- Beginning function header --\\
 

@@ -4,7 +4,7 @@ import Landing from "../pages/Landing";
 import TestMaterial from "../pages/TestMaterial";
 import TestSemantic from "../pages/TestSemantic";
 import TestGrommet from "../pages/TestGrommet";
-import TestBootstrap from "../pages/Home";
+import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 
 class App extends React.Component {
@@ -17,7 +17,7 @@ class App extends React.Component {
             <Route path="/testMaterial" component={TestMaterial} />
             <Route path="/testSemantic" component={TestSemantic} />
             <Route path="/testGrommet" component={TestGrommet} />
-            <Route path="/testBootstrap" component={TestBootstrap} />
+            <Route path="/Home" component={Home} />
             <Route component={NotFound} />
           </Switch>
         </div>
