@@ -24,13 +24,9 @@ Lint:
     script:
         - npm run lint
 
-CanBuild:
-    stage: test
-    script:
-        - npm run build
-
 Test:
     stage: test
     script:
+        - curl https://install.meteor.com/ | sh
         - npm test
 
