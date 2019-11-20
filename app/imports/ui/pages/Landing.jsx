@@ -63,7 +63,7 @@ export default function Landing() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            APPS EDUCATION FR
           </Typography>
           <form onSubmit={submit} className={classes.form} noValidate>
             <TextField
@@ -72,7 +72,7 @@ export default function Landing() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Courriel"
               name="email"
               autoComplete="email"
               autoFocus
@@ -83,7 +83,7 @@ export default function Landing() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Mot de passe"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -95,17 +95,17 @@ export default function Landing() {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              Connexion
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="/Home" variant="body2">
-                  Forgot password?
+                  Mot de passe oublié ?
                 </Link>
               </Grid>
               <Grid item>
                 <Link href="/SignUp" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Créer un compte"}
                 </Link>
               </Grid>
             </Grid>
