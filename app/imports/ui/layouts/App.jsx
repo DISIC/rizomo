@@ -4,7 +4,7 @@ import Landing from "../pages/Landing";
 import TestMaterial from "../pages/TestMaterial";
 import TestSemantic from "../pages/TestSemantic";
 import TestGrommet from "../pages/TestGrommet";
-import TestBootstrap from "../pages/TestBootstrap";
+import TestBootstrap from "../pages/Home";
 import NotFound from "../pages/NotFound";
 
 class App extends React.Component {

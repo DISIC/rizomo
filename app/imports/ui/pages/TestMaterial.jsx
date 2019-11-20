@@ -97,7 +97,7 @@ const handleMouseDownPassword = event => {
         <Typography component="h1" variant="h5">
         Création de votre compte
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
