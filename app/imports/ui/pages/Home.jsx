@@ -41,6 +41,19 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import WarningIcon from "@material-ui/icons/Warning";
+import ErrorIcon from "@material-ui/icons/Error";
+import InfoIcon from "@material-ui/icons/Info";
+import { amber, green } from "@material-ui/core/colors";
+import Snackbar from "@material-ui/core/Snackbar";
+
+
+// Success message
+
+const variantIcon = {
+  success: CheckCircleIcon,
+};
 
 //-- Beginning Choice List --\\
 
@@ -106,9 +119,49 @@ const Allcards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const drawerWidth = 240;
 
+//--- Success function --\\
+  
+function MySnackbarContentWrapper(props) {
+  const classes = useStyles();
+  const { className, message, onClose, variant, ...other } = props;
+  const Icon = variantIcon[variant];
+
+  return (
+    <SnackbarContent
+      className={clsx(classes[variant], className)}
+      aria-describedby="client-snackbar"
+      message={
+        <span id="client-snackbar" className={classes.message}>
+          <Icon className={clsx(classes.icon, classes.iconVariant)} />
+          {message}
+        </span>
+      }
+      action={[
+        <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
+          <CloseIcon className={classes.icon} />
+        </IconButton>,
+      ]}
+      {...other}
+    />
+  );
+}
+
+MySnackbarContentWrapper.propTypes = {
+  className: PropTypes.string,
+  message: PropTypes.string,
+  onClose: PropTypes.func,
+  variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
+};
+
+const useStyles2 = makeStyles(theme => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+}));
+
 export default function Home() {
 
-//-- Beginning function header --\\
+  //-- Beginning function header --\\
 
   const [state, setState] = React.useState({
     checkedB: true,
@@ -122,6 +175,20 @@ export default function Home() {
 
   const handleChangeValue = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const [openSuccess, setOpenSuccess] = React.useState(false);
+
+  const handleClick = () => {
+    setOpenSuccess(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSuccess(false);
   };
 
 //-- End function switch --\\
@@ -262,6 +329,17 @@ const transitionDuration = {
             />
           </div>
           <div className={classes.grow} />
+          <FormControlLabel
+          control={
+            <Switch
+              checked={state.checkedB}
+              onChange={handleChange('checkedB')}
+              value="checkedB"
+              color="default"
+            />
+          }
+          label="Mode simplifié"
+          />
           <div className={classes.sectionDesktop}>
             <IconButton
               edge="end"
@@ -325,25 +403,13 @@ const transitionDuration = {
         [classes.contentShift]: open,
       })}
       >
-        <FormControlLabel
-        control={
-          <Switch
-            checked={state.checkedB}
-            onChange={handleChange('checkedB')}
-            value="checkedB"
-            color="primary"
-          />
-        }
-        label="Primary"
-        />
 
         {/* Hero unit */}
         <div className={classes.heroContent}>
           <Container >
-            <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
+            <Typography component="h4" variant="h4" align="left" color="textPrimary" gutterBottom>
               Bonjour Alexis
             </Typography>
-            
           </Container>
         </div>
         <AppBar className={classes.AppChoice}  position="static" color="default">
@@ -355,8 +421,8 @@ const transitionDuration = {
           variant="fullWidth"
           aria-label="action tabs example"
         >
-          <Tab label="Mes outils" {...a11yProps(0)} />
-          <Tab label="Tout les outils" {...a11yProps(1)} />
+          <Tab label="Mes services" {...a11yProps(0)} />
+          <Tab label="Tous mes services" {...a11yProps(1)} />
         </Tabs>
         </AppBar>
       <SwipeableViews
@@ -385,11 +451,26 @@ const transitionDuration = {
                     </Typography>
                   </CardContent>
                   <CardActions className={classes.cardActions}>
-                  <Tooltip title="Ajouter à vos favoris" aria-label="like">
+                  <Tooltip onClick={handleClick} title="Ajouter à vos favoris" aria-label="like">
                     <Fab size="small" className={classes.fab}>
                        <FavoriteIcon />
                     </Fab>
                   </Tooltip>
+                  <Snackbar
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center"
+                    }}
+                    open={open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                  >
+                    <MySnackbarContentWrapper
+                      onClose={handleClose}
+                      variant="success"
+                      message="This is a success message!"
+                    />
+                  </Snackbar>
                   </CardActions>
                 </Card>
               </Grid>
@@ -603,5 +684,19 @@ const useStyles = makeStyles(theme => ({
       //backgroundColor: "red",
       color: "red",
     }
+  },
+  success: {
+    backgroundColor: green[600],
+  },
+  icon: {
+    fontSize: 20,
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing(1),
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
   },
 }));
