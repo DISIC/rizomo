@@ -245,9 +245,11 @@ const transitionDuration = {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Apps Education
-          </Typography>
+          <img
+            src="images/Logo-appseducation.png"
+            className={classes.imgLogo}
+            alt="Logo"
+          />
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -510,7 +512,7 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     flexGrow: 1,
-    backgroundColor: "#0053b3",
+    backgroundColor: "#006be6",
   },
   AppChoice : {
     display: 'flex',
@@ -603,4 +605,8 @@ const useStyles = makeStyles(theme => ({
       color: "red",
     }
   },
+  imgLogo : {
+    maxHeight : "30px",
+    height: "auto",
+  }
 }));
