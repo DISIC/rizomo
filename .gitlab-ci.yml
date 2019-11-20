@@ -22,7 +22,8 @@ Deps:
 Lint:
     stage: test
     script:
-        - npm run lint
+        - curl https://install.meteor.com/ | sh
+        - meteor npm run lint
 
 Test:
     stage: test

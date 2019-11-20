@@ -6,6 +6,7 @@
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "lint": "eslint .",
+    "pretest": "npm run lint --silent",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
@@ -37,10 +38,19 @@
       "server": "server/main.js"
     }
   },
+  "eslintConfig": {
+    "extends": "@meteorjs/eslint-config-meteor"
+  },
   "devDependencies": {
+    "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
     "eslint-config-standard": "^14.1.0",
+    "eslint-import-resolver-meteor": "^0.4.0",
     "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-meteor": "^6.0.0",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.16.0",
