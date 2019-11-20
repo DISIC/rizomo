@@ -24,7 +24,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -53,7 +53,8 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function TestMaterial() {
+export default function SignUp() {
+  let history = useHistory();
   const classes = useStyles();
 const [values, setValues] = React.useState({
   amount: '',
@@ -74,7 +75,6 @@ const handleChangeStruct = event => {
   setStructure(event.target.value);
 };
 
-
 const handleChange = prop => event => {
   setValues({ ...values, [prop]: event.target.value });
 };
@@ -87,6 +87,11 @@ const handleMouseDownPassword = event => {
   event.preventDefault();
 };
 
+const submit = event => {
+  event.preventDefault();
+  history.push("/Home");
+};
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -97,7 +102,7 @@ const handleMouseDownPassword = event => {
         <Typography component="h1" variant="h5">
         Création de votre compte
         </Typography>
-        <form className={classes.form} >
+        <form onSubmit={submit} className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -213,7 +218,7 @@ const handleMouseDownPassword = event => {
             color="primary"
             className={classes.submit}
           >
-            Inscription
+          Inscription
           </Button>
           </Grid>
         </form>
