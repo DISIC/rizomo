@@ -13,6 +13,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import { maxHeight, maxWidth } from "@material-ui/system";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,6 +42,12 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  imgLogo: {
+    alignSelf: "center",
+    maxWidth: "100%",
+    maxHeight: "auto",
+    paddingBottom: "5%"
   },
   mainFeaturedPostContent: {
     position: "relative",
@@ -73,34 +80,23 @@ export default function Landing() {
         className={classes.image}
         spacing={4}
       >
-        <Grid item md={4}>
-          <img src="images/LogoPLL.png" alt="Logo" />
-        </Grid>
+        <Grid item md={4}></Grid>
         <Grid item md={8}>
-          <div className={classes.mainFeaturedPostContent}>
-            <Typography
-              component="h1"
-              variant="h3"
-              color="inherit"
-              gutterBottom
-            >
-              APPS EDUCATION FR
-            </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
-              Services Numériques Partagés
-              <br />
-              Version Test Alpha 0.1
-            </Typography>
-          </div>
+          <div className={classes.mainFeaturedPostContent}></div>
         </Grid>
       </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            APPS EDUCATION FR
+          <img
+            src="images/Logo-appseducation.png"
+            className={classes.imgLogo}
+            alt="Logo"
+          />
+          <Typography variant="h5" color="inherit" paragraph>
+            Les services numériques partagés des agents de l'Éducation nationale
+          </Typography>
+          <Typography variant="h6" color="inherit" paragraph>
+            Version Test Alpha 0.1
           </Typography>
           <form onSubmit={submit} className={classes.form} noValidate>
             <TextField
