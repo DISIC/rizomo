@@ -1,0 +1,36 @@
+image: node
+
+stages:
+    - deps
+    - test
+
+before_script:
+    - cd app
+
+cache:
+    paths:
+        - app/node_modules/
+
+Deps:
+    stage: deps
+    script:
+        - npm install
+    artifacts:
+        paths:
+            - app/node_modules/
+
+Lint:
+    stage: test
+    script:
+        - npm run lint
+
+CanBuild:
+    stage: test
+    script:
+        - npm run build
+
+Test:
+    stage: test
+    script:
+        - npm test
+
