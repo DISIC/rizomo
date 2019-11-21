@@ -159,7 +159,7 @@ describe("groups", function() {
         );
       });
     });
-    describe("setMemberOf", function() {
+    describe("(un)setMemberOf", function() {
       it("global admin can set/unset a user as member of a group", function() {
         setMemberOf._execute(
           { userId: adminId },

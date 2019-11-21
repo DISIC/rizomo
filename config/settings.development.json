@@ -1,0 +1,13 @@
+{
+  "defaultAccounts": [
+    {
+      "email": "admin@ac-dijon.fr",
+      "password": "changeme",
+      "role": "admin"
+    },
+    {
+      "email": "eole@ac-dijon.fr",
+      "password": "changeme"
+    }
+  ]
+}
