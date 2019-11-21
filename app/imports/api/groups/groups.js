@@ -2,7 +2,8 @@ import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import { Factory } from "meteor/dburles:factory";
 import SimpleSchema from "simpl-schema";
-import faker from "faker";
+// import faker from "faker";
+import { Random } from "meteor/random";
 import { Tracker } from "meteor/tracker";
 
 import { Events } from "../events/events";
@@ -79,7 +80,7 @@ Groups.helpers({
 Groups.attachSchema(Groups.schema);
 
 Factory.define("group", Groups, {
-  name: () => faker.random.word(),
+  name: () => Random.id(),
   active: true,
   type: 0,
   admins: [],

@@ -4,7 +4,7 @@ import { Tracker } from "meteor/tracker";
 
 const AppRoles = ["candidate", "member", "admin"];
 
-const UserSchema = new SimpleSchema(
+Meteor.users.schema = new SimpleSchema(
   {
     username: {
       type: String,
@@ -93,13 +93,11 @@ Meteor.users.publicFields = {
   username: 1,
   emails: 1,
   createdAt: 1,
-  profile: 1,
-  services: 1,
   roles: 1,
   isActive: 1,
   isRequest: 1
 };
 
-Meteor.users.attachSchema(UserSchema);
+Meteor.users.attachSchema(Meteor.users.schema);
 
 export { AppRoles };
