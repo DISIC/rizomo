@@ -53,14 +53,6 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
       blackbox: true
     },
-    // Add `roles` to your schema if you use the meteor-roles package.
-    // Option 1: Object type
-    // If you specify that type as Object, you must also specify the
-    // `Roles.GLOBAL_GROUP` group whenever you add a user to a role.
-    // Example:
-    // Roles.addUsersToRoles(userId, ["admin"], Roles.GLOBAL_GROUP);
-    // You can't mix and match adding with and without a group since
-    // you will fail validation in some cases.
     roles: {
       type: Object,
       optional: true,
@@ -89,11 +81,16 @@ Meteor.users.helpers({
   }
 });
 
-Meteor.users.publicFields = {
+Meteor.users.selfFields = {
   username: 1,
   emails: 1,
   createdAt: 1,
   roles: 1,
+  isActive: 1,
+  isRequest: 1
+};
+Meteor.users.publicFields = {
+  username: 1,
   isActive: 1,
   isRequest: 1
 };

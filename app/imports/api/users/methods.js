@@ -10,6 +10,62 @@ import { Groups } from "../groups/groups";
 // initialize Meteor.users customizations
 import "./users";
 
+export const setAdmin = new ValidatedMethod({
+  name: "users.setAdmin",
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id }
+  }).validator(),
+
+  run({ userId }) {
+    // check user existence
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user == undefined) {
+      throw new Meteor.Error(
+        "api.users.setAdmin.unknownUser",
+        i18n.__("api.users.unknownUser")
+      );
+    }
+    // check if current user has global admin rights
+    authorized = this.userId && Roles.userIsInRole(this.userId, "admin");
+    if (!authorized) {
+      throw new Meteor.Error(
+        "api.users.setAdmin.notPermitted",
+        i18n.__("api.users.adminNeeded")
+      );
+    }
+    // add role to user collection
+    Roles.addUsersToRoles(userId, "admin");
+  }
+});
+
+export const unsetAdmin = new ValidatedMethod({
+  name: "users.unsetAdmin",
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id }
+  }).validator(),
+
+  run({ userId }) {
+    // check user existence
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user == undefined) {
+      throw new Meteor.Error(
+        "api.users.setAdmin.unknownUser",
+        i18n.__("api.users.unknownUser")
+      );
+    }
+    // check if current user has global admin rights
+    authorized = this.userId && Roles.userIsInRole(this.userId, "admin");
+    if (!authorized) {
+      throw new Meteor.Error(
+        "api.users.unsetAdmin.notPermitted",
+        i18n.__("api.users.adminNeeded")
+      );
+    }
+    // remove role from user collection
+    Roles.removeUsersFromRoles(userId, "admin");
+  }
+});
+
 export const setAdminOf = new ValidatedMethod({
   name: "users.setAdminOf",
   validate: new SimpleSchema({

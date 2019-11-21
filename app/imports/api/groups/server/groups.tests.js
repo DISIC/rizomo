@@ -8,21 +8,21 @@ import { Random } from "meteor/random";
 import faker from "faker";
 import { Meteor } from "meteor/meteor";
 import { _ } from "meteor/underscore";
+import "/i18n/en.i18n.json";
+
 import { Groups } from "../groups.js";
+import { createGroup, removeGroup } from "../methods.js";
+import "./publications.js";
 
 // this file also includes tests on users/permissions
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
-
 import {
   setAdminOf,
   unsetAdminOf,
   setMemberOf,
   unsetMemberOf
 } from "../../users/methods";
-import { createGroup, removeGroup } from "../methods.js";
-import "/i18n/en.i18n.json";
-import "./publications.js";
 
 describe("groups", function() {
   describe("mutators", function() {
@@ -33,7 +33,6 @@ describe("groups", function() {
     });
   });
   describe("publications", function() {
-    const userId = Random.id();
     before(function() {
       Groups.remove({});
       _.times(4, () => Factory.create("group", { owner: Random.id() }));
@@ -92,7 +91,6 @@ describe("groups", function() {
     });
     describe("(un)setAdminOf", function() {
       it("global admin can set/unset a user as admin of a group", function() {
-        // Throws if non owner/admin user, or logged out user, tries to delete the group
         setAdminOf._execute({ userId: adminId }, { userId, groupId: group3Id });
         let group = Groups.findOne(group3Id);
         assert.equal(Roles.userIsInRole(userId, "admin", group3Id), true);
@@ -137,8 +135,8 @@ describe("groups", function() {
           "group admins list shouldn't contain otherUserId"
         );
       });
-      it("only global or group admin can set/unset a user as admin of a group", function() {
-        // Throws if non owner/admin user, or logged out user, tries to delete the group
+      it("only global or group admin/owner can set/unset a user as admin of a group", function() {
+        // Throws if non owner/admin user, or logged out user
         assert.throws(
           () => {
             setAdminOf._execute(
@@ -187,7 +185,6 @@ describe("groups", function() {
         );
       });
       it("group admin can set/unset a user as member of a group", function() {
-        // Throws if non owner/admin user, or logged out user, tries to delete the group
         setMemberOf._execute(
           { userId },
           { userId: otherUserId, groupId: group2Id }
@@ -215,7 +212,7 @@ describe("groups", function() {
         );
       });
       it("only global or group admin can set/unset a user as member of a group", function() {
-        // Throws if non owner/admin user, or logged out user, tries to delete the group
+        // Throws if non owner/admin user, or logged out user
         assert.throws(
           () => {
             setMemberOf._execute(
@@ -240,7 +237,6 @@ describe("groups", function() {
     });
     describe("createGroup", function() {
       it("does create a group and set current user as owner", function() {
-        // Throws if non owner/admin user, or logged out user, tries to delete the group
         createGroup._execute(
           { userId },
           { name: "mongroupe", type: 0, info: "une info", note: "une note" }

@@ -2,7 +2,8 @@
   "api": {
     "users": {
       "unknownUser": "L'utilisateur n'existe pas.",
-      "mustBeLoggedIn": "Vous devez être connecté."
+      "mustBeLoggedIn": "Vous devez être connecté.",
+      "adminNeeded": "Vous n'êtes pas administrateur."
     },
     "groups": {
       "unknownGroup": "Le groupe n'existe pas.",
