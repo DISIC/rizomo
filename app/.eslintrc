@@ -12,7 +12,16 @@
     "import/resolver": "meteor"
   },
   "plugins": ["meteor", "import", "prettier", "i18n"],
-  "rules": { "no-underscore-dangle": "off" },
+  "rules": {
+    "no-underscore-dangle": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreComments": true
+      }
+    ]
+  },
   "env": {
     "browser": true,
     "jest": true,
