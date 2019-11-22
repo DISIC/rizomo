@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "meteor --no-release-check --settings ../config/settings.development.json",
-    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test": "meteor test --once --driver-package meteortesting:mocha --allow-superuser",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "lint": "eslint .",
     "lintfix": "eslint --fix .",
