@@ -21,9 +21,8 @@ Deps:
 
 Lint:
     stage: test
-    before_script:
-        - npm install --only=dev
     script:
+        - npm install --only=dev
         - curl https://install.meteor.com/ | sh
         - meteor npm run lint
 
