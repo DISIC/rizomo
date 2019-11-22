@@ -1,14 +1,14 @@
-import { Meteor } from "meteor/meteor";
-import { Mongo } from "meteor/mongo";
-import { Factory } from "meteor/dburles:factory";
-import SimpleSchema from "simpl-schema";
+import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+import { Factory } from 'meteor/dburles:factory';
+import SimpleSchema from 'simpl-schema';
 // import faker from "faker";
-import { Random } from "meteor/random";
-import { Tracker } from "meteor/tracker";
+import { Random } from 'meteor/random';
+import { Tracker } from 'meteor/tracker';
 
-import { Events } from "../events/events";
+import Events from '../events/events';
 
-const Groups = new Mongo.Collection("groups");
+const Groups = new Mongo.Collection('groups');
 
 // Deny all client-side updates since we will be using methods to manage this collection
 Groups.deny({
@@ -20,7 +20,7 @@ Groups.deny({
   },
   remove() {
     return true;
-  }
+  },
 });
 
 Groups.schema = new SimpleSchema(
@@ -29,7 +29,7 @@ Groups.schema = new SimpleSchema(
       type: String,
       index: true,
       unique: true,
-      min: 1
+      min: 1,
     },
     info: { type: String, optional: true },
     note: { type: String, optional: true },
@@ -39,13 +39,13 @@ Groups.schema = new SimpleSchema(
     type: SimpleSchema.Integer, // 0 Ouvert, 5 Modéré, 10 Fermé
     owner: { type: String, regEx: SimpleSchema.RegEx.Id },
     admins: { type: Array, defaultValue: [] },
-    "admins.$": { type: String, regEx: SimpleSchema.RegEx.Id },
+    'admins.$': { type: String, regEx: SimpleSchema.RegEx.Id },
     members: { type: Array, defaultValue: [] },
-    "members.$": { type: String, regEx: SimpleSchema.RegEx.Id },
+    'members.$': { type: String, regEx: SimpleSchema.RegEx.Id },
     candidates: { type: Array, defaultValue: [] },
-    "candidates.$": { type: String, regEx: SimpleSchema.RegEx.Id }
+    'candidates.$': { type: String, regEx: SimpleSchema.RegEx.Id },
   },
-  { tracker: Tracker }
+  { tracker: Tracker },
 );
 
 Groups.publicFields = {
@@ -59,7 +59,7 @@ Groups.publicFields = {
   owner: 1,
   admins: 1,
   members: 1,
-  candidates: 1
+  candidates: 1,
 };
 
 Groups.helpers({
@@ -74,18 +74,18 @@ Groups.helpers({
   },
   getCandidates() {
     return Meteor.users.find({ _id: { $in: this.candidates } });
-  }
+  },
 });
 
 Groups.attachSchema(Groups.schema);
 
-Factory.define("group", Groups, {
+Factory.define('group', Groups, {
   name: () => Random.id(),
   active: true,
   type: 0,
   admins: [],
   members: [],
-  candidates: []
+  candidates: [],
 });
 
-export { Groups };
+export default Groups;

@@ -1,24 +1,21 @@
-import { Meteor } from "meteor/meteor";
+import { Meteor } from 'meteor/meteor';
 
 // publish additional fields for users
-Meteor.publish("userData", function() {
+Meteor.publish('userData', () => {
   if (this.userId) {
     return Meteor.users.find(
       { _id: this.userId },
       {
-        fields: Meteor.users.selfFields
-      }
+        fields: Meteor.users.selfFields,
+      },
     );
-  } else {
-    this.ready();
   }
+  return this.ready();
 });
 
-Meteor.publish("users.all", function() {
-  return Meteor.users.find(
-    {},
-    {
-      fields: Meteor.users.publicFields
-    }
-  );
-});
+Meteor.publish('users.all', () => Meteor.users.find(
+  {},
+  {
+    fields: Meteor.users.publicFields,
+  },
+));

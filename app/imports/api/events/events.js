@@ -1,9 +1,9 @@
-import { Meteor } from "meteor/meteor";
-import { Mongo } from "meteor/mongo";
-import SimpleSchema from "simpl-schema";
-import { Tracker } from "meteor/tracker";
+import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+import SimpleSchema from 'simpl-schema';
+import { Tracker } from 'meteor/tracker';
 
-const Events = new Mongo.Collection("events");
+const Events = new Mongo.Collection('events');
 
 Events.schema = new SimpleSchema(
   {
@@ -15,16 +15,16 @@ Events.schema = new SimpleSchema(
     lieu: String,
     groupe: {
       type: String,
-      regEx: SimpleSchema.RegEx.Id
+      regEx: SimpleSchema.RegEx.Id,
     },
     eventPadID: String,
     participants: Array,
-    "participants.$": {
+    'participants.$': {
       type: String,
-      regEx: SimpleSchema.RegEx.Id
-    }
+      regEx: SimpleSchema.RegEx.Id,
+    },
   },
-  { tracker: Tracker }
+  { tracker: Tracker },
 );
 
 Events.attachSchema(Events.schema);
@@ -32,7 +32,7 @@ Events.attachSchema(Events.schema);
 Events.helpers({
   getParticipants() {
     return Meteor.users.find({ _id: { $in: this.participants } });
-  }
+  },
 });
 
-export { Events };
+export default Events;
