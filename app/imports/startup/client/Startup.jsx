@@ -1,18 +1,18 @@
-import React from "react";
-import { render } from "react-dom";
-import { Meteor } from "meteor/meteor";
-import i18n from "meteor/universe:i18n";
+import React from 'react';
+import { render } from 'react-dom';
+import { Meteor } from 'meteor/meteor';
+import i18n from 'meteor/universe:i18n';
 
-import "../locales.js";
-import App from "../../ui/layouts/App.jsx";
+import '../locales';
+import App from '../../ui/layouts/App';
 
 function getLang() {
   return (
-    (navigator.languages && navigator.languages[0]) ||
-    navigator.language ||
-    navigator.browserLanguage ||
-    navigator.userLanguage ||
-    "en-US"
+    (navigator.languages && navigator.languages[0])
+    || navigator.language
+    || navigator.browserLanguage
+    || navigator.userLanguage
+    || 'en-US'
   );
 }
 
