@@ -1,17 +1,23 @@
 {
   "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "extends": [
     "eslint:recommended",
     "plugin:meteor/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
+    "plugin:react/recommended",
     "prettier",
     "airbnb"
   ],
   "settings": {
     "import/resolver": "meteor"
   },
-  "plugins": ["meteor", "import", "prettier", "i18n"],
+  "plugins": ["meteor", "import", "prettier", "i18n", "react", "jsx"],
   "rules": {
     "no-underscore-dangle": "off",
     "max-len": [
