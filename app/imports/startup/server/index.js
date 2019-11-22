@@ -8,5 +8,5 @@ import "./security.js";
 // as an API to the client.
 import "./register-api";
 
-// Set up some initial accounts if no users exist
+// Set up roles and initial accounts
 import "./Accounts";

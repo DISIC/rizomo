@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import SimpleSchema from "simpl-schema";
 import { Tracker } from "meteor/tracker";
+import { Roles } from "meteor/alanning:roles";
 
 const AppRoles = ["candidate", "member", "admin"];
 
@@ -89,6 +90,7 @@ Meteor.users.selfFields = {
   isActive: 1,
   isRequest: 1
 };
+
 Meteor.users.publicFields = {
   username: 1,
   isActive: 1,
