@@ -1,11 +1,27 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
+import { Factory } from "meteor/dburles:factory";
 import SimpleSchema from "simpl-schema";
+// import faker from "faker";
+import { Random } from "meteor/random";
 import { Tracker } from "meteor/tracker";
 
-import { Events } from "../event/Event";
+import { Events } from "../events/events";
 
 const Groups = new Mongo.Collection("groups");
+
+// Deny all client-side updates since we will be using methods to manage this collection
+Groups.deny({
+  insert() {
+    return true;
+  },
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
+  }
+});
 
 Groups.schema = new SimpleSchema(
   {
@@ -22,15 +38,29 @@ Groups.schema = new SimpleSchema(
     digest: { type: String, optional: true },
     type: SimpleSchema.Integer, // 0 Ouvert, 5 Modéré, 10 Fermé
     owner: { type: String, regEx: SimpleSchema.RegEx.Id },
-    admins: Array,
+    admins: { type: Array, defaultValue: [] },
     "admins.$": { type: String, regEx: SimpleSchema.RegEx.Id },
-    members: Array,
+    members: { type: Array, defaultValue: [] },
     "members.$": { type: String, regEx: SimpleSchema.RegEx.Id },
-    candidates: Array,
+    candidates: { type: Array, defaultValue: [] },
     "candidates.$": { type: String, regEx: SimpleSchema.RegEx.Id }
   },
   { tracker: Tracker }
 );
+
+Groups.publicFields = {
+  name: 1,
+  info: 1,
+  note: 1,
+  active: 1,
+  groupPadID: 1,
+  digest: 1,
+  type: 1,
+  owner: 1,
+  admins: 1,
+  members: 1,
+  candidates: 1
+};
 
 Groups.helpers({
   getEvents() {
@@ -48,5 +78,14 @@ Groups.helpers({
 });
 
 Groups.attachSchema(Groups.schema);
+
+Factory.define("group", Groups, {
+  name: () => Random.id(),
+  active: true,
+  type: 0,
+  admins: [],
+  members: [],
+  candidates: []
+});
 
 export { Groups };

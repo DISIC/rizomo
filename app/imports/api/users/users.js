@@ -1,10 +1,11 @@
 import { Meteor } from "meteor/meteor";
 import SimpleSchema from "simpl-schema";
 import { Tracker } from "meteor/tracker";
+import { Roles } from "meteor/alanning:roles";
 
 const AppRoles = ["candidate", "member", "admin"];
 
-const UserSchema = new SimpleSchema(
+Meteor.users.schema = new SimpleSchema(
   {
     username: {
       type: String,
@@ -53,14 +54,6 @@ const UserSchema = new SimpleSchema(
       optional: true,
       blackbox: true
     },
-    // Add `roles` to your schema if you use the meteor-roles package.
-    // Option 1: Object type
-    // If you specify that type as Object, you must also specify the
-    // `Roles.GLOBAL_GROUP` group whenever you add a user to a role.
-    // Example:
-    // Roles.addUsersToRoles(userId, ["admin"], Roles.GLOBAL_GROUP);
-    // You can't mix and match adding with and without a group since
-    // you will fail validation in some cases.
     roles: {
       type: Object,
       optional: true,
@@ -89,17 +82,21 @@ Meteor.users.helpers({
   }
 });
 
-Meteor.users.publicFields = {
+Meteor.users.selfFields = {
   username: 1,
   emails: 1,
   createdAt: 1,
-  profile: 1,
-  services: 1,
   roles: 1,
   isActive: 1,
   isRequest: 1
 };
 
-Meteor.users.attachSchema(UserSchema);
+Meteor.users.publicFields = {
+  username: 1,
+  isActive: 1,
+  isRequest: 1
+};
+
+Meteor.users.attachSchema(Meteor.users.schema);
 
 export { AppRoles };

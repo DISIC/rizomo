@@ -6,16 +6,19 @@ Meteor.publish("userData", function() {
     return Meteor.users.find(
       { _id: this.userId },
       {
-        fields: {
-          memberOf: 1,
-          candidateOf: 1,
-          adminOf: 1,
-          isActif: 1,
-          isDemande: 1
-        }
+        fields: Meteor.users.selfFields
       }
     );
   } else {
     this.ready();
   }
+});
+
+Meteor.publish("users.all", function() {
+  return Meteor.users.find(
+    {},
+    {
+      fields: Meteor.users.publicFields
+    }
+  );
 });
