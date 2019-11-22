@@ -10,16 +10,22 @@
     "plugin:meteor/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
+    "plugin:import/react",
     "plugin:react/recommended",
     "prettier",
     "airbnb"
   ],
   "settings": {
-    "import/resolver": "meteor"
+    "import/resolver": {
+      "meteor": {
+        "extensions": [".js", ".jsx"]
+      }
+    }
   },
   "plugins": ["meteor", "import", "prettier", "i18n", "react", "jsx"],
   "rules": {
     "no-underscore-dangle": "off",
+    "react/jsx-props-no-spreading": "off",
     "max-len": [
       "error",
       {
