@@ -12,16 +12,16 @@
   },
   "components": {},
   "pages": {
-    "TestSemantic": {
-      "registerAccount": "Register your account",
+    "SignIn": {
+      "isRequired": "is required",
+      "appDescription": "Digital services shared by National Education agents",
+      "appVersion": "Test Alpha 0.1 Version",
       "emailLabel": "Email",
-      "emailPlaceholder": "Email address",
-      "passwdLabel": "Password",
-      "passwdPlaceholder": "Password",
-      "returnSentence": "Already have an account? Return",
-      "returnLink": "here",
-      "registerError": "Registration was not successful",
-      "submit": "submit"
+      "pwdLabel": "Password",
+      "connect": "Connect",
+      "forgotPwd": "Forgot password ?",
+      "createAccount": "Create an account",
+      "loginError": "Error: Bad account or password"
     }
   }
 }

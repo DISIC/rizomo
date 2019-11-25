@@ -12,10 +12,9 @@ export default function App() {
     <BrowserRouter>
       <div>
         <Switch>
-          <Route exact path="/" component={SignLayout} />
+          <ProtectedRoute exact path="/" component={Home} />
           <Route path="/signin" component={SignLayout} />
           <Route path="/signup" component={SignLayout} />
-          <ProtectedRoute path="/home" component={Home} />
           <Route component={NotFound} />
         </Switch>
       </div>

@@ -5,20 +5,22 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import validate from 'validate.js';
+import i18n from 'meteor/universe:i18n';
 
 const schema = {
   email: {
-    presence: { allowEmpty: false, message: 'is required' },
+    presence: { allowEmpty: false, message: i18n.__('pages.SignIn.isRequired') },
     email: true,
     length: {
       maximum: 64,
     },
   },
   password: {
-    presence: { allowEmpty: false, message: 'is required' },
+    presence: { allowEmpty: false, message: i18n.__('pages.SignIn.isRequired') },
     length: {
       maximum: 128,
     },
@@ -67,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 0,
     },
   },
+  error: {
+    backgroundColor: theme.palette.error.dark,
+  },
 }));
 
 export default function SignIn() {
@@ -79,6 +84,8 @@ export default function SignIn() {
     touched: {},
     errors: {},
   });
+
+  const [openError, setOpenError] = useState(false);
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -112,7 +119,23 @@ export default function SignIn() {
 
   const handleSignIn = (event) => {
     event.preventDefault();
-    history.push('/');
+    if (formState.isValid === true) {
+      const { email, password } = formState.values;
+      Meteor.loginWithPassword(email, password, (err) => {
+        if (err) {
+          setOpenError(true);
+        } else {
+          history.push('/');
+        }
+      });
+    }
+  };
+
+  const handleErrorClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenError(false);
   };
 
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
@@ -120,17 +143,17 @@ export default function SignIn() {
   return (
     <div>
       <Typography variant="h5" color="inherit" paragraph>
-        Les services numériques partagés des agents de l&apos;Éducation nationale
+        {i18n.__('pages.SignIn.appDescription')}
       </Typography>
       <Typography variant="h6" color="inherit" paragraph>
-        Version Test Alpha 0.1
+        {i18n.__('pages.SignIn.appVersion')}
       </Typography>
       <form onSubmit={handleSignIn} className={classes.form} noValidate>
         <TextField
           margin="normal"
           required
           id="email"
-          label="Courriel"
+          label={i18n.__('pages.SignIn.emailLabel')}
           name="email"
           autoComplete="email"
           autoFocus
@@ -148,7 +171,7 @@ export default function SignIn() {
           required
           fullWidth
           name="password"
-          label="Mot de passe"
+          label={i18n.__('pages.SignIn.pwdLabel')}
           type="password"
           id="password"
           autoComplete="current-password"
@@ -165,20 +188,34 @@ export default function SignIn() {
           className={classes.submit}
           disabled={!formState.isValid}
         >
-          Connexion
+          {i18n.__('pages.SignIn.connect')}
         </Button>
         <Grid container>
           <Grid item xs>
             <Link href="/Home" variant="body2">
-              Mot de passe oublié ?
+              {i18n.__('pages.SignIn.forgotPwd')}
             </Link>
           </Grid>
           <Grid item>
             <Link href="/SignUp" variant="body2">
-              Créer un compte
+              {i18n.__('pages.SignIn.createAccount')}
             </Link>
           </Grid>
         </Grid>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={openError}
+          autoHideDuration={4000}
+          onClose={handleErrorClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+            className: classes.error,
+          }}
+          message={<span id="message-id">{i18n.__('pages.SignIn.loginError')}</span>}
+        />
       </form>
     </div>
   );

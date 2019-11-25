@@ -12,16 +12,16 @@
   },
   "components": {},
   "pages": {
-    "TestSemantic": {
-      "registerAccount": "Enregistrez votre compte",
-      "emailLabel": "Email",
-      "emailPlaceholder": "addresse Email",
-      "passwdLabel": "Mot de passe",
-      "passwdPlaceholder": "Mot de passe",
-      "returnSentence": "Vous avez déjà un compte ? Revenir",
-      "returnLink": "à l'accueil",
-      "registerError": "L'enregistrement a échoué",
-      "submit": "Enregistrer"
+    "SignIn": {
+      "isRequired": "est requis",
+      "appDescription": "Les services numériques partagés des agents de l&apos;Éducation nationale",
+      "appVersion": "Version Test Alpha 0.1",
+      "emailLabel": "Courriel",
+      "pwdLabel": "Mot de passe",
+      "connect": "Connexion",
+      "forgotPwd": "Mot de passe oublié ?",
+      "createAccount": "Créer un compte",
+      "loginError": "Erreur: Mauvais compte ou mot de passe"
     }
   }
 }

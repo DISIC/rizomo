@@ -74,7 +74,7 @@ export default function SignUp() {
 
   const submit = (event) => {
     event.preventDefault();
-    history.push('/Home');
+    history.push('/');
   };
 
   return (
