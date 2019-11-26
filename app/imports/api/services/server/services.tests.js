@@ -12,6 +12,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import { createService, removeService } from '../methods';
+import { favService, unfavService } from '../../users/methods';
 import './publications';
 import Services from '../services';
 
@@ -120,6 +121,34 @@ describe('services', function () {
           },
           Meteor.Error,
           /api.services.removeService.notPermitted/,
+        );
+      });
+    });
+    describe('(un)favService', function () {
+      it('does (un)set a service as favorite', function () {
+        favService._execute({ userId }, { serviceId });
+        let user = Meteor.users.findOne(userId);
+        assert.include(user.favServices, serviceId, 'favorite service list contains serviceId');
+        unfavService._execute({ userId }, { serviceId });
+        user = Meteor.users.findOne(userId);
+        assert.notInclude(user.favServices, serviceId, 'favorite service list does not contains serviceId');
+      });
+      it('does not set a service as favorite if not logged in', function () {
+        assert.throws(
+          () => {
+            favService._execute({}, { serviceId });
+          },
+          Meteor.Error,
+          /api.users.favService.notPermitted/,
+        );
+      });
+      it('does not unset a service as favorite if not logged in', function () {
+        assert.throws(
+          () => {
+            unfavService._execute({}, { serviceId });
+          },
+          Meteor.Error,
+          /api.users.unfavService.notPermitted/,
         );
       });
     });

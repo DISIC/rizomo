@@ -56,6 +56,13 @@ Meteor.users.schema = new SimpleSchema(
     },
     isActive: { type: Boolean, defaultValue: false },
     isRequest: { type: Boolean, defaultValue: true },
+    favServices: {
+      type: Array,
+      defaultValue: [],
+    },
+    'favServices.$': {
+      type: { type: String, regEx: SimpleSchema.RegEx.Id },
+    },
   },
   { tracker: Tracker },
 );
@@ -79,6 +86,7 @@ Meteor.users.selfFields = {
   roles: 1,
   isActive: 1,
   isRequest: 1,
+  favServices: 1,
 };
 
 Meteor.users.publicFields = {
