@@ -8,5 +8,6 @@ import './security';
 // as an API to the client.
 import './register-api';
 
-// Set up roles and initial accounts
+// Set up roles, initial accounts and services
 import './Accounts';
+import './Services';

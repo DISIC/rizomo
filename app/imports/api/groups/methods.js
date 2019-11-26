@@ -21,10 +21,7 @@ export const createGroup = new ValidatedMethod({
     name, type, note, info,
   }) {
     if (!this.userId) {
-      throw new Meteor.Error(
-        'api.groups.createGroup.notLoggedIn',
-        i18n.__('api.users.mustBeLoggedIn'),
-      );
+      throw new Meteor.Error('api.groups.createGroup.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
     Groups.insert({
       name,
@@ -47,20 +44,14 @@ export const removeGroup = new ValidatedMethod({
     // check group existence
     const group = Groups.findOne({ _id: groupId });
     if (group === undefined) {
-      throw new Meteor.Error(
-        'api.users.setAdminOf.unknownGroup',
-        i18n.__('api.groups.unknownGroup'),
-      );
+      throw new Meteor.Error('api.groups.removeGroup.unknownGroup', i18n.__('api.groups.unknownGroup'));
     }
     // check if current user has admin rights on group (or global admin)
     // FIXME : allow only for owner or for all admins ?
-    const authorized = (this.userId && Roles.userIsInRole(this.userId, 'admin', groupId))
-      || this.userId === group.owner;
+    const isAdmin = this.userId && Roles.userIsInRole(this.userId, 'admin', groupId);
+    const authorized = isAdmin || this.userId === group.owner;
     if (!authorized) {
-      throw new Meteor.Error(
-        'api.groups.removeGroup.notPermitted',
-        i18n.__('api.groups.adminGroupNeeded'),
-      );
+      throw new Meteor.Error('api.groups.removeGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
     // remove all roles set on this group
     Roles.removeScope(groupId);

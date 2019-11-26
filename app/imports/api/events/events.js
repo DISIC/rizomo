@@ -5,6 +5,19 @@ import { Tracker } from 'meteor/tracker';
 
 const Events = new Mongo.Collection('events');
 
+// Deny all client-side updates since we will be using methods to manage this collection
+Events.deny({
+  insert() {
+    return true;
+  },
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
+  },
+});
+
 Events.schema = new SimpleSchema(
   {
     title: String,

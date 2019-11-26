@@ -49,11 +49,6 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
       blackbox: true,
     },
-    roles: {
-      type: Object,
-      optional: true,
-      blackbox: true,
-    },
     // In order to avoid an 'Exception in setInterval callback' from Meteor
     heartbeat: {
       type: Date,

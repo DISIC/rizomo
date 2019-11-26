@@ -8,6 +8,9 @@
     "groups": {
       "unknownGroup": "Group does not exist.",
       "adminGroupNeeded": "You don't have admin rights on this group."
+    },
+    "services": {
+      "unknownService": "Service does not exist."
     }
   },
   "components": {},
