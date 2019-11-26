@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -13,9 +13,53 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { useHistory } from 'react-router-dom';
+import validate from 'validate.js';
+import i18n from 'meteor/universe:i18n';
+
+validate.options = {
+  fullMessages: false,
+};
+
+const schema = {
+  firstName: {
+    presence: { allowEmpty: false, message: 'validatejs.isRequired' },
+    length: {
+      maximum: 32,
+    },
+  },
+  lastName: {
+    presence: { allowEmpty: false, message: 'validatejs.isRequired' },
+    length: {
+      maximum: 32,
+    },
+  },
+  userName: {
+    presence: { allowEmpty: false, message: 'validatejs.isRequired' },
+    length: {
+      maximum: 32,
+    },
+  },
+  email: {
+    presence: { allowEmpty: false, message: 'validatejs.isRequired' },
+    email: true,
+    length: {
+      maximum: 64,
+    },
+  },
+  password: {
+    presence: { allowEmpty: false, message: 'validatejs.isRequired' },
+    length: {
+      maximum: 128,
+    },
+  },
+  structureSelect: {
+    presence: { allowEmpty: false, message: 'validatejs.isRequired' },
+  },
+};
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -41,27 +85,64 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const history = useHistory();
   const classes = useStyles();
+
+  const [formState, setFormState] = useState({
+    isValid: false,
+    values: {},
+    touched: {},
+    errors: {},
+  });
+
+  useEffect(() => {
+    const errors = validate(formState.values, schema);
+
+    setFormState((formState) => ({
+      ...formState,
+      isValid: !errors,
+      errors: errors || {},
+    }));
+  }, [formState.values]);
+
+  const handleChange = (event) => {
+    event.persist();
+
+    setFormState((formState) => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true,
+      },
+    }));
+  };
+
+  const handleBack = () => {
+    history.goBack();
+  };
+
+  const handleSignUp = (event) => {
+    event.preventDefault();
+    history.push('/');
+  };
+
+  const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
+
   const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
     showPassword: false,
   });
   const [structure, setStructure] = React.useState('');
 
-  const inputLabel = React.useRef(null);
+  const structureLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
   React.useEffect(() => {
-    setLabelWidth(inputLabel.current.offsetWidth);
+    setLabelWidth(structureLabel.current.offsetWidth);
   }, []);
 
   const handleChangeStruct = (event) => {
     setStructure(event.target.value);
-  };
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
   };
 
   const handleClickShowPassword = () => {
@@ -72,78 +153,100 @@ export default function SignUp() {
     event.preventDefault();
   };
 
-  const submit = (event) => {
-    event.preventDefault();
-    history.push('/');
-  };
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Création de votre compte
+          {i18n.__('pages.SignUp.appDescription')}
         </Typography>
-        <form onSubmit={submit} className={classes.form} noValidate>
+        <form onSubmit={handleSignUp} className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
-                variant="outlined"
                 required
-                fullWidth
                 id="firstName"
-                label="Prénom"
                 autoFocus
+                error={hasError('firstName')}
+                fullWidth
+                helperText={hasError('firstName') ? i18n.__(formState.errors.firstName[0]) : null}
+                label={i18n.__('pages.SignUp.firstNameLabel')}
+                name="firstName"
+                onChange={handleChange}
+                type="text"
+                value={formState.values.firstName || ''}
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                variant="outlined"
                 required
-                fullWidth
                 id="lastName"
-                label="Nom"
-                name="lastName"
                 autoComplete="lname"
+                error={hasError('lastName')}
+                fullWidth
+                helperText={hasError('lastName') ? i18n.__(formState.errors.lastName[0]) : null}
+                label={i18n.__('pages.SignUp.lastNameLabel')}
+                name="lastName"
+                onChange={handleChange}
+                type="text"
+                value={formState.values.lastName || ''}
+                variant="outlined"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} spacing={2}>
               <TextField
-                variant="outlined"
+                margin="normal"
                 required
-                fullWidth
                 id="email"
-                label="Courriel"
+                label={i18n.__('pages.SignUp.emailLabel')}
                 name="email"
                 autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
+                error={hasError('email')}
                 fullWidth
-                id="username"
-                label="Identifiant"
-                name="username"
-                autoComplete="username"
+                helperText={hasError('email') ? i18n.__(formState.errors.email[0]) : null}
+                onChange={handleChange}
+                type="text"
+                value={formState.values.email || ''}
+                variant="outlined"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} spacing={6}>
+              <TextField
+                required
+                id="userName"
+                label="Identifiant"
+                name="userName"
+                autoComplete="username"
+                error={hasError('userName')}
+                fullWidth
+                helperText={hasError('userName') ? i18n.__(formState.errors.userName[0]) : null}
+                label={i18n.__('pages.SignUp.userNameLabel')}
+                onChange={handleChange}
+                type="text"
+                value={formState.values.userName || ''}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} spacing={2}>
               <FormControl variant="outlined" fullWidth required>
-                <InputLabel htmlFor="outlined-adornment-password">Mot de passe</InputLabel>
+                <InputLabel htmlFor="password" className={hasError('password') ? 'Mui-error' : ''}>
+                  {i18n.__('pages.SignUp.pwdLabel')}
+                </InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-password"
+                  id="password"
+                  name="password"
                   type={values.showPassword ? 'text' : 'password'}
-                  value={values.password}
+                  value={formState.values.password || ''}
+                  error={hasError('password')}
                   labelWidth={100}
-                  onChange={handleChange('password')}
+                  onChange={handleChange}
                   endAdornment={(
                     <InputAdornment position="end">
                       <IconButton
-                        aria-label="afficher ou masquer le mot de passe"
+                        title={i18n.__('pages.SignUp.pwdButtonLabel')}
+                        aria-label={i18n.__('pages.SignUp.pwdButtonLabel')}
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
                       >
@@ -152,17 +255,26 @@ export default function SignUp() {
                     </InputAdornment>
                   )}
                 />
+                <FormHelperText className={hasError('password') ? 'Mui-error' : ''}>
+                  {hasError('password') ? i18n.__(formState.errors.password[0]) : null}
+                </FormHelperText>
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} spacing={2}>
               <FormControl variant="outlined" className={classes.formControl} fullWidth>
-                <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-                  Structure de rattachement
+                <InputLabel
+                  ref={structureLabel}
+                  id="structure-label"
+                  className={hasError('structureSelect') ? 'Mui-error' : ''}
+                >
+                  {i18n.__('pages.SignUp.structureLabel')}
                 </InputLabel>
                 <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
+                  labelId="structure-label"
+                  id="structureSelect"
+                  name="structureSelect"
                   value={structure}
+                  error={hasError('structureSelect')}
                   onChange={handleChangeStruct}
                   labelWidth={labelWidth}
                 >
@@ -193,10 +305,13 @@ export default function SignUp() {
                   <MenuItem value="Collectivité">Collectivité</MenuItem>
                   <MenuItem value="Autre">Autre</MenuItem>
                 </Select>
+                <FormHelperText className={hasError('structureSelect') ? 'Mui-error' : ''}>
+                  {hasError('structureSelect') ? i18n.__(formState.errors.structureSelect[0]) : null}
+                </FormHelperText>
               </FormControl>
             </Grid>
             <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-              Inscription
+              {i18n.__('pages.SignUp.submitButtonLabel')}
             </Button>
           </Grid>
         </form>

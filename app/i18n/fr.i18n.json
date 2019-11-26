@@ -11,9 +11,11 @@
     }
   },
   "components": {},
+  "validatejs": {
+    "isRequired": "ce champ est requis"
+  },
   "pages": {
     "SignIn": {
-      "isRequired": "est requis",
       "appDescription": "Les services numériques partagés des agents de l&apos;Éducation nationale",
       "appVersion": "Version Test Alpha 0.1",
       "emailLabel": "Courriel",
@@ -22,6 +24,17 @@
       "forgotPwd": "Mot de passe oublié ?",
       "createAccount": "Créer un compte",
       "loginError": "Erreur: Mauvais compte ou mot de passe"
+    },
+    "SignUp": {
+      "appDescription": "Création de votre compte",
+      "firstNameLabel": "Prénom",
+      "lastNameLabel": "Nom",
+      "userNameLabel": "Identifiant",
+      "emailLabel": "Courriel",
+      "pwdLabel": "Mot de passe",
+      "pwdButtonLabel": "Afficher ou masquer le mot de passe",
+      "structureLabel": "Structure de rattachement",
+      "submitButtonLabel": "Inscription"
     }
   }
 }

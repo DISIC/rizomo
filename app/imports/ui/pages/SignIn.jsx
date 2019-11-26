@@ -13,14 +13,14 @@ import i18n from 'meteor/universe:i18n';
 
 const schema = {
   email: {
-    presence: { allowEmpty: false, message: i18n.__('pages.SignIn.isRequired') },
+    presence: { allowEmpty: false, message: 'validatejs.isRequired' },
     email: true,
     length: {
       maximum: 64,
     },
   },
   password: {
-    presence: { allowEmpty: false, message: i18n.__('pages.SignIn.isRequired') },
+    presence: { allowEmpty: false, message: 'validatejs.isRequired' },
     length: {
       maximum: 128,
     },
@@ -159,7 +159,7 @@ export default function SignIn() {
           autoFocus
           error={hasError('email')}
           fullWidth
-          helperText={hasError('email') ? formState.errors.email[0] : null}
+          helperText={hasError('email') ? i18n.__(formState.errors.email[0]) : null}
           onChange={handleChange}
           type="text"
           value={formState.values.email || ''}
@@ -176,7 +176,7 @@ export default function SignIn() {
           id="password"
           autoComplete="current-password"
           error={hasError('password')}
-          helperText={hasError('password') ? formState.errors.password[0] : null}
+          helperText={hasError('password') ? i18n.__(formState.errors.password[0]) : null}
           onChange={handleChange}
           value={formState.values.password || ''}
         />
@@ -192,12 +192,12 @@ export default function SignIn() {
         </Button>
         <Grid container>
           <Grid item xs>
-            <Link href="/Home" variant="body2">
+            <Link href="/" variant="body2">
               {i18n.__('pages.SignIn.forgotPwd')}
             </Link>
           </Grid>
           <Grid item>
-            <Link href="/SignUp" variant="body2">
+            <Link href="/signup" variant="body2">
               {i18n.__('pages.SignIn.createAccount')}
             </Link>
           </Grid>

@@ -19,5 +19,5 @@ function getLang() {
 /** Startup the application by rendering the App layout component. */
 Meteor.startup(() => {
   i18n.setLocale(getLang());
-  render(<App />, document.getElementById("root")); // eslint-disable-line
+  render(<App />, document.getElementById('root')); // eslint-disable-line
 });

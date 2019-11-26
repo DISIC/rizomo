@@ -11,9 +11,11 @@
     }
   },
   "components": {},
+  "validatejs": {
+    "isRequired": "this field is required"
+  },
   "pages": {
     "SignIn": {
-      "isRequired": "is required",
       "appDescription": "Digital services shared by National Education agents",
       "appVersion": "Test Alpha 0.1 Version",
       "emailLabel": "Email",
@@ -22,6 +24,17 @@
       "forgotPwd": "Forgot password ?",
       "createAccount": "Create an account",
       "loginError": "Error: Bad account or password"
+    },
+    "SignUp": {
+      "appDescription": "Create new account",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "userNameLabel": "User name",
+      "emailLabel": "Email",
+      "pwdLabel": "Password",
+      "pwdButtonLabel": "Toggle password visibility",
+      "structureLabel": "Connection structure",
+      "submitButtonLabel": "Sign Up"
     }
   }
 }
