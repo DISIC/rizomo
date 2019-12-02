@@ -4,7 +4,7 @@ import {
   BrowserRouter, Route, Switch, Redirect,
 } from 'react-router-dom';
 import SignLayout from './SignLayout';
-import Home from '../pages/Home';
+import MainLayout from './MainLayout';
 import NotFound from '../pages/NotFound';
 
 export default function App() {
@@ -12,9 +12,9 @@ export default function App() {
     <BrowserRouter>
       <div>
         <Switch>
-          <ProtectedRoute exact path="/" component={Home} />
           <Route path="/signin" component={SignLayout} />
           <Route path="/signup" component={SignLayout} />
+          <ProtectedRoute path="/" component={MainLayout} />
           <Route component={NotFound} />
         </Switch>
       </div>
