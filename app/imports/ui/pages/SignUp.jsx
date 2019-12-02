@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Accounts } from 'meteor/accounts-base';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -19,6 +20,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { useHistory } from 'react-router-dom';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
+import { Snackbar } from '@material-ui/core';
 
 validate.options = {
   fullMessages: false,
@@ -45,7 +47,9 @@ const schema = {
   },
   email: {
     presence: { allowEmpty: false, message: 'validatejs.isRequired' },
-    email: true,
+    email: {
+      message: 'validatejs.isEmail',
+    },
     length: {
       maximum: 64,
     },
@@ -119,13 +123,44 @@ export default function SignUp() {
     }));
   };
 
-  const handleBack = () => {
-    history.goBack();
+  const handleBlurEmail = (event) => {
+    if (formState.values.userName === undefined || formState.values.userName === '') {
+      setFormState({
+        ...formState,
+        values: {
+          ...formState.values,
+          userName: event.target.value,
+        },
+      });
+    }
   };
 
   const handleSignUp = (event) => {
     event.preventDefault();
     history.push('/');
+    if (formState.isValid === true) {
+      const {
+        firstName, lastName, email, userName, password, structureSelect,
+      } = formState.values;
+      Accounts.createUser(
+        {
+          firstName,
+          lastName,
+          username: userName,
+          email,
+          password,
+          structure: structureSelect,
+        },
+        (error) => {
+          if (error) {
+            console.log('Cannot create user');
+            setOpenError(true);
+          } else {
+            history.push('/');
+          }
+        },
+      );
+    }
   };
 
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
@@ -133,7 +168,7 @@ export default function SignUp() {
   const [values, setValues] = React.useState({
     showPassword: false,
   });
-  const [structure, setStructure] = React.useState('');
+  const [openError, setOpenError] = useState(false);
 
   const structureLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -141,16 +176,19 @@ export default function SignUp() {
     setLabelWidth(structureLabel.current.offsetWidth);
   }, []);
 
-  const handleChangeStruct = (event) => {
-    setStructure(event.target.value);
-  };
-
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleErrorClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenError(false);
   };
 
   return (
@@ -207,6 +245,7 @@ export default function SignUp() {
                 fullWidth
                 helperText={hasError('email') ? i18n.__(formState.errors.email[0]) : null}
                 onChange={handleChange}
+                onBlur={handleBlurEmail}
                 type="text"
                 value={formState.values.email || ''}
                 variant="outlined"
@@ -273,9 +312,9 @@ export default function SignUp() {
                   labelId="structure-label"
                   id="structureSelect"
                   name="structureSelect"
-                  value={structure}
+                  value={formState.values.structureSelect || ''}
                   error={hasError('structureSelect')}
-                  onChange={handleChangeStruct}
+                  onChange={handleChange}
                   labelWidth={labelWidth}
                 >
                   <MenuItem value="">
@@ -310,10 +349,31 @@ export default function SignUp() {
                 </FormHelperText>
               </FormControl>
             </Grid>
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={!formState.isValid}
+            >
               {i18n.__('pages.SignUp.submitButtonLabel')}
             </Button>
           </Grid>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            open={openError}
+            autoHideDuration={4000}
+            onClose={handleErrorClose}
+            ContentProps={{
+              'aria-describedby': 'message-id',
+              className: classes.error,
+            }}
+            message={<span id="message-id">{i18n.__('pages.SignUp.createError')}</span>}
+          />
         </form>
       </div>
     </Container>

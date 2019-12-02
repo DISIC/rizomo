@@ -11,10 +11,13 @@ import { useHistory } from 'react-router-dom';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
 
+validate.options = {
+  fullMessages: false,
+};
+
 const schema = {
   email: {
     presence: { allowEmpty: false, message: 'validatejs.isRequired' },
-    email: true,
     length: {
       maximum: 64,
     },
@@ -96,10 +99,6 @@ export default function SignIn() {
       errors: errors || {},
     }));
   }, [formState.values]);
-
-  const handleBack = () => {
-    history.goBack();
-  };
 
   const handleChange = (event) => {
     event.persist();

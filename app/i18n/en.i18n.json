@@ -15,13 +15,14 @@
   },
   "components": {},
   "validatejs": {
-    "isRequired": "this field is required"
+    "isRequired": "this field is required",
+    "isEmail": "email not valid"
   },
   "pages": {
     "SignIn": {
       "appDescription": "Digital services shared by National Education agents",
       "appVersion": "Test Alpha 0.1 Version",
-      "emailLabel": "Email",
+      "emailLabel": "Username or Email",
       "pwdLabel": "Password",
       "connect": "Connect",
       "forgotPwd": "Forgot password ?",
@@ -37,7 +38,8 @@
       "pwdLabel": "Password",
       "pwdButtonLabel": "Toggle password visibility",
       "structureLabel": "Connection structure",
-      "submitButtonLabel": "Sign Up"
+      "submitButtonLabel": "Sign Up",
+      "createError": "Error: impossible to create this account"
     }
   }
 }
