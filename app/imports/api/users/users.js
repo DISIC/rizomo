@@ -110,10 +110,10 @@ Meteor.users.publicFields = {
 
 Accounts.onCreateUser((options, user) => {
   // pass the structure name in the options
-  user.firstName = options.firstName;
-  user.lastName = options.lastName;
-  user.structure = options.structure;
-  return user;
+  const newUser = {
+    ...user, firstName: options.firstName, lastName: options.lastName, structure: options.structure,
+  };
+  return newUser;
 });
 
 Meteor.users.deny({

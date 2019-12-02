@@ -56,7 +56,6 @@ describe('users', function () {
         collector.collect('userData', (collections) => {
           chai.assert.equal(collections.users.length, 1);
           const user = collections.users[0];
-          console.log(user);
           assert.property(user, 'favServices');
           done();
         });
