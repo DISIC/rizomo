@@ -93,7 +93,7 @@ export default function SignIn() {
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
-    setFormState((formState) => ({
+    setFormState(() => ({
       ...formState,
       isValid: !errors,
       errors: errors || {},
@@ -103,7 +103,7 @@ export default function SignIn() {
   const handleChange = (event) => {
     event.persist();
 
-    setFormState((formState) => ({
+    setFormState(() => ({
       ...formState,
       values: {
         ...formState.values,

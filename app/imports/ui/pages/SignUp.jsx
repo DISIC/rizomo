@@ -96,11 +96,21 @@ export default function SignUp() {
     touched: {},
     errors: {},
   });
+  const [values, setValues] = React.useState({
+    showPassword: false,
+  });
+  const [openError, setOpenError] = useState(false);
+
+  const structureLabel = React.useRef(null);
+  const [labelWidth, setLabelWidth] = React.useState(0);
+  React.useEffect(() => {
+    setLabelWidth(structureLabel.current.offsetWidth);
+  }, []);
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
-    setFormState((formState) => ({
+    setFormState(() => ({
       ...formState,
       isValid: !errors,
       errors: errors || {},
@@ -110,7 +120,7 @@ export default function SignUp() {
   const handleChange = (event) => {
     event.persist();
 
-    setFormState((formState) => ({
+    setFormState(() => ({
       ...formState,
       values: {
         ...formState.values,
@@ -153,7 +163,6 @@ export default function SignUp() {
         },
         (error) => {
           if (error) {
-            console.log('Cannot create user');
             setOpenError(true);
           } else {
             history.push('/');
@@ -164,17 +173,6 @@ export default function SignUp() {
   };
 
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
-
-  const [values, setValues] = React.useState({
-    showPassword: false,
-  });
-  const [openError, setOpenError] = useState(false);
-
-  const structureLabel = React.useRef(null);
-  const [labelWidth, setLabelWidth] = React.useState(0);
-  React.useEffect(() => {
-    setLabelWidth(structureLabel.current.offsetWidth);
-  }, []);
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -255,7 +253,6 @@ export default function SignUp() {
               <TextField
                 required
                 id="userName"
-                label="Identifiant"
                 name="userName"
                 autoComplete="username"
                 error={hasError('userName')}
