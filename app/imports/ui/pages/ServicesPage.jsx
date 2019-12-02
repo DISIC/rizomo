@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, useTheme, fade } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -57,8 +57,6 @@ const Mycards = [1, 2, 3];
 
 // All my tools
 const Allcards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-const drawerWidth = 240;
 
 export default function ServicesPage(props) {
   const classes = useStyles();

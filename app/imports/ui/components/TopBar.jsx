@@ -18,7 +18,6 @@ const drawerWidth = 240;
 
 export default function TopBar(props) {
   const classes = useStyles();
-  const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);

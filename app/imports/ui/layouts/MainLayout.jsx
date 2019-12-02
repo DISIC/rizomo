@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import clsx from 'clsx';
 
-import { makeStyles, useTheme, fade } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import TopBar from '../components/TopBar';
@@ -13,7 +13,6 @@ const drawerWidth = 240;
 
 export default function MainLayout() {
   const classes = useStyles();
-  const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   return (
