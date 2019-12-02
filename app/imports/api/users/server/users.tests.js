@@ -15,22 +15,49 @@ import './publications';
 
 describe('users', function () {
   describe('publications', function () {
+    let userId;
+    let email;
     before(function () {
       Meteor.users.remove({});
-      _.times(4, () => {
-        const email = faker.internet.email();
+      _.times(3, () => {
+        email = faker.internet.email();
         Accounts.createUser({
           email,
           username: email,
           password: 'toto',
+          structure: faker.company.companyName(),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         });
+      });
+      // spécific user for userData publication
+      email = faker.internet.email();
+      userId = Accounts.createUser({
+        email,
+        username: email,
+        password: 'titi',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       });
     });
     describe('users.all', function () {
-      it('sends all users', function (done) {
+      it('sends all users with restricted fields', function (done) {
         const collector = new PublicationCollector();
         collector.collect('users.all', (collections) => {
           chai.assert.equal(collections.users.length, 4);
+          const user = collections.users[0];
+          assert.notProperty(user, 'favServices');
+          done();
+        });
+      });
+      it('sends additional fields for current user', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('userData', (collections) => {
+          chai.assert.equal(collections.users.length, 1);
+          const user = collections.users[0];
+          console.log(user);
+          assert.property(user, 'favServices');
           done();
         });
       });
@@ -50,12 +77,18 @@ describe('users', function () {
         email,
         username: email,
         password: 'toto',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       });
       const emailAdmin = faker.internet.email();
       adminId = Accounts.createUser({
         email: emailAdmin,
         username: emailAdmin,
         password: 'toto',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       });
       // set this user as global admin
       Roles.addUsersToRoles(adminId, 'admin');

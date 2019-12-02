@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import { Roles } from 'meteor/alanning:roles';
+import { Accounts } from 'meteor/accounts-base';
 
 const AppRoles = ['candidate', 'member', 'admin'];
 
@@ -10,6 +11,12 @@ Meteor.users.schema = new SimpleSchema(
     username: {
       type: String,
       optional: true,
+    },
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
     },
     emails: {
       type: Array,
@@ -63,6 +70,7 @@ Meteor.users.schema = new SimpleSchema(
     'favServices.$': {
       type: { type: String, regEx: SimpleSchema.RegEx.Id },
     },
+    structure: String,
   },
   { tracker: Tracker },
 );
@@ -81,19 +89,44 @@ Meteor.users.helpers({
 
 Meteor.users.selfFields = {
   username: 1,
+  firstName: 1,
+  lastName: 1,
   emails: 1,
   createdAt: 1,
-  roles: 1,
   isActive: 1,
   isRequest: 1,
   favServices: 1,
+  structure: 1,
 };
 
 Meteor.users.publicFields = {
   username: 1,
+  firstName: 1,
+  lastName: 1,
   isActive: 1,
   isRequest: 1,
+  structure: 1,
 };
+
+Accounts.onCreateUser((options, user) => {
+  // pass the structure name in the options
+  user.firstName = options.firstName;
+  user.lastName = options.lastName;
+  user.structure = options.structure;
+  return user;
+});
+
+Meteor.users.deny({
+  insert() {
+    return true;
+  },
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
+  },
+});
 
 Meteor.users.attachSchema(Meteor.users.schema);
 

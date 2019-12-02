@@ -7,12 +7,15 @@ import AppRoles from '../../api/users/users';
 
 /* eslint-disable no-console */
 
-function createUser(email, password, role) {
+function createUser(email, password, role, structure, firstName, lastName) {
   console.log(`  Creating user ${email}.`);
   const userID = Accounts.createUser({
     username: email,
     email,
     password,
+    structure,
+    firstName,
+    lastName,
   });
   // global admin
   if (role === 'admin') {
@@ -32,7 +35,9 @@ AppRoles.forEach((role) => {
 if (Meteor.users.find().count() === 0) {
   if (Meteor.settings.defaultAccounts) {
     console.log('Creating the default user(s)');
-    Meteor.settings.defaultAccounts.map(({ email, password, role }) => createUser(email, password, role));
+    Meteor.settings.defaultAccounts.map(({
+      email, password, role, structure, firstName, lastName,
+    }) => createUser(email, password, role, structure, firstName, lastName));
   } else {
     console.log('No default users to create !  Please invoke meteor with a settings file.');
   }

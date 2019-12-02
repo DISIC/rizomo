@@ -67,18 +67,27 @@ describe('groups', function () {
         email,
         username: email,
         password: 'toto',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       });
       const emailAdmin = faker.internet.email();
       adminId = Accounts.createUser({
         email: emailAdmin,
         username: emailAdmin,
         password: 'toto',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       });
       const emailOtherUser = faker.internet.email();
       otherUserId = Accounts.createUser({
         email: emailOtherUser,
         username: emailOtherUser,
         password: 'toto',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       });
       // set this user as global admin
       Roles.addUsersToRoles(adminId, 'admin');

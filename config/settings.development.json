@@ -3,11 +3,17 @@
     {
       "email": "admin@ac-dijon.fr",
       "password": "changeme",
-      "role": "admin"
+      "role": "admin",
+      "structure": "Bourgogne-Franche-Comté",
+      "firstName": "Jean",
+      "lastName": "Dupont"
     },
     {
       "email": "eole@ac-dijon.fr",
-      "password": "changeme"
+      "password": "changeme",
+      "structure": "Bourgogne-Franche-Comté",
+      "firstName": "Guy",
+      "lastName": "Durand"
     }
   ],
   "defaultServices": [
