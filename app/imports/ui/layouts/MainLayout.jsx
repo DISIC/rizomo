@@ -41,12 +41,13 @@ const useStyles = makeStyles((theme) => ({
 function MainLayout({ user, loading }) {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [searchString, setSearchString] = React.useState('');
 
   return (
     <div className={classes.root}>
       <UserContext.Provider value={{ user, loading }}>
         <CssBaseline />
-        <TopBar setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
+        <TopBar setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} setSearchString={setSearchString} />
         <LeftDrawer setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
         <main
           className={clsx(classes.content, {
@@ -54,7 +55,7 @@ function MainLayout({ user, loading }) {
           })}
         >
           <Switch>
-            <Route path="/" component={ServicesPage} />
+            <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
           </Switch>
         </main>
       </UserContext.Provider>
@@ -63,9 +64,15 @@ function MainLayout({ user, loading }) {
 }
 
 MainLayout.propTypes = {
-  user: PropTypes.objectOf(PropTypes.object).isRequired,
-  loading: PropTypes.bool.isRequired,
+  user: PropTypes.objectOf(PropTypes.any),
+  loading: PropTypes.bool,
 };
+
+MainLayout.defaultProps = {
+  user: { username: '' },
+  loading: true,
+};
+
 export default withTracker(() => {
   const userHandle = Meteor.subscribe('userData');
   const loading = !userHandle.ready();

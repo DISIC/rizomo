@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TopBar({ setDrawerOpen, drawerOpen }) {
+export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -112,7 +112,12 @@ export default function TopBar({ setDrawerOpen, drawerOpen }) {
   };
 
   const handleLogout = () => {
+    console.log('LOGOUT');
     Meteor.logout(() => history.push('/'));
+  };
+
+  const handleChangeSearch = (event) => {
+    setSearchString(event.target.value);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -159,6 +164,7 @@ export default function TopBar({ setDrawerOpen, drawerOpen }) {
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
+            onChange={handleChangeSearch}
             inputProps={{ 'aria-label': 'search' }}
           />
         </div>
@@ -190,6 +196,7 @@ export default function TopBar({ setDrawerOpen, drawerOpen }) {
 }
 
 TopBar.propTypes = {
+  setSearchString: PropTypes.func.isRequired,
   setDrawerOpen: PropTypes.func.isRequired,
   drawerOpen: PropTypes.bool.isRequired,
 };

@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import { Roles } from 'meteor/alanning:roles';
-import { Accounts } from 'meteor/accounts-base';
 
 const AppRoles = ['candidate', 'member', 'admin'];
 
@@ -107,14 +106,6 @@ Meteor.users.publicFields = {
   isRequest: 1,
   structure: 1,
 };
-
-Accounts.onCreateUser((options, user) => {
-  // pass the structure name in the options
-  const newUser = {
-    ...user, firstName: options.firstName, lastName: options.lastName, structure: options.structure,
-  };
-  return newUser;
-});
 
 Meteor.users.deny({
   insert() {
