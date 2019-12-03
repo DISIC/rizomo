@@ -90,6 +90,13 @@ function ServicesPage({ services, loading, searchString }) {
     setValue(index);
   };
 
+  const filterServices = (service) => {
+    let searchText = service.title + service.description;
+    searchText = searchText.toLowerCase();
+    if (!searchString) return true;
+    return searchText.indexOf(searchString.toLowerCase()) > -1;
+  };
+
   const filterFavorites = (service, favs) => {
     if (favs.indexOf(service._id) === -1) return false;
     // service is in favorites: apply search filter
@@ -100,13 +107,6 @@ function ServicesPage({ services, loading, searchString }) {
     if (favs.indexOf(service._id) !== -1) return false;
     // service is not in favorites: apply search filter
     return filterServices(service);
-  };
-
-  const filterServices = (service) => {
-    let searchText = service.title + service.description;
-    searchText = searchText.toLowerCase();
-    if (!searchString) return true;
-    return searchText.indexOf(searchString.toLowerCase()) > -1;
   };
 
   return (
@@ -139,8 +139,8 @@ function ServicesPage({ services, loading, searchString }) {
             <Container className={classes.cardGrid} maxWidth="md">
               <Grid container spacing={4}>
                 <UserContext.Consumer>
-                  {({ user, loading }) => {
-                    const favs = loading ? [] : user.favServices;
+                  {(userValue) => {
+                    const favs = userValue.loading ? [] : userValue.user.favServices;
                     return services
                       .filter((service) => filterFavorites(service, favs))
                       .map((service) => (
@@ -158,8 +158,8 @@ function ServicesPage({ services, loading, searchString }) {
             <Container className={classes.cardGrid} maxWidth="md">
               <Grid container spacing={4}>
                 <UserContext.Consumer>
-                  {({ user, loading }) => {
-                    const favs = loading ? [] : user.favServices;
+                  {(userValue) => {
+                    const favs = userValue.loading ? [] : userValue.user.favServices;
                     return services
                       .filter((service) => filterNoFavorites(service, favs))
                       .map((service) => (

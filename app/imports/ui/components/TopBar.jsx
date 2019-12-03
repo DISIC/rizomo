@@ -112,7 +112,6 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
   };
 
   const handleLogout = () => {
-    console.log('LOGOUT');
     Meteor.logout(() => history.push('/'));
   };
 
