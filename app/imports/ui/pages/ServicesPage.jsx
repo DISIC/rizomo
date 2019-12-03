@@ -11,6 +11,7 @@ import SwipeableViews from 'react-swipeable-views';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import { CircularProgress } from '@material-ui/core';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
 
@@ -32,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
+  },
+  loading: {
+    width: '100%',
+    textAlign: 'center',
+    marginTop: 50,
   },
 }));
 
@@ -97,34 +103,40 @@ function ServicesPage({ services, loading }) {
           <Tab label="Tous mes services" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <Container className={classes.cardGrid} maxWidth="md">
-            <Grid container spacing={4}>
-              {services.map((service) => (
-                <Grid item key={service._id} xs={12} sm={6} md={4}>
-                  <ServiceDetails service={service} />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <Container className={classes.cardGrid} maxWidth="md">
-            <Grid container spacing={4}>
-              {services.map((service) => (
-                <Grid item key={service._id} xs={12} sm={6} md={4}>
-                  <ServiceDetails service={service} />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </TabPanel>
-      </SwipeableViews>
+      {loading ? (
+        <div className={classes.loading}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <SwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={value}
+          onChangeIndex={handleChangeIndex}
+        >
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <Container className={classes.cardGrid} maxWidth="md">
+              <Grid container spacing={4}>
+                {services.map((service) => (
+                  <Grid item key={service._id} xs={12} sm={6} md={4}>
+                    <ServiceDetails service={service} />
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            <Container className={classes.cardGrid} maxWidth="md">
+              <Grid container spacing={4}>
+                {services.map((service) => (
+                  <Grid item key={service._id} xs={12} sm={6} md={4}>
+                    <ServiceDetails service={service} />
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </TabPanel>
+        </SwipeableViews>
+      )}
     </>
   );
 }
