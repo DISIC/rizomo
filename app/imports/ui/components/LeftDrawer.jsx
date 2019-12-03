@@ -11,15 +11,32 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import PropTypes from 'prop-types';
 
 const drawerWidth = 240;
+const useStyles = makeStyles((theme) => ({
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
+}));
 
-export default function LeftDrawer(props) {
+export default function LeftDrawer({ drawerOpen, setDrawerOpen }) {
   const classes = useStyles();
   const theme = useTheme();
 
   const handleDrawerClose = () => {
-    props.setDrawerOpen(false);
+    setDrawerOpen(false);
   };
 
   return (
@@ -27,7 +44,7 @@ export default function LeftDrawer(props) {
       className={classes.drawer}
       variant="persistent"
       anchor="left"
-      open={props.drawerOpen}
+      open={drawerOpen}
       classes={{
         paper: classes.drawerPaper,
       }}
@@ -59,19 +76,7 @@ export default function LeftDrawer(props) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
-}));
+LeftDrawer.propTypes = {
+  setDrawerOpen: PropTypes.func.isRequired,
+  drawerOpen: PropTypes.bool.isRequired,
+};

@@ -16,6 +16,49 @@ import Fab from '@material-ui/core/Fab';
 import Box from '@material-ui/core/Box';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Tooltip from '@material-ui/core/Tooltip';
+
+const useStyles = makeStyles((theme) => ({
+  AppChoice: {
+    display: 'flex',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    zIndex: 0,
+  },
+  cardActions: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 8),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  fab: {
+    '&:hover': {
+      // backgroundColor: "red",
+      color: 'red',
+    },
+  },
+}));
 // -- Beginning Choice List --\\
 
 function TabPanel(props) {
@@ -38,9 +81,10 @@ function TabPanel(props) {
 }
 
 TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
+  children: PropTypes.node.isRequired,
+  dir: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 function a11yProps(index) {
@@ -58,7 +102,7 @@ const Mycards = [1, 2, 3];
 // All my tools
 const Allcards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export default function ServicesPage(props) {
+export default function ServicesPage() {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -172,46 +216,3 @@ export default function ServicesPage(props) {
     </>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  AppChoice: {
-    display: 'flex',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    zIndex: 0,
-  },
-  cardActions: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 8),
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  fab: {
-    '&:hover': {
-      // backgroundColor: "red",
-      color: 'red',
-    },
-  },
-}));
