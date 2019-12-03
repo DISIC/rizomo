@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Route, Switch } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -8,6 +10,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TopBar from '../components/TopBar';
 import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
+import UserContext from '../contexts/UserContext';
 
 // CSS
 const drawerWidth = 240;
@@ -35,24 +38,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MainLayout() {
+function MainLayout({ user, loading }) {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <TopBar setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
-      <LeftDrawer setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: drawerOpen,
-        })}
-      >
-        <Switch>
-          <Route path="/" component={ServicesPage} />
-        </Switch>
-      </main>
+      <UserContext.Provider value={{ user, loading }}>
+        <CssBaseline />
+        <TopBar setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
+        <LeftDrawer setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
+        <main
+          className={clsx(classes.content, {
+            [classes.contentShift]: drawerOpen,
+          })}
+        >
+          <Switch>
+            <Route path="/" component={ServicesPage} />
+          </Switch>
+        </main>
+      </UserContext.Provider>
     </div>
   );
 }
+
+MainLayout.propTypes = {
+  user: PropTypes.objectOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+export default withTracker(() => {
+  const userHandle = Meteor.subscribe('userData');
+  const loading = !userHandle.ready();
+  const user = Meteor.user();
+  return {
+    user,
+    loading,
+  };
+})(MainLayout);
