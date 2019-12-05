@@ -45,21 +45,19 @@ export default function ServiceDetails({ service, favAction }) {
 
   const handleFavorite = () => {
     if (favAction === 'unfav') {
-      unfavService.call({ serviceId: service._id }, (err, res) => {
+      unfavService.call({ serviceId: service._id }, (err) => {
         if (err) console.log('unable to remove service from favorites');
       });
     } else {
-      favService.call({ serviceId: service._id }, (err, res) => {
+      favService.call({ serviceId: service._id }, (err) => {
         if (err) console.log('unable to set service as favorite');
       });
     }
   };
 
-  const favButtonLabel = () => {
-    favAction === 'unfav'
-      ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
-      : i18n.__('components.ServiceDetails.favButtonLabelFav');
-  };
+  const favButtonLabel = favAction === 'unfav'
+    ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
+    : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
   return (
     <Card className={classes.card}>

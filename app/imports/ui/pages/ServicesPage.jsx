@@ -12,6 +12,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import { CircularProgress } from '@material-ui/core';
+import i18n from 'meteor/universe:i18n';
 
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
@@ -118,10 +119,10 @@ function ServicesPage({ services, loading, searchString }) {
           indicatorColor="primary"
           textColor="primary"
           variant="fullWidth"
-          aria-label="action tabs example"
+          aria-label={i18n.__('pages.ServicesPage.tabsLabel')}
         >
-          <Tab label="Mes services" {...a11yProps(0)} />
-          <Tab label="Tous mes services" {...a11yProps(1)} />
+          <Tab label={i18n.__('pages.ServicesPage.tabFavServicesLabel')} {...a11yProps(0)} />
+          <Tab label={i18n.__('pages.ServicesPage.tabAllServicesLabel')} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       {loading ? (

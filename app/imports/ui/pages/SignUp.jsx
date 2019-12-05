@@ -314,6 +314,7 @@ export default function SignUp() {
                   onChange={handleChange}
                   labelWidth={labelWidth}
                 >
+                  {/* FIXME : translate those items ? */}
                   <MenuItem value="">
                     <em>Aucune</em>
                   </MenuItem>

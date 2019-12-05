@@ -1,5 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import PropTypes from 'prop-types';
 import {
   BrowserRouter, Route, Switch, Redirect,
 } from 'react-router-dom';
@@ -14,7 +15,7 @@ export default function App() {
         <Switch>
           <Route path="/signin" component={SignLayout} />
           <Route path="/signup" component={SignLayout} />
-          <ProtectedRoute path="/" component={MainLayout} />
+          <ProtectedRoute exact path="/" component={MainLayout} />
           <Route component={NotFound} />
         </Switch>
       </div>
@@ -40,3 +41,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
     }}
   />
 );
+
+ProtectedRoute.propTypes = {
+  component: PropTypes.element.isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
+};

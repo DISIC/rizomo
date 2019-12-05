@@ -15,11 +15,14 @@
   },
   "components": {
     "ServiceDetails": {
-      "runServiceButtonLabel": "Lancer le service",
-      "favButtonLabelFav": "Ajouter à vos favoris",
-      "favButtonLabelNoFav": "Supprimer de vos favoris"
+      "runServiceButtonLabel": "Run this service",
+      "favButtonLabelFav": "Add to your favorites",
+      "favButtonLabelNoFav": "Remove from your favorites"
     },
     "TopBar": {
+      "sideMenuOpenLabel": "Open side menu",
+      "userMenuOpenLabel": "Open user menu",
+      "inputSearchLabel": "Search...",
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout"
     }
@@ -51,10 +54,11 @@
       "submitButtonLabel": "Sign Up",
       "createError": "Error: impossible to create this account"
     },
-    "ServiceDetails": {
-      "runServiceButtonLabel": "Run this service",
-      "favButtonLabelFav": "Add to your favorites",
-      "favButtonLabelNoFav": "Remove from your favorites"
+    "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
+    "ServicesPage": {
+      "tabsLabel": "Services tabs",
+      "tabFavServicesLabel": "Favorite services",
+      "tabAllServicesLabel": "All services"
     }
   }
 }

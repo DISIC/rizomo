@@ -20,6 +20,9 @@
       "favButtonLabelNoFav": "Supprimer de vos favoris"
     },
     "TopBar": {
+      "sideMenuOpenLabel": "Ouvrir le menu latéral",
+      "userMenuOpenLabel": "Ouvrir le menu utilisateur",
+      "inputSearchLabel": "Rechercher...",
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter"
     }
@@ -50,6 +53,15 @@
       "structureLabel": "Structure de rattachement",
       "submitButtonLabel": "Inscription",
       "createError": "Erreur: problème lors de la création du compte"
+    },
+    "NotFound": {
+      "backButtonLabel": "Retour",
+      "message": "Page inexistante !"
+    },
+    "ServicesPage": {
+      "tabsLabel": "Onglet des services",
+      "tabFavServicesLabel": "Mes services favoris",
+      "tabAllServicesLabel": "Tous les services"
     }
   }
 }

@@ -131,8 +131,8 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>{i18n.__('components.ServiceDetails.menuProfileLabel')}</MenuItem>
-      <MenuItem onClick={handleLogout}>{i18n.__('components.ServiceDetails.menuLogoutLabel')}</MenuItem>
+      <MenuItem onClick={handleMenuClose}>{i18n.__('components.TopBar.menuProfileLabel')}</MenuItem>
+      <MenuItem onClick={handleLogout}>{i18n.__('components.TopBar.menuLogoutLabel')}</MenuItem>
     </Menu>
   );
 
@@ -146,7 +146,7 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
       <Toolbar>
         <IconButton
           color="inherit"
-          aria-label="open drawer"
+          aria-label={i18n.__('components.TopBar.sideMenuOpenLabel')}
           onClick={handleDrawerOpen}
           edge="start"
           className={clsx(classes.menuButton, drawerOpen && classes.hide)}
@@ -159,13 +159,13 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
             <SearchIcon />
           </div>
           <InputBase
-            placeholder="Search…"
+            placeholder={i18n.__('components.TopBar.inputSearchLabel')}
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
             onChange={handleChangeSearch}
-            inputProps={{ 'aria-label': 'search' }}
+            inputProps={{ 'aria-label': i18n.__('components.TopBar.inputSearchLabel') }}
           />
         </div>
         <div className={classes.grow} />
@@ -180,7 +180,7 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
         <div className={classes.sectionDesktop}>
           <IconButton
             edge="end"
-            aria-label="account of current user"
+            aria-label={i18n.__('components.TopBar.userMenuOpenLabel')}
             aria-controls={menuId}
             aria-haspopup="true"
             onClick={handleProfileMenuOpen}
