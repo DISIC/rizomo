@@ -12,6 +12,7 @@ import RemoveIcon from '@material-ui/icons/Delete';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button } from '@material-ui/core';
+import i18n from 'meteor/universe:i18n';
 import { favService, unfavService } from '../../api/users/methods';
 
 const useStyles = makeStyles(() => ({
@@ -54,9 +55,15 @@ export default function ServiceDetails({ service, favAction }) {
     }
   };
 
+  const favButtonLabel = () => {
+    favAction === 'unfav'
+      ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
+      : i18n.__('components.ServiceDetails.favButtonLabelFav');
+  };
+
   return (
     <Card className={classes.card}>
-      <CardMedia className={classes.cardMedia} image={service.logo} title="Image title" />
+      <CardMedia className={classes.cardMedia} image={service.logo} title={service.title} />
       <CardContent className={classes.cardContent}>
         <Typography gutterBottom variant="h5" component="h2">
           {service.title}
@@ -64,12 +71,15 @@ export default function ServiceDetails({ service, favAction }) {
         <Typography>{service.description}</Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Tooltip title="Lancer le service" aria-label="like">
+        <Tooltip
+          title={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+          aria-label={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+        >
           <Button variant="contained" color="primary" href={service.url}>
             <PlayArrowIcon />
           </Button>
         </Tooltip>
-        <Tooltip title={favAction === 'unfav' ? 'Supprimer de vos favoris' : 'Ajouter à vos favoris'} aria-label="like">
+        <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
           <Fab size="small" className={classes.fab} onClick={handleFavorite}>
             {favAction === 'unfav' ? <RemoveIcon /> : <FavoriteIcon />}
           </Fab>

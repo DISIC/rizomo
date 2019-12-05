@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
 import UserContext from '../contexts/UserContext';
 
 const drawerWidth = 240;
@@ -130,8 +131,8 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose}>{i18n.__('components.ServiceDetails.menuProfileLabel')}</MenuItem>
+      <MenuItem onClick={handleLogout}>{i18n.__('components.ServiceDetails.menuLogoutLabel')}</MenuItem>
     </Menu>
   );
 

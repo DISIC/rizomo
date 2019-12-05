@@ -13,7 +13,17 @@
       "unknownService": "Service does not exist."
     }
   },
-  "components": {},
+  "components": {
+    "ServiceDetails": {
+      "runServiceButtonLabel": "Lancer le service",
+      "favButtonLabelFav": "Ajouter à vos favoris",
+      "favButtonLabelNoFav": "Supprimer de vos favoris"
+    },
+    "TopBar": {
+      "menuProfileLabel": "Profile",
+      "menuLogoutLabel": "Logout"
+    }
+  },
   "validatejs": {
     "isRequired": "this field is required",
     "isEmail": "email not valid"
@@ -40,6 +50,11 @@
       "structureLabel": "Connection structure",
       "submitButtonLabel": "Sign Up",
       "createError": "Error: impossible to create this account"
+    },
+    "ServiceDetails": {
+      "runServiceButtonLabel": "Run this service",
+      "favButtonLabelFav": "Add to your favorites",
+      "favButtonLabelNoFav": "Remove from your favorites"
     }
   }
 }
