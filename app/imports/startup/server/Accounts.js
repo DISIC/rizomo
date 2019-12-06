@@ -23,18 +23,6 @@ function createUser(email, password, role, structure, firstName, lastName) {
   }
 }
 
-Accounts.onCreateUser((options, user) => {
-  // pass the structure name in the options
-  const newUser = {
-    ...user,
-    firstName: options.firstName,
-    lastName: options.lastName,
-    structure: options.structure,
-    profile: options.profile,
-  };
-  return newUser;
-});
-
 /* ensure all roles exist */
 const existingRoles = Roles.getAllRoles()
   .fetch()

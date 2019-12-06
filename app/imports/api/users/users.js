@@ -74,6 +74,20 @@ Meteor.users.schema = new SimpleSchema(
   { tracker: Tracker },
 );
 
+if (Meteor.isServer) {
+  Accounts.onCreateUser((options, user) => {
+    // pass the structure name in the options
+    const newUser = {
+      ...user,
+      firstName: options.firstName,
+      lastName: options.lastName,
+      structure: options.structure,
+      profile: options.profile,
+    };
+    return newUser;
+  });
+}
+
 Meteor.users.helpers({
   memberOf() {
     return Roles.getScopesForUser(this, 'member');
