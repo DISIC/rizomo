@@ -7,7 +7,6 @@
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "lint": "eslint . --ext js,jsx",
     "lintfix": "eslint --fix . --ext js,jsx",
-    "pretest": "npm run lint --silent",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {

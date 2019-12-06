@@ -2,6 +2,7 @@ image: node
 
 stages:
     - deps
+    - lint
     - test
 
 before_script:
@@ -20,7 +21,7 @@ Deps:
             - app/node_modules/
 
 Lint:
-    stage: test
+    stage: lint
     script:
         - npm install --only=dev
         - curl https://install.meteor.com/ | sh
