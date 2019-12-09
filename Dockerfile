@@ -1,47 +1,43 @@
-FROM ubuntu:14.04
+# The tag here should match the Meteor version of your app, per .meteor/release
+FROM geoffreybooth/meteor-base:1.8.2
 
-MAINTAINER Eoleteam, eole@ac-dijon.fr
+# Copy app package.json and package-lock.json into container
+COPY ./app/package*.json $APP_SOURCE_FOLDER/
 
-RUN mkdir /home/meteorapp
+RUN bash $SCRIPTS_FOLDER/build-app-npm-dependencies.sh
 
-WORKDIR /home/meteorapp
+# Copy app source into container
+COPY ./app $APP_SOURCE_FOLDER/
 
-ADD . ./meteorapp
+RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
 
-# Do basic updates
-RUN apt-get update -q && apt-get clean
 
-# Get curl in order to download curl
-RUN apt-get install curl -y \
+# Rather than Node 8 latest (Alpine), you can also use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html
+FROM node:8-alpine
 
-  # Install Meteor
-  && (curl https://install.meteor.com/ | sh) \
+ENV APP_BUNDLE_FOLDER /opt/bundle
+ENV SCRIPTS_FOLDER /docker
 
-  # Build the Meteor app
-  && cd /home/meteorapp/meteorapp/app \
-  && mkdir ../build \
-  && meteor build ../build --directory --allow-superuser \
+# Install OS build dependencies, which we remove later after we’ve compiled native Node extensions
+RUN apk --no-cache --virtual .node-gyp-compilation-dependencies add \
+		g++ \
+		make \
+		python \
+	# And runtime dependencies, which we keep
+	&& apk --no-cache add \
+		bash \
+		ca-certificates
 
-  # Install the version of Node.js we need.
-  && cd /home/meteorapp/meteorapp/build/bundle \
-  && bash -c 'curl "https://nodejs.org/dist/$(<.node_version.txt)/node-$(<.node_version.txt)-linux-x64.tar.gz" > /home/meteorapp/meteorapp/build/required-node-linux-x64.tar.gz' \
-  && cd /usr/local && tar --strip-components 1 -xzf /home/meteorapp/meteorapp/build/required-node-linux-x64.tar.gz \
-  && rm /home/meteorapp/meteorapp/build/required-node-linux-x64.tar.gz \
+# Copy in entrypoint
+COPY --from=0 $SCRIPTS_FOLDER $SCRIPTS_FOLDER/
 
-  # Build the NPM packages needed for build
-  && cd /home/meteorapp/meteorapp/build/bundle/programs/server \
-  && npm install \
+# Copy in app bundle
+COPY --from=0 $APP_BUNDLE_FOLDER/bundle $APP_BUNDLE_FOLDER/bundle/
 
-  # Get rid of Meteor. We're done with it.
-  && rm /usr/local/bin/meteor \
-  && rm -rf ~/.meteor \
+RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh --build-from-source \
+	&& apk del .node-gyp-compilation-dependencies
 
-  #no longer need curl
-  && apt-get --purge autoremove curl -y
+# Start app
+ENTRYPOINT ["/docker/entrypoint.sh"]
 
-RUN npm install -g forever
-
-EXPOSE 80
-ENV PORT 80
-
-CMD ["forever", "--minUptime", "1000", "--spinSleepTime", "1000", "meteorapp/build/bundle/main.js"]
+CMD ["node", "main.js"]
