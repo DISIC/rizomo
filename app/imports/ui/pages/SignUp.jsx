@@ -12,19 +12,43 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { useHistory } from 'react-router-dom';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
 import { Snackbar } from '@material-ui/core';
+import CustomSelect from '../components/CustomSelect';
 
 validate.options = {
   fullMessages: false,
 };
+
+// FIXME : translate those items ?
+const structureOptions = [
+  { value: 'Ministère Education', label: 'Ministère Éducation' },
+  { value: 'Éducation', label: 'Éducation' },
+  { value: 'Auvergne-Rhône-Alpes', label: 'Région académique Auvergne-Rhône-Alpes' },
+  { value: 'Bourgogne-Franche-Comté', label: 'Région académique Bourgogne-Franche-Comté' },
+  { value: 'Bretagne', label: 'Région académique Bretagne' },
+  { value: 'Centre-Val de Loire', label: 'Région académique Centre-Val de Loire' },
+  { value: 'Corse', label: 'Région académique de Corse' },
+  { value: 'Grand Est', label: 'Région académique Grand Est' },
+  { value: 'Guadeloupe', label: 'Région académique de la Guadeloupe' },
+  { value: 'Guyane', label: 'Région académique de la Guyane' },
+  { value: 'Hauts-de-France', label: 'Région académique Hauts-de-France' },
+  { value: 'Île-de-France', label: 'Région académique Île-de-France' },
+  { value: 'Martinique', label: 'Région académique de Martinique' },
+  { value: 'Normandie', label: 'Région académique Normandie' },
+  { value: 'Nouvelle-Aquitaine', label: 'Région académique Nouvelle-Aquitaine' },
+  { value: 'Occitanie', label: 'Région académique Occitanie' },
+  { value: 'Pays de la Loire', label: 'Région académique Pays de la Loire' },
+  { value: "Provence-Alpes-Côte d'Azur", label: 'Région académique Provence-Alpes-Côte d&apos;Azur' },
+  { value: 'La Réunion', label: 'Région académique de La Réunion' },
+  { value: 'Collectivité', label: 'Collectivité' },
+  { value: 'Autre', label: 'Autre' },
+];
 
 const schema = {
   firstName: {
@@ -305,43 +329,13 @@ export default function SignUp() {
                 >
                   {i18n.__('pages.SignUp.structureLabel')}
                 </InputLabel>
-                <Select
-                  labelId="structure-label"
-                  id="structureSelect"
-                  name="structureSelect"
+                <CustomSelect
                   value={formState.values.structureSelect || ''}
                   error={hasError('structureSelect')}
                   onChange={handleChange}
                   labelWidth={labelWidth}
-                >
-                  {/* FIXME : translate those items ? */}
-                  <MenuItem value="">
-                    <em>Aucune</em>
-                  </MenuItem>
-                  <MenuItem value="Ministère Education">Ministére Education</MenuItem>
-                  <MenuItem value="Education">Education</MenuItem>
-                  <MenuItem value="Auvergne-Rhône-Alpes">Région académique Auvergne-Rhône-Alpes</MenuItem>
-                  <MenuItem value="Bourgogne-Franche-Comté">Région académique Bourgogne-Franche-Comté</MenuItem>
-                  <MenuItem value="Bretagne">Région académique Bretagne</MenuItem>
-                  <MenuItem value="Centre-Val de Loire">Région académique Centre-Val de Loire</MenuItem>
-                  <MenuItem value="Corse">Région académique de Corse</MenuItem>
-                  <MenuItem value="Grand Est">Région académique Grand Est</MenuItem>
-                  <MenuItem value="Guadeloupe">Région académique de la Guadeloupe</MenuItem>
-                  <MenuItem value="Guyane">Région académique de la Guyane</MenuItem>
-                  <MenuItem value="Hauts-de-France">Région académique Hauts-de-France</MenuItem>
-                  <MenuItem value="Île-de-France">Région académique Île-de-France</MenuItem>
-                  <MenuItem value="Martinique">Région académique de Martinique</MenuItem>
-                  <MenuItem value="Normandie">Région académique Normandie</MenuItem>
-                  <MenuItem value="Nouvelle-Aquitaine">Région académique Nouvelle-Aquitaine</MenuItem>
-                  <MenuItem value="Occitanie">Région académique Occitanie</MenuItem>
-                  <MenuItem value="Pays de la Loire">Région académique Pays de la Loire</MenuItem>
-                  <MenuItem value="Provence-Alpes-Côte d'Azur">
-                    Région académique Provence-Alpes-Côte d&apos;Azur
-                  </MenuItem>
-                  <MenuItem value="La Réunion">Région académique de La Réunion</MenuItem>
-                  <MenuItem value="Collectivité">Collectivité</MenuItem>
-                  <MenuItem value="Autre">Autre</MenuItem>
-                </Select>
+                  options={structureOptions}
+                />
                 <FormHelperText className={hasError('structureSelect') ? 'Mui-error' : ''}>
                   {hasError('structureSelect') ? i18n.__(formState.errors.structureSelect[0]) : null}
                 </FormHelperText>
