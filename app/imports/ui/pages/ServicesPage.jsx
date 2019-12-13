@@ -104,12 +104,6 @@ function ServicesPage({ services, loading, searchString }) {
     return filterServices(service);
   };
 
-  const filterNoFavorites = (service, favs) => {
-    if (favs.indexOf(service._id) !== -1) return false;
-    // service is not in favorites: apply search filter
-    return filterServices(service);
-  };
-
   return (
     <>
       <AppBar className={classes.AppChoice} position="static" color="default">
@@ -138,14 +132,14 @@ function ServicesPage({ services, loading, searchString }) {
           <TabPanel value={value} index={0} dir={theme.direction}>
             {/* display favorite services */}
             <Container className={classes.cardGrid} maxWidth="md">
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 <UserContext.Consumer>
                   {(userValue) => {
                     const favs = userValue.loading ? [] : userValue.user.favServices;
                     return services
                       .filter((service) => filterFavorites(service, favs))
                       .map((service) => (
-                        <Grid item key={service._id} xs={12} sm={6} md={4}>
+                        <Grid item key={service._id} xs={12} sm={4} md={3}>
                           <ServiceDetails service={service} favAction="unfav" />
                         </Grid>
                       ));
@@ -162,12 +156,16 @@ function ServicesPage({ services, loading, searchString }) {
                   {(userValue) => {
                     const favs = userValue.loading ? [] : userValue.user.favServices;
                     return services
-                      .filter((service) => filterNoFavorites(service, favs))
-                      .map((service) => (
-                        <Grid item key={service._id} xs={12} sm={6} md={4}>
+                      .filter((service) => filterServices(service))
+                      .map((service) => (favs.indexOf(service._id) === -1 ? (
+                        <Grid item key={service._id} xs={12} sm={4} md={3}>
                           <ServiceDetails service={service} favAction="fav" />
                         </Grid>
-                      ));
+                      ) : (
+                        <Grid item key={service._id} xs={12} sm={4} md={3}>
+                          <ServiceDetails service={service} favAction="unfav" />
+                        </Grid>
+                      )));
                   }}
                 </UserContext.Consumer>
               </Grid>

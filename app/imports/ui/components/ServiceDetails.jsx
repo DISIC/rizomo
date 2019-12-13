@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Fab from '@material-ui/core/Fab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import RemoveIcon from '@material-ui/icons/Delete';
+import RemoveIcon from '@material-ui/icons/Clear';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button } from '@material-ui/core';
@@ -27,6 +27,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
   },
   cardMedia: {
+    margin: '5px',
     paddingTop: '56.25%',
     backgroundSize: 'contain',
   },
