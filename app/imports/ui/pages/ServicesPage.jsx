@@ -80,7 +80,7 @@ function a11yProps(index) {
 function ServicesPage({ services, loading, searchString }) {
   const classes = useStyles();
   const theme = useTheme();
-
+  let favs = [];
   const [value, setValue] = React.useState(0);
 
   const handleChangeValue = (event, newValue) => {
@@ -133,7 +133,7 @@ function ServicesPage({ services, loading, searchString }) {
               <Grid container spacing={3}>
                 <UserContext.Consumer>
                   {(userValue) => {
-                    const favs = userValue.loading ? [] : userValue.user.favServices;
+                    favs = userValue.loading ? [] : userValue.user.favServices;
                     return services
                       .filter((service) => filterFavorites(service, favs))
                       .map((service) => (
@@ -152,7 +152,7 @@ function ServicesPage({ services, loading, searchString }) {
               <Grid container spacing={4}>
                 <UserContext.Consumer>
                   {(userValue) => {
-                    const favs = userValue.loading ? [] : userValue.user.favServices;
+                    favs = userValue.loading ? [] : userValue.user.favServices;
                     return services
                       .filter((service) => filterServices(service))
                       .map((service) => (favs.indexOf(service._id) === -1 ? (

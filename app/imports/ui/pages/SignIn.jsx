@@ -124,10 +124,17 @@ export default function SignIn() {
         if (err) {
           setOpenError(true);
         } else {
-          history.push('/');
+          history.replace('/');
         }
       });
     }
+  };
+
+  const handleKeycloakAuth = () => {
+    Meteor.loginWithKeycloak({}, () => {
+      // redirect to after login
+      history.replace('/');
+    });
   };
 
   const handleErrorClose = (event, reason) => {
@@ -188,6 +195,9 @@ export default function SignIn() {
           disabled={!formState.isValid}
         >
           {i18n.__('pages.SignIn.connect')}
+        </Button>
+        <Button variant="contained" color="primary" className={classes.submit} onClick={handleKeycloakAuth}>
+          Login with Keycloak
         </Button>
         <Grid container>
           <Grid item xs>

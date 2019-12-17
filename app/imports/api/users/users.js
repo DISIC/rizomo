@@ -13,9 +13,11 @@ Meteor.users.schema = new SimpleSchema(
     },
     firstName: {
       type: String,
+      optional: true,
     },
     lastName: {
       type: String,
+      optional: true,
     },
     emails: {
       type: Array,
@@ -69,7 +71,10 @@ Meteor.users.schema = new SimpleSchema(
     'favServices.$': {
       type: { type: String, regEx: SimpleSchema.RegEx.Id },
     },
-    structure: String,
+    structure: {
+      type: String,
+      optional: true,
+    },
   },
   { tracker: Tracker },
 );
@@ -77,14 +82,41 @@ Meteor.users.schema = new SimpleSchema(
 if (Meteor.isServer) {
   Accounts.onCreateUser((options, user) => {
     // pass the structure name in the options
-    const newUser = {
-      ...user,
-      firstName: options.firstName,
-      lastName: options.lastName,
-      structure: options.structure,
-      profile: options.profile,
-    };
+    console.log('CREATING USER ', options);
+    const newUser = { ...user };
+    if (options.firstName) newUser.firstName = options.firstName;
+    if (options.lastName) newUser.lastName = options.lastName;
+    if (options.structure) newUser.structure = options.structure;
+    if (options.profile) newUser.profile = options.profile;
     return newUser;
+  });
+  // server side login hook
+  Accounts.onLogin((details) => {
+    if (details.type === 'keycloak') {
+      console.log('ONLOGIN : ', details);
+      // update user informations from keycloak service data
+      if (details.user.username === undefined) {
+        Meteor.users.update(
+          { _id: details.user._id },
+          {
+            $set: {
+              username: details.user.services.keycloak.email,
+            },
+          },
+        );
+      }
+      Meteor.users.update(
+        { _id: details.user._id },
+        {
+          $set: {
+            firstName: details.user.services.keycloak.given_name,
+            lastName: details.user.services.keycloak.name,
+          },
+        },
+      );
+      // rather use an additional top level field like user.primaryEmail ?
+      Accounts.addEmail(details.user._id, details.user.services.keycloak.email);
+    }
   });
 }
 

@@ -36,3 +36,5 @@ hwillson:stub-collections
 johanbrook:publication-collector
 dburles:factory
 jquery
+hotello:accounts-keycloak
+service-configuration

@@ -1,9 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+import { ServiceConfiguration } from 'meteor/service-configuration';
 
 // required: loads accounts customization before initial users creation
 import AppRoles from '../../api/users/users';
+
+if (Meteor.settings.keycloak) {
+  ServiceConfiguration.configurations.upsert(
+    { service: 'keycloak' },
+    {
+      $set: {
+        loginStyle: 'popup',
+        serverUrl: Meteor.settings.keycloak.url,
+        realm: Meteor.settings.keycloak.realm,
+        clientId: Meteor.settings.keycloak.client,
+        realmPublicKey: Meteor.settings.keycloak.pubkey,
+        bearerOnly: true,
+      },
+    },
+  );
+} else {
+  console.log('No Keycloak configuration. Please invoke meteor with a settings file.');
+}
 
 /* eslint-disable no-console */
 

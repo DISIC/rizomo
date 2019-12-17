@@ -69,7 +69,7 @@ MainLayout.propTypes = {
 };
 
 MainLayout.defaultProps = {
-  user: { username: '' },
+  user: { username: '', favServices: [] },
   loading: true,
 };
 
