@@ -87,7 +87,6 @@ Meteor.users.schema = new SimpleSchema(
 if (Meteor.isServer) {
   Accounts.onCreateUser((options, user) => {
     // pass the structure name in the options
-    console.log('CREATING USER ', options);
     const newUser = { ...user };
     if (options.firstName) newUser.firstName = options.firstName;
     if (options.lastName) newUser.lastName = options.lastName;
@@ -98,7 +97,6 @@ if (Meteor.isServer) {
   // server side login hook
   Accounts.onLogin((details) => {
     if (details.type === 'keycloak') {
-      console.log('ONLOGIN : ', details);
       // update user informations from keycloak service data
       update_infos = {
         primaryEmail: details.user.services.keycloak.email,
@@ -148,6 +146,7 @@ Meteor.users.selfFields = {
   isRequest: 1,
   favServices: 1,
   structure: 1,
+  primaryEmail: 1,
 };
 
 Meteor.users.publicFields = {
