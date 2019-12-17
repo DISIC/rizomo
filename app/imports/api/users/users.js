@@ -75,6 +75,11 @@ Meteor.users.schema = new SimpleSchema(
       type: String,
       optional: true,
     },
+    primaryEmail: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Email,
+      optional: true,
+    },
   },
   { tracker: Tracker },
 );
@@ -95,27 +100,28 @@ if (Meteor.isServer) {
     if (details.type === 'keycloak') {
       console.log('ONLOGIN : ', details);
       // update user informations from keycloak service data
-      if (details.user.username === undefined) {
-        Meteor.users.update(
-          { _id: details.user._id },
-          {
-            $set: {
-              username: details.user.services.keycloak.email,
-            },
-          },
-        );
+      update_infos = {
+        primaryEmail: details.user.services.keycloak.email,
+        firstName: details.user.services.keycloak.given_name,
+        lastName: details.user.services.keycloak.name,
+      };
+      if (
+        details.user.username === undefined
+        || (details.user.username === details.user.primaryEmail
+          && details.user.primaryEmail !== details.user.services.keycloak.email)
+      ) {
+        // use email as username if no username yet or if username was
+        // email and email has changed on Keycloak
+        update_infos.username = details.user.services.keycloak.email;
       }
-      Meteor.users.update(
-        { _id: details.user._id },
-        {
-          $set: {
-            firstName: details.user.services.keycloak.given_name,
-            lastName: details.user.services.keycloak.name,
-          },
-        },
-      );
-      // rather use an additional top level field like user.primaryEmail ?
-      Accounts.addEmail(details.user._id, details.user.services.keycloak.email);
+      Meteor.users.update({ _id: details.user._id }, { $set: update_infos });
+      // Manage primary email change
+      if (details.user.primaryEmail !== details.user.services.keycloak.email) {
+        Accounts.addEmail(details.user._id, details.user.services.keycloak.email);
+        if (details.user.primaryEmail !== undefined) {
+          Accounts.removeEmail(details.user._id, details.user.primaryEmail);
+        }
+      }
     }
   });
 }
