@@ -16,6 +16,7 @@ export default function App() {
           <Route path="/signin" component={SignLayout} />
           <Route path="/signup" component={SignLayout} />
           <ProtectedRoute exact path="/" component={MainLayout} />
+          <ProtectedRoute exact path="/profile" component={MainLayout} />
           <Route component={NotFound} />
         </Switch>
       </div>
