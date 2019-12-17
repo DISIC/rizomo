@@ -116,10 +116,6 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
     Meteor.logout(() => history.push('/'));
   };
 
-  const handleShowProfile = () => {
-    history.push('/profile');
-  };
-
   const handleChangeSearch = (event) => {
     setSearchString(event.target.value);
   };
@@ -135,7 +131,7 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleShowProfile}>{i18n.__('components.TopBar.menuProfileLabel')}</MenuItem>
+      <MenuItem onClick={handleMenuClose}>{i18n.__('components.TopBar.menuProfileLabel')}</MenuItem>
       <MenuItem onClick={handleLogout}>{i18n.__('components.TopBar.menuLogoutLabel')}</MenuItem>
     </Menu>
   );

@@ -11,7 +11,6 @@ import TopBar from '../components/TopBar';
 import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
 import UserContext from '../contexts/UserContext';
-import UserProfile from '../pages/UserProfile';
 
 // CSS
 const drawerWidth = 240;
@@ -56,8 +55,7 @@ function MainLayout({ user, loading }) {
           })}
         >
           <Switch>
-            <Route exact path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
-            <Route exact path="/profile" render={(props) => <UserProfile {...props} />} />
+            <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
           </Switch>
         </main>
       </UserContext.Provider>
