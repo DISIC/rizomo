@@ -100,9 +100,13 @@ if (Meteor.isServer) {
       // update user informations from keycloak service data
       update_infos = {
         primaryEmail: details.user.services.keycloak.email,
-        firstName: details.user.services.keycloak.given_name,
-        lastName: details.user.services.keycloak.name,
       };
+      if (details.user.services.keycloak.given_name) {
+        update_infos.firstName = details.user.services.keycloak.given_name;
+      }
+      if (details.user.services.keycloak.family_name) {
+        update_infos.lastName = details.user.services.keycloak.family_name;
+      }
       if (
         details.user.username === undefined
         || (details.user.username === details.user.primaryEmail

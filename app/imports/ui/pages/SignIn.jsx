@@ -132,7 +132,7 @@ export default function SignIn() {
 
   const handleKeycloakAuth = () => {
     Meteor.loginWithKeycloak({}, () => {
-      // redirect to after login
+      // redirect to / after login
       history.replace('/');
     });
   };
@@ -196,8 +196,8 @@ export default function SignIn() {
         >
           {i18n.__('pages.SignIn.connect')}
         </Button>
-        <Button variant="contained" color="primary" className={classes.submit} onClick={handleKeycloakAuth}>
-          Login with Keycloak
+        <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={handleKeycloakAuth}>
+          {i18n.__('pages.SignIn.loginKeycloak')}
         </Button>
         <Grid container>
           <Grid item xs>

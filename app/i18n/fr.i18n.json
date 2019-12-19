@@ -40,7 +40,8 @@
       "connect": "Connexion",
       "forgotPwd": "Mot de passe oublié ?",
       "createAccount": "Créer un compte",
-      "loginError": "Erreur: Mauvais compte ou mot de passe"
+      "loginError": "Erreur: Mauvais compte ou mot de passe",
+      "loginKeycloak": "Se connecter avec OpenID"
     },
     "SignUp": {
       "appDescription": "Création de votre compte",
