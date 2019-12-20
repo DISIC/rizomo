@@ -7,7 +7,7 @@ const divStyle = {
   marginTop: 50,
 };
 
-export const Spinner = () => (
+export default Spinner = () => (
   <div style={divStyle}>
     <CircularProgress />
   </div>

@@ -11,13 +11,12 @@ import SwipeableViews from 'react-swipeable-views';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { CircularProgress } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
 import UserContext from '../contexts/UserContext';
-import { Spinner } from '../components/Spinner';
+import Spinner from '../components/Spinner';
 
 const useStyles = makeStyles((theme) => ({
   AppChoice: {
@@ -121,7 +120,7 @@ function ServicesPage({ services, loading, searchString }) {
         </Tabs>
       </AppBar>
       {loading ? (
-        <Spinner/>
+        <Spinner />
       ) : (
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
