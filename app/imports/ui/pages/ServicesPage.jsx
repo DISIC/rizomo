@@ -17,6 +17,7 @@ import i18n from 'meteor/universe:i18n';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
 import UserContext from '../contexts/UserContext';
+import { Spinner } from '../components/Spinner';
 
 const useStyles = makeStyles((theme) => ({
   AppChoice: {
@@ -120,9 +121,7 @@ function ServicesPage({ services, loading, searchString }) {
         </Tabs>
       </AppBar>
       {loading ? (
-        <div className={classes.loading}>
-          <CircularProgress />
-        </div>
+        <Spinner/>
       ) : (
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
