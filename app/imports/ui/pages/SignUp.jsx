@@ -171,7 +171,6 @@ export default function SignUp() {
 
   const handleSignUp = (event) => {
     event.preventDefault();
-    history.push('/');
     if (formState.isValid === true) {
       const {
         firstName, lastName, email, userName, password, structureSelect,

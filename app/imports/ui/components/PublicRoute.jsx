@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Spinner from './Spinner';
 
 /**
  * PublicRoute (see React Router v4 sample)
@@ -13,7 +14,7 @@ const PublicRoute = ({
   <Route
     {...rest}
     render={(props) => {
-      if (loggingIn) return <span>Logging in ...</span>;
+      if (loggingIn) return <Spinner />;
       return !authenticated ? (
         <Component {...props} />
       ) : (
