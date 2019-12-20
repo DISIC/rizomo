@@ -41,7 +41,7 @@ function App(props) {
 App.propTypes = {
   user: PropTypes.objectOf(PropTypes.any),
   loading: PropTypes.bool,
-  roles: PropTypes.arrayOf(PropTypes.object),
+  roles: PropTypes.arrayOf(PropTypes.string),
   authenticated: PropTypes.bool,
 };
 
