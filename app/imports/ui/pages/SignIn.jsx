@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
 
@@ -78,7 +77,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
-  const history = useHistory();
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -123,18 +121,13 @@ export default function SignIn() {
       Meteor.loginWithPassword(email, password, (err) => {
         if (err) {
           setOpenError(true);
-        } else {
-          history.replace('/');
         }
       });
     }
   };
 
   const handleKeycloakAuth = () => {
-    Meteor.loginWithKeycloak({}, () => {
-      // redirect to / after login
-      history.replace('/');
-    });
+    Meteor.loginWithKeycloak();
   };
 
   const handleErrorClose = (event, reason) => {

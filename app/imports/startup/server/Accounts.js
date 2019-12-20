@@ -11,12 +11,12 @@ if (Meteor.settings.keycloak) {
     { service: 'keycloak' },
     {
       $set: {
-        loginStyle: 'popup',
+        loginStyle: 'redirect',
         serverUrl: Meteor.settings.keycloak.url,
         realm: Meteor.settings.keycloak.realm,
         clientId: Meteor.settings.keycloak.client,
         realmPublicKey: Meteor.settings.keycloak.pubkey,
-        bearerOnly: true,
+        bearerOnly: false,
       },
     },
   );

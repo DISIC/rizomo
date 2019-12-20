@@ -1,48 +1,69 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
-import {
-  BrowserRouter, Route, Switch, Redirect,
-} from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import SignLayout from './SignLayout';
 import MainLayout from './MainLayout';
 import NotFound from '../pages/NotFound';
+import ProtectedRoute from '../components/ProtectedRoute';
+import PublicRoute from '../components/PublicRoute';
+import UserContext from '../contexts/UserContext';
 
-export default function App() {
+function App(props) {
+  const {
+    user, loading, roles, authenticated,
+  } = props;
   return (
     <BrowserRouter>
       <div>
-        <Switch>
-          <Route path="/signin" component={SignLayout} />
-          <Route path="/signup" component={SignLayout} />
-          <ProtectedRoute exact path="/" component={MainLayout} />
-          <Route component={NotFound} />
-        </Switch>
+        <UserContext.Provider
+          value={{
+            user,
+            loading,
+            roles,
+            authenticated,
+          }}
+        >
+          <Switch>
+            <PublicRoute path="/signin" component={SignLayout} {...props} />
+            <PublicRoute path="/signup" component={SignLayout} {...props} />
+            <ProtectedRoute exact path="/" component={MainLayout} {...props} />
+            <Route component={NotFound} />
+          </Switch>
+        </UserContext.Provider>
       </div>
     </BrowserRouter>
   );
 }
 
-/**
- * ProtectedRoute (see React Router v4 sample)
- * Checks for Meteor login before routing to the requested page, otherwise goes to signin page.
- * @param {any} { component: Component, ...rest }
- */
-const ProtectedRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => {
-      const isLogged = Meteor.userId() !== null;
-      return isLogged ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to={{ pathname: '/signin', state: { from: props.location } }} />
-      );
-    }}
-  />
-);
-
-ProtectedRoute.propTypes = {
-  component: PropTypes.element.isRequired,
-  location: PropTypes.objectOf(PropTypes.any).isRequired,
+App.propTypes = {
+  user: PropTypes.objectOf(PropTypes.any),
+  loading: PropTypes.bool,
+  roles: PropTypes.arrayOf(PropTypes.object),
+  authenticated: PropTypes.bool,
 };
+
+App.defaultProps = {
+  user: { _id: null, username: '', favServices: [] },
+  loading: true,
+  authenticated: false,
+  roles: [],
+};
+
+export default withTracker(() => {
+  const userHandle = Meteor.subscribe('userData');
+  const loading = !userHandle.ready() && !Roles.subscription.ready();
+  const loggingIn = Meteor.loggingIn();
+  const user = Meteor.user();
+  const userId = Meteor.userId();
+
+  return {
+    loading,
+    loggingIn,
+    authenticated: !loggingIn && !!userId,
+    user,
+    roles: Roles.getRolesForUser(userId),
+  };
+})(App);

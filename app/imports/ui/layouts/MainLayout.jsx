@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
 import { Route, Switch } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -10,7 +8,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TopBar from '../components/TopBar';
 import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
-import UserContext from '../contexts/UserContext';
 
 // CSS
 const drawerWidth = 240;
@@ -38,47 +35,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MainLayout({ user, loading }) {
+export default function MainLayout() {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [searchString, setSearchString] = React.useState('');
 
   return (
     <div className={classes.root}>
-      <UserContext.Provider value={{ user, loading }}>
-        <CssBaseline />
-        <TopBar setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} setSearchString={setSearchString} />
-        <LeftDrawer setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
-        <main
-          className={clsx(classes.content, {
-            [classes.contentShift]: drawerOpen,
-          })}
-        >
-          <Switch>
-            <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
-          </Switch>
-        </main>
-      </UserContext.Provider>
+      <CssBaseline />
+      <TopBar setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} setSearchString={setSearchString} />
+      <LeftDrawer setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
+      <main
+        className={clsx(classes.content, {
+          [classes.contentShift]: drawerOpen,
+        })}
+      >
+        <Switch>
+          <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
+        </Switch>
+      </main>
     </div>
   );
 }
-
-MainLayout.propTypes = {
-  user: PropTypes.objectOf(PropTypes.any),
-  loading: PropTypes.bool,
-};
-
-MainLayout.defaultProps = {
-  user: { username: '', favServices: [] },
-  loading: true,
-};
-
-export default withTracker(() => {
-  const userHandle = Meteor.subscribe('userData');
-  const loading = !userHandle.ready();
-  const user = Meteor.user();
-  return {
-    user,
-    loading,
-  };
-})(MainLayout);

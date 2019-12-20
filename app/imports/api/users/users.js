@@ -98,14 +98,14 @@ if (Meteor.isServer) {
   Accounts.onLogin((details) => {
     if (details.type === 'keycloak') {
       // update user informations from keycloak service data
-      update_infos = {
+      const updateInfos = {
         primaryEmail: details.user.services.keycloak.email,
       };
       if (details.user.services.keycloak.given_name) {
-        update_infos.firstName = details.user.services.keycloak.given_name;
+        updateInfos.firstName = details.user.services.keycloak.given_name;
       }
       if (details.user.services.keycloak.family_name) {
-        update_infos.lastName = details.user.services.keycloak.family_name;
+        updateInfos.lastName = details.user.services.keycloak.family_name;
       }
       if (
         details.user.username === undefined
@@ -114,9 +114,9 @@ if (Meteor.isServer) {
       ) {
         // use email as username if no username yet or if username was
         // email and email has changed on Keycloak
-        update_infos.username = details.user.services.keycloak.email;
+        updateInfos.username = details.user.services.keycloak.email;
       }
-      Meteor.users.update({ _id: details.user._id }, { $set: update_infos });
+      Meteor.users.update({ _id: details.user._id }, { $set: updateInfos });
       // Manage primary email change
       if (details.user.primaryEmail !== details.user.services.keycloak.email) {
         Accounts.addEmail(details.user._id, details.user.services.keycloak.email);

@@ -98,8 +98,8 @@ function ServicesPage({ services, loading, searchString }) {
     return searchText.indexOf(searchString.toLowerCase()) > -1;
   };
 
-  const filterFavorites = (service, favs) => {
-    if (favs.indexOf(service._id) === -1) return false;
+  const filterFavorites = (service, userFavs) => {
+    if (userFavs.indexOf(service._id) === -1) return false;
     // service is in favorites: apply search filter
     return filterServices(service);
   };
