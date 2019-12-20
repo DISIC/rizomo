@@ -21,9 +21,9 @@ Meteor.publish('users.all', () => Meteor.users.find(
 ));
 
 // automatically publish roles for current user
-Meteor.publish(null, function () {
+Meteor.publish(null, function PublishRoles() {
   if (this.userId) {
     return Meteor.roleAssignment.find({ 'user._id': this.userId });
   }
-  this.ready();
+  return this.ready();
 });
