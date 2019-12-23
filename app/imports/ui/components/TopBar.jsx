@@ -14,7 +14,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import UserContext from '../contexts/UserContext';
+import withUser from '../contexts/withUser';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -93,7 +93,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
+function TopBar({
+  setDrawerOpen, drawerOpen, setSearchString, currentUser,
+}) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -169,14 +171,7 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
           />
         </div>
         <div className={classes.grow} />
-        <UserContext.Consumer>
-          {({ user, loading }) => {
-            if (!loading) {
-              return user.username;
-            }
-            return '';
-          }}
-        </UserContext.Consumer>
+        {currentUser.username}
         <div className={classes.sectionDesktop}>
           <IconButton
             edge="end"
@@ -195,8 +190,11 @@ export default function TopBar({ setDrawerOpen, drawerOpen, setSearchString }) {
   );
 }
 
+export default withUser(TopBar); // withUser adds currentUser in props
+
 TopBar.propTypes = {
   setSearchString: PropTypes.func.isRequired,
   setDrawerOpen: PropTypes.func.isRequired,
   drawerOpen: PropTypes.bool.isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
 };
