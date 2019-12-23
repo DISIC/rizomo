@@ -15,8 +15,8 @@ import i18n from 'meteor/universe:i18n';
 
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
-import UserContext from '../contexts/UserContext';
 import Spinner from '../components/Spinner';
+import withUser from '../contexts/withUser';
 
 const useStyles = makeStyles((theme) => ({
   AppChoice: {
@@ -77,10 +77,12 @@ function a11yProps(index) {
   };
 }
 
-function ServicesPage({ services, loading, searchString }) {
+function ServicesPage({
+  services, loading, searchString, currentUser, userIsLoading,
+}) {
   const classes = useStyles();
   const theme = useTheme();
-  let favs = [];
+  const favs = userIsLoading ? [] : currentUser.favServices;
   const [value, setValue] = React.useState(0);
 
   const handleChangeValue = (event, newValue) => {
@@ -131,18 +133,13 @@ function ServicesPage({ services, loading, searchString }) {
             {/* display favorite services */}
             <Container className={classes.cardGrid} maxWidth="md">
               <Grid container spacing={3}>
-                <UserContext.Consumer>
-                  {(userValue) => {
-                    favs = userValue.loading ? [] : userValue.user.favServices;
-                    return services
-                      .filter((service) => filterFavorites(service, favs))
-                      .map((service) => (
-                        <Grid item key={service._id} xs={12} sm={4} md={3}>
-                          <ServiceDetails service={service} favAction="unfav" />
-                        </Grid>
-                      ));
-                  }}
-                </UserContext.Consumer>
+                {services
+                  .filter((service) => filterFavorites(service, favs))
+                  .map((service) => (
+                    <Grid item key={service._id} xs={12} sm={4} md={3}>
+                      <ServiceDetails service={service} favAction="unfav" />
+                    </Grid>
+                  ))}
               </Grid>
             </Container>
           </TabPanel>
@@ -150,22 +147,17 @@ function ServicesPage({ services, loading, searchString }) {
             {/* display all services */}
             <Container className={classes.cardGrid} maxWidth="md">
               <Grid container spacing={4}>
-                <UserContext.Consumer>
-                  {(userValue) => {
-                    favs = userValue.loading ? [] : userValue.user.favServices;
-                    return services
-                      .filter((service) => filterServices(service))
-                      .map((service) => (favs.indexOf(service._id) === -1 ? (
-                        <Grid item key={service._id} xs={12} sm={4} md={3}>
-                          <ServiceDetails service={service} favAction="fav" />
-                        </Grid>
-                      ) : (
-                        <Grid item key={service._id} xs={12} sm={4} md={3}>
-                          <ServiceDetails service={service} favAction="unfav" />
-                        </Grid>
-                      )));
-                  }}
-                </UserContext.Consumer>
+                {services
+                  .filter((service) => filterServices(service))
+                  .map((service) => (favs.indexOf(service._id) === -1 ? (
+                    <Grid item key={service._id} xs={12} sm={4} md={3}>
+                      <ServiceDetails service={service} favAction="fav" />
+                    </Grid>
+                  ) : (
+                    <Grid item key={service._id} xs={12} sm={4} md={3}>
+                      <ServiceDetails service={service} favAction="unfav" />
+                    </Grid>
+                  )))}
               </Grid>
             </Container>
           </TabPanel>
@@ -179,6 +171,8 @@ ServicesPage.propTypes = {
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
   searchString: PropTypes.string.isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  userIsLoading: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
@@ -189,4 +183,4 @@ export default withTracker(() => {
     services,
     loading,
   };
-})(ServicesPage);
+})(withUser(ServicesPage));
