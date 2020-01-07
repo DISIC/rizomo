@@ -110,7 +110,8 @@ export const setAdminOf = new ValidatedMethod({
       throw new Meteor.Error('api.users.setAdminOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
     // check if current user has admin rights on group (or global admin)
-    const authorized = this.userId && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
+    const authorized = this.userId
+      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
     if (!authorized) {
       throw new Meteor.Error('api.users.setAdminOf.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
@@ -141,7 +142,8 @@ export const unsetAdminOf = new ValidatedMethod({
       throw new Meteor.Error('api.users.unsetAdminOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
     // check if current user has admin rights on group (or global admin)
-    const authorized = this.userId && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
+    const authorized = this.userId
+      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
     if (!authorized) {
       throw new Meteor.Error('api.users.unsetAdminOf.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
@@ -172,7 +174,8 @@ export const setMemberOf = new ValidatedMethod({
       throw new Meteor.Error('api.users.setMemberOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
     // check if current user has admin rights on group (or global admin)
-    const authorized = this.userId && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
+    const authorized = this.userId
+      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
     if (!authorized) {
       throw new Meteor.Error('api.users.setMemberOf.notPermitted', i18n.__('api.users.adminGroupNeeded'));
     }
@@ -210,7 +213,8 @@ export const unsetMemberOf = new ValidatedMethod({
       throw new Meteor.Error('api.users.unsetMemberOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
     // check if current user has admin rights on group (or global admin)
-    const authorized = this.userId && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
+    const authorized = this.userId
+      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
     if (!authorized) {
       throw new Meteor.Error('api.users.unsetMemberOf.notPermitted', i18n.__('api.users.adminGroupNeeded'));
     }
@@ -243,7 +247,8 @@ export const setCandidateOf = new ValidatedMethod({
       throw new Meteor.Error('api.users.setCandidateOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
     // FIXME: allow to set candidate for self and allow members to invite ?
-    const authorized = this.userId && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
+    const authorized = this.userId
+      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
     if (!authorized) {
       throw new Meteor.Error('api.users.setCandidateOf.notPermitted', i18n.__('api.users.adminGroupNeeded'));
     }

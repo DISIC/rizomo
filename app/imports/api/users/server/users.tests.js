@@ -141,7 +141,7 @@ describe('users', function () {
     describe('setUsername', function () {
       it('users can set their username', function () {
         setUsername._execute({ userId }, { username: 'moi' });
-        user = Meteor.users.findOne({ _id: userId });
+        const user = Meteor.users.findOne({ _id: userId });
         assert.equal(user.username, 'moi');
       });
       it('users can not set their username to already taken values', function () {
@@ -167,7 +167,7 @@ describe('users', function () {
       it('users can set their structure', function () {
         const newStructure = structures[0];
         setStructure._execute({ userId }, { structure: newStructure });
-        user = Meteor.users.findOne({ _id: userId });
+        const user = Meteor.users.findOne({ _id: userId });
         assert.equal(user.structure, newStructure);
       });
       it('users can only set their structure to allowed values', function () {
