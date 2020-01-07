@@ -10,7 +10,10 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import '../../../../i18n/en.i18n.json';
 
-import { setAdmin, unsetAdmin } from '../methods';
+import {
+  setAdmin, unsetAdmin, setStructure, setUsername,
+} from '../methods';
+import { structures } from '../structures';
 import './publications';
 
 describe('users', function () {
@@ -65,13 +68,15 @@ describe('users', function () {
   describe('methods', function () {
     let userId;
     let adminId;
+    let email;
+    let emailAdmin;
     beforeEach(function () {
       // Clear
       Meteor.users.remove({});
       // FIXME : find a way to reset roles collection ?
       Roles.createRole('admin', { unlessExists: true });
       // Generate 'users'
-      const email = faker.internet.email();
+      email = faker.internet.email();
       userId = Accounts.createUser({
         email,
         username: email,
@@ -80,7 +85,7 @@ describe('users', function () {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
       });
-      const emailAdmin = faker.internet.email();
+      emailAdmin = faker.internet.email();
       adminId = Accounts.createUser({
         email: emailAdmin,
         username: emailAdmin,
@@ -130,6 +135,58 @@ describe('users', function () {
           },
           Meteor.Error,
           /api.users.unsetAdmin.notPermitted/,
+        );
+      });
+    });
+    describe('setUsername', function () {
+      it('users can set their username', function () {
+        setUsername._execute({ userId }, { username: 'moi' });
+        user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.username, 'moi');
+      });
+      it('users can not set their username to already taken values', function () {
+        assert.throws(
+          () => {
+            setUsername._execute({ userId }, { username: emailAdmin });
+          },
+          Meteor.Error,
+          /Username already exists. \[403\]/,
+        );
+      });
+      it('only logged in users can set their username', function () {
+        assert.throws(
+          () => {
+            setUsername._execute({}, { username: 'moi' });
+          },
+          Meteor.Error,
+          /api.users.setUsername.notLoggedIn/,
+        );
+      });
+    });
+    describe('setStructure', function () {
+      it('users can set their structure', function () {
+        const newStructure = structures[0];
+        setStructure._execute({ userId }, { structure: newStructure });
+        user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.structure, newStructure);
+      });
+      it('users can only set their structure to allowed values', function () {
+        assert.throws(
+          () => {
+            setStructure._execute({ userId }, { structure: 'toto' });
+          },
+          Meteor.ClientError,
+          /toto is not an allowed value/,
+        );
+      });
+      it('only logged in users can set their structure', function () {
+        const newStructure = structures[0];
+        assert.throws(
+          () => {
+            setStructure._execute({}, { structure: newStructure });
+          },
+          Meteor.Error,
+          /api.users.setStructure.notLoggedIn/,
         );
       });
     });
