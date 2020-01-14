@@ -29,7 +29,7 @@ function App(props) {
           <Switch>
             <PublicRoute path="/signin" component={SignLayout} {...props} />
             <Route path="/signup" component={SignLayout} {...props} />
-            <ProtectedRoute exact path="/" component={MainLayout} {...props} />
+            <ProtectedRoute path="/" component={MainLayout} {...props} />
             <Route component={NotFound} />
           </Switch>
         </UserContext.Provider>

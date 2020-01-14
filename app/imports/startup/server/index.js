@@ -10,4 +10,5 @@ import './register-api';
 
 // Set up roles, initial accounts and services
 import './Accounts';
+import './Groups';
 import './Services';

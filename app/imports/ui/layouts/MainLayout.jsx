@@ -8,6 +8,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TopBar from '../components/TopBar';
 import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
+import GroupsPage from '../pages/GroupsPage';
+import NotFound from '../pages/NotFound';
 
 // CSS
 const drawerWidth = 240;
@@ -51,7 +53,10 @@ export default function MainLayout() {
         })}
       >
         <Switch>
+          <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
+          <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
           <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
+          <Route component={NotFound} />
         </Switch>
       </main>
     </div>

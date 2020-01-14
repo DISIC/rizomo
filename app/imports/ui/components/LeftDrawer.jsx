@@ -11,7 +11,34 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import GroupIcon from '@material-ui/icons/Group';
+import ExtensionIcon from '@material-ui/icons/Extension';
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from 'react-router-dom';
+
+function ListItemLink(props) {
+  const { icon, primary, to } = props;
+
+  const renderLink = React.useMemo(
+    () => React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
+    [to],
+  );
+
+  return (
+    <li>
+      <ListItem button component={renderLink}>
+        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+        <ListItemText primary={primary} />
+      </ListItem>
+    </li>
+  );
+}
+
+ListItemLink.propTypes = {
+  icon: PropTypes.element.isRequired,
+  primary: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
+};
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -56,12 +83,8 @@ export default function LeftDrawer({ drawerOpen, setDrawerOpen }) {
       </div>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItemLink to="/services" primary="Mes Services" icon={<ExtensionIcon />} />
+        <ListItemLink to="/groups" primary="Mes Groupes" icon={<GroupIcon />} />
       </List>
       <Divider />
       <List>
