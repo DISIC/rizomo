@@ -83,6 +83,29 @@
       "target": "_blank"
     }
   ],
+  "defaultGroups": [
+    {
+      "owner": "admin@ac-dijon.fr",
+      "name": "Tous",
+      "type": 0,
+      "info": "Groupe commun",
+      "note": ""
+    },
+    {
+      "owner": "admin@ac-dijon.fr",
+      "name": "Dev",
+      "type": 5,
+      "info": "Développeurs",
+      "note": ""
+    },
+    {
+      "owner": "admin@ac-dijon.fr",
+      "name": "SNP",
+      "type": 5,
+      "info": "Apps Education",
+      "note": ""
+    }
+  ],
   "keycloak": {
     "url": "https://auth.apps.education.fr/auth",
     "realm": "snp",
