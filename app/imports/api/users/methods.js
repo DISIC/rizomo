@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 import i18n from 'meteor/universe:i18n';
 import { _ } from 'meteor/underscore';
@@ -10,6 +11,42 @@ import Services from '../services/services';
 import Groups from '../groups/groups';
 // initialize Meteor.users customizations
 import './users';
+import { structures } from './structures';
+
+export const setUsername = new ValidatedMethod({
+  name: 'users.setUsername',
+  validate: new SimpleSchema({
+    username: { type: String, min: 1 },
+  }).validator(),
+
+  run({ username }) {
+    // check that user is logged in
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.setUsername.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    // will throw error if username already taken
+    Accounts.setUsername(this.userId, username);
+  },
+});
+
+export const setStructure = new ValidatedMethod({
+  name: 'users.setStructure',
+  validate: new SimpleSchema({
+    structure: {
+      type: String,
+      allowedValues: structures,
+    },
+  }).validator(),
+
+  run({ structure }) {
+    // check that user is logged in
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.setStructure.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    // will throw error if username already taken
+    Meteor.users.update({ _id: this.userId }, { $set: { structure } });
+  },
+});
 
 export const setAdmin = new ValidatedMethod({
   name: 'users.setAdmin',
