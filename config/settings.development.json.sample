@@ -28,7 +28,7 @@
     {
       "glyphicon": "glyphicon-cloud",
       "url": "https://nextcloud.apps.education.fr",
-      "logo": "https://www.c-rieger.de/wp-content/uploads/2017/10/cropped-nextcloud-logo-white-transparent-1.png",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg",
       "name": "NextCloud",
       "title": "Info Nuagiques",
       "description": "Partager ses documents.",
@@ -61,7 +61,7 @@
     {
       "glyphicon": "glyphicon-globe",
       "url": "https://mastodon.etalab.gouv.fr",
-      "logo": "https://blog.joinmastodon.org/brand.svg",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Mastodon_Logotype_%28Full_Reversed%29.svg",
       "title": "Mastodon - EtatLab",
       "description": "Réseau social",
       "target": "_blank"
