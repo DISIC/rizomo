@@ -9,8 +9,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import GroupIcon from '@material-ui/icons/Group';
 import ExtensionIcon from '@material-ui/icons/Extension';
 import PropTypes from 'prop-types';
@@ -85,15 +83,6 @@ export default function LeftDrawer({ drawerOpen, setDrawerOpen }) {
       <List>
         <ListItemLink to="/services" primary="Mes Services" icon={<ExtensionIcon />} />
         <ListItemLink to="/groups" primary="Mes Groupes" icon={<GroupIcon />} />
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
       </List>
     </Drawer>
   );
