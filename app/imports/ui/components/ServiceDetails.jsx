@@ -74,7 +74,7 @@ export default function ServiceDetails({ service, favAction }) {
           title={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
           aria-label={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
         >
-          <Button variant="contained" color="primary" href={service.url}>
+          <Button variant="contained" color="primary" onClick={() => window.open(service.url, service.target)}>
             <PlayArrowIcon />
           </Button>
         </Tooltip>

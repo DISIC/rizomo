@@ -15,10 +15,8 @@ import Groups from '../../api/groups/groups';
 import GroupDetails from '../components/GroupDetails';
 
 const useStyles = makeStyles(() => ({
-  loading: {
-    width: '100%',
-    textAlign: 'center',
-    marginTop: 50,
+  title: {
+    margin: '5px',
   },
 }));
 
@@ -38,7 +36,7 @@ function GroupsPage({ groups, loading, searchString }) {
         <Spinner />
       ) : (
         <Paper className={classes.paper}>
-          <h1>Groupes</h1>
+          <h1 className={classes.title}>Groupes</h1>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
