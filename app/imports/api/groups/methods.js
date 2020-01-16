@@ -59,8 +59,38 @@ export const removeGroup = new ValidatedMethod({
   },
 });
 
+export const updateGroup = new ValidatedMethod({
+  name: 'groups.updateGroup',
+  validate: new SimpleSchema({
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    data: Object,
+    'data.name': { type: String, min: 1, optional: true },
+    'data.type': { type: SimpleSchema.Integer, min: 0, optional: true },
+    'data.info': { type: String, optional: true },
+    'data.note': { type: String, optional: true },
+    'data.active': { type: Boolean, optional: true },
+    'data.groupPadId': { type: String, optional: true },
+    'data.digest': { type: String, optional: true },
+  }).validator(),
+
+  run({ groupId, data }) {
+    // check group existence
+    const group = Groups.findOne({ _id: groupId });
+    if (group === undefined) {
+      throw new Meteor.Error('api.groups.updateGroup.unknownGroup', i18n.__('api.groups.unknownGroup'));
+    }
+    // check if current user has admin rights on group (or global admin)
+    const isAdmin = this.userId && Roles.userIsInRole(this.userId, 'admin', groupId);
+    const authorized = isAdmin || this.userId === group.owner;
+    if (!authorized) {
+      throw new Meteor.Error('api.groups.updateGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
+    }
+    Groups.update({ _id: groupId }, { $set: data });
+  },
+});
+
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([createGroup, removeGroup], 'name');
+const LISTS_METHODS = _.pluck([createGroup, removeGroup, updateGroup], 'name');
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second
