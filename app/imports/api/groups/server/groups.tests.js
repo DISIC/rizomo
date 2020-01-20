@@ -190,29 +190,35 @@ describe('groups', function () {
         assert.equal(group.active, true);
         assert.equal(group.owner, userId);
       });
-      it("does fail to create a group if name already taken", function () {
+      it('does fail to create a group if name already taken', function () {
         assert.throws(
           () => {
-            createGroup._execute({ userId }, {
-              name: 'group4',
-              type: 0,
-              info: 'une info',
-              note: 'une note',
-            });
+            createGroup._execute(
+              { userId },
+              {
+                name: 'group4',
+                type: 0,
+                info: 'une info',
+                note: 'une note',
+              },
+            );
           },
-          Meteor.Error,
-          /api.groups.createGroup.notPermitted/,
+          Error,
+          /E11000 duplicate key error collection: meteor.groups index: c2_name dup key: { : "group4" }/,
         );
       });
-      it("does not create a group when not logged in", function () {
+      it('does not create a group when not logged in', function () {
         assert.throws(
           () => {
-            createGroup._execute({}, {
+            createGroup._execute(
+              {},
+              {
                 name: 'mongroupe',
                 type: 0,
                 info: 'une info',
                 note: 'une note',
-            });
+              },
+            );
           },
           Meteor.Error,
           /api.groups.createGroup.notLoggedIn/,
