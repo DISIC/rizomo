@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  app:
+    image: eoleteam/laboite:dev
+    ports:
+      - "80:3000"
+    depends_on:
+      - mongo
+    environment:
+      ROOT_URL: ${APP_ROOT_URL:-http://localhost}
+      MONGO_URL: mongodb://mongo:27017/meteor
+      PORT: 3000
+      METEOR_SETTINGS: ${METEOR_SETTINGS}
+
+  mongo:
+    image: mongo:latest
+    command:
+      - --storageEngine=wiredTiger
+    volumes:
+      - data:/data/db
+
+volumes:
+  data:
