@@ -10,6 +10,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import GroupIcon from '@material-ui/icons/Group';
+import BuildIcon from '@material-ui/icons/Build';
 import ExtensionIcon from '@material-ui/icons/Extension';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
@@ -83,6 +84,10 @@ export default function LeftDrawer({ drawerOpen, setDrawerOpen }) {
       <List>
         <ListItemLink to="/services" primary="Mes Services" icon={<ExtensionIcon />} />
         <ListItemLink to="/groups" primary="Mes Groupes" icon={<GroupIcon />} />
+      </List>
+      <Divider />
+      <List>
+        <ListItemLink to="/adminservices" primary="Gestion des Services" icon={<BuildIcon />} />
       </List>
     </Drawer>
   );

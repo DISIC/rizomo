@@ -12,6 +12,7 @@ import TopBar from '../components/TopBar';
 import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
 import GroupsPage from '../pages/GroupsPage';
+import AdminServicesPage from '../pages/AdminServicesPage';
 import NotFound from '../pages/NotFound';
 import withUser from '../contexts/withUser';
 
@@ -60,6 +61,10 @@ function MainLayout({ currentUser }) {
           <Switch>
             <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
+            <Route
+              path="/adminservices"
+              render={(props) => <AdminServicesPage {...props} searchString={searchString} />}
+            />
             <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route component={NotFound} />
           </Switch>
