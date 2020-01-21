@@ -94,7 +94,7 @@ describe('groups', function () {
       group2Id = Factory.create('group', { owner: Random.id() })._id;
       setAdminOf._execute({ userId: adminId }, { userId, groupId: group2Id });
       group3Id = Factory.create('group', { owner: Random.id() })._id;
-      group4Id = Factory.create('group', { name: 'group4', owner: userId })._id;
+      Factory.create('group', { name: 'group4', owner: userId });
     });
     describe('(un)setAdminOf', function () {
       it('global admin can set/unset a user as admin of a group', function () {
