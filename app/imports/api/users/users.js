@@ -3,6 +3,8 @@ import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import { Roles } from 'meteor/alanning:roles';
 
+import { checkDomain } from '../utils';
+
 const AppRoles = ['candidate', 'member', 'admin'];
 
 Meteor.users.schema = new SimpleSchema(
@@ -116,10 +118,14 @@ if (Meteor.isServer) {
         // email and email has changed on Keycloak
         updateInfos.username = details.user.services.keycloak.email;
       }
+      // auto activate user based on email address
+      if (details.user.isActive === false && checkDomain(details.user.services.keycloak.email)) {
+        updateInfos.isActive = true;
+      }
       Meteor.users.update({ _id: details.user._id }, { $set: updateInfos });
       // Manage primary email change
       if (details.user.primaryEmail !== details.user.services.keycloak.email) {
-        Accounts.addEmail(details.user._id, details.user.services.keycloak.email);
+        Accounts.addEmail(details.user._id, details.user.services.keycloak.email, true);
         if (details.user.primaryEmail !== undefined) {
           Accounts.removeEmail(details.user._id, details.user.primaryEmail);
         }

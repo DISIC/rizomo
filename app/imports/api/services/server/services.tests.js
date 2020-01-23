@@ -25,7 +25,19 @@ describe('services', function () {
     });
   });
   describe('publications', function () {
+    let userId;
     before(function () {
+      Meteor.users.remove({});
+      const email = faker.internet.email();
+      userId = Accounts.createUser({
+        email,
+        username: email,
+        password: 'toto',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      });
+      Meteor.users.update(userId, { $set: { isActive: true } });
       Services.remove({});
       _.times(4, () => {
         Factory.create('service');
@@ -33,7 +45,7 @@ describe('services', function () {
     });
     describe('services.all', function () {
       it('sends all services', function (done) {
-        const collector = new PublicationCollector();
+        const collector = new PublicationCollector({ userId });
         collector.collect('services.all', (collections) => {
           chai.assert.equal(collections.services.length, 4);
           done();
@@ -72,6 +84,8 @@ describe('services', function () {
       });
       // set this user as global admin
       Roles.addUsersToRoles(adminId, 'admin');
+      // set users as active
+      Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
       serviceId = Factory.create('service')._id;
       chatData = {
         title: 'Chat sur MIM',

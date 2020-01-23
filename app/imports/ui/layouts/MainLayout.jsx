@@ -1,6 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import clsx from 'clsx';
+import i18n from 'meteor/universe:i18n';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +13,7 @@ import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
 import GroupsPage from '../pages/GroupsPage';
 import NotFound from '../pages/NotFound';
+import withUser from '../contexts/withUser';
 
 // CSS
 const drawerWidth = 240;
@@ -37,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MainLayout() {
+function MainLayout({ currentUser }) {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [searchString, setSearchString] = React.useState('');
@@ -52,13 +56,25 @@ export default function MainLayout() {
           [classes.contentShift]: drawerOpen,
         })}
       >
-        <Switch>
-          <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
-          <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
-          <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
-          <Route component={NotFound} />
-        </Switch>
+        {currentUser.isActive ? (
+          <Switch>
+            <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
+            <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
+            <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
+            <Route component={NotFound} />
+          </Switch>
+        ) : (
+          <Typography variant="h5" color="inherit" paragraph>
+            {i18n.__('layouts.MainLayout.inactiveAccount')}
+          </Typography>
+        )}
       </main>
     </div>
   );
 }
+
+export default withUser(MainLayout); // withUser adds currentUser in props
+
+MainLayout.propTypes = {
+  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
+};

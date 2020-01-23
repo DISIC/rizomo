@@ -9,6 +9,7 @@ import MainLayout from './MainLayout';
 import NotFound from '../pages/NotFound';
 import ProtectedRoute from '../components/ProtectedRoute';
 import PublicRoute from '../components/PublicRoute';
+import Spinner from '../components/Spinner';
 import UserContext from '../contexts/UserContext';
 
 function App(props) {
@@ -17,23 +18,27 @@ function App(props) {
   } = props;
   return (
     <BrowserRouter>
-      <div>
-        <UserContext.Provider
-          value={{
-            user,
-            loading,
-            roles,
-            authenticated,
-          }}
-        >
-          <Switch>
-            <PublicRoute path="/signin" component={SignLayout} {...props} />
-            <Route path="/signup" component={SignLayout} {...props} />
-            <ProtectedRoute path="/" component={MainLayout} {...props} />
-            <Route component={NotFound} />
-          </Switch>
-        </UserContext.Provider>
-      </div>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div>
+          <UserContext.Provider
+            value={{
+              user,
+              loading,
+              roles,
+              authenticated,
+            }}
+          >
+            <Switch>
+              <PublicRoute path="/signin" component={SignLayout} {...props} />
+              <Route path="/signup" component={SignLayout} {...props} />
+              <ProtectedRoute path="/" component={MainLayout} {...props} />
+              <Route component={NotFound} />
+            </Switch>
+          </UserContext.Provider>
+        </div>
+      )}
     </BrowserRouter>
   );
 }
