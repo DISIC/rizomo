@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import PropTypes from 'prop-types';
 
 import TopBar from '../components/TopBar';
 import LeftDrawer from '../components/LeftDrawer';
@@ -43,13 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-<<<<<<< HEAD
-function MainLayout({ currentUser }) {
-||||||| merged common ancestors
-export default function MainLayout() {
-=======
-export default function MainLayout({ location }) {
->>>>>>> WIP Desactivate top bar search input for admin services page
+function MainLayout({ currentUser, location }) {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [searchString, setSearchString] = React.useState('');
