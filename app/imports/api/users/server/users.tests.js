@@ -11,7 +11,7 @@ import { Roles } from 'meteor/alanning:roles';
 import '../../../../i18n/en.i18n.json';
 
 import {
-  setAdmin, unsetAdmin, setStructure, setUsername,
+  setAdmin, unsetAdmin, setStructure, setUsername, setActive,
 } from '../methods';
 import { structures } from '../structures';
 import './publications';
@@ -43,10 +43,11 @@ describe('users', function () {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
       });
+      Meteor.users.update(userId, { $set: { isActive: true } });
     });
     describe('users.all', function () {
       it('sends all users with restricted fields', function (done) {
-        const collector = new PublicationCollector();
+        const collector = new PublicationCollector({ userId });
         collector.collect('users.all', (collections) => {
           chai.assert.equal(collections.users.length, 4);
           const user = collections.users[0];
@@ -96,7 +97,8 @@ describe('users', function () {
       });
       // set this user as global admin
       Roles.addUsersToRoles(adminId, 'admin');
-      // Create a group owned by userId
+      // set users as active
+      Meteor.users.update(adminId, { $set: { isActive: true } }, { multi: true });
     });
     describe('(un)setAdmin', function () {
       it('global admin can set/unset a user as admin', function () {
@@ -187,6 +189,32 @@ describe('users', function () {
           },
           Meteor.Error,
           /api.users.setStructure.notLoggedIn/,
+        );
+      });
+    });
+    describe('setActive', function () {
+      it('global admin can set a user as active', function () {
+        let user = Meteor.users.findOne(userId);
+        assert.equal(user.isActive, false);
+        setActive._execute({ userId: adminId }, { userId });
+        user = Meteor.users.findOne(userId);
+        assert.equal(user.isActive, true);
+      });
+      it('only global admin can set a user as active', function () {
+        // Throws if non admin user, or logged out user
+        assert.throws(
+          () => {
+            setActive._execute({ userId }, { userId });
+          },
+          Meteor.Error,
+          /api.users.setActive.notPermitted/,
+        );
+        assert.throws(
+          () => {
+            setActive._execute({}, { userId });
+          },
+          Meteor.Error,
+          /api.users.setActive.notPermitted/,
         );
       });
     });

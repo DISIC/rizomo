@@ -6,6 +6,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 
+import { isActive } from '../utils';
 import Groups from './groups';
 
 export const createGroup = new ValidatedMethod({
@@ -20,7 +21,7 @@ export const createGroup = new ValidatedMethod({
   run({
     name, type, note, info,
   }) {
-    if (!this.userId) {
+    if (!isActive(this.userId)) {
       throw new Meteor.Error('api.groups.createGroup.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
     Groups.insert({
@@ -48,7 +49,7 @@ export const removeGroup = new ValidatedMethod({
     }
     // check if current user has admin rights on group (or global admin)
     // FIXME : allow only for owner or for all admins ?
-    const isAdmin = this.userId && Roles.userIsInRole(this.userId, 'admin', groupId);
+    const isAdmin = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin', groupId);
     const authorized = isAdmin || this.userId === group.owner;
     if (!authorized) {
       throw new Meteor.Error('api.groups.removeGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
@@ -80,7 +81,7 @@ export const updateGroup = new ValidatedMethod({
       throw new Meteor.Error('api.groups.updateGroup.unknownGroup', i18n.__('api.groups.unknownGroup'));
     }
     // check if current user has admin rights on group (or global admin)
-    const isAdmin = this.userId && Roles.userIsInRole(this.userId, 'admin', groupId);
+    const isAdmin = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin', groupId);
     const authorized = isAdmin || this.userId === group.owner;
     if (!authorized) {
       throw new Meteor.Error('api.groups.updateGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));

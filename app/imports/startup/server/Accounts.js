@@ -40,6 +40,8 @@ function createUser(email, password, role, structure, firstName, lastName) {
   if (role === 'admin') {
     Roles.addUsersToRoles(userID, 'admin', null);
   }
+  // default accounts are created as active
+  Meteor.users.update(userID, { $set: { isActive: true } });
 }
 
 /* ensure all roles exist */

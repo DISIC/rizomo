@@ -61,5 +61,10 @@
       "tabFavServicesLabel": "Favorite services",
       "tabAllServicesLabel": "All services"
     }
+  },
+  "layouts": {
+    "MainLayout": {
+      "inactiveAccount": "Your account has not been activated"
+    }
   }
 }

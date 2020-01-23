@@ -30,13 +30,25 @@ describe('groups', function () {
     });
   });
   describe('publications', function () {
+    let userId;
     before(function () {
+      Meteor.users.remove({});
+      const email = faker.internet.email();
+      userId = Accounts.createUser({
+        email,
+        username: email,
+        password: 'toto',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      });
+      Meteor.users.update(userId, { $set: { isActive: true } });
       Groups.remove({});
       _.times(4, () => Factory.create('group', { owner: Random.id() }));
     });
     describe('groups.all', function () {
       it('sends all groups', function (done) {
-        const collector = new PublicationCollector();
+        const collector = new PublicationCollector({ userId });
         collector.collect('groups.all', (collections) => {
           chai.assert.equal(collections.groups.length, 4);
           done();
@@ -88,6 +100,8 @@ describe('groups', function () {
       });
       // set this user as global admin
       Roles.addUsersToRoles(adminId, 'admin');
+      // set users as active
+      Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
       // Create a group owned by userId
       groupId = Factory.create('group', { owner: userId })._id;
       // Create a group owned by random user and set userId as admin

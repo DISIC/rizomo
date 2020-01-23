@@ -6,6 +6,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 
+import { isActive } from '../utils';
 import Services from './services';
 
 export const createService = new ValidatedMethod({
@@ -22,7 +23,7 @@ export const createService = new ValidatedMethod({
   run({
     title, description, url, logo, glyphicon, target,
   }) {
-    const authorized = this.userId && Roles.userIsInRole(this.userId, 'admin');
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
     if (!authorized) {
       throw new Meteor.Error('api.services.createService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
@@ -51,7 +52,7 @@ export const removeService = new ValidatedMethod({
     }
     // check if current user has admin rights on group (or global admin)
     // FIXME : allow only for owner or for all admins ?
-    const authorized = this.userId && Roles.userIsInRole(this.userId, 'admin');
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
     if (!authorized) {
       throw new Meteor.Error('api.services.removeService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
