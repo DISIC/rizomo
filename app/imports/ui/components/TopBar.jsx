@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TopBar({
-  setDrawerOpen, drawerOpen, setSearchString, currentUser,
+  setDrawerOpen, drawerOpen, showSearchInput, searchString, setSearchString, currentUser,
 }) {
   const classes = useStyles();
   const history = useHistory();
@@ -156,20 +156,25 @@ function TopBar({
           <MenuIcon />
         </IconButton>
         <img src="images/Logo-appseducation.png" className={classes.imgLogo} alt="Logo" />
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
+        {showSearchInput ? (
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder={i18n.__('components.TopBar.inputSearchLabel')}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              onChange={handleChangeSearch}
+              inputProps={{ 'aria-label': i18n.__('components.TopBar.inputSearchLabel') }}
+              value={searchString}
+            />
           </div>
-          <InputBase
-            placeholder={i18n.__('components.TopBar.inputSearchLabel')}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            onChange={handleChangeSearch}
-            inputProps={{ 'aria-label': i18n.__('components.TopBar.inputSearchLabel') }}
-          />
-        </div>
+        ) : (
+          ''
+        )}
         <div className={classes.grow} />
         {currentUser.username}
         <div className={classes.sectionDesktop}>
@@ -193,6 +198,8 @@ function TopBar({
 export default withUser(TopBar); // withUser adds currentUser in props
 
 TopBar.propTypes = {
+  showSearchInput: PropTypes.bool.isRequired,
+  searchString: PropTypes.string.isRequired,
   setSearchString: PropTypes.func.isRequired,
   setDrawerOpen: PropTypes.func.isRequired,
   drawerOpen: PropTypes.bool.isRequired,

@@ -14,20 +14,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function AdminServicesPage({ services, loading, searchString }) {
+function AdminServicesPage({ services, loading }) {
   const classes = useStyles();
-
-  const filteredServices = () => {
-    setState({ data: services.filter((service) => filterServices(service)) });
-  };
-
-  const filterServices = (service) => {
-    console.log('searchString', searchString);
-    let searchText = service.title + service.description;
-    searchText = searchText.toLowerCase();
-    if (!searchString) return true;
-    return searchText.indexOf(searchString.toLowerCase()) > -1;
-  };
 
   const [state, setState] = React.useState({
     columns: [
@@ -147,7 +135,6 @@ function AdminServicesPage({ services, loading, searchString }) {
 AdminServicesPage.propTypes = {
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
-  searchString: PropTypes.string.isRequired,
 };
 
 export default withTracker(() => {
