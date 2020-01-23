@@ -38,7 +38,6 @@ function AdminServicesPage({ services, loading }) {
         ),
       },
     ],
-    data: services,
   });
 
   const options = {
@@ -89,7 +88,7 @@ function AdminServicesPage({ services, loading }) {
           // other props
           title="Gestion des Services"
           columns={state.columns}
-          data={state.data}
+          data={services}
           options={options}
           localization={localisation}
           editable={{
