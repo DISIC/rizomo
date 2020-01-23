@@ -61,8 +61,35 @@ export const removeService = new ValidatedMethod({
   },
 });
 
+export const updateService = new ValidatedMethod({
+  name: 'services.updateService',
+  validate: new SimpleSchema({
+    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    data: Object,
+    'data.title': { type: String, min: 1, optional: true },
+    'data.description': { type: String, optional: true },
+    'data.url': { type: String, optional: true },
+    'data.logo': { type: String, optional: true },
+    'data.target': { type: String, optional: true },
+  }).validator(),
+
+  run({ serviceId, data }) {
+    // check service existence
+    const service = Services.findOne({ _id: serviceId });
+    if (service === undefined) {
+      throw new Meteor.Error('api.services.updateService.unknownGroup', i18n.__('api.services.unknownService'));
+    }
+    // check if current user has admin rights
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    if (!authorized) {
+      throw new Meteor.Error('api.services.updateService.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+    Services.update({ _id: serviceId }, { $set: data });
+  },
+});
+
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([createService, removeService], 'name');
+const LISTS_METHODS = _.pluck([createService, removeService, updateService], 'name');
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second
