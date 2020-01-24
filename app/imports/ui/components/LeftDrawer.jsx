@@ -68,7 +68,7 @@ function LeftDrawer({ currentUser, drawerOpen, setDrawerOpen }) {
   };
 
   const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
-  console.log('isAdmin', isAdmin);
+
   return (
     <Drawer
       className={classes.drawer}

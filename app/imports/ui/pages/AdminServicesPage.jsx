@@ -2,44 +2,37 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import Spinner from '../components/Spinner';
 import withUser from '../contexts/withUser';
 import Services from '../../api/services/services';
 import { createService, updateService, removeService } from '../../api/services/methods';
 
-const useStyles = makeStyles(() => ({
-  title: {
-    margin: '5px',
-  },
-}));
-
 function AdminServicesPage({ services, loading }) {
-  const classes = useStyles();
-
-  const [state, setState] = React.useState({
-    columns: [
-      {
-        title: 'Logo',
-        field: 'logo',
-        render: (rowData) => (
-          <img style={{ height: 36, backgroundColor: 'palegoldenrod', borderRadius: '10%' }} src={rowData.logo} />
-        ),
-      },
-      { title: 'Nom', field: 'title', defaultSort: 'asc' },
-      { title: 'Description', field: 'description' },
-      {
-        title: 'Lien',
-        field: 'url',
-        render: (rowData) => (
-          <a href={rowData.url} target="_blank">
-            {rowData.url}
-          </a>
-        ),
-      },
-    ],
-  });
+  const columns = [
+    {
+      title: 'Logo',
+      field: 'logo',
+      render: (rowData) => (
+        <img
+          style={{ height: 36, backgroundColor: 'palegoldenrod', borderRadius: '10%' }}
+          src={rowData.logo}
+          alt={`Logo - ${rowData.title}`}
+        />
+      ),
+    },
+    { title: 'Nom', field: 'title', defaultSort: 'asc' },
+    { title: 'Description', field: 'description' },
+    {
+      title: 'Lien',
+      field: 'url',
+      render: (rowData) => (
+        <a href={rowData.url} target="_blank" rel="noreferrer noopener">
+          {rowData.url}
+        </a>
+      ),
+    },
+  ];
 
   const options = {
     pageSize: 10,
@@ -88,7 +81,7 @@ function AdminServicesPage({ services, loading }) {
         <MaterialTable
           // other props
           title="Gestion des Services"
-          columns={state.columns}
+          columns={columns}
           data={services}
           options={options}
           localization={localisation}
