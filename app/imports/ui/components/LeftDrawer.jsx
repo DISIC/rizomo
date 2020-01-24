@@ -14,6 +14,8 @@ import BuildIcon from '@material-ui/icons/Build';
 import ExtensionIcon from '@material-ui/icons/Extension';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
+import { Roles } from 'meteor/alanning:roles';
+import withUser from '../contexts/withUser';
 
 function ListItemLink(props) {
   const { icon, primary, to } = props;
@@ -57,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LeftDrawer({ drawerOpen, setDrawerOpen }) {
+function LeftDrawer({ currentUser, drawerOpen, setDrawerOpen }) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -65,6 +67,8 @@ export default function LeftDrawer({ drawerOpen, setDrawerOpen }) {
     setDrawerOpen(false);
   };
 
+  const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
+  console.log('isAdmin', isAdmin);
   return (
     <Drawer
       className={classes.drawer}
@@ -85,15 +89,24 @@ export default function LeftDrawer({ drawerOpen, setDrawerOpen }) {
         <ListItemLink to="/services" primary="Mes Services" icon={<ExtensionIcon />} />
         <ListItemLink to="/groups" primary="Mes Groupes" icon={<GroupIcon />} />
       </List>
-      <Divider />
-      <List>
-        <ListItemLink to="/adminservices" primary="Gestion des Services" icon={<BuildIcon />} />
-      </List>
+      {isAdmin ? (
+        <>
+          <Divider />
+          <List>
+            <ListItemLink to="/adminservices" primary="Gestion des Services" icon={<BuildIcon />} />
+          </List>
+        </>
+      ) : (
+        ''
+      )}
     </Drawer>
   );
 }
 
+export default withUser(LeftDrawer); // withUser adds currentUser in props
+
 LeftDrawer.propTypes = {
+  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
   setDrawerOpen: PropTypes.func.isRequired,
   drawerOpen: PropTypes.bool.isRequired,
 };
