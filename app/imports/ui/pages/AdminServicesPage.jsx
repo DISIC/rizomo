@@ -7,6 +7,7 @@ import MaterialTable from 'material-table';
 import Spinner from '../components/Spinner';
 import withUser from '../contexts/withUser';
 import Services from '../../api/services/services';
+import { createService, updateService, removeService } from '../../api/services/methods';
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -92,37 +93,62 @@ function AdminServicesPage({ services, loading }) {
           options={options}
           localization={localisation}
           editable={{
-            onRowAdd: (newData) => new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                setState((prevState) => {
-                  const data = [...prevState.data];
-                  data.push(newData);
-                  return { ...prevState, data };
-                });
-              }, 600);
+            onRowAdd: (newData) => new Promise((resolve, reject) => {
+              createService.call(
+                {
+                  title: newData.title,
+                  description: newData.description,
+                  url: newData.url,
+                  logo: newData.logo,
+                  target: '_blank',
+                  glyphicon: 'glyphicon',
+                },
+                (err, res) => {
+                  if (err) {
+                    console.log(err);
+                    reject(err);
+                  } else {
+                    resolve(res);
+                  }
+                },
+              );
             }),
-            onRowUpdate: (newData, oldData) => new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                if (oldData) {
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data[data.indexOf(oldData)] = newData;
-                    return { ...prevState, data };
-                  });
-                }
-              }, 600);
+            onRowUpdate: (newData, oldData) => new Promise((resolve, reject) => {
+              updateService.call(
+                {
+                  serviceId: oldData._id,
+                  data: {
+                    title: newData.title,
+                    description: newData.description,
+                    url: newData.url,
+                    logo: newData.logo,
+                    target: '_blank',
+                  },
+                },
+                (err, res) => {
+                  if (err) {
+                    console.log(err);
+                    reject(err);
+                  } else {
+                    resolve(res);
+                  }
+                },
+              );
             }),
-            onRowDelete: (oldData) => new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                setState((prevState) => {
-                  const data = [...prevState.data];
-                  data.splice(data.indexOf(oldData), 1);
-                  return { ...prevState, data };
-                });
-              }, 600);
+            onRowDelete: (oldData) => new Promise((resolve, reject) => {
+              removeService.call(
+                {
+                  serviceId: oldData._id,
+                },
+                (err, res) => {
+                  if (err) {
+                    console.log(err);
+                    reject(err);
+                  } else {
+                    resolve(res);
+                  }
+                },
+              );
             }),
           }}
         />
