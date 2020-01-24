@@ -11,7 +11,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-import { createService, removeService } from '../methods';
+import { createService, removeService, updateService } from '../methods';
 import { favService, unfavService } from '../../users/methods';
 import './publications';
 import Services from '../services';
@@ -141,6 +141,39 @@ describe('services', function () {
           },
           Meteor.Error,
           /api.services.removeService.notPermitted/,
+        );
+      });
+    });
+    describe('updateService', function () {
+      it('does update a service with admin user', function () {
+        const data = {
+          title: 'service',
+          description: 'un service',
+          url: 'https://mon-service.org',
+          logo: 'https://mon-service.org/logo.svg',
+        };
+        updateService._execute({ userId: adminId }, { serviceId, data });
+        const service = Services.findOne(serviceId);
+        assert.equal(service.title, data.title);
+        assert.equal(service.description, data.description);
+        assert.equal(service.url, data.url);
+        assert.equal(service.logo, data.logo);
+      });
+      it("does not update a service if you're not admin", function () {
+        // Throws if non admin user, or logged out user, tries to delete the service
+        assert.throws(
+          () => {
+            updateService._execute({ userId }, { serviceId, data: { title: 'service' } });
+          },
+          Meteor.Error,
+          /api.services.updateService.notPermitted/,
+        );
+        assert.throws(
+          () => {
+            updateService._execute({}, { serviceId, data: { title: 'service' } });
+          },
+          Meteor.Error,
+          /api.services.updateService.notPermitted/,
         );
       });
     });

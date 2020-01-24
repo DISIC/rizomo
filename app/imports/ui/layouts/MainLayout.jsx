@@ -5,6 +5,8 @@ import i18n from 'meteor/universe:i18n';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 
+import { Roles } from 'meteor/alanning:roles';
+
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -12,6 +14,7 @@ import TopBar from '../components/TopBar';
 import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
 import GroupsPage from '../pages/GroupsPage';
+import AdminServicesPage from '../pages/AdminServicesPage';
 import NotFound from '../pages/NotFound';
 import withUser from '../contexts/withUser';
 
@@ -41,15 +44,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MainLayout({ currentUser }) {
+function MainLayout({ currentUser, location }) {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [searchString, setSearchString] = React.useState('');
+  const showSearchInput = location.pathname !== '/adminservices'; // No top bar search input for admin services page
+  const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <TopBar setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} setSearchString={setSearchString} />
+      <TopBar
+        setDrawerOpen={setDrawerOpen}
+        drawerOpen={drawerOpen}
+        showSearchInput={showSearchInput}
+        searchString={searchString}
+        setSearchString={setSearchString}
+      />
       <LeftDrawer setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
       <main
         className={clsx(classes.content, {
@@ -60,6 +71,14 @@ function MainLayout({ currentUser }) {
           <Switch>
             <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
+            {isAdmin ? (
+              <Route
+                path="/adminservices"
+                render={(props) => <AdminServicesPage {...props} searchString={searchString} />}
+              />
+            ) : (
+              ''
+            )}
             <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route component={NotFound} />
           </Switch>
@@ -75,6 +94,11 @@ function MainLayout({ currentUser }) {
 
 export default withUser(MainLayout); // withUser adds currentUser in props
 
+MainLayout.defaultProps = {
+  location: { pathname: '' },
+};
+
 MainLayout.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.objectOf(PropTypes.any),
 };
