@@ -65,7 +65,7 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
     },
     isActive: { type: Boolean, defaultValue: false },
-    isRequest: { type: Boolean, defaultValue: true },
+    isRequest: { type: Boolean, defaultValue: false },
     favServices: {
       type: Array,
       defaultValue: [],
@@ -118,9 +118,14 @@ if (Meteor.isServer) {
         // email and email has changed on Keycloak
         updateInfos.username = details.user.services.keycloak.email;
       }
-      // auto activate user based on email address
-      if (details.user.isActive === false && checkDomain(details.user.services.keycloak.email)) {
-        updateInfos.isActive = true;
+      if (details.user.isActive === false) {
+        // auto activate user based on email address
+        if (checkDomain(details.user.services.keycloak.email)) {
+          updateInfos.isActive = true;
+        } else {
+          // user email not whitelisted, request activation by admin
+          updateInfos.isRequest = true;
+        }
       }
       Meteor.users.update({ _id: details.user._id }, { $set: updateInfos });
       // Manage primary email change

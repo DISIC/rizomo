@@ -88,7 +88,7 @@ export const setActive = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.users.setActive.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    Meteor.users.update(userId, { $set: { isActive: true } });
+    Meteor.users.update(userId, { $set: { isActive: true, isRequest: false } });
   },
 });
 
