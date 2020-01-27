@@ -45,19 +45,19 @@ export const removeService = new ValidatedMethod({
   }).validator(),
 
   run({ serviceId }) {
-    // check group existence
+    // check service existence
     const service = Services.findOne(serviceId);
     if (service === undefined) {
       throw new Meteor.Error('api.services.removeService.unknownService', i18n.__('api.services.unknownService'));
     }
-    // check if current user has admin rights on group (or global admin)
-    // FIXME : allow only for owner or for all admins ?
+    // check if current user has admin rights
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
     if (!authorized) {
       throw new Meteor.Error('api.services.removeService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    // FIXME: remove from users favorites ?
     Services.remove(serviceId);
+    // remove service from users favorites
+    Meteor.users.update({ favServices: { $all: [serviceId] } }, { $pull: { favServices: serviceId } }, { multi: true });
   },
 });
 
