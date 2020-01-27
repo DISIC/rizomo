@@ -87,6 +87,8 @@ describe('services', function () {
       // set users as active
       Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
       serviceId = Factory.create('service')._id;
+      // add service to userId favorites
+      Meteor.users.update({ _id: userId }, { $set: { favServices: [serviceId] } });
       chatData = {
         title: 'Chat sur MIM',
         description: 'Discuter en direct ',
@@ -125,6 +127,8 @@ describe('services', function () {
       it('does delete a service with admin user', function () {
         removeService._execute({ userId: adminId }, { serviceId });
         assert.equal(Services.findOne(serviceId), undefined);
+        // check that service has been removed from userId favorites
+        assert.equal(Meteor.users.findOne({ favServices: { $all: [serviceId] } }), undefined);
       });
       it("does not delete a service if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to delete the service
