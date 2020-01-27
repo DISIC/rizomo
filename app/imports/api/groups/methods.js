@@ -24,14 +24,16 @@ export const createGroup = new ValidatedMethod({
     if (!isActive(this.userId)) {
       throw new Meteor.Error('api.groups.createGroup.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
-    Groups.insert({
+    const groupId = Groups.insert({
       name,
       type,
       note,
       info,
       owner: this.userId,
+      admins: [this.userId],
       active: true,
     });
+    Roles.addUsersToRoles(this.userId, 'admin', groupId);
   },
 });
 
