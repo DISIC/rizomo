@@ -16,3 +16,6 @@ Browse to localhost url with user 'eole@ac-dijon.fr' and password 'changeme'.
 ```
 docker-compose -f docker-compose-hub.yml up -d
 ```
+
+__Caution__ : you may want to clean previous volume :
+```docker-compose -f docker-compose-hub.yml down -v```
