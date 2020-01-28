@@ -12,6 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import GroupIcon from '@material-ui/icons/Group';
 import BuildIcon from '@material-ui/icons/Build';
 import ExtensionIcon from '@material-ui/icons/Extension';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
@@ -94,6 +95,7 @@ function LeftDrawer({ currentUser, drawerOpen, setDrawerOpen }) {
           <Divider />
           <List>
             <ListItemLink to="/adminservices" primary="Gestion des Services" icon={<BuildIcon />} />
+            <ListItemLink to="/usersvalidation" primary="Validation des utilisateurs" icon={<PersonAddIcon />} />
           </List>
         </>
       ) : (

@@ -15,6 +15,7 @@ import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
 import GroupsPage from '../pages/GroupsPage';
 import AdminServicesPage from '../pages/AdminServicesPage';
+import AdminUserValidationPage from '../pages/AdminUserValidationPage';
 import NotFound from '../pages/NotFound';
 import withUser from '../contexts/withUser';
 
@@ -48,7 +49,8 @@ function MainLayout({ currentUser, location }) {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [searchString, setSearchString] = React.useState('');
-  const showSearchInput = location.pathname !== '/adminservices'; // No top bar search input for admin services page
+  const routesWithSearchInput = ['/services', '/groups']; // No top bar search input for other pages
+  const showSearchInput = routesWithSearchInput.includes(location.pathname);
   const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
 
   return (
@@ -72,10 +74,16 @@ function MainLayout({ currentUser, location }) {
             <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
             {isAdmin ? (
-              <Route
-                path="/adminservices"
-                render={(props) => <AdminServicesPage {...props} searchString={searchString} />}
-              />
+              <>
+                <Route
+                  path="/adminservices"
+                  render={(props) => <AdminServicesPage {...props} searchString={searchString} />}
+                />
+                <Route
+                  path="/usersvalidation"
+                  render={(props) => <AdminUserValidationPage {...props} searchString={searchString} />}
+                />
+              </>
             ) : (
               ''
             )}

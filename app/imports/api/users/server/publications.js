@@ -34,7 +34,7 @@ Meteor.publish('users.request', function usersRequest() {
   return Meteor.users.find(
     { isRequest: true },
     {
-      fields: { ...Meteor.users.publicFields, emails: 1 },
+      fields: { ...Meteor.users.publicFields, emails: 1, createdAt: 1 },
     },
   );
 });
