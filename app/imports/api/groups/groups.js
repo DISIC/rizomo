@@ -89,6 +89,7 @@ Factory.define('group', Groups, {
   active: true,
   type: 0,
   admins: [],
+  animators: [],
   members: [],
   candidates: [],
 });

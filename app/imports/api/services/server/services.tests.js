@@ -59,9 +59,10 @@ describe('services', function () {
     let chatData;
     beforeEach(function () {
       // Clear
+      Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
-      // FIXME : find a way to reset roles collection ?
-      Roles.createRole('admin', { unlessExists: true });
+      Meteor.roles.remove({});
+      Roles.createRole('admin');
       // Generate 'users'
       const email = faker.internet.email();
       userId = Accounts.createUser({
