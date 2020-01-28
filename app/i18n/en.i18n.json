@@ -4,11 +4,13 @@
       "unknownUser": "User does not exist.",
       "mustBeLoggedIn": "You must be logged in.",
       "adminNeeded": "You don't have admin rights.",
-      "adminGiven": "Admin rights have been given to user: "
+      "adminGiven": "Admin rights have been given to user: ",
+      "notPermitted": "You don't have sufficient rights."
     },
     "groups": {
       "unknownGroup": "Group does not exist.",
-      "adminGroupNeeded": "You don't have admin rights on this group."
+      "adminGroupNeeded": "You don't have admin rights on this group.",
+      "moderatedGroupOnly": "This action is available for moderated group only."
     },
     "services": {
       "unknownService": "Service does not exist."

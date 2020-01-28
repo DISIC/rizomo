@@ -132,8 +132,7 @@ export const setAdminOf = new ValidatedMethod({
       throw new Meteor.Error('api.users.setAdminOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
     // check if current user has admin rights on group (or global admin)
-    const authorized = isActive(this.userId)
-      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin', groupId);
     if (!authorized) {
       throw new Meteor.Error('api.users.setAdminOf.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
@@ -164,8 +163,7 @@ export const unsetAdminOf = new ValidatedMethod({
       throw new Meteor.Error('api.users.unsetAdminOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
     // check if current user has admin rights on group (or global admin)
-    const authorized = isActive(this.userId)
-      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin', groupId);
     if (!authorized) {
       throw new Meteor.Error('api.users.unsetAdminOf.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
@@ -174,6 +172,68 @@ export const unsetAdminOf = new ValidatedMethod({
     // update info in group collection
     if (group.admins.indexOf(userId) !== -1) {
       Groups.update(groupId, { $pull: { admins: userId } });
+    }
+  },
+});
+
+export const setAnimatorOf = new ValidatedMethod({
+  name: 'users.setAnimatorOf',
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+  }).validator(),
+
+  run({ userId, groupId }) {
+    // check group and user existence
+    const group = Groups.findOne({ _id: groupId });
+    if (group === undefined) {
+      throw new Meteor.Error('api.users.setAnimatorOf.unknownGroup', i18n.__('api.groups.unknownGroup'));
+    }
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.setAnimatorOf.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    // check if current user has admin rights on group (or global admin)
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin', groupId);
+    if (!authorized) {
+      throw new Meteor.Error('api.users.setAnimatorOf.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
+    }
+    // add role to user collection
+    Roles.addUsersToRoles(userId, 'animator', groupId);
+    // store info in group collection
+    if (group.animators.indexOf(userId) === -1) {
+      Groups.update(groupId, { $push: { animators: userId } });
+    }
+  },
+});
+
+export const unsetAnimatorOf = new ValidatedMethod({
+  name: 'users.unsetAnimatorOf',
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+  }).validator(),
+
+  run({ userId, groupId }) {
+    // check group and user existence
+    const group = Groups.findOne({ _id: groupId });
+    if (group === undefined) {
+      throw new Meteor.Error('api.users.unsetAnimatorOf.unknownGroup', i18n.__('api.groups.unknownGroup'));
+    }
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.unsetAnimatorOf.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    // check if current user has admin rights on group (or global admin) or self removal
+    const authorized = userId === this.userId || Roles.userIsInRole(this.userId, 'admin', groupId);
+    if (!isActive(this.userId) || !authorized) {
+      throw new Meteor.Error('api.users.unsetAnimatorOf.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
+    }
+    // remove role from user collection
+    Roles.removeUsersFromRoles(userId, 'animator', groupId);
+    // update info in group collection
+    if (group.animators.indexOf(userId) !== -1) {
+      Groups.update(groupId, { $pull: { animators: userId } });
     }
   },
 });
@@ -195,11 +255,16 @@ export const setMemberOf = new ValidatedMethod({
     if (user === undefined) {
       throw new Meteor.Error('api.users.setMemberOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
-    // check if current user has admin rights on group (or global admin)
-    const authorized = isActive(this.userId)
-      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
-    if (!authorized) {
-      throw new Meteor.Error('api.users.setMemberOf.notPermitted', i18n.__('api.users.adminGroupNeeded'));
+    // check if current user has sufficient rights on group
+    let authorized = false;
+    if (group.type === 0) {
+      // open group, users cand set themselve as member
+      authorized = userId === this.userId || Roles.userIsInRole(this.userId, ['admin', 'animator'], groupId);
+    } else {
+      authorized = Roles.userIsInRole(this.userId, ['admin', 'animator'], groupId);
+    }
+    if (!isActive(this.userId) || !authorized) {
+      throw new Meteor.Error('api.users.setMemberOf.notPermitted', i18n.__('api.users.notPermitted'));
     }
     // add role to user collection
     Roles.addUsersToRoles(userId, 'member', groupId);
@@ -234,11 +299,10 @@ export const unsetMemberOf = new ValidatedMethod({
     if (user === undefined) {
       throw new Meteor.Error('api.users.unsetMemberOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
-    // check if current user has admin rights on group (or global admin)
-    const authorized = isActive(this.userId)
-      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
-    if (!authorized) {
-      throw new Meteor.Error('api.users.unsetMemberOf.notPermitted', i18n.__('api.users.adminGroupNeeded'));
+    // check if current user has sufficient rights on group (or self remove)
+    const authorized = userId === this.userId || Roles.userIsInRole(this.userId, ['admin', 'animator'], groupId);
+    if (!isActive(this.userId) || !authorized) {
+      throw new Meteor.Error('api.users.unsetMemberOf.notPermitted', i18n.__('api.users.notPermitted'));
     }
     // add role to user collection
     Roles.removeUsersFromRoles(userId, 'member', groupId);
@@ -264,15 +328,18 @@ export const setCandidateOf = new ValidatedMethod({
     if (group === undefined) {
       throw new Meteor.Error('api.users.setCandidateOf.unknownGroup', i18n.__('api.groups.unknownGroup'));
     }
+    // only manage candidates on moderated groups
+    if (group.type !== 5) {
+      throw new Meteor.Error('api.users.setCandidateOf.moderatedGroupOnly', i18n.__('api.groups.moderatedGroupOnly'));
+    }
     const user = Meteor.users.findOne({ _id: userId });
     if (user === undefined) {
       throw new Meteor.Error('api.users.setCandidateOf.unknownUser', i18n.__('api.users.unknownUser'));
     }
-    // FIXME: allow to set candidate for self and allow members to invite ?
-    const authorized = isActive(this.userId)
-      && (Roles.userIsInRole(this.userId, 'admin', groupId) || this.userId === group.owner);
-    if (!authorized) {
-      throw new Meteor.Error('api.users.setCandidateOf.notPermitted', i18n.__('api.users.adminGroupNeeded'));
+    // allow to set candidate for self or as admin/animator
+    const authorized = userId === this.userId || Roles.userIsInRole(this.userId, ['admin', 'animator'], groupId);
+    if (!isActive(this.userId) || !authorized) {
+      throw new Meteor.Error('api.users.setCandidateOf.notPermitted', i18n.__('api.users.notPermitted'));
     }
     // add role to user collection
     Roles.addUsersToRoles(userId, 'candidate', groupId);
@@ -280,6 +347,39 @@ export const setCandidateOf = new ValidatedMethod({
     if (group.candidates.indexOf(userId) === -1) {
       Groups.update(groupId, {
         $push: { candidates: userId },
+      });
+    }
+  },
+});
+
+export const unsetCandidateOf = new ValidatedMethod({
+  name: 'users.unsetCandidateOf',
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+  }).validator(),
+
+  run({ userId, groupId }) {
+    // check group and user existence
+    const group = Groups.findOne({ _id: groupId });
+    if (group === undefined) {
+      throw new Meteor.Error('api.users.unsetCandidateOf.unknownGroup', i18n.__('api.groups.unknownGroup'));
+    }
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.unsetCandidateOf.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    // allow to unset candidate for self or as admin/animator
+    const authorized = userId === this.userId || Roles.userIsInRole(this.userId, ['admin', 'animator'], groupId);
+    if (!isActive(this.userId) || !authorized) {
+      throw new Meteor.Error('api.users.unsetCandidateOf.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    // remove role from user collection
+    Roles.removeUsersFromRoles(userId, 'candidate', groupId);
+    // remove info from group collection
+    if (group.candidates.indexOf(userId) !== -1) {
+      Groups.update(groupId, {
+        $pull: { candidates: userId },
       });
     }
   },
@@ -338,9 +438,12 @@ const LISTS_METHODS = _.pluck(
     setActive,
     setAdminOf,
     unsetAdminOf,
+    setAnimatorOf,
+    unsetAnimatorOf,
     setMemberOf,
     unsetMemberOf,
     setCandidateOf,
+    unsetCandidateOf,
     favService,
     unfavService,
   ],

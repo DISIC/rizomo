@@ -36,10 +36,15 @@ Groups.schema = new SimpleSchema(
     active: Boolean,
     groupPadID: { type: String, optional: true },
     digest: { type: String, optional: true },
-    type: SimpleSchema.Integer, // 0 Ouvert, 5 Modéré, 10 Fermé
+    type: {
+      type: SimpleSchema.Integer,
+      allowedValues: [0, 5, 10], // 0 Ouvert, 5 Modéré, 10 Fermé
+    },
     owner: { type: String, regEx: SimpleSchema.RegEx.Id },
     admins: { type: Array, defaultValue: [] },
     'admins.$': { type: String, regEx: SimpleSchema.RegEx.Id },
+    animators: { type: Array, defaultValue: [] },
+    'animators.$': { type: String, regEx: SimpleSchema.RegEx.Id },
     members: { type: Array, defaultValue: [] },
     'members.$': { type: String, regEx: SimpleSchema.RegEx.Id },
     candidates: { type: Array, defaultValue: [] },

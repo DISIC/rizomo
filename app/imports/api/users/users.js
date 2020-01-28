@@ -6,7 +6,7 @@ import i18n from 'meteor/universe:i18n';
 
 import { checkDomain } from '../utils';
 
-const AppRoles = ['candidate', 'member', 'admin'];
+const AppRoles = ['candidate', 'member', 'animator', 'admin'];
 
 Meteor.users.schema = new SimpleSchema(
   {
