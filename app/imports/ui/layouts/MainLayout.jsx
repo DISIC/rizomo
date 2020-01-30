@@ -74,19 +74,17 @@ function MainLayout({ currentUser, location }) {
             <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
             {isAdmin ? (
-              <>
-                <Route
-                  path="/adminservices"
-                  render={(props) => <AdminServicesPage {...props} searchString={searchString} />}
-                />
-                <Route
-                  path="/usersvalidation"
-                  render={(props) => <AdminUserValidationPage {...props} searchString={searchString} />}
-                />
-              </>
-            ) : (
-              ''
-            )}
+              <Route
+                path="/adminservices"
+                render={(props) => <AdminServicesPage {...props} searchString={searchString} />}
+              />
+            ) : null}
+            {isAdmin ? (
+              <Route
+                path="/usersvalidation"
+                render={(props) => <AdminUserValidationPage {...props} searchString={searchString} />}
+              />
+            ) : null}
             <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route component={NotFound} />
           </Switch>
