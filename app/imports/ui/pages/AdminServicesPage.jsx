@@ -1,17 +1,19 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import Spinner from '../components/Spinner';
 import withUser from '../contexts/withUser';
 import Services from '../../api/services/services';
 import { createService, updateService, removeService } from '../../api/services/methods';
+import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
 
 function AdminServicesPage({ services, loading }) {
   const columns = [
     {
-      title: 'Logo',
+      title: i18n.__('pages.AdminServicesPage.columnLogo'),
       field: 'logo',
       render: (rowData) => (
         <img
@@ -21,10 +23,10 @@ function AdminServicesPage({ services, loading }) {
         />
       ),
     },
-    { title: 'Nom', field: 'title', defaultSort: 'asc' },
-    { title: 'Description', field: 'description' },
+    { title: i18n.__('pages.AdminServicesPage.columnTitle'), field: 'title', defaultSort: 'asc' },
+    { title: i18n.__('pages.AdminServicesPage.columnDescription'), field: 'description' },
     {
-      title: 'Lien',
+      title: i18n.__('pages.AdminServicesPage.columnUrl'),
       field: 'url',
       render: (rowData) => (
         <a href={rowData.url} target="_blank" rel="noreferrer noopener">
@@ -43,36 +45,6 @@ function AdminServicesPage({ services, loading }) {
     emptyRowsWhenPaging: false,
   };
 
-  const localisation = {
-    toolbar: {
-      searchPlaceholder: 'Rechercher un service',
-      searchTooltip: 'Chercher ',
-    },
-    pagination: {
-      labelRowsSelect: 'Services',
-      labelRowsPerPage: 'Services par page',
-      firstAriaLabel: 'Première page',
-      firstTooltip: 'Première page',
-      previousAriaLabel: 'Page précédente',
-      previousTooltip: 'Page précédente',
-      nextAriaLabel: 'Page suivante',
-      nextTooltip: 'Page suivante',
-      lastAriaLabel: 'Dernière page',
-      lastTooltip: 'Dernière page',
-    },
-    body: {
-      emptyDataSourceMessage: 'Aucun service enregistré',
-      addTooltip: 'Ajouter un service',
-      editTooltip: 'Modifier ce service',
-      deleteTooltip: 'Supprimer ce service',
-      editRow: {
-        deleteText: 'Supprimer vraiment ce service ?',
-        cancelTooltip: 'Annuler',
-        saveTooltip: 'Enregistrer les changements',
-      },
-    },
-  };
-
   return (
     <>
       {loading ? (
@@ -80,11 +52,11 @@ function AdminServicesPage({ services, loading }) {
       ) : (
         <MaterialTable
           // other props
-          title="Gestion des Services"
+          title={i18n.__('pages.AdminServicesPage.title')}
           columns={columns}
           data={services}
           options={options}
-          localization={localisation}
+          localization={setMaterialTableLocalization('pages.AdminServicesPage')}
           editable={{
             onRowAdd: (newData) => new Promise((resolve, reject) => {
               createService.call(

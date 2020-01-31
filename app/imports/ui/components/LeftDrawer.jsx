@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import i18n from 'meteor/universe:i18n';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -87,15 +88,23 @@ function LeftDrawer({ currentUser, drawerOpen, setDrawerOpen }) {
       </div>
       <Divider />
       <List>
-        <ListItemLink to="/services" primary="Mes Services" icon={<ExtensionIcon />} />
-        <ListItemLink to="/groups" primary="Mes Groupes" icon={<GroupIcon />} />
+        <ListItemLink to="/services" primary={i18n.__('components.LeftDrawer.menuServices')} icon={<ExtensionIcon />} />
+        <ListItemLink to="/groups" primary={i18n.__('components.LeftDrawer.menuGroupes')} icon={<GroupIcon />} />
       </List>
       {isAdmin ? (
         <>
           <Divider />
           <List>
-            <ListItemLink to="/adminservices" primary="Gestion des Services" icon={<BuildIcon />} />
-            <ListItemLink to="/usersvalidation" primary="Validation des utilisateurs" icon={<PersonAddIcon />} />
+            <ListItemLink
+              to="/adminservices"
+              primary={i18n.__('components.LeftDrawer.menuAdminServices')}
+              icon={<BuildIcon />}
+            />
+            <ListItemLink
+              to="/usersvalidation"
+              primary={i18n.__('components.LeftDrawer.menuAdminUserValidation')}
+              icon={<PersonAddIcon />}
+            />
           </List>
         </>
       ) : (
