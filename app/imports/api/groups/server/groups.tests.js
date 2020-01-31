@@ -203,6 +203,7 @@ describe('groups', function () {
         assert.typeOf(group, 'object');
         assert.equal(group.active, true);
         assert.equal(group.owner, userId);
+        assert.equal(Roles.userIsInRole(userId, 'admin', group._id), true);
       });
       it('does fail to create a group if name already taken', function () {
         assert.throws(

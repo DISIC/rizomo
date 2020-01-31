@@ -14,6 +14,12 @@
     }
   },
   "components": {
+    "LeftDrawer": {
+      "menuServices": "My Services",
+      "menuGroupes": "My Groups",
+      "menuAdminServices": "Service Management",
+      "menuAdminUserValidation": "User validation"
+    },
     "ServiceDetails": {
       "runServiceButtonLabel": "Run this service",
       "favButtonLabelFav": "Add to your favorites",
@@ -30,6 +36,14 @@
   "validatejs": {
     "isRequired": "this field is required",
     "isEmail": "email not valid"
+  },
+  "materialTable": {
+    "pagination_firstTooltip": "First page",
+    "pagination_previousTooltip": "Previous page",
+    "pagination_nextTooltip": "Next page",
+    "pagination_lastTooltip": "Last page",
+    "body_editRow_cancelTooltip": "Cancel",
+    "body_editRow_saveTooltip": "Save changes"
   },
   "pages": {
     "SignIn": {
@@ -60,6 +74,37 @@
       "tabsLabel": "Services tabs",
       "tabFavServicesLabel": "Favorite services",
       "tabAllServicesLabel": "All services"
+    },
+    "AdminServicesPage": {
+      "title": "Service Management",
+      "columnLogo": "Logo",
+      "columnTitle": "Name",
+      "columnDescription": "Description",
+      "columnUrl": "Link",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a service",
+        "pagination_labelRowsSelect": "services per page",
+        "body_emptyDataSourceMessage": "No service registered",
+        "body_addTooltip": "Add a service",
+        "body_editTooltip": "Modify this service",
+        "body_deleteTooltip": "Remove this service",
+        "body_editRow_deleteText": "Do you really want to delete this service?"
+      }
+    },
+    "AdminUserValidationPage": {
+      "title": "User validation",
+      "columnUsername": "Username",
+      "columnLastName": "LastName",
+      "columnFirstName": "FirstName",
+      "columnEmails": "Mails",
+      "columnStructure": "Structure",
+      "columnCreatedAt": "Registration date",
+      "actions_tooltip": "Validate this user",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a user",
+        "pagination_labelRowsSelect": "users per page",
+        "body_emptyDataSourceMessage": "No user to validate"
+      }
     }
   },
   "layouts": {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import i18n from 'meteor/universe:i18n';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -12,6 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import GroupIcon from '@material-ui/icons/Group';
 import BuildIcon from '@material-ui/icons/Build';
 import ExtensionIcon from '@material-ui/icons/Extension';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
@@ -86,14 +88,23 @@ function LeftDrawer({ currentUser, drawerOpen, setDrawerOpen }) {
       </div>
       <Divider />
       <List>
-        <ListItemLink to="/services" primary="Mes Services" icon={<ExtensionIcon />} />
-        <ListItemLink to="/groups" primary="Mes Groupes" icon={<GroupIcon />} />
+        <ListItemLink to="/services" primary={i18n.__('components.LeftDrawer.menuServices')} icon={<ExtensionIcon />} />
+        <ListItemLink to="/groups" primary={i18n.__('components.LeftDrawer.menuGroupes')} icon={<GroupIcon />} />
       </List>
       {isAdmin ? (
         <>
           <Divider />
           <List>
-            <ListItemLink to="/adminservices" primary="Gestion des Services" icon={<BuildIcon />} />
+            <ListItemLink
+              to="/adminservices"
+              primary={i18n.__('components.LeftDrawer.menuAdminServices')}
+              icon={<BuildIcon />}
+            />
+            <ListItemLink
+              to="/usersvalidation"
+              primary={i18n.__('components.LeftDrawer.menuAdminUserValidation')}
+              icon={<PersonAddIcon />}
+            />
           </List>
         </>
       ) : (

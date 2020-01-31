@@ -14,6 +14,12 @@
     }
   },
   "components": {
+    "LeftDrawer": {
+      "menuServices": "Mes Services",
+      "menuGroupes": "Mes Groupes",
+      "menuAdminServices": "Gestion des Services",
+      "menuAdminUserValidation": "Validation des utilisateurs"
+    },
     "ServiceDetails": {
       "runServiceButtonLabel": "Lancer le service",
       "favButtonLabelFav": "Ajouter à vos favoris",
@@ -30,6 +36,14 @@
   "validatejs": {
     "isRequired": "ce champ est requis",
     "isEmail": "courriel non valide"
+  },
+  "materialTable": {
+    "pagination_firstTooltip": "Première page",
+    "pagination_previousTooltip": "Page précédente",
+    "pagination_nextTooltip": "Page suivante",
+    "pagination_lastTooltip": "Dernière page",
+    "body_editRow_cancelTooltip": "Annuler",
+    "body_editRow_saveTooltip": "Enregistrer les changements"
   },
   "pages": {
     "SignIn": {
@@ -63,6 +77,37 @@
       "tabsLabel": "Onglet des services",
       "tabFavServicesLabel": "Mes services favoris",
       "tabAllServicesLabel": "Tous les services"
+    },
+    "AdminServicesPage": {
+      "title": "Gestion des Services",
+      "columnLogo": "Logo",
+      "columnTitle": "Nom",
+      "columnDescription": "Description",
+      "columnUrl": "Lien",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher un service",
+        "pagination_labelRowsSelect": "services par page",
+        "body_emptyDataSourceMessage": "Aucun service enregistré",
+        "body_addTooltip": "Ajouter un service",
+        "body_editTooltip": "Modifier ce service",
+        "body_deleteTooltip": "Supprimer ce service",
+        "body_editRow_deleteText": "Supprimer vraiment ce service ?"
+      }
+    },
+    "AdminUserValidationPage": {
+      "title": "Utilisateurs en attente de validation",
+      "columnUsername": "Pseudo",
+      "columnLastName": "Nom",
+      "columnFirstName": "Prénom",
+      "columnEmails": "Emails",
+      "columnStructure": "Structure",
+      "columnCreatedAt": "Date d'inscription",
+      "actions_tooltip": "Valider cet utilisateur",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher un utilisateur",
+        "pagination_labelRowsSelect": "utilisateurs par page",
+        "body_emptyDataSourceMessage": "Aucun utilisateur à valider"
+      }
     }
   },
   "layouts": {
