@@ -63,6 +63,7 @@ Groups.publicFields = {
   type: 1,
   owner: 1,
   admins: 1,
+  animators: 1,
   members: 1,
   candidates: 1,
 };

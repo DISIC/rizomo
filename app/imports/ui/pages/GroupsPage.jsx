@@ -68,9 +68,9 @@ GroupsPage.propTypes = {
 };
 
 export default withTracker(() => {
-  const groupsHandle = Meteor.subscribe('groups.all');
+  const groupsHandle = Meteor.subscribe('groups.memberof');
   const loading = !groupsHandle.ready();
-  const groups = Groups.find({}, { sort: { title: 1 } }).fetch();
+  const groups = Groups.find({}, { sort: { name: 1 } }).fetch();
   return {
     groups,
     loading,
