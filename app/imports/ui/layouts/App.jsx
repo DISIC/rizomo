@@ -3,10 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import SignLayout from './SignLayout';
 import MainLayout from './MainLayout';
-import NotFound from '../pages/NotFound';
 import ProtectedRoute from '../components/ProtectedRoute';
 import PublicRoute from '../components/PublicRoute';
 import Spinner from '../components/Spinner';
@@ -31,10 +30,9 @@ function App(props) {
             }}
           >
             <Switch>
-              <PublicRoute path="/signin" component={SignLayout} {...props} />
-              <Route path="/signup" component={SignLayout} {...props} />
+              <PublicRoute exact path="/signin" component={SignLayout} {...props} />
+              <PublicRoute exact path="/signup" component={SignLayout} {...props} />
               <ProtectedRoute path="/" component={MainLayout} {...props} />
-              <Route component={NotFound} />
             </Switch>
           </UserContext.Provider>
         </div>

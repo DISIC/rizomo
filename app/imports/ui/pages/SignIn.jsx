@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import Spinner from '../components/Spinner';
 
 validate.options = {
   fullMessages: false,
@@ -30,53 +33,20 @@ const schema = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-  },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor: theme.palette.grey[50],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+    position: 'relative',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  imgLogo: {
-    alignSelf: 'center',
-    maxWidth: '100%',
-    maxHeight: 'auto',
-    paddingBottom: '5%',
-  },
-  mainFeaturedPostContent: {
-    position: 'relative',
-    padding: theme.spacing(3),
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(6),
-      paddingRight: 0,
-    },
   },
   error: {
     backgroundColor: theme.palette.error.dark,
   },
 }));
 
-export default function SignIn() {
+function SignIn({ loggingIn }) {
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -138,7 +108,6 @@ export default function SignIn() {
   };
 
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
-
   return (
     <div>
       <Typography variant="h5" color="inherit" paragraph>
@@ -148,6 +117,7 @@ export default function SignIn() {
         {i18n.__('pages.SignIn.appVersion')}
       </Typography>
       <form onSubmit={handleSignIn} className={classes.form} noValidate>
+        {loggingIn && <Spinner full />}
         <TextField
           margin="normal"
           required
@@ -163,6 +133,7 @@ export default function SignIn() {
           type="text"
           value={formState.values.email || ''}
           variant="outlined"
+          disabled={loggingIn}
         />
         <TextField
           variant="outlined"
@@ -178,6 +149,7 @@ export default function SignIn() {
           helperText={hasError('password') ? i18n.__(formState.errors.password[0]) : null}
           onChange={handleChange}
           value={formState.values.password || ''}
+          disabled={loggingIn}
         />
         <Button
           type="submit"
@@ -185,21 +157,28 @@ export default function SignIn() {
           variant="contained"
           color="primary"
           className={classes.submit}
-          disabled={!formState.isValid}
+          disabled={!formState.isValid || loggingIn}
         >
           {i18n.__('pages.SignIn.connect')}
         </Button>
-        <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={handleKeycloakAuth}>
+        <Button
+          disabled={loggingIn}
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          onClick={handleKeycloakAuth}
+        >
           {i18n.__('pages.SignIn.loginKeycloak')}
         </Button>
         <Grid container>
           <Grid item xs>
-            <Link href="/" variant="body2">
+            <Link to="/" variant="body2">
               {i18n.__('pages.SignIn.forgotPwd')}
             </Link>
           </Grid>
           <Grid item>
-            <Link href="/signup" variant="body2">
+            <Link to="/signup" variant="body2">
               {i18n.__('pages.SignIn.createAccount')}
             </Link>
           </Grid>
@@ -222,3 +201,19 @@ export default function SignIn() {
     </div>
   );
 }
+
+export default withTracker(() => {
+  const loggingIn = Meteor.loggingIn();
+
+  return {
+    loggingIn,
+  };
+})(SignIn);
+
+SignIn.defaultProps = {
+  loggingIn: false,
+};
+
+SignIn.propTypes = {
+  loggingIn: PropTypes.bool,
+};
