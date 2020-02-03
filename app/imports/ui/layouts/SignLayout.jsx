@@ -67,9 +67,8 @@ export default function SignLayout() {
         <div className={classes.paper}>
           <img src="images/Logo-appseducation.png" className={classes.imgLogo} alt="Logo" />
           <Switch>
-            <Route exact path="/" component={SignIn} />
-            <Route path="/signin" component={SignIn} />
-            <Route path="/signup" component={SignUp} />
+            <Route exact path="/signin" component={SignIn} />
+            <Route exact path="/signup" component={SignUp} />
           </Switch>
         </div>
       </Grid>

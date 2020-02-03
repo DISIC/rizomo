@@ -31,8 +31,8 @@ function App(props) {
             }}
           >
             <Switch>
-              <PublicRoute path="/signin" component={SignLayout} {...props} />
-              <Route path="/signup" component={SignLayout} {...props} />
+              <PublicRoute exact path="/signin" component={SignLayout} {...props} />
+              <PublicRoute exact path="/signup" component={SignLayout} {...props} />
               <ProtectedRoute path="/" component={MainLayout} {...props} />
               <Route component={NotFound} />
             </Switch>

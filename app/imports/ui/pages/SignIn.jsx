@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
+import { Link } from 'react-router-dom';
 
 validate.options = {
   fullMessages: false,
@@ -194,12 +194,12 @@ export default function SignIn() {
         </Button>
         <Grid container>
           <Grid item xs>
-            <Link href="/" variant="body2">
+            <Link to="/" variant="body2">
               {i18n.__('pages.SignIn.forgotPwd')}
             </Link>
           </Grid>
           <Grid item>
-            <Link href="/signup" variant="body2">
+            <Link to="/signup" variant="body2">
               {i18n.__('pages.SignIn.createAccount')}
             </Link>
           </Grid>
