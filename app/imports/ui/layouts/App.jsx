@@ -34,7 +34,6 @@ function App(props) {
               <PublicRoute exact path="/signin" component={SignLayout} {...props} />
               <PublicRoute exact path="/signup" component={SignLayout} {...props} />
               <ProtectedRoute path="/" component={MainLayout} {...props} />
-              <Route component={NotFound} />
             </Switch>
           </UserContext.Provider>
         </div>

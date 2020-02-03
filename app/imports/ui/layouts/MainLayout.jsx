@@ -85,7 +85,7 @@ function MainLayout({ currentUser, location }) {
                 render={(props) => <AdminUserValidationPage {...props} searchString={searchString} />}
               />
             ) : null}
-            <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
+            <Route exact path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route component={NotFound} />
           </Switch>
         ) : (
