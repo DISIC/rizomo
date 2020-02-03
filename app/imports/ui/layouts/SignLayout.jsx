@@ -10,6 +10,7 @@ import SignIn from '../pages/SignIn';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
+    padding: '16px',
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -23,17 +24,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   imgLogo: {
     alignSelf: 'center',
@@ -58,8 +48,7 @@ export default function SignLayout() {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid container item xs={false} sm={4} md={7} className={classes.image} spacing={4}>
-        <Grid item md={4} />
-        <Grid item md={8}>
+        <Grid item md={12}>
           <div className={classes.mainFeaturedPostContent} />
         </Grid>
       </Grid>
