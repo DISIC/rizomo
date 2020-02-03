@@ -1,34 +1,35 @@
-image: node
+image: geoffreybooth/meteor-base:1.9
 
 stages:
-    - deps
-    - lint
-    - test
+  - deps
+  - lint
+  - test
 
 before_script:
-    - cd app
+  - cd app
 
 cache:
-    paths:
-        - app/node_modules/
+  paths:
+    - app/node_modules/
+
+variables:
+  METEOR_ALLOW_SUPERUSER: "true"
 
 Deps:
-    stage: deps
-    script:
-        - npm install
-    artifacts:
-        paths:
-            - app/node_modules/
+  stage: deps
+  script:
+    - meteor npm install
+  artifacts:
+    paths:
+      - app/node_modules/
 
 Lint:
-    stage: lint
-    script:
-        - npm install --only=dev
-        - curl https://install.meteor.com/ | sh
-        - meteor npm run lint
+  stage: lint
+  script:
+    - meteor npm install --only=dev
+    - meteor npm run lint
 
 Test:
-    stage: test
-    script:
-        - curl https://install.meteor.com/ | sh
-        - npm test
+  stage: test
+  script:
+    - meteor npm test
