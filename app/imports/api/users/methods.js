@@ -92,6 +92,27 @@ export const setActive = new ValidatedMethod({
   },
 });
 
+export const unsetActive = new ValidatedMethod({
+  name: 'users.unsetActive',
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+  }).validator(),
+
+  run({ userId }) {
+    // check user existence
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.unsetActive.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    // check if current user has global admin rights
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    if (!authorized) {
+      throw new Meteor.Error('api.users.unsetActive.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+    Meteor.users.update(userId, { $set: { isActive: false } });
+  },
+});
+
 export const unsetAdmin = new ValidatedMethod({
   name: 'users.unsetAdmin',
   validate: new SimpleSchema({
