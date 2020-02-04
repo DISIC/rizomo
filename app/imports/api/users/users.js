@@ -175,6 +175,17 @@ Meteor.users.selfFields = {
   primaryEmail: 1,
 };
 
+Meteor.users.adminFields = {
+  username: 1,
+  firstName: 1,
+  lastName: 1,
+  emails: 1,
+  createdAt: 1,
+  isActive: 1,
+  isRequest: 1,
+  structure: 1,
+};
+
 Meteor.users.publicFields = {
   username: 1,
   firstName: 1,
