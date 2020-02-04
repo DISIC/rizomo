@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -16,7 +16,7 @@ import i18n from 'meteor/universe:i18n';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
 import Spinner from '../components/Spinner';
-import withUser from '../contexts/withUser';
+import { Context } from '../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   AppChoice: {
@@ -77,12 +77,11 @@ function a11yProps(index) {
   };
 }
 
-function ServicesPage({
-  services, loading, searchString, currentUser, userIsLoading,
-}) {
+function ServicesPage({ services, loading, searchString }) {
   const classes = useStyles();
   const theme = useTheme();
-  const favs = userIsLoading ? [] : currentUser.favServices;
+  const [{ user, loadingUser }] = useContext(Context);
+  const favs = loadingUser ? [] : user.favServices;
   const [value, setValue] = React.useState(0);
 
   const handleChangeValue = (event, newValue) => {
@@ -149,15 +148,14 @@ function ServicesPage({
               <Grid container spacing={4}>
                 {services
                   .filter((service) => filterServices(service))
-                  .map((service) => (favs.indexOf(service._id) === -1 ? (
-                    <Grid item key={service._id} xs={12} sm={4} md={3}>
-                      <ServiceDetails service={service} favAction="fav" />
-                    </Grid>
-                  ) : (
-                    <Grid item key={service._id} xs={12} sm={4} md={3}>
-                      <ServiceDetails service={service} favAction="unfav" />
-                    </Grid>
-                  )))}
+                  .map((service) => {
+                    const favAction = favs.indexOf(service._id) === -1 ? 'fav' : 'unfav';
+                    return (
+                      <Grid item key={service._id} xs={12} sm={4} md={3}>
+                        <ServiceDetails service={service} favAction={favAction} />
+                      </Grid>
+                    );
+                  })}
               </Grid>
             </Container>
           </TabPanel>
@@ -171,8 +169,6 @@ ServicesPage.propTypes = {
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
   searchString: PropTypes.string.isRequired,
-  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
-  userIsLoading: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
@@ -183,4 +179,4 @@ export default withTracker(() => {
     services,
     loading,
   };
-})(withUser(ServicesPage));
+})(ServicesPage);

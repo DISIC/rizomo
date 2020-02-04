@@ -5,16 +5,7 @@ import i18n from 'meteor/universe:i18n';
 
 import '../locales';
 import App from '../../ui/layouts/App';
-
-function getLang() {
-  return (
-    (navigator.languages && navigator.languages[0])
-    || navigator.language
-    || navigator.browserLanguage
-    || navigator.userLanguage
-    || 'en-US'
-  );
-}
+import getLang from '../../ui/utils/getLang';
 
 /** Startup the application by rendering the App layout component. */
 Meteor.startup(() => {

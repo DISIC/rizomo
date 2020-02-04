@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import i18n from 'meteor/universe:i18n';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,7 +17,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
-import withUser from '../contexts/withUser';
+import { Context } from '../contexts/context';
 
 function ListItemLink(props) {
   const { icon, primary, to } = props;
@@ -61,15 +61,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LeftDrawer({ currentUser, drawerOpen, setDrawerOpen }) {
+function LeftDrawer({ drawerOpen, setDrawerOpen }) {
   const classes = useStyles();
   const theme = useTheme();
+  const [{ userId }] = useContext(Context);
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
 
-  const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
+  const isAdmin = Roles.userIsInRole(userId, 'admin');
 
   return (
     <Drawer
@@ -114,10 +115,9 @@ function LeftDrawer({ currentUser, drawerOpen, setDrawerOpen }) {
   );
 }
 
-export default withUser(LeftDrawer); // withUser adds currentUser in props
+export default LeftDrawer;
 
 LeftDrawer.propTypes = {
-  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
   setDrawerOpen: PropTypes.func.isRequired,
   drawerOpen: PropTypes.bool.isRequired,
 };

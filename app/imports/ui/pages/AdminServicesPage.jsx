@@ -5,7 +5,6 @@ import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import Spinner from '../components/Spinner';
-import withUser from '../contexts/withUser';
 import Services from '../../api/services/services';
 import { createService, updateService, removeService } from '../../api/services/methods';
 import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
@@ -135,4 +134,4 @@ export default withTracker(() => {
     services,
     loading,
   };
-})(withUser(AdminServicesPage));
+})(AdminServicesPage);
