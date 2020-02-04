@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import SignUp from '../pages/SignUp';
 import SignIn from '../pages/SignIn';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +60,7 @@ export default function SignLayout() {
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={SignUp} />
           </Switch>
+          <LanguageSwitcher />
         </div>
       </Grid>
     </Grid>

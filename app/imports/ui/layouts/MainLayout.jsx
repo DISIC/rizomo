@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import clsx from 'clsx';
 import i18n from 'meteor/universe:i18n';
@@ -17,7 +17,7 @@ import GroupsPage from '../pages/GroupsPage';
 import AdminServicesPage from '../pages/AdminServicesPage';
 import AdminUserValidationPage from '../pages/AdminUserValidationPage';
 import NotFound from '../pages/NotFound';
-import withUser from '../contexts/withUser';
+import { Context } from '../contexts/context';
 
 // CSS
 const drawerWidth = 240;
@@ -45,13 +45,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MainLayout({ currentUser, location }) {
+function MainLayout({ location }) {
   const classes = useStyles();
+  const [{ userId, user }] = useContext(Context);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [searchString, setSearchString] = React.useState('');
   const routesWithSearchInput = ['/services', '/groups']; // No top bar search input for other pages
   const showSearchInput = routesWithSearchInput.includes(location.pathname);
-  const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
+  const isAdmin = Roles.userIsInRole(userId, 'admin');
 
   return (
     <div className={classes.root}>
@@ -69,7 +70,7 @@ function MainLayout({ currentUser, location }) {
           [classes.contentShift]: drawerOpen,
         })}
       >
-        {currentUser.isActive ? (
+        {user.isActive ? (
           <Switch>
             <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
             <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
@@ -98,13 +99,12 @@ function MainLayout({ currentUser, location }) {
   );
 }
 
-export default withUser(MainLayout); // withUser adds currentUser in props
+export default MainLayout;
 
 MainLayout.defaultProps = {
   location: { pathname: '' },
 };
 
 MainLayout.propTypes = {
-  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any),
 };

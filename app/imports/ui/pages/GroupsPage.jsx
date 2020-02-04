@@ -10,7 +10,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Spinner from '../components/Spinner';
-import withUser from '../contexts/withUser';
 import Groups from '../../api/groups/groups';
 import GroupDetails from '../components/GroupDetails';
 
@@ -73,4 +72,4 @@ export default withTracker(() => {
     groups,
     loading,
   };
-})(withUser(GroupsPage));
+})(GroupsPage);

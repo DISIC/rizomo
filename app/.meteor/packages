@@ -28,13 +28,13 @@ accounts-password@1.5.2
 alanning:roles
 
 # testing
-xolvio:cleaner
 practicalmeteor:chai
 practicalmeteor:sinon
 meteortesting:mocha
 hwillson:stub-collections
 johanbrook:publication-collector
 dburles:factory
-jquery
 hotello:accounts-keycloak
 service-configuration@1.0.11
+meteortoys:toggle
+meteortoys:allthings

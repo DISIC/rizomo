@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
@@ -14,7 +14,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import withUser from '../contexts/withUser';
+import { Context } from '../contexts/context';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -94,10 +95,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TopBar({
-  setDrawerOpen, drawerOpen, showSearchInput, searchString, setSearchString, currentUser,
+  setDrawerOpen, drawerOpen, showSearchInput, searchString, setSearchString,
 }) {
   const classes = useStyles();
   const history = useHistory();
+  const [{ user }] = useContext(Context);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -176,7 +178,8 @@ function TopBar({
           ''
         )}
         <div className={classes.grow} />
-        {currentUser.username}
+        <LanguageSwitcher topbar />
+        {user.username}
         <div className={classes.sectionDesktop}>
           <IconButton
             edge="end"
@@ -195,7 +198,7 @@ function TopBar({
   );
 }
 
-export default withUser(TopBar); // withUser adds currentUser in props
+export default TopBar;
 
 TopBar.propTypes = {
   showSearchInput: PropTypes.bool.isRequired,
@@ -203,5 +206,4 @@ TopBar.propTypes = {
   setSearchString: PropTypes.func.isRequired,
   setDrawerOpen: PropTypes.func.isRequired,
   drawerOpen: PropTypes.bool.isRequired,
-  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
 };

@@ -111,5 +111,9 @@
     "MainLayout": {
       "inactiveAccount": "Your account has not been activated"
     }
+  },
+  "languages": {
+    "en": "English",
+    "fr": "French"
   }
 }
