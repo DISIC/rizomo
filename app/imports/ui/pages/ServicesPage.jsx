@@ -77,7 +77,8 @@ function a11yProps(index) {
   };
 }
 
-function ServicesPage({ services, loading, searchString }) {
+function ServicesPage({ services, loading }) {
+  const searchString = ''; // TO DO
   const classes = useStyles();
   const theme = useTheme();
   const [{ user, loadingUser }] = useContext(Context);
@@ -168,7 +169,6 @@ function ServicesPage({ services, loading, searchString }) {
 ServicesPage.propTypes = {
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
-  searchString: PropTypes.string.isRequired,
 };
 
 export default withTracker(() => {

@@ -14,7 +14,8 @@
     }
   },
   "components": {
-    "LeftDrawer": {
+    "MenuBar": {
+      "menuMyspace": "My Space",
       "menuServices": "My Services",
       "menuGroupes": "My Groups",
       "menuAdminServices": "Service Management",
@@ -30,7 +31,8 @@
       "userMenuOpenLabel": "Open user menu",
       "inputSearchLabel": "Search...",
       "menuProfileLabel": "Profile",
-      "menuLogoutLabel": "Logout"
+      "menuLogoutLabel": "Logout",
+      "myAccount": "My Account"
     }
   },
   "validatejs": {

@@ -1,11 +1,22 @@
 import React, { useContext } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { blue } from '@material-ui/core/colors';
 import SignLayout from './SignLayout';
 import MainLayout from './MainLayout';
 import ProtectedRoute from '../components/ProtectedRoute';
 import PublicRoute from '../components/PublicRoute';
 import Spinner from '../components/Spinner';
 import DynamicStore, { Context } from '../contexts/context';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: {
+      main: '#fff',
+    },
+  },
+});
 
 function App() {
   const [state] = useContext(Context);
@@ -22,9 +33,11 @@ function App() {
 }
 
 export default () => (
-  <BrowserRouter>
-    <DynamicStore>
-      <App />
-    </DynamicStore>
-  </BrowserRouter>
+  <MuiThemeProvider theme={theme}>
+    <BrowserRouter>
+      <DynamicStore>
+        <App />
+      </DynamicStore>
+    </BrowserRouter>
+  </MuiThemeProvider>
 );
