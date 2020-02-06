@@ -14,7 +14,8 @@
     }
   },
   "components": {
-    "LeftDrawer": {
+    "MenuBar": {
+      "menuMyspace": "Mon Espace",
       "menuServices": "Mes Services",
       "menuGroupes": "Mes Groupes",
       "menuAdminServices": "Gestion des Services",
@@ -30,7 +31,8 @@
       "userMenuOpenLabel": "Ouvrir le menu utilisateur",
       "inputSearchLabel": "Rechercher...",
       "menuProfileLabel": "Profil",
-      "menuLogoutLabel": "Se déconnecter"
+      "menuLogoutLabel": "Se déconnecter",
+      "myAccount": "Mon Compte"
     }
   },
   "validatejs": {

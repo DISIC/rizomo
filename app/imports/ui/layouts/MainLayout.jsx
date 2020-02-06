@@ -1,17 +1,13 @@
 import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import clsx from 'clsx';
 import i18n from 'meteor/universe:i18n';
 import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
-
 import { Roles } from 'meteor/alanning:roles';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import TopBar from '../components/TopBar';
-import LeftDrawer from '../components/LeftDrawer';
 import ServicesPage from '../pages/ServicesPage';
 import GroupsPage from '../pages/GroupsPage';
 import AdminServicesPage from '../pages/AdminServicesPage';
@@ -20,7 +16,6 @@ import NotFound from '../pages/NotFound';
 import { Context } from '../contexts/context';
 
 // CSS
-const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -33,8 +28,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth,
-    marginTop: 50,
+    marginTop: 130,
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -45,48 +39,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MainLayout({ location }) {
+function MainLayout() {
   const classes = useStyles();
   const [{ userId, user }] = useContext(Context);
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [searchString, setSearchString] = React.useState('');
-  const routesWithSearchInput = ['/services', '/groups']; // No top bar search input for other pages
-  const showSearchInput = routesWithSearchInput.includes(location.pathname);
   const isAdmin = Roles.userIsInRole(userId, 'admin');
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <TopBar
-        setDrawerOpen={setDrawerOpen}
-        drawerOpen={drawerOpen}
-        showSearchInput={showSearchInput}
-        searchString={searchString}
-        setSearchString={setSearchString}
-      />
-      <LeftDrawer setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: drawerOpen,
-        })}
-      >
+      <TopBar />
+      <main className={classes.content}>
         {user.isActive ? (
           <Switch>
-            <Route path="/services" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
-            <Route path="/groups" render={(props) => <GroupsPage {...props} searchString={searchString} />} />
-            {isAdmin ? (
-              <Route
-                path="/adminservices"
-                render={(props) => <AdminServicesPage {...props} searchString={searchString} />}
-              />
-            ) : null}
-            {isAdmin ? (
-              <Route
-                path="/usersvalidation"
-                render={(props) => <AdminUserValidationPage {...props} searchString={searchString} />}
-              />
-            ) : null}
-            <Route exact path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
+            <Route path="/services" component={ServicesPage} />
+            <Route path="/groups" component={GroupsPage} />
+            {isAdmin ? <Route path="/adminservices" component={AdminServicesPage} /> : null}
+            {isAdmin ? <Route path="/usersvalidation" component={AdminUserValidationPage} /> : null}
+            <Route exact path="/" component={ServicesPage} />
             <Route component={NotFound} />
           </Switch>
         ) : (
@@ -100,11 +69,3 @@ function MainLayout({ location }) {
 }
 
 export default MainLayout;
-
-MainLayout.defaultProps = {
-  location: { pathname: '' },
-};
-
-MainLayout.propTypes = {
-  location: PropTypes.objectOf(PropTypes.any),
-};

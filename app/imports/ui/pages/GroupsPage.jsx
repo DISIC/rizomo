@@ -19,7 +19,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function GroupsPage({ groups, loading, searchString }) {
+function GroupsPage({ groups, loading }) {
+  const searchString = ''; // TO DO
   const classes = useStyles();
 
   const filterGroups = (group) => {
@@ -61,7 +62,6 @@ function GroupsPage({ groups, loading, searchString }) {
 GroupsPage.propTypes = {
   groups: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
-  searchString: PropTypes.string.isRequired,
 };
 
 export default withTracker(() => {
