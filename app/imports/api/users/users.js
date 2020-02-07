@@ -65,7 +65,7 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
     },
     isActive: { type: Boolean, defaultValue: false },
-    isRequest: { type: Boolean, defaultValue: false },
+    isRequest: { type: Boolean, defaultValue: true },
     favServices: {
       type: Array,
       defaultValue: [],
@@ -122,6 +122,7 @@ if (Meteor.isServer) {
         // auto activate user based on email address
         if (checkDomain(details.user.services.keycloak.email)) {
           updateInfos.isActive = true;
+          updateInfos.isRequest = false;
         } else {
           // user email not whitelisted, request activation by admin
           updateInfos.isRequest = true;
