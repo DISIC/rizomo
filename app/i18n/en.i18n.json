@@ -73,9 +73,11 @@
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
+      "title": "Discover the apps",
       "tabsLabel": "Services tabs",
       "tabFavServicesLabel": "Favorite services",
-      "tabAllServicesLabel": "All services"
+      "tabAllServicesLabel": "All services",
+      "searchText": "Which app would you need ?"
     },
     "AdminServicesPage": {
       "title": "Service Management",

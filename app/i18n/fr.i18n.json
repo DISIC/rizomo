@@ -76,9 +76,11 @@
       "message": "Page inexistante !"
     },
     "ServicesPage": {
+      "title": "Découvrez les applications",
       "tabsLabel": "Onglet des services",
       "tabFavServicesLabel": "Mes services favoris",
-      "tabAllServicesLabel": "Tous les services"
+      "tabAllServicesLabel": "Tous les services",
+      "searchText": "De quelle application avez-vous besoin ?"
     },
     "AdminServicesPage": {
       "title": "Gestion des Services",
