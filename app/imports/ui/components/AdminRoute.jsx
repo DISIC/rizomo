@@ -1,39 +1,40 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Roles } from 'meteor/alanning:roles';
 import Spinner from './Spinner';
 
 /**
- * ProtectedRoute (see React Router v4 sample)
+ * AdminRoute (see React Router v4 sample)
  * Checks for Meteor login before routing to the requested page, otherwise goes to signin page.
  * @param {any} { component: Component, ...rest }
  */
-const ProtectedRoute = ({
-  component: Component, authenticated, loggingIn, ...rest
+const AdminRoute = ({
+  component: Component, userId, loadingUser, ...rest
 }) => (
   <Route
     {...rest}
     render={(props) => {
-      if (loggingIn) {
+      if (loadingUser) {
         return <Spinner full />;
       }
-      if (authenticated) {
+      if (Roles.userIsInRole(userId, 'admin')) {
         return <Component {...props} />;
       }
-      return <Redirect to={{ pathname: '/signin', state: { from: props.location } }} />;
+      return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
     }}
   />
 );
 
-ProtectedRoute.defaultProps = {
+AdminRoute.defaultProps = {
   location: {},
 };
 
-ProtectedRoute.propTypes = {
-  component: PropTypes.func.isRequired,
-  authenticated: PropTypes.bool.isRequired,
-  loggingIn: PropTypes.bool.isRequired,
+AdminRoute.propTypes = {
+  component: PropTypes.elementType.isRequired,
+  userId: PropTypes.string.isRequired,
   location: PropTypes.objectOf(PropTypes.any),
+  loadingUser: PropTypes.bool.isRequired,
 };
 
-export default ProtectedRoute;
+export default AdminRoute;

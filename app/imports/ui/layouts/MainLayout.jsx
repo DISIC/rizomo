@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import Typography from '@material-ui/core/Typography';
-import { Roles } from 'meteor/alanning:roles';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +13,8 @@ import AdminServicesPage from '../pages/AdminServicesPage';
 import AdminUserValidationPage from '../pages/AdminUserValidationPage';
 import NotFound from '../pages/NotFound';
 import { Context } from '../contexts/context';
+import AdminRoute from '../components/AdminRoute';
+import Spinner from '../components/Spinner';
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -41,29 +42,45 @@ const useStyles = makeStyles((theme) => ({
 
 function MainLayout() {
   const classes = useStyles();
-  const [{ userId, user }] = useContext(Context);
-  const isAdmin = Roles.userIsInRole(userId, 'admin');
+  const [{ userId, user, loadingUser }] = useContext(Context);
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <TopBar />
-      <main className={classes.content}>
-        {user.isActive ? (
-          <Switch>
-            <Route path="/services" component={ServicesPage} />
-            <Route path="/groups" component={GroupsPage} />
-            {isAdmin ? <Route path="/adminservices" component={AdminServicesPage} /> : null}
-            {isAdmin ? <Route path="/usersvalidation" component={AdminUserValidationPage} /> : null}
-            <Route exact path="/" component={ServicesPage} />
-            <Route component={NotFound} />
-          </Switch>
-        ) : (
-          <Typography variant="h5" color="inherit" paragraph>
-            {i18n.__('layouts.MainLayout.inactiveAccount')}
-          </Typography>
-        )}
-      </main>
+      {loadingUser ? (
+        <Spinner full />
+      ) : (
+        <main className={classes.content}>
+          {user.isActive ? (
+            <Switch>
+              <Route exact path="/" component={ServicesPage} />
+
+              <Route path="/services" component={ServicesPage} />
+              <Route path="/groups" component={GroupsPage} />
+
+              <AdminRoute
+                path="/adminservices"
+                component={AdminServicesPage}
+                userId={userId}
+                loadingUser={loadingUser}
+              />
+              <AdminRoute
+                path="/usersvalidation"
+                component={AdminUserValidationPage}
+                userId={userId}
+                loadingUser={loadingUser}
+              />
+
+              <Route component={NotFound} />
+            </Switch>
+          ) : (
+            <Typography variant="h5" color="inherit" paragraph>
+              {i18n.__('layouts.MainLayout.inactiveAccount')}
+            </Typography>
+          )}
+        </main>
+      )}
     </div>
   );
 }
