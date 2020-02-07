@@ -20,10 +20,12 @@ const initialState = {
 
 const logger = (state, action) => {
   const newState = reducer(state, action);
-  console.groupCollapsed('Action Type:', action.type);
-  console.log('Prev state: ', state);
-  console.log('Next state: ', newState);
-  console.groupEnd();
+  if (Meteor.isDevelopment) {
+    console.groupCollapsed('Action Type:', action.type);
+    console.log('Prev state: ', state);
+    console.log('Next state: ', newState);
+    console.groupEnd();
+  }
   return newState;
 };
 
