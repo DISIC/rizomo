@@ -64,8 +64,6 @@ function AdminServicesPage({ services, loading }) {
                   description: newData.description,
                   url: newData.url,
                   logo: newData.logo,
-                  target: '_blank',
-                  glyphicon: 'glyphicon',
                 },
                 (err, res) => {
                   if (err) {
@@ -86,7 +84,6 @@ function AdminServicesPage({ services, loading }) {
                     description: newData.description,
                     url: newData.url,
                     logo: newData.logo,
-                    target: '_blank',
                   },
                 },
                 (err, res) => {

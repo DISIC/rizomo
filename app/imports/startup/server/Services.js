@@ -1,15 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import Services from '../../api/services/services';
 
-function createService(title, description, url, logo, glyphicon, target) {
+function createService(title, description, url, logo, categories) {
   console.log(`  Creating service ${title}.`);
   Services.insert({
     title,
     description,
     url,
     logo,
-    glyphicon,
-    target,
+    categories,
   });
 }
 
@@ -18,8 +17,8 @@ if (Services.find().count() === 0) {
   if (Meteor.settings.defaultServices) {
     console.log('Creating the default services');
     Meteor.settings.defaultServices.map(({
-      title, description, url, logo, glyphicon, target,
-    }) => createService(title, description, url, logo, glyphicon, target));
+      title, description, url, logo, categories,
+    }) => createService(title, description, url, logo, categories));
   } else {
     console.log('No default services to create !  Please invoke meteor with a settings file.');
   }
