@@ -58,7 +58,7 @@ function MainLayout() {
               <Route exact path="/" component={ServicesPage} />
 
               <Route exact path="/services" component={ServicesPage} />
-              <Route exact path="/services/:serviceId" component={SingleServicePage} />
+              <Route exact path="/services/:slug" component={SingleServicePage} />
               <Route exact path="/groups" component={GroupsPage} />
 
               <AdminRoute
