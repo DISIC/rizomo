@@ -18,69 +18,81 @@
   ],
   "defaultServices": [
     {
-      "glyphicon": "glyphicon-comment",
-      "url": "https://chat.mim.ovh",
+      "url": "https://chat.mim-libre.fr",
       "logo": "https://rocket.chat/images/default/logo--dark.svg",
       "title": "Chat sur MIM",
       "description": "Discuter en direct",
-      "target": "_blank"
+      "categories": [
+        "HxQFJXymMXXrYByXt",
+        "PrTZTq2FnDYdABNHh"
+      ]
     },
     {
-      "glyphicon": "glyphicon-cloud",
       "url": "https://nextcloud.apps.education.fr",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg",
       "name": "NextCloud",
       "title": "Info Nuagiques",
       "description": "Partager ses documents.",
-      "target": "_blank"
+      "categories": [
+        "HxQFJXymMXXrYByXt",
+        "KZXPogfdLZmHAowaN"
+      ]
     },
     {
-      "glyphicon": "glyphicon-certificate",
-      "url": "https://filepizza.mim.ovh",
+      "url": "https://filepizza.mim-libre.fr",
       "logo": "https://raw.githubusercontent.com/luceole/filepizza/master/static/images/wordmark.png",
       "title": "Transfert pair a pair",
       "description": "Echanger vos gros fichiers",
-      "target": "_blank"
+      "categories": [
+        "HxQFJXymMXXrYByXt",
+        "dQLERbBJ2sXXkXktX",
+        "KZXPogfdLZmHAowaN",
+        "PrTZTq2FnDYdABNHh"
+      ]
     },
     {
-      "glyphicon": "glyphicon-pencil",
       "url": "https://etherpad.apps.education.fr/",
       "title": "Pad Public",
       "description": "Editeur de texte en mode collaboratif",
       "logo": "https://opensharing.fr/wp-content/uploads/2017/04/etherpad-logo-1.png",
-      "target": "_blank"
+      "categories": [
+        "HxQFJXymMXXrYByXt"
+      ]
     },
     {
-      "glyphicon": "glyphicon-comment",
       "url": "https://codimd.apps.education.fr",
       "logo": "https://hackmd.io/images/home/cover.svg",
       "title": "CodiMD Public",
       "description": "Ecrire Ensemble",
-      "target": "_blank"
+      "categories": [
+        "HxQFJXymMXXrYByXt",
+        "dQLERbBJ2sXXkXktX",
+        "PrTZTq2FnDYdABNHh"
+      ]
     },
     {
-      "glyphicon": "glyphicon-globe",
       "url": "https://mastodon.etalab.gouv.fr",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Mastodon_Logotype_%28Full_Reversed%29.svg",
       "title": "Mastodon - EtatLab",
       "description": "Réseau social",
-      "target": "_blank"
+      "categories": [
+        "HxQFJXymMXXrYByXt",
+        "KZXPogfdLZmHAowaN",
+        "PrTZTq2FnDYdABNHh"
+      ]
     },
     {
-      "glyphicon": "glyphicon-user",
       "url": "https://auth.apps.education.fr/auth/realms/snp/account",
       "title": "OpenID Profil",
       "logo": "https://www.keycloak.org/resources/images/keycloak_logo_480x108.png",
-      "description": "Consulter vos infos de connexion",
-      "target": "_blank"
+      "description": "Consulter vos infos de connexion"
     },
     {
-      "glyphicon": "glyphicon-stats",
       "logo": "https://about.draw.io/wp-content/uploads/2017/07/drawio_logo_50px.png",
       "url": "https://draw.io?lang=fr",
       "title": "Diagrammes",
       "description": "Dessiner en ligne",
-      "target": "_blank"
+      "categories": []
     }
   ],
   "defaultGroups": [
@@ -104,6 +116,28 @@
       "type": 5,
       "info": "Apps Education",
       "note": ""
+    }
+  ],
+  "defaultCategories": [
+    {
+      "_id": "EviKfwAnFZcjEWFdz",
+      "name": "Production"
+    },
+    {
+      "_id": "HxQFJXymMXXrYByXt",
+      "name": "Collaboration"
+    },
+    {
+      "_id": "dQLERbBJ2sXXkXktX",
+      "name": "Coordination"
+    },
+    {
+      "_id": "KZXPogfdLZmHAowaN",
+      "name": "Partage"
+    },
+    {
+      "_id": "PrTZTq2FnDYdABNHh",
+      "name": "Communication"
     }
   ],
   "keycloak": {

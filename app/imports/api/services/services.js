@@ -31,8 +31,8 @@ Services.schema = new SimpleSchema(
     description: String,
     url: String,
     logo: String,
-    glyphicon: String,
-    target: { type: String, defaultValue: '_blank' },
+    categories: { type: Array, defaultValue: [] },
+    'categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
   },
   { tracker: Tracker },
 );
@@ -42,8 +42,7 @@ Services.publicFields = {
   description: 1,
   url: 1,
   logo: 1,
-  glyphicon: 1,
-  target: 1,
+  categories: 1,
 };
 
 Factory.define('service', Services, {
@@ -51,8 +50,7 @@ Factory.define('service', Services, {
   description: faker.lorem.sentence(),
   url: faker.internet.url(),
   logo: faker.internet.url(),
-  glyphicon: 'glyphicon-comment',
-  target: '_blank',
+  categories: [],
 });
 
 Services.attachSchema(Services.schema);

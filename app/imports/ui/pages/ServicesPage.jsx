@@ -12,6 +12,7 @@ import i18n from 'meteor/universe:i18n';
 import { InputAdornment, Typography } from '@material-ui/core';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
+import Categories from '../../api/categories/categories';
 import Spinner from '../components/Spinner';
 import { Context } from '../contexts/context';
 
@@ -22,7 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ServicesPage({ services, loading }) {
+function ServicesPage({
+  services, loading, categories, loadingCat,
+}) {
   const classes = useStyles();
   const [{ user, loadingUser }] = useContext(Context);
   const favs = loadingUser ? [] : user.favServices;
@@ -36,6 +39,9 @@ function ServicesPage({ services, loading }) {
     if (!search) return true;
     return searchText.indexOf(search.toLowerCase()) > -1;
   };
+
+  console.log('loadingCat', loadingCat);
+  console.log('categories', categories);
 
   return (
     <>
@@ -87,14 +93,21 @@ function ServicesPage({ services, loading }) {
 ServicesPage.propTypes = {
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loadingCat: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   const servicesHandle = Meteor.subscribe('services.all');
   const loading = !servicesHandle.ready();
   const services = Services.find({}, { sort: { title: 1 } }).fetch();
+  const categoriesHandle = Meteor.subscribe('categories.all');
+  const loadingCat = !categoriesHandle.ready();
+  const categories = Categories.find({}, { sort: { name: 1 } }).fetch();
   return {
     services,
     loading,
+    categories,
+    loadingCat,
   };
 })(ServicesPage);

@@ -13,3 +13,4 @@ import './register-api';
 import './Accounts';
 import './Groups';
 import './Services';
+import './Categories';

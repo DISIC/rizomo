@@ -21,7 +21,6 @@ describe('services', function () {
     it('builds correctly from factory', function () {
       const service = Factory.create('service');
       assert.typeOf(service, 'object');
-      assert.equal(service.target, '_blank');
     });
   });
   describe('publications', function () {
@@ -94,7 +93,7 @@ describe('services', function () {
         description: 'Discuter en direct ',
         url: 'https://chat.mim.ovh',
         logo: 'https://rocket.chat/images/default/logo--dark.svg',
-        glyphicon: 'glyphicon-comment',
+        categories: [],
       };
     });
     describe('createService', function () {
@@ -102,8 +101,6 @@ describe('services', function () {
         createService._execute({ userId: adminId }, chatData);
         const service = Services.findOne({ title: chatData.title });
         assert.typeOf(service, 'object');
-        // checks that default values work
-        assert.equal(service.target, '_blank');
       });
       it("does not create a service if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to create a service

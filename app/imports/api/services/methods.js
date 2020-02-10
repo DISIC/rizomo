@@ -16,12 +16,12 @@ export const createService = new ValidatedMethod({
     description: { type: String, min: 1 },
     url: SimpleSchema.RegEx.Url,
     logo: SimpleSchema.RegEx.Url,
-    glyphicon: String,
-    target: { type: String, optional: true },
+    categories: { type: Array, defaultValue: [] },
+    'categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
   }).validator(),
 
   run({
-    title, description, url, logo, glyphicon, target,
+    title, description, url, logo, categories,
   }) {
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
     if (!authorized) {
@@ -32,8 +32,7 @@ export const createService = new ValidatedMethod({
       description,
       url,
       logo,
-      glyphicon,
-      target,
+      categories,
     });
   },
 });
@@ -70,7 +69,8 @@ export const updateService = new ValidatedMethod({
     'data.description': { type: String, optional: true },
     'data.url': { type: String, optional: true },
     'data.logo': { type: String, optional: true },
-    'data.target': { type: String, optional: true },
+    'data.categories': { type: Array, optional: true },
+    'data.categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
   }).validator(),
 
   run({ serviceId, data }) {
