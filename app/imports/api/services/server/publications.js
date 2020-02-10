@@ -10,3 +10,10 @@ Meteor.publish('services.all', function groupsAll() {
   }
   return Services.find({}, { fields: Services.publicFields });
 });
+
+Meteor.publish('services.one', function servicesOne({ serviceId }) {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  return Services.find({ _id: serviceId }, { fields: Services.publicFields, sort: { name: 1 }, limit: 1 });
+});

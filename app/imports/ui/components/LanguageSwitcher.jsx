@@ -36,7 +36,7 @@ const LanguageSwitcher = ({ topbar }) => {
     <img
       alt={`flag for ${i18n.getLanguageNativeName(language)}`}
       className={classes.flag}
-      src={`images/i18n/${language}.png`}
+      src={`/images/i18n/${language}.png`}
     />
   );
   return (
