@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
@@ -11,7 +12,6 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Services from '../../api/services/services';
 import Spinner from '../components/Spinner';
-import { unfavService, favService } from '../../api/users/methods';
 import { Context } from '../contexts/context';
 import Categories from '../../api/categories/categories';
 
@@ -79,7 +79,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
   const handleFavorite = () => {
     if (favorite) {
       setLoading(true);
-      unfavService.call({ serviceId: service._id }, (err) => {
+      Meteor.call('users.unfavService', { serviceId: service._id }, (err) => {
         setLoading(false);
         if (err) {
           msg.error(err.reason);
@@ -89,7 +89,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
       });
     } else {
       setLoading(true);
-      favService.call({ serviceId: service._id }, (err) => {
+      Meteor.call('users.favService', { serviceId: service._id }, (err) => {
         setLoading(false);
         if (err) {
           msg.error(err.reason);

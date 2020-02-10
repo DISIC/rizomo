@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -15,7 +16,6 @@ import {
 } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
-import { favService, unfavService } from '../../api/users/methods';
 
 const useStyles = makeStyles((theme) => ({
   cardActions: {
@@ -64,7 +64,7 @@ function ServiceDetails({
 
   const handleFavorite = () => {
     if (favAction === 'unfav') {
-      unfavService.call({ serviceId: service._id }, (err) => {
+      Meteor.call('users.unfavService', { serviceId: service._id }, (err) => {
         if (err) {
           msg.error(err.reason);
         } else {
@@ -72,7 +72,7 @@ function ServiceDetails({
         }
       });
     } else {
-      favService.call({ serviceId: service._id }, (err) => {
+      Meteor.call('users.favService', { serviceId: service._id }, (err) => {
         if (err) {
           msg.error(err.reason);
         } else {
@@ -81,7 +81,6 @@ function ServiceDetails({
       });
     }
   };
-
 
   const favButtonLabel = favAction === 'unfav'
     ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')

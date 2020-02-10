@@ -12,7 +12,7 @@ import '../../../../i18n/en.i18n.json';
 
 import {
   setAdmin, unsetAdmin, setStructure, setUsername, setActive, unsetActive,
-} from '../methods';
+} from './methods';
 import { structures } from '../structures';
 import './publications';
 
@@ -21,7 +21,10 @@ describe('users', function () {
     let userId;
     let email;
     before(function () {
+      Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
+      Meteor.roles.remove({});
+      Roles.createRole('admin');
       _.times(3, () => {
         email = faker.internet.email();
         Accounts.createUser({
@@ -43,18 +46,26 @@ describe('users', function () {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
       });
-      Meteor.users.update(userId, { $set: { isActive: true } });
+      Meteor.users.update(userId, { $set: { isActive: true, isRequest: false } });
     });
-    describe('users.all', function () {
-      it('sends all users with restricted fields', function (done) {
+    describe('users.request', function () {
+      it('does not send data to non admin users', function (done) {
         const collector = new PublicationCollector({ userId });
-        collector.collect('users.all', (collections) => {
-          chai.assert.equal(collections.users.length, 4);
-          const user = collections.users[0];
-          assert.notProperty(user, 'favServices');
+        collector.collect('users.request', (collections) => {
+          chai.assert.equal(collections.users, undefined);
           done();
         });
       });
+      it('sends users awaiting for activation to admin user', function (done) {
+        Roles.addUsersToRoles(userId, 'admin');
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.request', (collections) => {
+          chai.assert.equal(collections.users.length, 3);
+          done();
+        });
+      });
+    });
+    describe('userData', function () {
       it('sends additional fields for current user', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('userData', (collections) => {

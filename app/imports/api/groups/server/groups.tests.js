@@ -26,7 +26,7 @@ import {
   unsetCandidateOf,
   setAnimatorOf,
   unsetAnimatorOf,
-} from '../../users/methods';
+} from '../../users/server/methods';
 
 describe('groups', function () {
   describe('mutators', function () {

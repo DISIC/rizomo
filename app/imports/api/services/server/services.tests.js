@@ -12,7 +12,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import { createService, removeService, updateService } from '../methods';
-import { favService, unfavService } from '../../users/methods';
+import { favService, unfavService } from '../../users/server/methods';
 import './publications';
 import Services from '../services';
 

@@ -7,12 +7,87 @@ import SimpleSchema from 'simpl-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 
-import { isActive } from '../utils';
-import Services from '../services/services';
-import Groups from '../groups/groups';
+import { isActive } from '../../utils';
+import Services from '../../services/services';
+import Groups from '../../groups/groups';
 // initialize Meteor.users customizations
-import './users';
-import { structures } from './structures';
+import '../users';
+import { structures } from '../structures';
+
+// users.findUsers: Returns users using pagination
+//   filter: string to search for in username/firstname/lastname/emails (case insensitive search)
+//   page: number of the page requested
+//   pageSize: number of entries per page
+//   sortColumn/sortOrder: sort entries on a specific field with given order (1/-1)
+export const findUsers = new ValidatedMethod({
+  name: 'users.findUsers',
+  validate: new SimpleSchema({
+    page: {
+      type: SimpleSchema.Integer,
+      min: 1,
+      defaultValue: 1,
+      optional: true,
+    },
+    pageSize: {
+      type: SimpleSchema.Integer,
+      min: 1,
+      defaultValue: 10,
+      optional: true,
+    },
+    filter: { type: String, defaultValue: '', optional: true },
+    sortColumn: {
+      type: String,
+      allowedValues: ['_id', ...Meteor.users.schema.objectKeys()],
+      defaultValue: 'username',
+      optional: true,
+    },
+    sortOrder: {
+      type: SimpleSchema.Integer,
+      allowedValues: [1, -1],
+      defaultValue: 1,
+      optional: true,
+    },
+  }).validator({ clean: true }),
+  run({
+    page, pageSize, filter, sortColumn, sortOrder,
+  }) {
+    const isAdmin = Roles.userIsInRole(this.userId, 'admin');
+    // calculate number of entries to skip
+    const skip = (page - 1) * pageSize;
+    let query = {};
+    if (filter && filter.length > 0) {
+      const emails = {
+        $elemMatch: {
+          address: { $regex: `.*${filter}.*`, $options: 'i' },
+        },
+      };
+      query = {
+        $or: [
+          { emails },
+          {
+            username: { $regex: `.*${filter}.*`, $options: 'i' },
+          },
+          {
+            lastName: { $regex: `.*${filter}.*`, $options: 'i' },
+          },
+          {
+            firstName: { $regex: `.*${filter}.*`, $options: 'i' },
+          },
+        ],
+      };
+    }
+    const sort = {};
+    sort[sortColumn] = sortOrder;
+    const totalCount = Meteor.users.find(query).count();
+    const data = Meteor.users.find(query, {
+      fields: isAdmin ? Meteor.users.adminFields : Meteor.users.publicFields,
+      limit: pageSize,
+      skip,
+      sort,
+    }).fetch();
+    return { data, page, totalCount };
+  },
+});
 
 export const setUsername = new ValidatedMethod({
   name: 'users.setUsername',
