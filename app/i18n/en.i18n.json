@@ -24,6 +24,7 @@
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Run this service",
+      "singleServiceButtonLabel": "Learn more",
       "favButtonLabelFav": "Add to your favorites",
       "favButtonLabelNoFav": "Remove from your favorites"
     },
