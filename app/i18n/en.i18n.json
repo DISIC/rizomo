@@ -109,6 +109,14 @@
         "pagination_labelRowsSelect": "users per page",
         "body_emptyDataSourceMessage": "No user to validate"
       }
+    },
+    "SingleServicePage": {
+      "backToList": "Back to the list",
+      "addToFavorites": "Add to my apps",
+      "inFavorites": "Added",
+      "screenshots": "Screenshots",
+      "categories": "Categories",
+      "open": "Open"
     }
   },
   "layouts": {

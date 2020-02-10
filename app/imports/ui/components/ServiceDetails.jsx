@@ -13,6 +13,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
+import { Link } from 'react-router-dom';
 import { favService, unfavService } from '../../api/users/methods';
 
 const useStyles = makeStyles(() => ({
@@ -78,6 +79,11 @@ export default function ServiceDetails({ service, favAction }) {
             <PlayArrowIcon />
           </Button>
         </Tooltip>
+        <Link to={`/services/${service._id}`}>
+          <Button variant="contained" color="primary">
+            GO
+          </Button>
+        </Link>
         <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
           <Fab size="small" className={classes.fab} onClick={handleFavorite}>
             {favAction === 'unfav' ? <RemoveIcon /> : <FavoriteIcon />}

@@ -31,7 +31,7 @@ function TopBar() {
   return (
     <AppBar position="fixed" color="secondary">
       <Toolbar>
-        <img src="images/Logo-appseducation.png" className={classes.imgLogo} alt="Logo" />
+        <img src="/images/Logo-appseducation.png" className={classes.imgLogo} alt="Logo" />
         <div className={classes.grow} />
         <LanguageSwitcher topbar />
         <Button onClick={() => console.log('go profile')} startIcon={<AccountCircle />}>

@@ -42,16 +42,22 @@ const useStyles = makeStyles((theme) => ({
 
 function MenuBar() {
   const [{ userId }] = useContext(Context);
-  const location = useLocation();
+  const { pathname } = useLocation();
   const history = useHistory();
   const classes = useStyles();
   const isAdmin = Roles.userIsInRole(userId, 'admin');
   const T = i18n.createComponent('components.MenuBar');
+  const currentLink = links.find((link) => {
+    if (link.path === pathname || (pathname.search(link.path) > -1 && link.path !== '/')) {
+      return true;
+    }
+    return false;
+  });
 
   return (
     <Tabs
       className={classes.tabs}
-      value={location.pathname}
+      value={currentLink.path}
       indicatorColor="primary"
       textColor="primary"
       aria-label="menu links"
@@ -61,8 +67,8 @@ function MenuBar() {
           return (
             <Tab
               key={link.path}
-              label={<T>{link.content}</T>}
               value={link.path}
+              label={<T>{link.content}</T>}
               onClick={() => history.push(link.path)}
             />
           );

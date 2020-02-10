@@ -15,6 +15,7 @@ import NotFound from '../pages/NotFound';
 import { Context } from '../contexts/context';
 import AdminRoute from '../components/AdminRoute';
 import Spinner from '../components/Spinner';
+import SingleServicePage from '../pages/SingleServicePage';
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -56,8 +57,9 @@ function MainLayout() {
             <Switch>
               <Route exact path="/" component={ServicesPage} />
 
-              <Route path="/services" component={ServicesPage} />
-              <Route path="/groups" component={GroupsPage} />
+              <Route exact path="/services" component={ServicesPage} />
+              <Route exact path="/services/:serviceId" component={SingleServicePage} />
+              <Route exact path="/groups" component={GroupsPage} />
 
               <AdminRoute
                 path="/adminservices"
