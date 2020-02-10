@@ -15,7 +15,9 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import Groups from '../groups';
-import { createGroup, removeGroup, updateGroup } from '../methods';
+import {
+  createGroup, removeGroup, updateGroup, findGroups,
+} from '../methods';
 import './publications';
 import {
   setAdminOf,
@@ -51,7 +53,8 @@ describe('groups', function () {
       });
       Meteor.users.update(userId, { $set: { isActive: true } });
       Groups.remove({});
-      _.times(4, () => Factory.create('group', { owner: Random.id() }));
+      _.times(3, () => Factory.create('group', { owner: Random.id() }));
+      Factory.create('group', { owner: Random.id(), name: 'MonGroupe' });
     });
     describe('groups.all', function () {
       it('sends all groups', function (done) {
@@ -60,6 +63,26 @@ describe('groups', function () {
           chai.assert.equal(collections.groups.length, 4);
           done();
         });
+      });
+    });
+    describe('groups.findGroups method', function () {
+      it('fetches a page of groups', function () {
+        let results = findGroups._execute({ userId }, { pageSize: 3 });
+        assert.equal(results.data.length, 3);
+        assert.equal(results.page, 1);
+        assert.equal(results.totalCount, 4);
+        // fetch page 2
+        results = findGroups._execute({ userId }, { pageSize: 3, page: 2 });
+        assert.equal(results.data.length, 1);
+        assert.equal(results.page, 2);
+        assert.equal(results.totalCount, 4);
+      });
+      it('fetches a page of groups with a filter', function () {
+        const { data, page, totalCount } = findGroups._execute({ userId }, { filter: 'MonGroupe' });
+        assert.equal(data.length, 1);
+        assert.equal(page, 1);
+        assert.equal(totalCount, 1);
+        assert.notProperty(data[0].name, 'MonGroupe');
       });
     });
   });

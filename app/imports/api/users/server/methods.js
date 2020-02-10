@@ -542,6 +542,7 @@ const LISTS_METHODS = _.pluck(
     unsetCandidateOf,
     favService,
     unfavService,
+    findUsers,
   ],
   'name',
 );

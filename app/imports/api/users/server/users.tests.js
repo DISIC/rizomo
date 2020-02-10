@@ -11,7 +11,7 @@ import { Roles } from 'meteor/alanning:roles';
 import '../../../../i18n/en.i18n.json';
 
 import {
-  setAdmin, unsetAdmin, setStructure, setUsername, setActive, unsetActive,
+  setAdmin, unsetAdmin, setStructure, setUsername, setActive, unsetActive, findUsers,
 } from './methods';
 import { structures } from '../structures';
 import './publications';
@@ -26,7 +26,9 @@ describe('users', function () {
       Meteor.roles.remove({});
       Roles.createRole('admin');
       _.times(3, () => {
-        email = faker.internet.email();
+        // prefix email with 'test' to make sure it won't match
+        // with 'user@ac-test.fr' when testing filtered search
+        email = `test${faker.internet.email()}`;
         Accounts.createUser({
           email,
           username: email,
@@ -37,7 +39,7 @@ describe('users', function () {
         });
       });
       // spécific user for userData publication
-      email = faker.internet.email();
+      email = 'user@ac-test.fr';
       userId = Accounts.createUser({
         email,
         username: email,
@@ -63,6 +65,7 @@ describe('users', function () {
           chai.assert.equal(collections.users.length, 3);
           done();
         });
+        Roles.removeUsersFromRoles(userId, 'admin');
       });
     });
     describe('userData', function () {
@@ -74,6 +77,35 @@ describe('users', function () {
           assert.property(user, 'favServices');
           done();
         });
+      });
+    });
+    describe('users.findUsers method', function () {
+      it('fetches a page of users as normal user', function () {
+        const { data, page, totalCount } = findUsers._execute({ userId }, { pageSize: 2 });
+        assert.equal(data.length, 2);
+        assert.equal(page, 1);
+        assert.equal(totalCount, 4);
+        assert.notProperty(data[0], 'emails');
+      });
+      it('fetches a page of users as normal user with a filter', function () {
+        const { data, page, totalCount } = findUsers._execute({ userId }, { filter: 'user@ac-test.fr' });
+        assert.equal(data.length, 1);
+        assert.equal(page, 1);
+        assert.equal(totalCount, 1);
+        assert.notProperty(data[0].username, 'user@ac-test.fr');
+      });
+      it('fetches a page of users as admin user', function () {
+        Roles.addUsersToRoles(userId, 'admin');
+        let results = findUsers._execute({ userId }, { pageSize: 3 });
+        assert.equal(results.data.length, 3);
+        assert.equal(results.page, 1);
+        assert.equal(results.totalCount, 4);
+        assert.property(results.data[0], 'emails');
+        // fetch page 2
+        results = findUsers._execute({ userId }, { pageSize: 3, page: 2 });
+        assert.equal(results.data.length, 1);
+        assert.equal(results.page, 2);
+        assert.equal(results.totalCount, 4);
       });
     });
   });
