@@ -11,6 +11,7 @@ import Services from '../../api/services/services';
 import Spinner from '../components/Spinner';
 import { unfavService, favService } from '../../api/users/methods';
 import { Context } from '../contexts/context';
+import Categories from '../../api/categories/categories';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SingleServicePage = ({ service, ready, categories }) => {
+const SingleServicePage = ({ service = [], ready, categories = [] }) => {
   const classes = useStyles();
   const [{ user = {} }] = useContext(Context);
   const [loading, setLoading] = useState(false);
@@ -89,7 +90,7 @@ const SingleServicePage = ({ service, ready, categories }) => {
   }
 
   return (
-    <Container maxWidth="md" className={classes.root}>
+    <Container className={classes.root}>
       <Grid container spacing={2}>
         <Grid item md={12}>
           <Link to="/services">
@@ -127,14 +128,20 @@ const SingleServicePage = ({ service, ready, categories }) => {
             {i18n.__('pages.SingleServicePage.categories')}
           </Typography>
           {categories.map((categ) => (
-            <Chip className={classes.category} key={categ._id} label={categ.name} />
+            <Chip
+              className={classes.category}
+              key={categ._id}
+              label={categ.name}
+              color="primary"
+              style={{ backgroundColor: categ.color }}
+            />
           ))}
         </Grid>
         <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
           <Typography className={classes.smallTitle} variant="h5">
             Description
           </Typography>
-          <Typography className={classes.content}>{service.content}</Typography>
+          <div className={classes.content} dangerouslySetInnerHTML={{ __html: service.content }} />
         </Grid>
         {Boolean(service.screenshots.length) && (
           <>
@@ -159,52 +166,19 @@ const SingleServicePage = ({ service, ready, categories }) => {
   );
 };
 
-// TO DELETE AFTER SCHEMA DATA IS FINISHED
-let fakeData = {};
-const fillData = async () => {
-  const result = await fetch('https://baconipsum.com/api/?type=meat-and-filler');
-  const json = await result.json();
-  fakeData = {
-    team: 'Académie de Dijon',
-    categories: ['eroifjrejfre', 'poapoedkzdzoe'],
-    content: json.join(),
-    screenshots: [
-      'https://source.unsplash.com/random/1600x900',
-      'https://source.unsplash.com/random/1600x900',
-      'https://source.unsplash.com/random/1600x900',
-    ],
-  };
-};
-fillData();
-
-// TO DELETE AFTER SCHEMA DATA IS FINISHED
-const fakeCategories = [
-  {
-    _id: 'eroifjrejfre',
-    name: 'Licorne',
-  },
-  {
-    _id: 'poapoedkzdzoe',
-    name: 'Bisounours',
-  },
-];
-
 export default withTracker(
   ({
     match: {
-      params: { serviceId },
+      params: { slug },
     },
   }) => {
-    const subService = Meteor.subscribe('services.one', { serviceId });
-    const ready = subService.ready();
-    const service = Services.findOne({ _id: serviceId });
-    // const subCategories = Meteor.subscribe('categories.service', { serviceId });
-    const categories = fakeCategories;
+    const subService = Meteor.subscribe('services.one', { slug });
+    const service = Services.findOne({ slug }) || {};
+    const subCategories = Meteor.subscribe('categories.service', { categories: service.categories });
+    const categories = Categories.find({ _id: { $in: service.categories || [] } }).fetch();
+    const ready = subService.ready() && subCategories.ready();
     return {
-      service: {
-        ...service,
-        ...fakeData,
-      },
+      service,
       ready,
       categories,
     };

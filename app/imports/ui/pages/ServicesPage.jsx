@@ -48,7 +48,7 @@ function ServicesPage({
       {loading ? (
         <Spinner />
       ) : (
-        <Container className={classes.cardGrid} maxWidth="md">
+        <Container className={classes.cardGrid}>
           <Grid container spacing={4}>
             <Grid item xs={12} sm={12} md={12}>
               <Typography variant="h4">{i18n.__('pages.ServicesPage.title')}</Typography>

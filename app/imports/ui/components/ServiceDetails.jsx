@@ -79,7 +79,7 @@ export default function ServiceDetails({ service, favAction }) {
             <PlayArrowIcon />
           </Button>
         </Tooltip>
-        <Link to={`/services/${service._id}`}>
+        <Link to={`/services/${service.slug}`}>
           <Button variant="contained" color="primary">
             GO
           </Button>

@@ -5,6 +5,7 @@ import { ServiceConfiguration } from 'meteor/service-configuration';
 
 // required: loads accounts customization before initial users creation
 import AppRoles from '../../api/users/users';
+import fakeData from './fakeData';
 
 if (Meteor.settings.keycloak) {
   ServiceConfiguration.configurations.upsert(
@@ -54,9 +55,9 @@ AppRoles.forEach((role) => {
 
 /** When running app for first time, pass a settings file to set up a default user account. */
 if (Meteor.users.find().count() === 0) {
-  if (Meteor.settings.defaultAccounts) {
+  if (Meteor.settings.private.fillWithFakeData) {
     console.log('Creating the default user(s)');
-    Meteor.settings.defaultAccounts.map(({
+    fakeData.defaultAccounts.map(({
       email, password, role, structure, firstName, lastName,
     }) => createUser(email, password, role, structure, firstName, lastName));
   } else {

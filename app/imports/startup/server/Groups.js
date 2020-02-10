@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import Groups from '../../api/groups/groups';
 import { createGroup } from '../../api/groups/methods';
+import fakeData from './fakeData';
 
 /** When running app for first time, pass a settings file to set up default groups. */
 if (Groups.find().count() === 0) {
-  if (Meteor.settings.defaultGroups) {
+  if (Meteor.settings.private.fillWithFakeData) {
     console.log('Creating the default groups');
-    Meteor.settings.defaultGroups.map(({
+    fakeData.defaultGroups.map(({
       owner, name, type, info, note,
     }) => {
       // find owner userId
