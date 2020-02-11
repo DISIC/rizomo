@@ -108,6 +108,7 @@ function SignIn({ loggingIn }) {
   };
 
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
+  const useKeycloak = Meteor.settings.public.enableKeycloak;
   return (
     <div>
       <Typography variant="h5" color="inherit" paragraph>
@@ -118,71 +119,76 @@ function SignIn({ loggingIn }) {
       </Typography>
       <form onSubmit={handleSignIn} className={classes.form} noValidate>
         {loggingIn && <Spinner full />}
-        <TextField
-          margin="normal"
-          required
-          id="email"
-          label={i18n.__('pages.SignIn.emailLabel')}
-          name="email"
-          autoComplete="email"
-          autoFocus
-          error={hasError('email')}
-          fullWidth
-          helperText={hasError('email') ? i18n.__(formState.errors.email[0]) : null}
-          onChange={handleChange}
-          type="text"
-          value={formState.values.email || ''}
-          variant="outlined"
-          disabled={loggingIn}
-        />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label={i18n.__('pages.SignIn.pwdLabel')}
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          error={hasError('password')}
-          helperText={hasError('password') ? i18n.__(formState.errors.password[0]) : null}
-          onChange={handleChange}
-          value={formState.values.password || ''}
-          disabled={loggingIn}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          disabled={!formState.isValid || loggingIn}
-        >
-          {i18n.__('pages.SignIn.connect')}
-        </Button>
-        <Button
-          disabled={loggingIn}
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          onClick={handleKeycloakAuth}
-        >
-          {i18n.__('pages.SignIn.loginKeycloak')}
-        </Button>
-        <Grid container>
-          <Grid item xs>
-            <Link to="/" variant="body2">
-              {i18n.__('pages.SignIn.forgotPwd')}
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link to="/signup" variant="body2">
-              {i18n.__('pages.SignIn.createAccount')}
-            </Link>
-          </Grid>
-        </Grid>
+        {useKeycloak ? (
+          <Button
+            disabled={loggingIn}
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={handleKeycloakAuth}
+          >
+            {i18n.__('pages.SignIn.loginKeycloak')}
+          </Button>
+        ) : (
+          <>
+            <TextField
+              margin="normal"
+              required
+              id="email"
+              label={i18n.__('pages.SignIn.emailLabel')}
+              name="email"
+              autoComplete="email"
+              autoFocus
+              error={hasError('email')}
+              fullWidth
+              helperText={hasError('email') ? i18n.__(formState.errors.email[0]) : null}
+              onChange={handleChange}
+              type="text"
+              value={formState.values.email || ''}
+              variant="outlined"
+              disabled={loggingIn}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label={i18n.__('pages.SignIn.pwdLabel')}
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              error={hasError('password')}
+              helperText={hasError('password') ? i18n.__(formState.errors.password[0]) : null}
+              onChange={handleChange}
+              value={formState.values.password || ''}
+              disabled={loggingIn}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={!formState.isValid || loggingIn}
+            >
+              {i18n.__('pages.SignIn.connect')}
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link to="/" variant="body2">
+                  {i18n.__('pages.SignIn.forgotPwd')}
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link to="/signup" variant="body2">
+                  {i18n.__('pages.SignIn.createAccount')}
+                </Link>
+              </Grid>
+            </Grid>
+          </>
+        )}
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
