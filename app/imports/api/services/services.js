@@ -68,13 +68,13 @@ Services.publicFields = {
   logo: 1,
   categories: 1,
   team: 1,
+  slug: 1,
 };
 
 Services.allPublicFields = {
   ...Services.publicFields,
   screenshots: 1,
   content: 1,
-  slug: 1,
 };
 
 Factory.define('service', Services, {
