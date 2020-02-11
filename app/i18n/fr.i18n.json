@@ -79,6 +79,7 @@
     },
     "ServicesPage": {
       "title": "Découvrez les applications",
+      "categories": "Catégories",
       "tabsLabel": "Onglet des services",
       "tabFavServicesLabel": "Mes services favoris",
       "tabAllServicesLabel": "Tous les services",

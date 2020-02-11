@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ServiceDetails({
-  service, favAction, categories, loadingCat,
+  service, favAction, categories, loadingCat, updateCategories, catList,
 }) {
   const classes = useStyles();
 
@@ -74,8 +74,6 @@ function ServiceDetails({
       });
     }
   };
-
-  const handleCatFilter = () => '';
 
   const favButtonLabel = favAction === 'unfav'
     ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
@@ -108,8 +106,9 @@ function ServiceDetails({
               className={classes.chip}
               key={cat._id}
               label={cat.name}
-              variant="outlined"
-              onClick={handleCatFilter}
+              variant={catList.includes(cat._id) ? 'outlined' : 'default'}
+              color={catList.includes(cat._id) ? 'primary' : 'default'}
+              onClick={() => updateCategories(cat._id)}
             />
           ))}
         </Paper>
@@ -142,6 +141,10 @@ function ServiceDetails({
 ServiceDetails.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
   favAction: PropTypes.string.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.object),
+  loadingCat: PropTypes.bool.isRequired,
+  updateCategories: PropTypes.func.isRequired,
+  catList: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default withTracker(({ service }) => {
