@@ -142,6 +142,22 @@
     },
     "PersonalSpace": {
       "welcome": "Bienvenue sur votre espace personnel"
+    },
+    "AdminSingleServicePage": {
+      "edition": "Edition du service",
+      "creation": "Création d'un nouveau service",
+      "title": "Titre",
+      "slug": "Slug",
+      "team": "Equipe",
+      "logo": "Logo du servicen",
+      "description": "Courte description",
+      "url": "URL du service",
+      "content": "Longue description du service",
+      "categories": "Catégories",
+      "screenshots": "Captures d'écran",
+      "addScreenshots": "Ajouter un écran",
+      "save": "Sauvegarder",
+      "update": "Mettre à jour"
     }
   },
   "layouts": {

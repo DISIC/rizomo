@@ -4,22 +4,21 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
+import { Container } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import Services from '../../api/services/services';
-import { createService, updateService, removeService } from '../../api/services/methods';
+import { removeService } from '../../api/services/methods';
 import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
 
 function AdminServicesPage({ services, loading }) {
+  const history = useHistory();
   const columns = [
     {
       title: i18n.__('pages.AdminServicesPage.columnLogo'),
       field: 'logo',
       render: (rowData) => (
-        <img
-          style={{ height: 36, backgroundColor: 'palegoldenrod', borderRadius: '10%' }}
-          src={rowData.logo}
-          alt={`Logo - ${rowData.title}`}
-        />
+        <img style={{ height: 36, borderRadius: '10%' }} src={rowData.logo} alt={`Logo - ${rowData.title}`} />
       ),
     },
     { title: i18n.__('pages.AdminServicesPage.columnTitle'), field: 'title', defaultSort: 'asc' },
@@ -49,70 +48,48 @@ function AdminServicesPage({ services, loading }) {
       {loading ? (
         <Spinner />
       ) : (
-        <MaterialTable
-          // other props
-          title={i18n.__('pages.AdminServicesPage.title')}
-          columns={columns}
-          data={services}
-          options={options}
-          localization={setMaterialTableLocalization('pages.AdminServicesPage')}
-          editable={{
-            onRowAdd: (newData) => new Promise((resolve, reject) => {
-              createService.call(
-                {
-                  title: newData.title,
-                  description: newData.description,
-                  url: newData.url,
-                  logo: newData.logo,
+        <Container>
+          <MaterialTable
+            // other props
+            title={i18n.__('pages.AdminServicesPage.title')}
+            columns={columns}
+            data={services}
+            options={options}
+            localization={setMaterialTableLocalization('pages.AdminServicesPage')}
+            actions={[
+              {
+                icon: 'edit',
+                tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
+                onClick: (event, rowData) => {
+                  history.push(`/adminservices/${rowData._id}`);
                 },
-                (err, res) => {
-                  if (err) {
-                    console.log(err);
-                    reject(err);
-                  } else {
-                    resolve(res);
-                  }
-                },
-              );
-            }),
-            onRowUpdate: (newData, oldData) => new Promise((resolve, reject) => {
-              updateService.call(
-                {
-                  serviceId: oldData._id,
-                  data: {
-                    title: newData.title,
-                    description: newData.description,
-                    url: newData.url,
-                    logo: newData.logo,
+              },
+              {
+                icon: 'add',
+                tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_addTooltip'),
+                isFreeAction: true,
+                onClick: () => history.push('/adminservices/new'),
+              },
+            ]}
+            editable={{
+              onRowDelete: (oldData) => new Promise((resolve, reject) => {
+                removeService.call(
+                  {
+                    serviceId: oldData._id,
                   },
-                },
-                (err, res) => {
-                  if (err) {
-                    console.log(err);
-                    reject(err);
-                  } else {
-                    resolve(res);
-                  }
-                },
-              );
-            }),
-            onRowDelete: (oldData) => new Promise((resolve, reject) => {
-              removeService.call(
-                {
-                  serviceId: oldData._id,
-                },
-                (err, res) => {
-                  if (err) {
-                    console.log(err);
-                    reject(err);
-                  } else {
-                    resolve(res);
-                  }
-                },
-              );
-            }),
-          }}
-        />
+                  (err, res) => {
+                    if (err) {
+                      console.log(err);
+                      reject(err);
+                    } else {
+                      resolve(res);
+                    }
+                  },
+                );
+              }),
+            }}
+          />
+        </Container>
       )}
     </>
   );
