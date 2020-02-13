@@ -12,13 +12,12 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import InfoIcon from '@material-ui/icons/Info';
 import Tooltip from '@material-ui/core/Tooltip';
 import {
-  Button, CardHeader, Avatar, IconButton, Divider, Chip, Grid, Paper,
+  Button, CardHeader, Divider, Chip, Paper,
 } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import { favService, unfavService } from '../../api/users/methods';
 import Categories from '../../api/categories/categories';
-import Spinner from './Spinner';
 
 const useStyles = makeStyles((theme) => ({
   cardActions: {
@@ -61,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ServiceDetails({
-  service, favAction, categories, loadingCat, updateCategories, catList,
+  service, favAction, categories, updateCategories, catList,
 }) {
   const classes = useStyles();
 
@@ -142,18 +141,17 @@ function ServiceDetails({
 ServiceDetails.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
   favAction: PropTypes.string.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.object),
-  loadingCat: PropTypes.bool.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   updateCategories: PropTypes.func.isRequired,
-  catList: PropTypes.arrayOf(PropTypes.string),
+  catList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default withTracker(({ service }) => {
   const categoriesHandle = Meteor.subscribe('categories.service', { categories: service.categories });
   const loadingCat = !categoriesHandle.ready();
+  console.log('loadingCat', loadingCat);
   const categories = Categories.find({ _id: { $in: service.categories || [] } }, { sort: { name: 1 } }).fetch();
   return {
     categories,
-    loadingCat,
   };
 })(ServiceDetails);

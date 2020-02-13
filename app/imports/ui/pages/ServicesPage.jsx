@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 
 import {
-  InputAdornment, Typography, Paper, Chip,
+  InputAdornment, Typography, Chip, Badge,
 } from '@material-ui/core';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
@@ -24,8 +24,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(5),
   },
   chip: {
-    margin: theme.spacing(0.5),
+    margin: theme.spacing(1),
   },
+  badge: { position: 'inherit' },
   gridItem: {
     display: 'flex',
     justifyContent: 'center',
@@ -106,7 +107,20 @@ function ServicesPage({ services, categories, ready }) {
                 <Chip
                   className={classes.chip}
                   key={cat._id}
-                  label={cat.name}
+                  label={(
+                    <>
+                      {cat.name}
+                      <Badge
+                        color="primary"
+                        className={classes.badge}
+                        badgeContent={cat.count}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
+                        }}
+                      />
+                    </>
+                  )}
                   variant={catList.includes(cat._id) ? 'outlined' : 'default'}
                   color={catList.includes(cat._id) ? 'primary' : 'default'}
                   onClick={() => updateCatList(cat._id)}
@@ -145,7 +159,8 @@ export default withTracker(() => {
   const servicesHandle = Meteor.subscribe('services.all');
   const services = Services.find({}, { sort: { title: 1 } }).fetch();
   const categoriesHandle = Meteor.subscribe('categories.all');
-  const categories = Categories.find({}, { sort: { name: 1 } }).fetch();
+  const cats = Categories.find({}, { sort: { name: 1 } }).fetch();
+  const categories = cats.map((cat) => ({ ...cat, count: Services.find({ categories: { $in: [cat._id] } }).count() }));
   const ready = servicesHandle.ready() && categoriesHandle.ready();
   return {
     services,
