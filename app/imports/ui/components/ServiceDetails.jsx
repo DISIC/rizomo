@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import HelpIcon from '@material-ui/icons/Help';
+import InfoIcon from '@material-ui/icons/Info';
 import Tooltip from '@material-ui/core/Tooltip';
 import {
   Button, CardHeader, Avatar, IconButton, Divider, Chip, Grid, Paper,
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1,
+    backgroundColor: 'ivory',
   },
   buttonText: { textTransform: 'none' },
   title: { fontWeight: 'bold', lineHeight: '1' },
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     marginTop: theme.spacing(2),
     padding: theme.spacing(1),
+    backgroundColor: 'ivory',
   },
   chip: {
     margin: theme.spacing(0.5),
@@ -80,7 +82,7 @@ function ServiceDetails({
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} elevation={12}>
       <CardHeader
         avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
         action={(
@@ -97,12 +99,11 @@ function ServiceDetails({
       />
       <Divider variant="middle" />
       <CardContent className={classes.cardContent}>
-        <Typography variant="body2" component="p">
-          {service.description}
-        </Typography>
+        <Typography variant="body1">{service.description}</Typography>
         <Paper variant="elevation" elevation={0} className={classes.paperChip}>
           {categories.map((cat) => (
             <Chip
+              size="small"
               className={classes.chip}
               key={cat._id}
               label={cat.name}
@@ -120,8 +121,8 @@ function ServiceDetails({
           aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
         >
           <Link to={`/services/${service.slug}`}>
-            <Button color="primary" className={classes.fab}>
-              <HelpIcon />
+            <Button variant="contained" color="primary">
+              <InfoIcon />
             </Button>
           </Link>
         </Tooltip>
