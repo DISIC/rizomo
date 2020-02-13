@@ -285,7 +285,11 @@ const AdminSingleServicePage = ({
 (
             {(serviceData.screenshots && serviceData.screenshots.length) || 0}
 )
-            <IconButton color="primary" aria-label={i18n.__('pages.AdminSingleServicePage.addScreenshots')} onClick={addScreenshots}>
+            <IconButton
+              color="primary"
+              aria-label={i18n.__('pages.AdminSingleServicePage.addScreenshots')}
+              onClick={addScreenshots}
+            >
               <AddIcon />
             </IconButton>
           </InputLabel>
