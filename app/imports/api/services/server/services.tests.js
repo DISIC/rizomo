@@ -89,11 +89,14 @@ describe('services', function () {
       // add service to userId favorites
       Meteor.users.update({ _id: userId }, { $set: { favServices: [serviceId] } });
       chatData = {
-        title: 'Chat sur MIM',
-        description: 'Discuter en direct ',
-        url: 'https://chat.mim.ovh',
+        title: 'Chat sur un nuage de liconre',
+        description: 'Discuter en Troubadour ',
+        url: 'https://chat.licorne.ovh',
         logo: 'https://rocket.chat/images/default/logo--dark.svg',
         categories: [],
+        team: 'Dijon',
+        screenshots: [],
+        content: "<div>c'est un service de fou</div>",
       };
     });
     describe('createService', function () {
@@ -146,32 +149,39 @@ describe('services', function () {
       });
     });
     describe('updateService', function () {
+      const data = {
+        title: 'Chat sur MIMOSA',
+        description: 'Discuter en Troubadour',
+        url: 'https://chat.licorne.ovh',
+        logo: 'https://rocket.chat/images/default/logo--dark.svg',
+        categories: [],
+        team: 'Dijon',
+        screenshots: ['https://rocket.chat/images/default/logo--dark.svg'],
+        content: "<div>c'est un service de fou</div>",
+      };
       it('does update a service with admin user', function () {
-        const data = {
-          title: 'service',
-          description: 'un service',
-          url: 'https://mon-service.org',
-          logo: 'https://mon-service.org/logo.svg',
-        };
-        updateService._execute({ userId: adminId }, { serviceId, data });
+        updateService._execute({ userId: adminId }, { serviceId, data: { ...data } });
         const service = Services.findOne(serviceId);
         assert.equal(service.title, data.title);
         assert.equal(service.description, data.description);
         assert.equal(service.url, data.url);
         assert.equal(service.logo, data.logo);
+        assert.equal(service.team, data.team);
+        assert.deepEqual(service.screenshots, data.screenshots);
+        assert.equal(service.content, data.content);
       });
       it("does not update a service if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to delete the service
         assert.throws(
           () => {
-            updateService._execute({ userId }, { serviceId, data: { title: 'service' } });
+            updateService._execute({ userId }, { serviceId, data });
           },
           Meteor.Error,
           /api.services.updateService.notPermitted/,
         );
         assert.throws(
           () => {
-            updateService._execute({}, { serviceId, data: { title: 'service' } });
+            updateService._execute({}, { serviceId, data });
           },
           Meteor.Error,
           /api.services.updateService.notPermitted/,
