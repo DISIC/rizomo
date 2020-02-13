@@ -57,7 +57,7 @@ function MenuBar() {
   return (
     <Tabs
       className={classes.tabs}
-      value={currentLink.path}
+      value={currentLink ? currentLink.path : false}
       indicatorColor="primary"
       textColor="primary"
       aria-label="menu links"

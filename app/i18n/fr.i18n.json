@@ -3,7 +3,8 @@
     "users": {
       "unknownUser": "L'utilisateur n'existe pas.",
       "mustBeLoggedIn": "Vous devez être connecté.",
-      "adminNeeded": "Vous n'êtes pas administrateur."
+      "adminNeeded": "Vous n'êtes pas administrateur.",
+      "adminGiven": "Les droits d'administration ont été donnés à cet utilisateur: "
     },
     "groups": {
       "unknownGroup": "Le groupe n'existe pas.",

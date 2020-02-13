@@ -8,19 +8,24 @@ import AppRoles from '../../api/users/users';
 import fakeData from './fakeData';
 
 if (Meteor.settings.keycloak) {
-  ServiceConfiguration.configurations.upsert(
-    { service: 'keycloak' },
-    {
-      $set: {
-        loginStyle: 'redirect',
-        serverUrl: Meteor.settings.keycloak.url,
-        realm: Meteor.settings.keycloak.realm,
-        clientId: Meteor.settings.keycloak.client,
-        realmPublicKey: Meteor.settings.keycloak.pubkey,
-        bearerOnly: false,
+  if (Meteor.settings.public.enableKeycloak === true) {
+    Accounts.config({
+      forbidClientAccountCreation: true,
+    });
+    ServiceConfiguration.configurations.upsert(
+      { service: 'keycloak' },
+      {
+        $set: {
+          loginStyle: 'redirect',
+          serverUrl: Meteor.settings.keycloak.url,
+          realm: Meteor.settings.keycloak.realm,
+          clientId: Meteor.settings.keycloak.client,
+          realmPublicKey: Meteor.settings.keycloak.pubkey,
+          bearerOnly: false,
+        },
       },
-    },
-  );
+    );
+  }
 } else {
   console.log('No Keycloak configuration. Please invoke meteor with a settings file.');
 }

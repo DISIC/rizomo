@@ -1,9 +1,13 @@
 {
+  "public": {
+    "enableKeycloak": true
+  },
   "keycloak": {
     "url": "https://auth.apps.education.fr/auth",
     "realm": "snp",
     "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoTH8XgAI3ZajBTypPDRtqIZocbyYWhPt1+PWcqqIpJloTJPANlNSB+k27hd8oR8DDI/oUTYiHlwUYXWWFSjuseybp7AO9Ekc+a4LGbvw6AaDJtrtYGdkfffGV+eDLqP5egZke/XvpIMdj4FvE5/AeDFOzTt6xsm6wiBrMPtjSimjFKEsf/vuOOwvS/Ln2sjncH7FJqEVX+z8wvU3hM+8UjUr5sWCD9uSOy1DD+IV1ofKPbHk8KBBIci3DGyIF6pdxd21ELIM3jCAd4038Ynwz3f9l7edlz1MmTr2rTL1aOJjaw5es9Z345MnKaFjBNVl5BlRrfzLwHKDFhinG9D/RwIDAQAB",
-    "client": "sso"
+    "client": "sso",
+    "adminEmails": []
   },
   "private": {
     "fillWithFakeData": true

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { blue } from '@material-ui/core/colors';
 import SignLayout from './SignLayout';
@@ -21,12 +22,13 @@ const theme = createMuiTheme({
 function App() {
   const [state] = useContext(Context);
   const { loading } = state;
+  const useKeycloak = Meteor.settings.public.enableKeycloak;
   return loading ? (
     <Spinner />
   ) : (
     <Switch>
       <PublicRoute exact path="/signin" component={SignLayout} {...state} />
-      <PublicRoute exact path="/signup" component={SignLayout} {...state} />
+      {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
       <ProtectedRoute path="/" component={MainLayout} {...state} />
     </Switch>
   );
