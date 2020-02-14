@@ -101,6 +101,19 @@
         "body_editRow_deleteText": "Do you really want to delete this service?"
       }
     },
+    "AdminCategoriesPage": {
+      "title": "Categories Management",
+      "columnName": "Name",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a category",
+        "pagination_labelRowsSelect": "Categories par page",
+        "body_emptyDataSourceMessage": "No category registered",
+        "body_addTooltip": "Add a category",
+        "body_editTooltip": "Modify this category",
+        "body_deleteTooltip": "Remove this category",
+        "body_editRow_deleteText": "Do you really want to delete this category ?"
+      }
+    },
     "AdminUserValidationPage": {
       "title": "User validation",
       "columnUsername": "Username",

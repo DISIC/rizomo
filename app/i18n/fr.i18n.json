@@ -104,6 +104,19 @@
         "body_editRow_deleteText": "Supprimer vraiment ce service ?"
       }
     },
+    "AdminCategoriesPage": {
+      "title": "Gestion des Catégories",
+      "columnName": "Nom",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher une catégorie",
+        "pagination_labelRowsSelect": "Catégories par page",
+        "body_emptyDataSourceMessage": "Aucune catégorie enregistrée",
+        "body_addTooltip": "Ajouter une catégorie",
+        "body_editTooltip": "Modifier cette catégorie",
+        "body_deleteTooltip": "Supprimer cette catégorie",
+        "body_editRow_deleteText": "Supprimer vraiment cette catégorie ?"
+      }
+    },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",
       "columnUsername": "Pseudo",

@@ -29,12 +29,12 @@ export const createCategorie = new ValidatedMethod({
 export const removeCategorie = new ValidatedMethod({
   name: 'categories.removeCategorie',
   validate: new SimpleSchema({
-    categorieId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    categoryId: { type: String, regEx: SimpleSchema.RegEx.Id },
   }).validator(),
 
-  run({ categorieId }) {
+  run({ categoryId }) {
     // check categorie existence
-    const categorie = Categories.findOne(categorieId);
+    const categorie = Categories.findOne(categoryId);
     if (categorie === undefined) {
       throw new Meteor.Error(
         'api.categories.removeCategorie.unknownCategorie',
@@ -46,21 +46,21 @@ export const removeCategorie = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.categories.removeCategorie.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    Categories.remove(categorieId);
+    Categories.remove(categoryId);
   },
 });
 
 export const updateCategorie = new ValidatedMethod({
   name: 'categories.updateCategorie',
   validate: new SimpleSchema({
-    categorieId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    categoryId: { type: String, regEx: SimpleSchema.RegEx.Id },
     data: Object,
     'data.name': { type: String, min: 1 },
   }).validator(),
 
-  run({ categorieId, data }) {
+  run({ categoryId, data }) {
     // check categorie existence
-    const categorie = Categories.findOne({ _id: categorieId });
+    const categorie = Categories.findOne({ _id: categoryId });
     if (categorie === undefined) {
       throw new Meteor.Error('api.categories.updateCategorie.unknownGroup', i18n.__('api.categories.unknownCategorie'));
     }
@@ -69,7 +69,7 @@ export const updateCategorie = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.categories.updateCategorie.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    Categories.update({ _id: categorieId }, { $set: data });
+    Categories.update({ _id: categoryId }, { $set: data });
   },
 });
 

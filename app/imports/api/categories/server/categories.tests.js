@@ -54,7 +54,7 @@ describe('categories', function () {
   describe('methods', function () {
     let userId;
     let adminId;
-    let categorieId;
+    let categoryId;
     let chatData;
     beforeEach(function () {
       // Clear
@@ -84,7 +84,7 @@ describe('categories', function () {
       Roles.addUsersToRoles(adminId, 'admin');
       // set users as active
       Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
-      categorieId = Factory.create('categorie')._id;
+      categoryId = Factory.create('categorie')._id;
       chatData = {
         name: 'application',
       };
@@ -115,21 +115,21 @@ describe('categories', function () {
     });
     describe('removeCategorie', function () {
       it('does delete a categorie with admin user', function () {
-        removeCategorie._execute({ userId: adminId }, { categorieId });
-        assert.equal(Categories.findOne(categorieId), undefined);
+        removeCategorie._execute({ userId: adminId }, { categoryId });
+        assert.equal(Categories.findOne(categoryId), undefined);
       });
       it("does not delete a categorie if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to delete the categorie
         assert.throws(
           () => {
-            removeCategorie._execute({ userId }, { categorieId });
+            removeCategorie._execute({ userId }, { categoryId });
           },
           Meteor.Error,
           /api.categories.removeCategorie.notPermitted/,
         );
         assert.throws(
           () => {
-            removeCategorie._execute({}, { categorieId });
+            removeCategorie._execute({}, { categoryId });
           },
           Meteor.Error,
           /api.categories.removeCategorie.notPermitted/,
@@ -141,22 +141,22 @@ describe('categories', function () {
         const data = {
           name: 'categorie',
         };
-        updateCategorie._execute({ userId: adminId }, { categorieId, data });
-        const categorie = Categories.findOne(categorieId);
+        updateCategorie._execute({ userId: adminId }, { categoryId, data });
+        const categorie = Categories.findOne(categoryId);
         assert.equal(categorie.name, data.name);
       });
       it("does not update a categorie if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to delete the categorie
         assert.throws(
           () => {
-            updateCategorie._execute({ userId }, { categorieId, data: { name: 'categorie' } });
+            updateCategorie._execute({ userId }, { categoryId, data: { name: 'categorie' } });
           },
           Meteor.Error,
           /api.categories.updateCategorie.notPermitted/,
         );
         assert.throws(
           () => {
-            updateCategorie._execute({}, { categorieId, data: { name: 'categorie' } });
+            updateCategorie._execute({}, { categoryId, data: { name: 'categorie' } });
           },
           Meteor.Error,
           /api.categories.updateCategorie.notPermitted/,

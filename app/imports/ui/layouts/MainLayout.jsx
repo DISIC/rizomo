@@ -16,6 +16,7 @@ import { Context } from '../contexts/context';
 import AdminRoute from '../components/AdminRoute';
 import Spinner from '../components/Spinner';
 import SingleServicePage from '../pages/SingleServicePage';
+import AdminCategoriesPage from '../pages/AdminCategoriesPage';
 import PersonalSpace from '../pages/PersonalSpace';
 
 // CSS
@@ -57,7 +58,6 @@ function MainLayout() {
           {user.isActive ? (
             <Switch>
               <Route exact path="/" component={PersonalSpace} />
-
               <Route exact path="/services" component={ServicesPage} />
               <Route exact path="/services/:slug" component={SingleServicePage} />
               <Route exact path="/groups" component={GroupsPage} />
@@ -71,6 +71,12 @@ function MainLayout() {
               <AdminRoute
                 path="/usersvalidation"
                 component={AdminUserValidationPage}
+                userId={userId}
+                loadingUser={loadingUser}
+              />
+              <AdminRoute
+                path="/admincategories"
+                component={AdminCategoriesPage}
                 userId={userId}
                 loadingUser={loadingUser}
               />
