@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import {
-  Container, makeStyles, Button, Typography, Grid, Chip,
+  Container,
+  makeStyles,
+  Button,
+  Typography,
+  Grid,
+  Chip,
 } from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Services from '../../api/services/services';
@@ -74,13 +79,21 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
       setLoading(true);
       unfavService.call({ serviceId: service._id }, (err) => {
         setLoading(false);
-        if (err) console.log('unable to remove service from favorites');
+        if (err) {
+          msg.error(err.reason);
+        } else {
+          msg.success(i18n.__('components.ServiceDetails.unfavSuccessMsg'));
+        }
       });
     } else {
       setLoading(true);
       favService.call({ serviceId: service._id }, (err) => {
         setLoading(false);
-        if (err) console.log('unable to set service as favorite');
+        if (err) {
+          msg.error(err.reason);
+        } else {
+          msg.success(i18n.__('components.ServiceDetails.favSuccessMsg'));
+        }
       });
     }
   };
@@ -94,14 +107,22 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
       <Grid container spacing={2}>
         <Grid item md={12}>
           <Link to="/services">
-            <Button className={classes.backButton} color="primary" startIcon={<ArrowBack />}>
+            <Button
+              className={classes.backButton}
+              color="primary"
+              startIcon={<ArrowBack />}
+            >
               {i18n.__('pages.SingleServicePage.backToList')}
             </Button>
           </Link>
         </Grid>
         <Grid item xs={12} sm={12} md={6} className={classes.cardGrid}>
           <div className={classes.titleContainer}>
-            <img className={classes.logo} alt={`logo for ${service.title}`} src={service.logo} />
+            <img
+              className={classes.logo}
+              alt={`logo for ${service.title}`}
+              src={service.logo}
+            />
             <div className={classes.title}>
               <Typography variant="h5">{service.title}</Typography>
               <Typography>{service.team}</Typography>
@@ -119,7 +140,11 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
               ? i18n.__('pages.SingleServicePage.inFavorites')
               : i18n.__('pages.SingleServicePage.addToFavorites')}
           </Button>
-          <Button variant="outlined" color="primary" onClick={() => window.open(service.url, '_blank')}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => window.open(service.url, '_blank')}
+          >
             {i18n.__('pages.SingleServicePage.open')}
           </Button>
         </Grid>
@@ -141,7 +166,10 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
           <Typography className={classes.smallTitle} variant="h5">
             Description
           </Typography>
-          <div className={classes.content} dangerouslySetInnerHTML={{ __html: service.content }} />
+          <div
+            className={classes.content}
+            dangerouslySetInnerHTML={{ __html: service.content }}
+          />
         </Grid>
         {Boolean(service.screenshots.length) && (
           <>
@@ -156,7 +184,11 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
             </Grid>
             {service.screenshots && service.screenshots.map((screen, i) => (
               <Grid key={Math.random()} item xs={12} sm={6} md={6}>
-                <img className={classes.screenshot} src={screen} alt={`screenshot ${i} for ${service.title}`} />
+                <img
+                  className={classes.screenshot}
+                  src={screen}
+                  alt={`screenshot ${i} for ${service.title}`}
+                />
               </Grid>
             ))}
           </>

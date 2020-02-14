@@ -12,9 +12,18 @@ import setMaterialTableLocalization from '../components/initMaterialTableLocaliz
 
 function AdminUserValidationPage({ usersrequest, loading }) {
   const columns = [
-    { title: i18n.__('pages.AdminUserValidationPage.columnUsername'), field: 'username' },
-    { title: i18n.__('pages.AdminUserValidationPage.columnLastName'), field: 'lastName' },
-    { title: i18n.__('pages.AdminUserValidationPage.columnFirstName'), field: 'firstName' },
+    {
+      title: i18n.__('pages.AdminUserValidationPage.columnUsername'),
+      field: 'username',
+    },
+    {
+      title: i18n.__('pages.AdminUserValidationPage.columnLastName'),
+      field: 'lastName',
+    },
+    {
+      title: i18n.__('pages.AdminUserValidationPage.columnFirstName'),
+      field: 'firstName',
+    },
     {
       title: i18n.__('pages.AdminUserValidationPage.columnEmails'),
       field: 'emails',
@@ -24,8 +33,15 @@ function AdminUserValidationPage({ usersrequest, loading }) {
         </a>
       )),
     },
-    { title: i18n.__('pages.AdminUserValidationPage.columnStructure'), field: 'structure' },
-    { title: i18n.__('pages.AdminUserValidationPage.columnCreatedAt'), field: 'createdAt', type: 'datetime' },
+    {
+      title: i18n.__('pages.AdminUserValidationPage.columnStructure'),
+      field: 'structure',
+    },
+    {
+      title: i18n.__('pages.AdminUserValidationPage.columnCreatedAt'),
+      field: 'createdAt',
+      type: 'datetime',
+    },
   ];
 
   const options = {
@@ -55,7 +71,9 @@ function AdminUserValidationPage({ usersrequest, loading }) {
               tooltip: i18n.__('pages.AdminUserValidationPage.actions_tooltip'),
               onClick: (event, rowData) => {
                 setActive.call({ userId: rowData._id }, (err) => {
-                  if (err) console.log('unable to validate user');
+                  if (err) {
+                    msg.error(err.reason);
+                  }
                 });
               },
             },

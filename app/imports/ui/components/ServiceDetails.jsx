@@ -60,18 +60,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ServiceDetails({
-  service, favAction, categories, updateCategories, catList,
+  service,
+  favAction,
+  categories,
+  updateCategories,
+  catList,
 }) {
   const classes = useStyles();
 
   const handleFavorite = () => {
     if (favAction === 'unfav') {
       unfavService.call({ serviceId: service._id }, (err) => {
-        if (err) console.log('unable to remove service from favorites');
+        if (err) {
+          msg.error(err.reason);
+        } else {
+          msg.success(i18n.__('components.ServiceDetails.unfavSuccessMsg'));
+        }
       });
     } else {
       favService.call({ serviceId: service._id }, (err) => {
-        if (err) console.log('unable to set service as favorite');
+        if (err) {
+          msg.error(err.reason);
+        } else {
+          msg.success(i18n.__('components.ServiceDetails.favSuccessMsg'));
+        }
       });
     }
   };
@@ -83,16 +95,32 @@ function ServiceDetails({
   return (
     <Card className={classes.card} elevation={6}>
       <CardHeader
-        avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
+        avatar={(
+          <CardMedia
+            className={classes.cardMedia}
+            component="img"
+            alt={service.title}
+            image={service.logo}
+          />
+        )}
         action={(
           <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-            <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
+            <Button
+              variant="text"
+              color="primary"
+              className={classes.fab}
+              onClick={handleFavorite}
+            >
               {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
             </Button>
           </Tooltip>
         )}
         title={service.title}
-        titleTypographyProps={{ variant: 'h6', color: 'primary', className: classes.title }}
+        titleTypographyProps={{
+          variant: 'h6',
+          color: 'primary',
+          className: classes.title,
+        }}
         subheader={service.team}
         subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
       />
@@ -117,7 +145,9 @@ function ServiceDetails({
       <CardActions className={classes.cardActions}>
         <Tooltip
           title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-          aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+          aria-label={i18n.__(
+            'components.ServiceDetails.singleServiceButtonLabel',
+          )}
         >
           <Link to={`/services/${service.slug}`}>
             <Button variant="contained" color="primary">

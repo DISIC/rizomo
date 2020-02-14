@@ -12,11 +12,10 @@ import Categories from '../../api/categories/categories';
 
 const handleResult = (resolve, reject) => (error, result) => {
   if (error) {
-    // TO DO HANDLE MESSAGE
-    console.log(error);
+    msg.error(error.reason);
     reject(error);
   } else {
-    // TO DO HANDLE MESSAGE
+    msg.success(i18n.__('api.methods.operationSuccessMsg'));
     resolve(result);
   }
 };
