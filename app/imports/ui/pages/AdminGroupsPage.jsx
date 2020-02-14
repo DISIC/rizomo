@@ -6,6 +6,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Container } from '@material-ui/core';
 import Spinner from '../components/Spinner';
 import Groups from '../../api/groups/groups';
 import { createGroup, updateGroup, removeGroup } from '../../api/groups/methods';
@@ -56,71 +57,73 @@ function AdminGroupsPage({ groups, loading }) {
       {loading ? (
         <Spinner />
       ) : (
-        <MaterialTable
-          // other props
-          title={i18n.__('pages.AdminGroupsPage.title')}
-          columns={columns}
-          data={groups}
-          options={options}
-          localization={setMaterialTableLocalization('pages.AdminGroupsPage')}
-          editable={{
-            onRowAdd: (newData) => new Promise((resolve, reject) => {
-              console.log('CREATE GROUP : ', newData);
-              createGroup.call(
-                {
-                  name: newData.name,
-                  info: newData.info,
-                  type: Number(newData.type),
-                  note: '',
-                },
-                (err, res) => {
-                  if (err) {
-                    console.log(err);
-                    reject(err);
-                  } else {
-                    resolve(res);
-                  }
-                },
-              );
-            }),
-            onRowUpdate: (newData, oldData) => new Promise((resolve, reject) => {
-              console.log('DATA: ', newData);
-              updateGroup.call(
-                {
-                  groupId: oldData._id,
-                  data: {
+        <Container>
+          <MaterialTable
+            // other props
+            title={i18n.__('pages.AdminGroupsPage.title')}
+            columns={columns}
+            data={groups}
+            options={options}
+            localization={setMaterialTableLocalization('pages.AdminGroupsPage')}
+            editable={{
+              onRowAdd: (newData) => new Promise((resolve, reject) => {
+                console.log('CREATE GROUP : ', newData);
+                createGroup.call(
+                  {
                     name: newData.name,
                     info: newData.info,
                     type: Number(newData.type),
+                    note: '',
                   },
-                },
-                (err, res) => {
-                  if (err) {
-                    console.log(err);
-                    reject(err);
-                  } else {
-                    resolve(res);
-                  }
-                },
-              );
-            }),
-            onRowDelete: (oldData) => new Promise((resolve, reject) => {
-              removeGroup.call(
-                {
-                  groupId: oldData._id,
-                },
-                (err, res) => {
-                  if (err) {
-                    console.log(err);
-                    reject(err);
-                  } else {
-                    resolve(res);
-                  }
-                },
-              );
-            }),
-          }}
-        />
+                  (err, res) => {
+                    if (err) {
+                      console.log(err);
+                      reject(err);
+                    } else {
+                      resolve(res);
+                    }
+                  },
+                );
+              }),
+              onRowUpdate: (newData, oldData) => new Promise((resolve, reject) => {
+                console.log('DATA: ', newData);
+                updateGroup.call(
+                  {
+                    groupId: oldData._id,
+                    data: {
+                      name: newData.name,
+                      info: newData.info,
+                      type: Number(newData.type),
+                    },
+                  },
+                  (err, res) => {
+                    if (err) {
+                      console.log(err);
+                      reject(err);
+                    } else {
+                      resolve(res);
+                    }
+                  },
+                );
+              }),
+              onRowDelete: (oldData) => new Promise((resolve, reject) => {
+                removeGroup.call(
+                  {
+                    groupId: oldData._id,
+                  },
+                  (err, res) => {
+                    if (err) {
+                      console.log(err);
+                      reject(err);
+                    } else {
+                      resolve(res);
+                    }
+                  },
+                );
+              }),
+            }}
+          />
+        </Container>
       )}
     </>
   );
