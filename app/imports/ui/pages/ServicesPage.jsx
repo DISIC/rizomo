@@ -121,7 +121,7 @@ function ServicesPage({ services, categories, ready }) {
                       />
                     </>
                   )}
-                  variant={catList.includes(cat._id) ? 'outlined' : 'default'}
+                  variant="outlined"
                   color={catList.includes(cat._id) ? 'primary' : 'default'}
                   onClick={() => updateCatList(cat._id)}
                 />
