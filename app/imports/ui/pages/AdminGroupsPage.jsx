@@ -67,7 +67,6 @@ function AdminGroupsPage({ groups, loading }) {
             localization={setMaterialTableLocalization('pages.AdminGroupsPage')}
             editable={{
               onRowAdd: (newData) => new Promise((resolve, reject) => {
-                console.log('CREATE GROUP : ', newData);
                 createGroup.call(
                   {
                     name: newData.name,
@@ -86,7 +85,6 @@ function AdminGroupsPage({ groups, loading }) {
                 );
               }),
               onRowUpdate: (newData, oldData) => new Promise((resolve, reject) => {
-                console.log('DATA: ', newData);
                 updateGroup.call(
                   {
                     groupId: oldData._id,
