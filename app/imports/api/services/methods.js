@@ -11,29 +11,14 @@ import Services from './services';
 
 export const createService = new ValidatedMethod({
   name: 'services.createService',
-  validate: new SimpleSchema({
-    title: { type: String, min: 1 },
-    description: { type: String, min: 1 },
-    url: SimpleSchema.RegEx.Url,
-    logo: SimpleSchema.RegEx.Url,
-    categories: { type: Array, defaultValue: [] },
-    'categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
-  }).validator(),
+  validate: Services.schema.omit('slug').validator(),
 
-  run({
-    title, description, url, logo, categories,
-  }) {
+  run(args) {
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
     if (!authorized) {
       throw new Meteor.Error('api.services.createService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    Services.insert({
-      title,
-      description,
-      url,
-      logo,
-      categories,
-    });
+    Services.insert(args);
   },
 });
 
@@ -64,19 +49,13 @@ export const updateService = new ValidatedMethod({
   name: 'services.updateService',
   validate: new SimpleSchema({
     serviceId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    data: Object,
-    'data.title': { type: String, min: 1, optional: true },
-    'data.description': { type: String, optional: true },
-    'data.url': { type: String, optional: true },
-    'data.logo': { type: String, optional: true },
-    'data.categories': { type: Array, optional: true },
-    'data.categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
+    data: Services.schema.omit('slug'),
   }).validator(),
 
-  run({ serviceId, data }) {
+  run({ data, serviceId }) {
     // check service existence
-    const service = Services.findOne({ _id: serviceId });
-    if (service === undefined) {
+    const currentService = Services.findOne({ _id: serviceId });
+    if (currentService === undefined) {
       throw new Meteor.Error('api.services.updateService.unknownGroup', i18n.__('api.services.unknownService'));
     }
     // check if current user has admin rights

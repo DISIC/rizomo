@@ -42,14 +42,8 @@ Services.schema = new SimpleSchema(
         return slug;
       },
     },
-    team: {
-      type: String,
-      defaultValue: '',
-    },
-    content: {
-      type: String,
-      defaultValue: '',
-    },
+    team: String,
+    content: String,
     description: String,
     url: String,
     logo: String,

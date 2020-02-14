@@ -61,7 +61,7 @@ function AdminMenu() {
           <MenuItem
             key={item.path}
             onClick={() => handleMenuClick(item.path)}
-            selected={currentLink.path === item.path}
+            selected={currentLink ? currentLink.path === item.path : false}
           >
             <T>{item.content}</T>
           </MenuItem>

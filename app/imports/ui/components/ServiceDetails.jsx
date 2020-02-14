@@ -147,9 +147,8 @@ ServiceDetails.propTypes = {
 };
 
 export default withTracker(({ service }) => {
-  const categoriesHandle = Meteor.subscribe('categories.service', { categories: service.categories });
-  const loadingCat = !categoriesHandle.ready();
-  console.log('loadingCat', loadingCat);
+  Meteor.subscribe('categories.service', { categories: service.categories });
+
   const categories = Categories.find({ _id: { $in: service.categories || [] } }, { sort: { name: 1 } }).fetch();
   return {
     categories,

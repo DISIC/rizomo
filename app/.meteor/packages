@@ -38,3 +38,5 @@ hotello:accounts-keycloak
 service-configuration@1.0.11
 meteortoys:toggle
 meteortoys:allthings
+reywood:publish-composite
+percolate:find-from-publication

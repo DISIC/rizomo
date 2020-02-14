@@ -154,7 +154,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
 )
               </Typography>
             </Grid>
-            {service.screenshots.map((screen, i) => (
+            {service.screenshots && service.screenshots.map((screen, i) => (
               <Grid key={Math.random()} item xs={12} sm={6} md={6}>
                 <img className={classes.screenshot} src={screen} alt={`screenshot ${i} for ${service.title}`} />
               </Grid>
@@ -174,9 +174,8 @@ export default withTracker(
   }) => {
     const subService = Meteor.subscribe('services.one', { slug });
     const service = Services.findOne({ slug }) || {};
-    const subCategories = Meteor.subscribe('categories.service', { categories: service.categories });
     const categories = Categories.find({ _id: { $in: service.categories || [] } }).fetch();
-    const ready = subService.ready() && subCategories.ready();
+    const ready = subService.ready();
     return {
       service,
       ready,

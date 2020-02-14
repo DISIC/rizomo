@@ -139,6 +139,23 @@
     },
     "PersonalSpace": {
       "welcome": "Welcome on you personal space"
+    },
+    "AdminSingleServicePage": {
+      "edition": "Edition of the service",
+      "creation": "Creation of a new service",
+      "title": "Title",
+      "slug": "Slug",
+      "team": "Team",
+      "logo": "Logo of the application",
+      "description": "Short description",
+      "url": "URL of the service",
+      "content": "Long description of the app",
+      "categories": "Categories",
+      "screenshots": "Screenshots",
+      "addScreenshots": "Add a screenshot",
+      "save": "Save",
+      "update": "Update",
+      "cancel": "Cancel"
     }
   },
   "layouts": {

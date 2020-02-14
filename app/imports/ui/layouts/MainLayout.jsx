@@ -18,6 +18,7 @@ import Spinner from '../components/Spinner';
 import SingleServicePage from '../pages/SingleServicePage';
 import AdminCategoriesPage from '../pages/AdminCategoriesPage';
 import PersonalSpace from '../pages/PersonalSpace';
+import AdminSingleServicePage from '../pages/AdminSingleServicePage';
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -63,8 +64,23 @@ function MainLayout() {
               <Route exact path="/groups" component={GroupsPage} />
 
               <AdminRoute
+                exact
                 path="/adminservices"
                 component={AdminServicesPage}
+                userId={userId}
+                loadingUser={loadingUser}
+              />
+              <AdminRoute
+                exact
+                path="/adminservices/new"
+                component={AdminSingleServicePage}
+                userId={userId}
+                loadingUser={loadingUser}
+              />
+              <AdminRoute
+                exact
+                path="/adminservices/:_id"
+                component={AdminSingleServicePage}
                 userId={userId}
                 loadingUser={loadingUser}
               />
