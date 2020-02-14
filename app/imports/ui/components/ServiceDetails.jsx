@@ -106,7 +106,7 @@ function ServiceDetails({
               className={classes.chip}
               key={cat._id}
               label={cat.name}
-              variant={catList.includes(cat._id) ? 'outlined' : 'default'}
+              variant="outlined"
               color={catList.includes(cat._id) ? 'primary' : 'default'}
               onClick={() => updateCategories(cat._id)}
             />
