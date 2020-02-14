@@ -9,6 +9,7 @@ import Spinner from '../components/Spinner';
 import '../../api/users/users';
 import { setActive } from '../../api/users/methods';
 import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
+import { Container } from '@material-ui/core';
 
 function AdminUserValidationPage({ usersrequest, loading }) {
   const columns = [
@@ -58,27 +59,29 @@ function AdminUserValidationPage({ usersrequest, loading }) {
       {loading ? (
         <Spinner />
       ) : (
-        <MaterialTable
-          // other props
-          title={i18n.__('pages.AdminUserValidationPage.title')}
-          columns={columns}
-          data={usersrequest}
-          options={options}
-          localization={setMaterialTableLocalization('pages.AdminUserValidationPage')}
-          actions={[
-            {
-              icon: PersonAddIcon,
-              tooltip: i18n.__('pages.AdminUserValidationPage.actions_tooltip'),
-              onClick: (event, rowData) => {
-                setActive.call({ userId: rowData._id }, (err) => {
-                  if (err) {
-                    msg.error(err.reason);
-                  }
-                });
+        <Container>
+          <MaterialTable
+            // other props
+            title={i18n.__('pages.AdminUserValidationPage.title')}
+            columns={columns}
+            data={usersrequest}
+            options={options}
+            localization={setMaterialTableLocalization('pages.AdminUserValidationPage')}
+            actions={[
+              {
+                icon: PersonAddIcon,
+                tooltip: i18n.__('pages.AdminUserValidationPage.actions_tooltip'),
+                onClick: (event, rowData) => {
+                  setActive.call({ userId: rowData._id }, (err) => {
+                    if (err) {
+                      msg.error(err.reason);
+                    }
+                  });
+                },
               },
-            },
-          ]}
-        />
+            ]}
+          />
+        </Container>
       )}
     </>
   );
