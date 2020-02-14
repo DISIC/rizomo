@@ -23,7 +23,8 @@
       "menuAdminUserValidation": "Validation des utilisateurs"
     },
     "ServiceDetails": {
-      "runServiceButtonLabel": "Lancer le service",
+      "runServiceButtonLabel": "Ouvrir l'application",
+      "singleServiceButtonLabel": "Détails de l'application",
       "favButtonLabelFav": "Ajouter à vos favoris",
       "favButtonLabelNoFav": "Supprimer de vos favoris"
     },
@@ -78,6 +79,7 @@
     },
     "ServicesPage": {
       "title": "Découvrez les applications",
+      "categories": "Catégories",
       "tabsLabel": "Onglet des services",
       "tabFavServicesLabel": "Mes services favoris",
       "tabAllServicesLabel": "Tous les services",

@@ -1,22 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withTracker } from 'meteor/react-meteor-data';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Fab from '@material-ui/core/Fab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import RemoveIcon from '@material-ui/icons/Clear';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import InfoIcon from '@material-ui/icons/Info';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Button } from '@material-ui/core';
+import {
+  Button, CardHeader, Divider, Chip, Paper,
+} from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import { favService, unfavService } from '../../api/users/methods';
+import Categories from '../../api/categories/categories';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   cardActions: {
     display: 'flex',
     flexDirection: 'row',
@@ -24,16 +27,30 @@ const useStyles = makeStyles(() => ({
   },
   card: {
     height: '100%',
+    width: '300px',
     display: 'flex',
     flexDirection: 'column',
   },
   cardMedia: {
-    margin: '5px',
-    paddingTop: '56.25%',
-    backgroundSize: 'contain',
+    maxWidth: '50px',
+    objectFit: 'contain',
   },
   cardContent: {
     flexGrow: 1,
+    backgroundColor: 'rgba(33,150,243, 0.02)',
+  },
+  buttonText: { textTransform: 'none' },
+  title: { fontWeight: 'bold', lineHeight: '1' },
+  paperChip: {
+    display: 'flex',
+    justifyContent: 'left',
+    flexWrap: 'wrap',
+    marginTop: theme.spacing(2),
+    padding: theme.spacing(1),
+    backgroundColor: 'transparent',
+  },
+  chip: {
+    margin: theme.spacing(0.5),
   },
   fab: {
     '&:hover': {
@@ -42,7 +59,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ServiceDetails({ service, favAction }) {
+function ServiceDetails({
+  service, favAction, categories, updateCategories, catList,
+}) {
   const classes = useStyles();
 
   const handleFavorite = () => {
@@ -62,33 +81,58 @@ export default function ServiceDetails({ service, favAction }) {
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
   return (
-    <Card className={classes.card}>
-      <CardMedia className={classes.cardMedia} image={service.logo} title={service.title} />
+    <Card className={classes.card} elevation={6}>
+      <CardHeader
+        avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
+        action={(
+          <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+            <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
+              {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+            </Button>
+          </Tooltip>
+        )}
+        title={service.title}
+        titleTypographyProps={{ variant: 'h6', color: 'primary', className: classes.title }}
+        subheader={service.team}
+        subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
+      />
+      <Divider variant="middle" />
       <CardContent className={classes.cardContent}>
-        <Typography gutterBottom variant="h5" component="h2">
-          {service.title}
-        </Typography>
-        <Typography>{service.description}</Typography>
+        <Typography variant="body1">{service.description}</Typography>
+        <Paper variant="elevation" elevation={0} className={classes.paperChip}>
+          {categories.map((cat) => (
+            <Chip
+              size="small"
+              className={classes.chip}
+              key={cat._id}
+              label={cat.name}
+              variant={catList.includes(cat._id) ? 'outlined' : 'default'}
+              color={catList.includes(cat._id) ? 'primary' : 'default'}
+              onClick={() => updateCategories(cat._id)}
+            />
+          ))}
+        </Paper>
       </CardContent>
+      <Divider variant="middle" />
       <CardActions className={classes.cardActions}>
         <Tooltip
-          title={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-          aria-label={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+          title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+          aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
         >
-          <Button variant="contained" color="primary" onClick={() => window.open(service.url, '_blank')}>
-            <PlayArrowIcon />
-          </Button>
+          <Link to={`/services/${service.slug}`}>
+            <Button variant="contained" color="primary">
+              <InfoIcon />
+            </Button>
+          </Link>
         </Tooltip>
-        <Link to={`/services/${service.slug}`}>
-          <Button variant="contained" color="primary">
-            GO
-          </Button>
-        </Link>
-        <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-          <Fab size="small" className={classes.fab} onClick={handleFavorite}>
-            {favAction === 'unfav' ? <RemoveIcon /> : <FavoriteIcon />}
-          </Fab>
-        </Tooltip>
+        <Button
+          className={classes.buttonText}
+          variant="contained"
+          color="primary"
+          onClick={() => window.open(service.url, '_blank')}
+        >
+          {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+        </Button>
       </CardActions>
     </Card>
   );
@@ -97,4 +141,17 @@ export default function ServiceDetails({ service, favAction }) {
 ServiceDetails.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
   favAction: PropTypes.string.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  updateCategories: PropTypes.func.isRequired,
+  catList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
+
+export default withTracker(({ service }) => {
+  const categoriesHandle = Meteor.subscribe('categories.service', { categories: service.categories });
+  const loadingCat = !categoriesHandle.ready();
+  console.log('loadingCat', loadingCat);
+  const categories = Categories.find({ _id: { $in: service.categories || [] } }, { sort: { name: 1 } }).fetch();
+  return {
+    categories,
+  };
+})(ServiceDetails);

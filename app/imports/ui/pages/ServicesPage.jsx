@@ -9,7 +9,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 
-import { InputAdornment, Typography } from '@material-ui/core';
+import {
+  InputAdornment, Typography, Chip, Badge,
+} from '@material-ui/core';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
 import Categories from '../../api/categories/categories';
@@ -21,31 +23,54 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
   },
+  chip: {
+    margin: theme.spacing(1),
+  },
+  badge: { position: 'inherit' },
+  gridItem: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }));
 
-function ServicesPage({
-  services, loading, categories, loadingCat,
-}) {
+function ServicesPage({ services, categories, ready }) {
   const classes = useStyles();
   const [{ user, loadingUser }] = useContext(Context);
   const favs = loadingUser ? [] : user.favServices;
   const [search, setSearch] = useState('');
+  const [catList, setCatList] = useState([]);
 
   const updateSearch = (e) => setSearch(e.target.value);
 
-  const filterServices = (service) => {
-    let searchText = service.title + service.description;
-    searchText = searchText.toLowerCase();
-    if (!search) return true;
-    return searchText.indexOf(search.toLowerCase()) > -1;
+  const updateCatList = (catId) => {
+    // Call by click on categories of services
+    if (catList.includes(catId)) {
+      // catId already in list so remove it
+      setCatList(catList.filter((id) => id !== catId));
+    } else {
+      // add new catId to list
+      setCatList([...catList, catId]);
+    }
   };
 
-  console.log('loadingCat', loadingCat);
-  console.log('categories', categories);
+  const filterServices = (service) => {
+    let filterSearch = true;
+    let filterCat = true;
+    if (search) {
+      let searchText = service.title + service.description;
+      searchText = searchText.toLowerCase();
+      filterSearch = searchText.indexOf(search.toLowerCase()) > -1;
+    }
+    if (catList.length > 0) {
+      const intersection = catList.filter((value) => service.categories.includes(value));
+      filterCat = intersection.length > 0;
+    }
+    return filterSearch && filterCat;
+  };
 
   return (
     <>
-      {loading ? (
+      {!ready ? (
         <Spinner />
       ) : (
         <Container className={classes.cardGrid}>
@@ -73,13 +98,47 @@ function ServicesPage({
                 }}
               />
             </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+              <Typography variant="h6" display="inline">
+                {i18n.__('pages.ServicesPage.categories')}
+                {' :'}
+              </Typography>
+              {categories.map((cat) => (
+                <Chip
+                  className={classes.chip}
+                  key={cat._id}
+                  label={(
+                    <>
+                      {cat.name}
+                      <Badge
+                        color="primary"
+                        className={classes.badge}
+                        badgeContent={cat.count}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
+                        }}
+                      />
+                    </>
+                  )}
+                  variant={catList.includes(cat._id) ? 'outlined' : 'default'}
+                  color={catList.includes(cat._id) ? 'primary' : 'default'}
+                  onClick={() => updateCatList(cat._id)}
+                />
+              ))}
+            </Grid>
             {services
               .filter((service) => filterServices(service))
               .map((service) => {
                 const favAction = favs.indexOf(service._id) === -1 ? 'fav' : 'unfav';
                 return (
-                  <Grid item key={service._id} xs={12} sm={4} md={3}>
-                    <ServiceDetails service={service} favAction={favAction} />
+                  <Grid className={classes.gridItem} item key={service._id} xs={12} sm={6} md={4} lg={3}>
+                    <ServiceDetails
+                      service={service}
+                      favAction={favAction}
+                      updateCategories={updateCatList}
+                      catList={catList}
+                    />
                   </Grid>
                 );
               })}
@@ -92,22 +151,20 @@ function ServicesPage({
 
 ServicesPage.propTypes = {
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loading: PropTypes.bool.isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loadingCat: PropTypes.bool.isRequired,
+  ready: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   const servicesHandle = Meteor.subscribe('services.all');
-  const loading = !servicesHandle.ready();
   const services = Services.find({}, { sort: { title: 1 } }).fetch();
   const categoriesHandle = Meteor.subscribe('categories.all');
-  const loadingCat = !categoriesHandle.ready();
-  const categories = Categories.find({}, { sort: { name: 1 } }).fetch();
+  const cats = Categories.find({}, { sort: { name: 1 } }).fetch();
+  const categories = cats.map((cat) => ({ ...cat, count: Services.find({ categories: { $in: [cat._id] } }).count() }));
+  const ready = servicesHandle.ready() && categoriesHandle.ready();
   return {
     services,
-    loading,
     categories,
-    loadingCat,
+    ready,
   };
 })(ServicesPage);

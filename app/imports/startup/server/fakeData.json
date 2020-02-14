@@ -19,7 +19,7 @@
   "defaultServices": [
     {
       "url": "https://chat.mim-libre.fr",
-      "logo": "https://rocket.chat/images/default/logo--dark.svg",
+      "logo": "https://rocket.chat/favicon.ico?v=1",
       "title": "Chat sur MIM",
       "description": "Discuter en direct",
       "categories": ["HxQFJXymMXXrYByXt", "PrTZTq2FnDYdABNHh"],
@@ -33,7 +33,7 @@
     },
     {
       "url": "https://nextcloud.apps.education.fr",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg",
+      "logo": "https://nextcloud.com/media/screenshot-150x150.png?x53054",
       "name": "NextCloud",
       "title": "Info Nuagiques",
       "description": "Partager ses documents.",
@@ -48,7 +48,7 @@
     },
     {
       "url": "https://filepizza.mim-libre.fr",
-      "logo": "https://raw.githubusercontent.com/luceole/filepizza/master/static/images/wordmark.png",
+      "logo": "https://file.pizza/images/fb.png",
       "title": "Transfert pair a pair",
       "description": "Echanger vos gros fichiers",
       "categories": [
@@ -69,7 +69,7 @@
       "url": "https://etherpad.apps.education.fr/",
       "title": "Pad Public",
       "description": "Editeur de texte en mode collaboratif",
-      "logo": "https://opensharing.fr/wp-content/uploads/2017/04/etherpad-logo-1.png",
+      "logo": "https://framagit.org/uploads/-/system/project/avatar/1526/logo-pad.png",
       "categories": ["HxQFJXymMXXrYByXt"],
       "team": "Académie de Dijon",
       "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
@@ -81,7 +81,7 @@
     },
     {
       "url": "https://codimd.apps.education.fr",
-      "logo": "https://hackmd.io/images/home/cover.svg",
+      "logo": "https://demo.codimd.org/favicon.png",
       "title": "CodiMD Public",
       "description": "Ecrire Ensemble",
       "categories": [
@@ -99,7 +99,7 @@
     },
     {
       "url": "https://mastodon.etalab.gouv.fr",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Mastodon_Logotype_%28Full_Reversed%29.svg",
+      "logo": "https://mastodon.social/apple-touch-icon.png",
       "title": "Mastodon - EtatLab",
       "description": "Réseau social",
       "categories": [
@@ -118,7 +118,7 @@
     {
       "url": "https://auth.apps.education.fr/auth/realms/snp/account",
       "title": "OpenID Profil",
-      "logo": "https://www.keycloak.org/resources/images/keycloak_logo_480x108.png",
+      "logo": "https://pbs.twimg.com/profile_images/702119821979344897/oAC05cEB_400x400.png",
       "description": "Consulter vos infos de connexion",
       "categories": [],
       "team": "Académie de Dijon",
@@ -130,7 +130,7 @@
       ]
     },
     {
-      "logo": "https://about.draw.io/wp-content/uploads/2017/07/drawio_logo_50px.png",
+      "logo": "https://www.draw.io/favicon.ico",
       "url": "https://draw.io?lang=fr",
       "title": "Diagrammes",
       "description": "Dessiner en ligne",
