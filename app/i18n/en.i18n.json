@@ -120,6 +120,9 @@
       "screenshots": "Screenshots",
       "categories": "Categories",
       "open": "Open"
+    },
+    "PersonalSpace": {
+      "welcome": "Welcome on you personal space"
     }
   },
   "layouts": {

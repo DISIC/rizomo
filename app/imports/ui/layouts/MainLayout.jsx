@@ -16,6 +16,7 @@ import { Context } from '../contexts/context';
 import AdminRoute from '../components/AdminRoute';
 import Spinner from '../components/Spinner';
 import SingleServicePage from '../pages/SingleServicePage';
+import PersonalSpace from '../pages/PersonalSpace';
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +56,7 @@ function MainLayout() {
         <main className={classes.content}>
           {user.isActive ? (
             <Switch>
-              <Route exact path="/" component={ServicesPage} />
+              <Route exact path="/" component={PersonalSpace} />
 
               <Route exact path="/services" component={ServicesPage} />
               <Route exact path="/services/:slug" component={SingleServicePage} />

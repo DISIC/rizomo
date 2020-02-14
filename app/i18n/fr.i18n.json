@@ -123,6 +123,9 @@
       "screenshots": "Captures d'écran",
       "categories": "Catégories",
       "open": "Ouvrir"
+    },
+    "PersonalSpace": {
+      "welcome": "Bienvenue sur votre espace personnel"
     }
   },
   "layouts": {
