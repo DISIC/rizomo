@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
+import { Roles } from 'meteor/alanning:roles';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Button, Divider } from '@material-ui/core';
+
 import LanguageSwitcher from './LanguageSwitcher';
 import MenuBar from './MenuBar';
+import AdminMenu from './AdminMenu';
+import { Context } from '../contexts/context';
 
 const useStyles = makeStyles(() => ({
   imgLogo: {
@@ -21,8 +25,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 function TopBar() {
+  const [{ userId }] = useContext(Context);
   const classes = useStyles();
   const history = useHistory();
+  const isAdmin = Roles.userIsInRole(userId, 'admin');
 
   const handleLogout = () => {
     Meteor.logout(() => history.push('/'));
@@ -37,6 +43,7 @@ function TopBar() {
         <Button onClick={() => console.log('go profile')} startIcon={<AccountCircle />}>
           {i18n.__('components.TopBar.myAccount')}
         </Button>
+        {isAdmin && <AdminMenu />}
         <Button onClick={handleLogout}>{i18n.__('components.TopBar.menuLogoutLabel')}</Button>
       </Toolbar>
       <Divider />

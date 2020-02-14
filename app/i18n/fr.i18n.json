@@ -16,11 +16,9 @@
   },
   "components": {
     "MenuBar": {
-      "menuMyspace": "Mon Espace",
-      "menuServices": "Mes Services",
-      "menuGroupes": "Mes Groupes",
-      "menuAdminServices": "Gestion des Services",
-      "menuAdminUserValidation": "Validation des utilisateurs"
+      "menuMyspace": "Mon Espace Personnel",
+      "menuServices": "Applications",
+      "menuGroupes": "Mes Groupes"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Ouvrir l'application",
@@ -35,6 +33,11 @@
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
       "myAccount": "Mon Compte"
+    },
+    "AdminMenu": {
+      "menuAdminServices": "Gestion des Services",
+      "menuAdminUserValidation": "Validation des utilisateurs",
+      "menuAdminCategories": "Gestion des categories"
     }
   },
   "validatejs": {
