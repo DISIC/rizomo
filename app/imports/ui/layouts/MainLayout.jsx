@@ -17,6 +17,7 @@ import AdminRoute from '../components/AdminRoute';
 import Spinner from '../components/Spinner';
 import SingleServicePage from '../pages/SingleServicePage';
 import PersonalSpace from '../pages/PersonalSpace';
+import MsgHandler from '../components/MsgHandler';
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -82,6 +83,7 @@ function MainLayout() {
               {i18n.__('layouts.MainLayout.inactiveAccount')}
             </Typography>
           )}
+          <MsgHandler />
         </main>
       )}
     </div>
