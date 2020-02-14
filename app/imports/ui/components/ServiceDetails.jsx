@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1,
-    backgroundColor: 'ivory',
+    backgroundColor: 'rgba(33,150,243, 0.02)',
   },
   buttonText: { textTransform: 'none' },
   title: { fontWeight: 'bold', lineHeight: '1' },
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     marginTop: theme.spacing(2),
     padding: theme.spacing(1),
-    backgroundColor: 'ivory',
+    backgroundColor: 'transparent',
   },
   chip: {
     margin: theme.spacing(0.5),
@@ -81,13 +81,13 @@ function ServiceDetails({
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
   return (
-    <Card className={classes.card} elevation={12}>
+    <Card className={classes.card} elevation={6}>
       <CardHeader
         avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
         action={(
           <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
             <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
-              {favAction === 'unfav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+              {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
             </Button>
           </Tooltip>
         )}
