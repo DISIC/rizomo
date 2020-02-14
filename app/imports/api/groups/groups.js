@@ -53,6 +53,12 @@ Groups.schema = new SimpleSchema(
   { tracker: Tracker },
 );
 
+Groups.typeLabels = {
+  0: 'api.groups.types.open',
+  5: 'api.groups.types.moderated',
+  10: 'api.groups.types.private',
+};
+
 Groups.publicFields = {
   name: 1,
   info: 1,
