@@ -177,11 +177,9 @@ const AdminSingleServicePage = ({
     method.call(args, (error) => {
       setLoading(false);
       if (error) {
-        // TO DO: display message
-        console.log(error.message);
+        msg.error(error.message);
       } else {
-        // TO DO: display message
-        console.log(`service now available on /services/${slug}`);
+        msg.success(i18n.__('api.methods.operationSuccessMsg'));
         history.push('/adminservices');
       }
     });

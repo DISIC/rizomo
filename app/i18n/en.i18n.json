@@ -12,6 +12,9 @@
     },
     "services": {
       "unknownService": "Service does not exist."
+    },
+    "methods": {
+      "operationSuccessMsg": "Operation succedeed."
     }
   },
   "components": {
@@ -24,7 +27,9 @@
       "runServiceButtonLabel": "Run this service",
       "singleServiceButtonLabel": "Learn more",
       "favButtonLabelFav": "Add to your favorites",
-      "favButtonLabelNoFav": "Remove from your favorites"
+      "favButtonLabelNoFav": "Remove from your favorites",
+      "unfavSuccessMsg": "Removed from your favorites",
+      "favSuccessMsg": "Added to your favorites"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Open side menu",

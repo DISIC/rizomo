@@ -79,9 +79,10 @@ function AdminServicesPage({ services, loading }) {
                   },
                   (err, res) => {
                     if (err) {
-                      console.log(err);
+                      msg.error(err.reason);
                       reject(err);
                     } else {
+                      msg.success(i18n.__('api.methods.operationSuccessMsg'));
                       resolve(res);
                     }
                   },

@@ -19,6 +19,7 @@ import SingleServicePage from '../pages/SingleServicePage';
 import AdminCategoriesPage from '../pages/AdminCategoriesPage';
 import PersonalSpace from '../pages/PersonalSpace';
 import AdminSingleServicePage from '../pages/AdminSingleServicePage';
+import MsgHandler from '../components/MsgHandler';
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -104,6 +105,7 @@ function MainLayout() {
               {i18n.__('layouts.MainLayout.inactiveAccount')}
             </Typography>
           )}
+          <MsgHandler />
         </main>
       )}
     </div>

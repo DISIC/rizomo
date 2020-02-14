@@ -22,6 +22,9 @@
       }
     }
   },
+  "globals": {
+    "msg": false
+  },
   "plugins": ["meteor", "import", "prettier", "i18n", "react", "jsx"],
   "rules": {
     "no-underscore-dangle": "off",

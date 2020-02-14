@@ -12,6 +12,9 @@
     },
     "services": {
       "unknownService": "Le service n'existe pas."
+    },
+    "methods": {
+      "operationSuccessMsg": "Opération réalisée avec succès."
     }
   },
   "components": {
@@ -24,7 +27,9 @@
       "runServiceButtonLabel": "Ouvrir l'application",
       "singleServiceButtonLabel": "Détails de l'application",
       "favButtonLabelFav": "Ajouter à vos favoris",
-      "favButtonLabelNoFav": "Supprimer de vos favoris"
+      "favButtonLabelNoFav": "Supprimer de vos favoris",
+      "unfavSuccessMsg": "Supprimé de vos favoris",
+      "favSuccessMsg": "Ajouté à vos favoris"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Ouvrir le menu latéral",
