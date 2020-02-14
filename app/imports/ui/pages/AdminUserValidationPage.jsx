@@ -5,11 +5,11 @@ import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import { Container } from '@material-ui/core';
 import Spinner from '../components/Spinner';
 import '../../api/users/users';
 import { setActive } from '../../api/users/methods';
 import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
-import { Container } from '@material-ui/core';
 
 function AdminUserValidationPage({ usersrequest, loading }) {
   const columns = [
