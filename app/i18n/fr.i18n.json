@@ -163,8 +163,7 @@
       "addScreenshots": "Ajouter un écran",
       "save": "Sauvegarder",
       "update": "Mettre à jour",
-      "cancel": "Annuler",
-      "successServiceMsg": "Service maintenant disponible sur"
+      "cancel": "Annuler"
     }
   },
   "layouts": {

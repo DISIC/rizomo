@@ -160,8 +160,7 @@
       "addScreenshots": "Add a screenshot",
       "save": "Save",
       "update": "Update",
-      "cancel": "Cancel",
-      "successServiceMsg": "Service now available"
+      "cancel": "Cancel"
     }
   },
   "layouts": {
