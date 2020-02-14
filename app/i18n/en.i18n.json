@@ -16,11 +16,9 @@
   },
   "components": {
     "MenuBar": {
-      "menuMyspace": "My Space",
-      "menuServices": "My Services",
-      "menuGroupes": "My Groups",
-      "menuAdminServices": "Service Management",
-      "menuAdminUserValidation": "User validation"
+      "menuMyspace": "Dashboard",
+      "menuServices": "Applications",
+      "menuGroupes": "My Groups"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Run this service",
@@ -35,6 +33,11 @@
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
       "myAccount": "My Account"
+    },
+    "AdminMenu": {
+      "menuAdminServices": "Service Management",
+      "menuAdminUserValidation": "User validation",
+      "menuAdminCategories": "Categories Management"
     }
   },
   "validatejs": {
