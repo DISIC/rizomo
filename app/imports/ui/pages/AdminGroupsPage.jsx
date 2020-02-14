@@ -12,6 +12,23 @@ import Groups from '../../api/groups/groups';
 import { createGroup, updateGroup, removeGroup } from '../../api/groups/methods';
 import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
 
+function selectGroupType({ value, onChange }) {
+  return (
+    <Select labelId="type-select-label" id="type-select" value={value} onChange={(e) => onChange(e.target.value)}>
+      {Object.keys(Groups.typeLabels).map((val) => (
+        <MenuItem key={val} value={val}>
+          {i18n.__(Groups.typeLabels[val])}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+}
+
+selectGroupType.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 function AdminGroupsPage({ groups, loading }) {
   const columns = [
     { title: i18n.__('pages.AdminGroupsPage.columnName'), field: 'name', defaultSort: 'asc' },
@@ -21,20 +38,7 @@ function AdminGroupsPage({ groups, loading }) {
       field: 'type',
       initialEditValue: Object.keys(Groups.typeLabels)[0],
       render: (rowData) => i18n.__(Groups.typeLabels[rowData.type]),
-      editComponent: (props) => (
-        <Select
-          labelId="type-select-label"
-          id="type-select"
-          value={props.value}
-          onChange={(e) => props.onChange(e.target.value)}
-        >
-          {Object.keys(Groups.typeLabels).map((val) => (
-            <MenuItem key={val} value={val}>
-              {i18n.__(Groups.typeLabels[val])}
-            </MenuItem>
-          ))}
-        </Select>
-      ),
+      editComponent: selectGroupType,
     },
     {
       title: i18n.__('pages.AdminGroupsPage.columnMembers'),

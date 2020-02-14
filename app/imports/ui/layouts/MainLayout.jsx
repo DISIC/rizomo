@@ -20,6 +20,7 @@ import AdminCategoriesPage from '../pages/AdminCategoriesPage';
 import PersonalSpace from '../pages/PersonalSpace';
 import AdminSingleServicePage from '../pages/AdminSingleServicePage';
 import MsgHandler from '../components/MsgHandler';
+import AdminGroupsPage from '../pages/AdminGroupsPage';
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +64,13 @@ function MainLayout() {
               <Route exact path="/services" component={ServicesPage} />
               <Route exact path="/services/:slug" component={SingleServicePage} />
               <Route exact path="/groups" component={GroupsPage} />
-
+              <AdminRoute
+                exact
+                path="/admingroups"
+                component={AdminGroupsPage}
+                userId={userId}
+                loadingUser={loadingUser}
+              />
               <AdminRoute
                 exact
                 path="/adminservices"

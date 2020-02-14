@@ -30,8 +30,7 @@
       "menuServices": "Applications",
       "menuGroupes": "Mes Groupes",
       "menuAdminServices": "Gestion des Services",
-      "menuAdminUserValidation": "Validation des utilisateurs",
-      "menuAdminGroups": "Gestion des Groupes"
+      "menuAdminUserValidation": "Validation des utilisateurs"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Ouvrir l'application",
@@ -52,7 +51,8 @@
     "AdminMenu": {
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs",
-      "menuAdminCategories": "Gestion des categories"
+      "menuAdminCategories": "Gestion des categories",
+      "menuAdminGroups": "Gestion des Groupes"
     }
   },
   "validatejs": {
