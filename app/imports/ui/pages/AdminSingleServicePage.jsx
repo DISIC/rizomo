@@ -70,6 +70,10 @@ const useStyles = makeStyles((theme) => ({
   actionIcon: {
     cursor: 'pointer',
   },
+  buttonGroup: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
 }));
 
 const defaultState = {
@@ -123,13 +127,14 @@ const AdminSingleServicePage = ({
   };
 
   const updateCategories = (categId) => {
-    const index = serviceData.categories.findIndex((c) => c === categId);
+    const newCategories = [...serviceData.categories];
+    const index = newCategories.findIndex((c) => c === categId);
     if (index > -1) {
-      serviceData.categories.splice(index, 1);
+      newCategories.splice(index, 1);
     } else {
-      serviceData.categories.push(categId);
+      newCategories.push(categId);
     }
-    setServiceData({ ...serviceData, categories });
+    setServiceData({ ...serviceData, categories: newCategories });
   };
 
   const updateScreenshots = (value, index) => {
@@ -312,9 +317,21 @@ const AdminSingleServicePage = ({
               />
             ))}
 
-          <Button variant="contained" color="primary" onClick={submitUpdateService}>
-            {params._id ? i18n.__('pages.AdminSingleServicePage.update') : i18n.__('pages.AdminSingleServicePage.save')}
-          </Button>
+          <div className={classes.buttonGroup}>
+            <Button variant="contained" color="primary" onClick={submitUpdateService}>
+              {
+                params._id
+                  ? i18n.__('pages.AdminSingleServicePage.update')
+                  : i18n.__('pages.AdminSingleServicePage.save')
+              }
+            </Button>
+
+            <Button variant="contained" onClick={() => history.push('/adminservices')}>
+              {i18n.__('pages.AdminSingleServicePage.cancel')}
+            </Button>
+
+          </div>
+
         </form>
       </Paper>
     </Container>

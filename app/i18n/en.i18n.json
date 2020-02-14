@@ -154,7 +154,8 @@
       "screenshots": "Screenshots",
       "addScreenshots": "Add a screenshot",
       "save": "Save",
-      "update": "Update"
+      "update": "Update",
+      "cancel": "Cancel"
     }
   },
   "layouts": {

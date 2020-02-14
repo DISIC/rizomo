@@ -149,7 +149,7 @@
       "title": "Titre",
       "slug": "Slug",
       "team": "Equipe",
-      "logo": "Logo du servicen",
+      "logo": "Logo du service",
       "description": "Courte description",
       "url": "URL du service",
       "content": "Longue description du service",
@@ -157,7 +157,8 @@
       "screenshots": "Captures d'écran",
       "addScreenshots": "Ajouter un écran",
       "save": "Sauvegarder",
-      "update": "Mettre à jour"
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
     }
   },
   "layouts": {
