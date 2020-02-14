@@ -179,17 +179,7 @@ const AdminSingleServicePage = ({
       if (error) {
         msg.error(error.message);
       } else {
-        msg.success(
-          <div>
-            {i18n.__('pages.AdminSingleServicePage.successServiceMsg')}
-            <br />
-            <a
-              href={`${window.location.origin}/services/${slug}`}
-            >
-              {`${window.location.origin}/services/${slug}`}
-            </a>
-          </div>,
-        );
+        msg.success(i18n.__('api.methods.operationSuccessMsg'));
         history.push('/adminservices');
       }
     });
