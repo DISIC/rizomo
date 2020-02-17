@@ -6,20 +6,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import SearchIcon from '@material-ui/icons/Search';
+import ViewListIcon from '@material-ui/icons/ViewList';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import ClearIcon from '@material-ui/icons/Clear';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 
 import {
-  InputAdornment, Typography, Chip, Badge, IconButton, Fade,
+  InputAdornment, Typography, Chip, Badge, Fade, IconButton,
 } from '@material-ui/core';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
 import Categories from '../../api/categories/categories';
 import Spinner from '../components/Spinner';
 import { Context } from '../contexts/context';
+import ServiceDetailsList from '../components/ServiceDetailsList';
 
 const useStyles = makeStyles((theme) => ({
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   cardGrid: {
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
@@ -40,6 +49,11 @@ function ServicesPage({ services, categories, ready }) {
   const favs = loadingUser ? [] : user.favServices;
   const [search, setSearch] = useState('');
   const [catList, setCatList] = useState([]);
+  const [viewMode, setviewMode] = useState('card'); // Possible values : "card" or "list"
+
+  const handleChangeViewMode = (event, value) => {
+    setviewMode(value);
+  };
 
   const updateSearch = (e) => setSearch(e.target.value);
 
@@ -69,6 +83,9 @@ function ServicesPage({ services, categories, ready }) {
     return filterSearch && filterCat;
   };
 
+  const mapList = (func) => services.filter((service) => filterServices(service)).map(func);
+  const favAction = (id) => (favs.indexOf(id) === -1 ? 'fav' : 'unfav');
+
   return (
     <>
       {!ready ? (
@@ -77,8 +94,29 @@ function ServicesPage({ services, categories, ready }) {
         <Fade in>
           <Container className={classes.cardGrid}>
             <Grid container spacing={4}>
-              <Grid item xs={12} sm={12} md={12}>
-                <Typography variant="h4">{i18n.__('pages.ServicesPage.title')}</Typography>
+              <Grid item xs={12} className={classes.flex}>
+                <Typography variant="h5">{i18n.__('pages.ServicesPage.title')}</Typography>
+                <ToggleButtonGroup
+                  value={viewMode}
+                  exclusive
+                  onChange={handleChangeViewMode}
+                  aria-label={i18n.__('pages.ServicesPage.viewMode')}
+                >
+                  <ToggleButton
+                    value="card"
+                    title={i18n.__('pages.ServicesPage.viewCard')}
+                    aria-label={i18n.__('pages.ServicesPage.viewCard')}
+                  >
+                    <DashboardIcon />
+                  </ToggleButton>
+                  <ToggleButton
+                    value="list"
+                    title={i18n.__('pages.ServicesPage.viewList')}
+                    aria-label={i18n.__('pages.ServicesPage.viewList')}
+                  >
+                    <ViewListIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
               </Grid>
               <Grid item xs={12} sm={12} md={12}>
                 <TextField
@@ -136,22 +174,23 @@ function ServicesPage({ services, categories, ready }) {
                   />
                 ))}
               </Grid>
-              {services
-                .filter((service) => filterServices(service))
-                .map((service) => {
-                  const favAction = favs.indexOf(service._id) === -1 ? 'fav' : 'unfav';
-                  return (
-                    <Grid className={classes.gridItem} item key={service._id} xs={12} sm={6} md={4} lg={3}>
-                      <ServiceDetails
-                        service={service}
-                        favAction={favAction}
-                        categories={categories}
-                        updateCategories={updateCatList}
-                        catList={catList}
-                      />
-                    </Grid>
-                  );
-                })}
+              {viewMode === 'list'
+                ? mapList((service) => (
+                  <Grid className={classes.gridItem} item xs={12} md={6}>
+                    <ServiceDetailsList key={service._id} service={service} favAction={favAction(service._id)} />
+                  </Grid>
+                ))
+                : mapList((service) => (
+                  <Grid className={classes.gridItem} item key={service._id} xs={12} sm={6} md={4} lg={3}>
+                    <ServiceDetails
+                      service={service}
+                      favAction={favAction(service._id)}
+                      updateCategories={updateCatList}
+                      catList={catList}
+                      categories={categories}
+                    />
+                  </Grid>
+                ))}
             </Grid>
           </Container>
         </Fade>
