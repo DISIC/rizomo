@@ -145,6 +145,7 @@ function ServicesPage({ services, categories, ready }) {
                       <ServiceDetails
                         service={service}
                         favAction={favAction}
+                        categories={categories}
                         updateCategories={updateCatList}
                         catList={catList}
                       />

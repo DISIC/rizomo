@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -17,7 +16,6 @@ import {
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import { favService, unfavService } from '../../api/users/methods';
-import Categories from '../../api/categories/categories';
 
 const useStyles = makeStyles((theme) => ({
   cardActions: {
@@ -60,11 +58,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ServiceDetails({
-  service,
-  favAction,
-  categories,
-  updateCategories,
-  catList,
+  service, favAction, categories, updateCategories, catList,
 }) {
   const classes = useStyles();
 
@@ -88,6 +82,7 @@ function ServiceDetails({
     }
   };
 
+
   const favButtonLabel = favAction === 'unfav'
     ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
@@ -95,22 +90,10 @@ function ServiceDetails({
   return (
     <Card className={classes.card} elevation={6}>
       <CardHeader
-        avatar={(
-          <CardMedia
-            className={classes.cardMedia}
-            component="img"
-            alt={service.title}
-            image={service.logo}
-          />
-        )}
+        avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
         action={(
           <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-            <Button
-              variant="text"
-              color="primary"
-              className={classes.fab}
-              onClick={handleFavorite}
-            >
+            <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
               {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
             </Button>
           </Tooltip>
@@ -128,26 +111,27 @@ function ServiceDetails({
       <CardContent className={classes.cardContent}>
         <Typography variant="body1">{service.description}</Typography>
         <Paper variant="elevation" elevation={0} className={classes.paperChip}>
-          {categories.map((cat) => (
-            <Chip
-              size="small"
-              className={classes.chip}
-              key={cat._id}
-              label={cat.name}
-              variant="outlined"
-              color={catList.includes(cat._id) ? 'primary' : 'default'}
-              onClick={() => updateCategories(cat._id)}
-            />
-          ))}
+          {service.categories.map((cat) => {
+            const currentCategory = categories.find((categ) => categ._id === cat);
+            return (
+              <Chip
+                size="small"
+                className={classes.chip}
+                key={currentCategory._id}
+                label={currentCategory.name}
+                variant="outlined"
+                color={catList.includes(currentCategory._id) ? 'primary' : 'default'}
+                onClick={() => updateCategories(currentCategory._id)}
+              />
+            );
+          })}
         </Paper>
       </CardContent>
       <Divider variant="middle" />
       <CardActions className={classes.cardActions}>
         <Tooltip
           title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-          aria-label={i18n.__(
-            'components.ServiceDetails.singleServiceButtonLabel',
-          )}
+          aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
         >
           <Link to={`/services/${service.slug}`}>
             <Button variant="contained" color="primary">
@@ -176,11 +160,4 @@ ServiceDetails.propTypes = {
   catList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default withTracker(({ service }) => {
-  Meteor.subscribe('categories.service', { categories: service.categories });
-
-  const categories = Categories.find({ _id: { $in: service.categories || [] } }, { sort: { name: 1 } }).fetch();
-  return {
-    categories,
-  };
-})(ServiceDetails);
+export default ServiceDetails;
