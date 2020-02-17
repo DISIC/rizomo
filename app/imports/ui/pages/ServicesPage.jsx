@@ -6,11 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@material-ui/icons/Clear';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 
 import {
-  InputAdornment, Typography, Chip, Badge,
+  InputAdornment, Typography, Chip, Badge, IconButton,
 } from '@material-ui/core';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
@@ -95,6 +96,13 @@ function ServicesPage({ services, categories, ready }) {
                       <SearchIcon />
                     </InputAdornment>
                   ),
+                  endAdornment: search ? (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setSearch('')}>
+                        <ClearIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null,
                 }}
               />
             </Grid>
