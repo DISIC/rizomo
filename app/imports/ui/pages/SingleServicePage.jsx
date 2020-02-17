@@ -137,7 +137,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
                 className={classes.fab}
                 onClick={handleFavorite}
               >
-                {favorite ? <FavoriteBorderIcon fontSize="large" /> : <FavoriteIcon fontSize="large" />}
+                {favorite ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />}
               </Button>
             </Tooltip>
             <Button variant="outlined" color="primary" onClick={() => window.open(service.url, '_blank')}>
