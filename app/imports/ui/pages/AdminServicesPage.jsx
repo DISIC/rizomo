@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
-import { Container } from '@material-ui/core';
+import { Container, Fade } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import Services from '../../api/services/services';
@@ -48,49 +48,51 @@ function AdminServicesPage({ services, loading }) {
       {loading ? (
         <Spinner />
       ) : (
-        <Container>
-          <MaterialTable
-            // other props
-            title={i18n.__('pages.AdminServicesPage.title')}
-            columns={columns}
-            data={services}
-            options={options}
-            localization={setMaterialTableLocalization('pages.AdminServicesPage')}
-            actions={[
-              {
-                icon: 'edit',
-                tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
-                onClick: (event, rowData) => {
-                  history.push(`/adminservices/${rowData._id}`);
+        <Fade in>
+          <Container>
+            <MaterialTable
+              // other props
+              title={i18n.__('pages.AdminServicesPage.title')}
+              columns={columns}
+              data={services}
+              options={options}
+              localization={setMaterialTableLocalization('pages.AdminServicesPage')}
+              actions={[
+                {
+                  icon: 'edit',
+                  tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
+                  onClick: (event, rowData) => {
+                    history.push(`/adminservices/${rowData._id}`);
+                  },
                 },
-              },
-              {
-                icon: 'add',
-                tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_addTooltip'),
-                isFreeAction: true,
-                onClick: () => history.push('/adminservices/new'),
-              },
-            ]}
-            editable={{
-              onRowDelete: (oldData) => new Promise((resolve, reject) => {
-                removeService.call(
-                  {
-                    serviceId: oldData._id,
-                  },
-                  (err, res) => {
-                    if (err) {
-                      msg.error(err.reason);
-                      reject(err);
-                    } else {
-                      msg.success(i18n.__('api.methods.operationSuccessMsg'));
-                      resolve(res);
-                    }
-                  },
-                );
-              }),
-            }}
-          />
-        </Container>
+                {
+                  icon: 'add',
+                  tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_addTooltip'),
+                  isFreeAction: true,
+                  onClick: () => history.push('/adminservices/new'),
+                },
+              ]}
+              editable={{
+                onRowDelete: (oldData) => new Promise((resolve, reject) => {
+                  removeService.call(
+                    {
+                      serviceId: oldData._id,
+                    },
+                    (err, res) => {
+                      if (err) {
+                        msg.error(err.reason);
+                        reject(err);
+                      } else {
+                        msg.success(i18n.__('api.methods.operationSuccessMsg'));
+                        resolve(res);
+                      }
+                    },
+                  );
+                }),
+              }}
+            />
+          </Container>
+        </Fade>
       )}
     </>
   );

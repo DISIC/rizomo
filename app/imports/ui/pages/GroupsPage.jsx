@@ -9,6 +9,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { Fade } from '@material-ui/core';
 import Spinner from '../components/Spinner';
 import Groups from '../../api/groups/groups';
 import GroupDetails from '../components/GroupDetails';
@@ -35,25 +36,27 @@ function GroupsPage({ groups, loading }) {
       {loading ? (
         <Spinner />
       ) : (
-        <Paper className={classes.paper}>
-          <h1 className={classes.title}>Groupes</h1>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Nom du groupe</TableCell>
-                <TableCell>Infos</TableCell>
-                <TableCell align="right">Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {groups
-                .filter((group) => filterGroups(group))
-                .map((group) => (
-                  <GroupDetails key={group.name} group={group} />
-                ))}
-            </TableBody>
-          </Table>
-        </Paper>
+        <Fade in>
+          <Paper className={classes.paper}>
+            <h1 className={classes.title}>Groupes</h1>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Nom du groupe</TableCell>
+                  <TableCell>Infos</TableCell>
+                  <TableCell align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {groups
+                  .filter((group) => filterGroups(group))
+                  .map((group) => (
+                    <GroupDetails key={group.name} group={group} />
+                  ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </Fade>
       )}
     </>
   );

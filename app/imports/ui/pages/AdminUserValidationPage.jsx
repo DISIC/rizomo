@@ -5,7 +5,7 @@ import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import { Container } from '@material-ui/core';
+import { Container, Fade } from '@material-ui/core';
 import Spinner from '../components/Spinner';
 import '../../api/users/users';
 import { setActive } from '../../api/users/methods';
@@ -59,29 +59,31 @@ function AdminUserValidationPage({ usersrequest, loading }) {
       {loading ? (
         <Spinner />
       ) : (
-        <Container>
-          <MaterialTable
-            // other props
-            title={i18n.__('pages.AdminUserValidationPage.title')}
-            columns={columns}
-            data={usersrequest}
-            options={options}
-            localization={setMaterialTableLocalization('pages.AdminUserValidationPage')}
-            actions={[
-              {
-                icon: PersonAddIcon,
-                tooltip: i18n.__('pages.AdminUserValidationPage.actions_tooltip'),
-                onClick: (event, rowData) => {
-                  setActive.call({ userId: rowData._id }, (err) => {
-                    if (err) {
-                      msg.error(err.reason);
-                    }
-                  });
+        <Fade in>
+          <Container>
+            <MaterialTable
+              // other props
+              title={i18n.__('pages.AdminUserValidationPage.title')}
+              columns={columns}
+              data={usersrequest}
+              options={options}
+              localization={setMaterialTableLocalization('pages.AdminUserValidationPage')}
+              actions={[
+                {
+                  icon: PersonAddIcon,
+                  tooltip: i18n.__('pages.AdminUserValidationPage.actions_tooltip'),
+                  onClick: (event, rowData) => {
+                    setActive.call({ userId: rowData._id }, (err) => {
+                      if (err) {
+                        msg.error(err.reason);
+                      }
+                    });
+                  },
                 },
-              },
-            ]}
-          />
-        </Container>
+              ]}
+            />
+          </Container>
+        </Fade>
       )}
     </>
   );
