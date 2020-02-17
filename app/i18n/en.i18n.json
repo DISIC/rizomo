@@ -136,8 +136,6 @@
     },
     "SingleServicePage": {
       "backToList": "Back to the list",
-      "addToFavorites": "Add to my apps",
-      "inFavorites": "Added",
       "screenshots": "Screenshots",
       "categories": "Categories",
       "open": "Open"

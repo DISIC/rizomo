@@ -10,7 +10,10 @@ import {
   Typography,
   Grid,
   Chip,
+  Tooltip,
 } from '@material-ui/core';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Services from '../../api/services/services';
 import Spinner from '../components/Spinner';
@@ -66,6 +69,11 @@ const useStyles = makeStyles((theme) => ({
   category: {
     marginLeft: theme.spacing(1),
   },
+  fab: {
+    '&:hover': {
+      color: 'red',
+    },
+  },
 }));
 
 const SingleServicePage = ({ service = [], ready, categories = [] }) => {
@@ -102,6 +110,10 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
     return <Spinner full />;
   }
 
+  const favButtonLabel = favorite
+    ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
+    : i18n.__('components.ServiceDetails.favButtonLabelFav');
+
   return (
     <Container className={classes.root}>
       <Grid container spacing={2}>
@@ -130,16 +142,17 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={6} className={classes.favoriteButton}>
-          <Button
-            disabled={loading}
-            variant={favorite ? 'contained' : 'outlined'}
-            color="primary"
-            onClick={handleFavorite}
-          >
-            {favorite
-              ? i18n.__('pages.SingleServicePage.inFavorites')
-              : i18n.__('pages.SingleServicePage.addToFavorites')}
-          </Button>
+          <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+            <Button
+              variant="text"
+              color="primary"
+              disabled={loading}
+              className={classes.fab}
+              onClick={handleFavorite}
+            >
+              {favorite ? <FavoriteBorderIcon fontSize="large" /> : <FavoriteIcon fontSize="large" />}
+            </Button>
+          </Tooltip>
           <Button
             variant="outlined"
             color="primary"
