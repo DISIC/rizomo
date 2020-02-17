@@ -11,6 +11,7 @@ import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Fade } from '@material-ui/core';
 import Spinner from '../components/Spinner';
 
 validate.options = {
@@ -110,7 +111,7 @@ function SignIn({ loggingIn }) {
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
   const useKeycloak = Meteor.settings.public.enableKeycloak;
   return (
-    <div>
+    <Fade in>
       <Typography variant="h5" color="inherit" paragraph>
         {i18n.__('pages.SignIn.appDescription')}
       </Typography>
@@ -204,7 +205,7 @@ function SignIn({ loggingIn }) {
           message={<span id="message-id">{i18n.__('pages.SignIn.loginError')}</span>}
         />
       </form>
-    </div>
+    </Fade>
   );
 }
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
-import { Container } from '@material-ui/core';
+import { Container, Fade } from '@material-ui/core';
 import Spinner from '../components/Spinner';
 import { createCategorie, updateCategorie, removeCategorie } from '../../api/categories/methods';
 import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
@@ -62,21 +62,23 @@ const AdminCategoriesPage = ({ categories, loading }) => {
       {loading ? (
         <Spinner />
       ) : (
-        <Container>
-          <MaterialTable
-            // other props
-            title={i18n.__('pages.AdminCategoriesPage.title')}
-            columns={columns}
-            data={categories}
-            options={options}
-            localization={setMaterialTableLocalization('pages.AdminCategoriesPage')}
-            editable={{
-              onRowAdd,
-              onRowDelete,
-              onRowUpdate,
-            }}
-          />
-        </Container>
+        <Fade in>
+          <Container>
+            <MaterialTable
+              // other props
+              title={i18n.__('pages.AdminCategoriesPage.title')}
+              columns={columns}
+              data={categories}
+              options={options}
+              localization={setMaterialTableLocalization('pages.AdminCategoriesPage')}
+              editable={{
+                onRowAdd,
+                onRowDelete,
+                onRowUpdate,
+              }}
+            />
+          </Container>
+        </Fade>
       )}
     </>
   );

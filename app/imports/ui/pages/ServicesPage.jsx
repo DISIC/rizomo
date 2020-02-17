@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 
 import {
-  InputAdornment, Typography, Chip, Badge, IconButton,
+  InputAdornment, Typography, Chip, Badge, IconButton, Fade,
 } from '@material-ui/core';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
@@ -74,84 +74,86 @@ function ServicesPage({ services, categories, ready }) {
       {!ready ? (
         <Spinner />
       ) : (
-        <Container className={classes.cardGrid}>
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={12} md={12}>
-              <Typography variant="h4">{i18n.__('pages.ServicesPage.title')}</Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <TextField
-                margin="normal"
-                id="search"
-                label={i18n.__('pages.ServicesPage.searchText')}
-                name="search"
-                fullWidth
-                onChange={updateSearch}
-                type="text"
-                value={search}
-                variant="outlined"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: search ? (
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => setSearch('')}>
-                        <ClearIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <Typography variant="h6" display="inline">
-                {i18n.__('pages.ServicesPage.categories')}
-                {' :'}
-              </Typography>
-              {categories.map((cat) => (
-                <Chip
-                  className={classes.chip}
-                  key={cat._id}
-                  label={(
-                    <>
-                      {cat.name}
-                      <Badge
-                        color="primary"
-                        className={classes.badge}
-                        badgeContent={cat.count}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'right',
-                        }}
-                      />
-                    </>
-                  )}
+        <Fade in>
+          <Container className={classes.cardGrid}>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={12} md={12}>
+                <Typography variant="h4">{i18n.__('pages.ServicesPage.title')}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <TextField
+                  margin="normal"
+                  id="search"
+                  label={i18n.__('pages.ServicesPage.searchText')}
+                  name="search"
+                  fullWidth
+                  onChange={updateSearch}
+                  type="text"
+                  value={search}
                   variant="outlined"
-                  color={catList.includes(cat._id) ? 'primary' : 'default'}
-                  onClick={() => updateCatList(cat._id)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment: search ? (
+                      <InputAdornment position="end">
+                        <IconButton onClick={() => setSearch('')}>
+                          <ClearIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null,
+                  }}
                 />
-              ))}
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Typography variant="h6" display="inline">
+                  {i18n.__('pages.ServicesPage.categories')}
+                  {' :'}
+                </Typography>
+                {categories.map((cat) => (
+                  <Chip
+                    className={classes.chip}
+                    key={cat._id}
+                    label={(
+                      <>
+                        {cat.name}
+                        <Badge
+                          color="primary"
+                          className={classes.badge}
+                          badgeContent={cat.count}
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                          }}
+                        />
+                      </>
+                    )}
+                    variant="outlined"
+                    color={catList.includes(cat._id) ? 'primary' : 'default'}
+                    onClick={() => updateCatList(cat._id)}
+                  />
+                ))}
+              </Grid>
+              {services
+                .filter((service) => filterServices(service))
+                .map((service) => {
+                  const favAction = favs.indexOf(service._id) === -1 ? 'fav' : 'unfav';
+                  return (
+                    <Grid className={classes.gridItem} item key={service._id} xs={12} sm={6} md={4} lg={3}>
+                      <ServiceDetails
+                        service={service}
+                        favAction={favAction}
+                        updateCategories={updateCatList}
+                        catList={catList}
+                      />
+                    </Grid>
+                  );
+                })}
             </Grid>
-            {services
-              .filter((service) => filterServices(service))
-              .map((service) => {
-                const favAction = favs.indexOf(service._id) === -1 ? 'fav' : 'unfav';
-                return (
-                  <Grid className={classes.gridItem} item key={service._id} xs={12} sm={6} md={4} lg={3}>
-                    <ServiceDetails
-                      service={service}
-                      favAction={favAction}
-                      updateCategories={updateCatList}
-                      catList={catList}
-                    />
-                  </Grid>
-                );
-              })}
-          </Grid>
-        </Container>
+          </Container>
+        </Fade>
       )}
     </>
   );

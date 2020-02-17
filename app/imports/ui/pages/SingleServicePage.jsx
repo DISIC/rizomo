@@ -4,13 +4,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import {
-  Container,
-  makeStyles,
-  Button,
-  Typography,
-  Grid,
-  Chip,
-  Tooltip,
+  Container, makeStyles, Button, Typography, Grid, Chip, Tooltip, Fade,
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -115,99 +109,83 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
   return (
-    <Container className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item md={12}>
-          <Link to="/services">
-            <Button
-              className={classes.backButton}
-              color="primary"
-              startIcon={<ArrowBack />}
-            >
-              {i18n.__('pages.SingleServicePage.backToList')}
-            </Button>
-          </Link>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} className={classes.cardGrid}>
-          <div className={classes.titleContainer}>
-            <img
-              className={classes.logo}
-              alt={`logo for ${service.title}`}
-              src={service.logo}
-            />
-            <div className={classes.title}>
-              <Typography variant="h5">{service.title}</Typography>
-              <Typography>{service.team}</Typography>
+    <Fade in>
+      <Container className={classes.root}>
+        <Grid container spacing={2}>
+          <Grid item md={12}>
+            <Link to="/services">
+              <Button className={classes.backButton} color="primary" startIcon={<ArrowBack />}>
+                {i18n.__('pages.SingleServicePage.backToList')}
+              </Button>
+            </Link>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6} className={classes.cardGrid}>
+            <div className={classes.titleContainer}>
+              <img className={classes.logo} alt={`logo for ${service.title}`} src={service.logo} />
+              <div className={classes.title}>
+                <Typography variant="h5">{service.title}</Typography>
+                <Typography>{service.team}</Typography>
+              </div>
             </div>
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} className={classes.favoriteButton}>
-          <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-            <Button
-              variant="text"
-              color="primary"
-              disabled={loading}
-              className={classes.fab}
-              onClick={handleFavorite}
-            >
-              {favorite ? <FavoriteBorderIcon fontSize="large" /> : <FavoriteIcon fontSize="large" />}
+          </Grid>
+          <Grid item xs={12} sm={12} md={6} className={classes.favoriteButton}>
+            <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+              <Button
+                variant="text"
+                color="primary"
+                disabled={loading}
+                className={classes.fab}
+                onClick={handleFavorite}
+              >
+                {favorite ? <FavoriteBorderIcon fontSize="large" /> : <FavoriteIcon fontSize="large" />}
+              </Button>
+            </Tooltip>
+            <Button variant="outlined" color="primary" onClick={() => window.open(service.url, '_blank')}>
+              {i18n.__('pages.SingleServicePage.open')}
             </Button>
-          </Tooltip>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => window.open(service.url, '_blank')}
-          >
-            {i18n.__('pages.SingleServicePage.open')}
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
-          <Typography className={classes.smallTitle} variant="h5">
-            {i18n.__('pages.SingleServicePage.categories')}
-          </Typography>
-          {categories.map((categ) => (
-            <Chip
-              className={classes.category}
-              key={categ._id}
-              label={categ.name}
-              color="primary"
-              style={{ backgroundColor: categ.color }}
-            />
-          ))}
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
-          <Typography className={classes.smallTitle} variant="h5">
-            Description
-          </Typography>
-          <div
-            className={classes.content}
-            dangerouslySetInnerHTML={{ __html: service.content }}
-          />
-        </Grid>
-        {Boolean(service.screenshots.length) && (
-          <>
-            <Grid item xs={12} sm={12} md={12}>
-              <Typography className={classes.smallTitle} variant="h5">
-                {i18n.__('pages.SingleServicePage.screenshots')}
-                {' '}
-(
-                {service.screenshots.length}
-)
-              </Typography>
-            </Grid>
-            {service.screenshots && service.screenshots.map((screen, i) => (
-              <Grid key={Math.random()} item xs={12} sm={6} md={6}>
-                <img
-                  className={classes.screenshot}
-                  src={screen}
-                  alt={`screenshot ${i} for ${service.title}`}
-                />
-              </Grid>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
+            <Typography className={classes.smallTitle} variant="h5">
+              {i18n.__('pages.SingleServicePage.categories')}
+            </Typography>
+            {categories.map((categ) => (
+              <Chip
+                className={classes.category}
+                key={categ._id}
+                label={categ.name}
+                color="primary"
+                style={{ backgroundColor: categ.color }}
+              />
             ))}
-          </>
-        )}
-      </Grid>
-    </Container>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
+            <Typography className={classes.smallTitle} variant="h5">
+              Description
+            </Typography>
+            <div className={classes.content} dangerouslySetInnerHTML={{ __html: service.content }} />
+          </Grid>
+          {Boolean(service.screenshots.length) && (
+            <>
+              <Grid item xs={12} sm={12} md={12}>
+                <Typography className={classes.smallTitle} variant="h5">
+                  {i18n.__('pages.SingleServicePage.screenshots')}
+                  {' '}
+(
+                  {service.screenshots.length}
+)
+                </Typography>
+              </Grid>
+              {service.screenshots
+                && service.screenshots.map((screen, i) => (
+                  <Grid key={Math.random()} item xs={12} sm={6} md={6}>
+                    <img className={classes.screenshot} src={screen} alt={`screenshot ${i} for ${service.title}`} />
+                  </Grid>
+                ))}
+            </>
+          )}
+        </Grid>
+      </Container>
+    </Fade>
   );
 };
 
