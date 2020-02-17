@@ -8,7 +8,6 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { Container, Fade } from '@material-ui/core';
 import Spinner from '../components/Spinner';
 import '../../api/users/users';
-import { setActive } from '../../api/users/methods';
 import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
 
 function AdminUserValidationPage({ usersrequest, loading }) {
@@ -73,7 +72,7 @@ function AdminUserValidationPage({ usersrequest, loading }) {
                   icon: PersonAddIcon,
                   tooltip: i18n.__('pages.AdminUserValidationPage.actions_tooltip'),
                   onClick: (event, rowData) => {
-                    setActive.call({ userId: rowData._id }, (err) => {
+                    Meteor.call('users.setActive', { userId: rowData._id }, (err) => {
                       if (err) {
                         msg.error(err.reason);
                       }

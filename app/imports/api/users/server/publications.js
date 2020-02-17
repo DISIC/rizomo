@@ -15,17 +15,6 @@ Meteor.publish('userData', function publishUserData() {
   return this.ready();
 });
 
-Meteor.publish('users.all', function usersAll() {
-  if (!isActive(this.userId)) {
-    return this.ready();
-  }
-  return Meteor.users.find(
-    {},
-    {
-      fields: Meteor.users.publicFields,
-    },
-  );
-});
 // publish users waiting for activation by admin
 Meteor.publish('users.request', function usersRequest() {
   if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin')) {
@@ -34,7 +23,7 @@ Meteor.publish('users.request', function usersRequest() {
   return Meteor.users.find(
     { isRequest: true },
     {
-      fields: { ...Meteor.users.publicFields, emails: 1, createdAt: 1 },
+      fields: Meteor.users.adminFields,
     },
   );
 });

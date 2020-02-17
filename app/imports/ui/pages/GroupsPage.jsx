@@ -9,7 +9,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Fade } from '@material-ui/core';
+import { Fade, Container } from '@material-ui/core';
 import Spinner from '../components/Spinner';
 import Groups from '../../api/groups/groups';
 import GroupDetails from '../components/GroupDetails';
@@ -37,25 +37,27 @@ function GroupsPage({ groups, loading }) {
         <Spinner />
       ) : (
         <Fade in>
-          <Paper className={classes.paper}>
-            <h1 className={classes.title}>Groupes</h1>
-            <Table className={classes.table} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Nom du groupe</TableCell>
-                  <TableCell>Infos</TableCell>
-                  <TableCell align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {groups
-                  .filter((group) => filterGroups(group))
-                  .map((group) => (
-                    <GroupDetails key={group.name} group={group} />
-                  ))}
-              </TableBody>
-            </Table>
-          </Paper>
+          <Container>
+            <Paper className={classes.paper}>
+              <h1 className={classes.title}>Groupes</h1>
+              <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Nom du groupe</TableCell>
+                    <TableCell>Infos</TableCell>
+                    <TableCell align="right">Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {groups
+                    .filter((group) => filterGroups(group))
+                    .map((group) => (
+                      <GroupDetails key={group.name} group={group} />
+                    ))}
+                </TableBody>
+              </Table>
+            </Paper>
+          </Container>
         </Fade>
       )}
     </>
@@ -68,9 +70,9 @@ GroupsPage.propTypes = {
 };
 
 export default withTracker(() => {
-  const groupsHandle = Meteor.subscribe('groups.all');
+  const groupsHandle = Meteor.subscribe('groups.memberof');
   const loading = !groupsHandle.ready();
-  const groups = Groups.find({}, { sort: { title: 1 } }).fetch();
+  const groups = Groups.find({}, { sort: { name: 1 } }).fetch();
   return {
     groups,
     loading,

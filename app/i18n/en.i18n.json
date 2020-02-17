@@ -4,11 +4,18 @@
       "unknownUser": "User does not exist.",
       "mustBeLoggedIn": "You must be logged in.",
       "adminNeeded": "You don't have admin rights.",
-      "adminGiven": "Admin rights have been given to user: "
+      "adminGiven": "Admin rights have been given to user: ",
+      "notPermitted": "You don't have sufficient rights."
     },
     "groups": {
       "unknownGroup": "Group does not exist.",
-      "adminGroupNeeded": "You don't have admin rights on this group."
+      "adminGroupNeeded": "You don't have admin rights on this group.",
+      "moderatedGroupOnly": "This action is available for moderated group only.",
+      "types": {
+        "open": "open",
+        "moderated": "moderated",
+        "private": "private"
+      }
     },
     "services": {
       "unknownService": "Service does not exist."
@@ -21,7 +28,9 @@
     "MenuBar": {
       "menuMyspace": "Dashboard",
       "menuServices": "Applications",
-      "menuGroupes": "My Groups"
+      "menuGroupes": "My Groups",
+      "menuAdminServices": "Service Management",
+      "menuAdminUserValidation": "User validation"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Run this service",
@@ -42,7 +51,8 @@
     "AdminMenu": {
       "menuAdminServices": "Service Management",
       "menuAdminUserValidation": "User validation",
-      "menuAdminCategories": "Categories Management"
+      "menuAdminCategories": "Categories Management",
+      "menuAdminGroups": "Groups Management"
     }
   },
   "validatejs": {
@@ -117,6 +127,22 @@
         "body_editTooltip": "Modify this category",
         "body_deleteTooltip": "Remove this category",
         "body_editRow_deleteText": "Do you really want to delete this category ?"
+      }
+    },
+    "AdminGroupsPage": {
+      "title": "Groups Management",
+      "columnName": "Logo",
+      "columnInfo": "Description",
+      "columnType": "Type",
+      "columnMembers": "Members",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a group",
+        "pagination_labelRowsSelect": "groups per page",
+        "body_emptyDataSourceMessage": "No groups to manage",
+        "body_addTooltip": "Add a group",
+        "body_editTooltip": "Modify this group",
+        "body_deleteTooltip": "Remove this group",
+        "body_editRow_deleteText": "Do you really want to delete this group ?"
       }
     },
     "AdminUserValidationPage": {

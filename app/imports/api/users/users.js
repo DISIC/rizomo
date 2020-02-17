@@ -6,7 +6,7 @@ import i18n from 'meteor/universe:i18n';
 
 import { checkDomain } from '../utils';
 
-const AppRoles = ['candidate', 'member', 'admin'];
+const AppRoles = ['candidate', 'member', 'animator', 'admin'];
 
 Meteor.users.schema = new SimpleSchema(
   {
@@ -173,6 +173,17 @@ Meteor.users.selfFields = {
   favServices: 1,
   structure: 1,
   primaryEmail: 1,
+};
+
+Meteor.users.adminFields = {
+  username: 1,
+  firstName: 1,
+  lastName: 1,
+  emails: 1,
+  createdAt: 1,
+  isActive: 1,
+  isRequest: 1,
+  structure: 1,
 };
 
 Meteor.users.publicFields = {

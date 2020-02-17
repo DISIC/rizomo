@@ -4,11 +4,18 @@
       "unknownUser": "L'utilisateur n'existe pas.",
       "mustBeLoggedIn": "Vous devez être connecté.",
       "adminNeeded": "Vous n'êtes pas administrateur.",
-      "adminGiven": "Les droits d'administration ont été donnés à cet utilisateur: "
+      "adminGiven": "Les droits d'administration ont été donnés à cet utilisateur: ",
+      "notPermitted": "Vous n'avez pas les droits suffisants."
     },
     "groups": {
       "unknownGroup": "Le groupe n'existe pas.",
-      "adminGroupNeeded": "Vous n'avez pas les droits d'administration sur ce groupe."
+      "adminGroupNeeded": "Vous n'avez pas les droits d'administration sur ce groupe.",
+      "moderatedGroupOnly": "Cette action est possible seulement sur un groupe modéré.",
+      "types": {
+        "open": "ouvert",
+        "moderated": "modéré",
+        "private": "réservé"
+      }
     },
     "services": {
       "unknownService": "Le service n'existe pas."
@@ -21,7 +28,9 @@
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuServices": "Applications",
-      "menuGroupes": "Mes Groupes"
+      "menuGroupes": "Mes Groupes",
+      "menuAdminServices": "Gestion des Services",
+      "menuAdminUserValidation": "Validation des utilisateurs"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Ouvrir l'application",
@@ -42,7 +51,8 @@
     "AdminMenu": {
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs",
-      "menuAdminCategories": "Gestion des categories"
+      "menuAdminCategories": "Gestion des categories",
+      "menuAdminGroups": "Gestion des Groupes"
     }
   },
   "validatejs": {
@@ -120,6 +130,22 @@
         "body_editTooltip": "Modifier cette catégorie",
         "body_deleteTooltip": "Supprimer cette catégorie",
         "body_editRow_deleteText": "Supprimer vraiment cette catégorie ?"
+      }
+    },
+    "AdminGroupsPage": {
+      "title": "Gestion des groupes",
+      "columnName": "Nom",
+      "columnInfo": "Description",
+      "columnType": "Type",
+      "columnMembers": "Membres",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher un groupe",
+        "pagination_labelRowsSelect": "groupes par page",
+        "body_emptyDataSourceMessage": "Aucun groupe à gérer",
+        "body_addTooltip": "Ajouter un groupe",
+        "body_editTooltip": "Modifier ce groupe",
+        "body_deleteTooltip": "Supprimer ce groupe",
+        "body_editRow_deleteText": "Supprimer vraiment ce groupe ?"
       }
     },
     "AdminUserValidationPage": {

@@ -112,99 +112,101 @@ function SignIn({ loggingIn }) {
   const useKeycloak = Meteor.settings.public.enableKeycloak;
   return (
     <Fade in>
-      <Typography variant="h5" color="inherit" paragraph>
-        {i18n.__('pages.SignIn.appDescription')}
-      </Typography>
-      <Typography variant="h6" color="inherit" paragraph>
-        {i18n.__('pages.SignIn.appVersion')}
-      </Typography>
-      <form onSubmit={handleSignIn} className={classes.form} noValidate>
-        {loggingIn && <Spinner full />}
-        {useKeycloak ? (
-          <Button
-            disabled={loggingIn}
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleKeycloakAuth}
-          >
-            {i18n.__('pages.SignIn.loginKeycloak')}
-          </Button>
-        ) : (
-          <>
-            <TextField
-              margin="normal"
-              required
-              id="email"
-              label={i18n.__('pages.SignIn.emailLabel')}
-              name="email"
-              autoComplete="email"
-              autoFocus
-              error={hasError('email')}
-              fullWidth
-              helperText={hasError('email') ? i18n.__(formState.errors.email[0]) : null}
-              onChange={handleChange}
-              type="text"
-              value={formState.values.email || ''}
-              variant="outlined"
-              disabled={loggingIn}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label={i18n.__('pages.SignIn.pwdLabel')}
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              error={hasError('password')}
-              helperText={hasError('password') ? i18n.__(formState.errors.password[0]) : null}
-              onChange={handleChange}
-              value={formState.values.password || ''}
-              disabled={loggingIn}
-            />
+      <>
+        <Typography variant="h5" color="inherit" paragraph>
+          {i18n.__('pages.SignIn.appDescription')}
+        </Typography>
+        <Typography variant="h6" color="inherit" paragraph>
+          {i18n.__('pages.SignIn.appVersion')}
+        </Typography>
+        <form onSubmit={handleSignIn} className={classes.form} noValidate>
+          {loggingIn && <Spinner full />}
+          {useKeycloak ? (
             <Button
-              type="submit"
+              disabled={loggingIn}
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              disabled={!formState.isValid || loggingIn}
+              onClick={handleKeycloakAuth}
             >
-              {i18n.__('pages.SignIn.connect')}
+              {i18n.__('pages.SignIn.loginKeycloak')}
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link to="/" variant="body2">
-                  {i18n.__('pages.SignIn.forgotPwd')}
-                </Link>
+          ) : (
+            <>
+              <TextField
+                margin="normal"
+                required
+                id="email"
+                label={i18n.__('pages.SignIn.emailLabel')}
+                name="email"
+                autoComplete="email"
+                autoFocus
+                error={hasError('email')}
+                fullWidth
+                helperText={hasError('email') ? i18n.__(formState.errors.email[0]) : null}
+                onChange={handleChange}
+                type="text"
+                value={formState.values.email || ''}
+                variant="outlined"
+                disabled={loggingIn}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label={i18n.__('pages.SignIn.pwdLabel')}
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                error={hasError('password')}
+                helperText={hasError('password') ? i18n.__(formState.errors.password[0]) : null}
+                onChange={handleChange}
+                value={formState.values.password || ''}
+                disabled={loggingIn}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={!formState.isValid || loggingIn}
+              >
+                {i18n.__('pages.SignIn.connect')}
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link to="/" variant="body2">
+                    {i18n.__('pages.SignIn.forgotPwd')}
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link to="/signup" variant="body2">
+                    {i18n.__('pages.SignIn.createAccount')}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link to="/signup" variant="body2">
-                  {i18n.__('pages.SignIn.createAccount')}
-                </Link>
-              </Grid>
-            </Grid>
-          </>
-        )}
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          open={openError}
-          autoHideDuration={4000}
-          onClose={handleErrorClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-            className: classes.error,
-          }}
-          message={<span id="message-id">{i18n.__('pages.SignIn.loginError')}</span>}
-        />
-      </form>
+            </>
+          )}
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            open={openError}
+            autoHideDuration={4000}
+            onClose={handleErrorClose}
+            ContentProps={{
+              'aria-describedby': 'message-id',
+              className: classes.error,
+            }}
+            message={<span id="message-id">{i18n.__('pages.SignIn.loginError')}</span>}
+          />
+        </form>
+      </>
     </Fade>
   );
 }

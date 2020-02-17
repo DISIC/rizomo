@@ -13,6 +13,10 @@ const adminMenu = [
     content: 'menuAdminCategories',
   },
   {
+    path: '/admingroups',
+    content: 'menuAdminGroups',
+  },
+  {
     path: '/usersvalidation',
     content: 'menuAdminUserValidation',
   },
