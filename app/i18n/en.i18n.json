@@ -98,7 +98,10 @@
       "tabsLabel": "Services tabs",
       "tabFavServicesLabel": "Favorite services",
       "tabAllServicesLabel": "All services",
-      "searchText": "Which app would you need ?"
+      "searchText": "Which app would you need ?",
+      "viewMode": "Change view mode",
+      "viewCard": "Card view",
+      "viewList": "List view"
     },
     "AdminServicesPage": {
       "title": "Service Management",

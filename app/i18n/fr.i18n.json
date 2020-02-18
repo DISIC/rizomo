@@ -101,7 +101,10 @@
       "tabsLabel": "Onglet des services",
       "tabFavServicesLabel": "Mes services favoris",
       "tabAllServicesLabel": "Tous les services",
-      "searchText": "De quelle application avez-vous besoin ?"
+      "searchText": "De quelle application avez-vous besoin ?",
+      "viewMode": "Changer le mode d'affichage",
+      "viewCard": "Mode cartes",
+      "viewList": "Mode liste"
     },
     "AdminServicesPage": {
       "title": "Gestion des Services",
