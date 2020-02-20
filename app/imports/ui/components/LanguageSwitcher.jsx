@@ -15,7 +15,6 @@ const LanguageSwitcher = ({ topbar }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const switchLanguage = (lan) => {
-    i18n.setLocale(lan);
     handleClose();
     dispatch({ type: 'language', data: { language: lan } });
   };

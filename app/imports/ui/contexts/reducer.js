@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import i18n from 'meteor/universe:i18n';
+
 export const MOBILE_SIZE = 768;
 
 const reducer = (state, action) => {
@@ -5,6 +8,10 @@ const reducer = (state, action) => {
   const { language, width } = data;
   switch (type) {
     case 'language':
+      if (state.user && state.user.language !== language) {
+        Meteor.call('users.setLanguage', { language });
+      }
+      i18n.setLocale(language);
       return {
         ...state,
         language,

@@ -51,6 +51,14 @@ const Store = ({
         roles,
       },
     });
+    if (user && user.language && user.language !== state.language) {
+      dispatch({
+        type: 'language',
+        data: {
+          language: user.language,
+        },
+      });
+    }
   }, [loggingIn, user, userId, authenticated, roles, loadingUser]);
 
   return <Context.Provider value={[state, dispatch]}>{children}</Context.Provider>;
