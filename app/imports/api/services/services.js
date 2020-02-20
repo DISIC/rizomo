@@ -35,6 +35,8 @@ Services.schema = new SimpleSchema(
       min: 1,
       autoValue() {
         const title = this.field('title').value;
+        // if name is not being modified, do not calculate autovalue
+        if (title === undefined) return undefined;
         const slug = slugy(title);
         return slug;
       },
@@ -99,7 +101,6 @@ Services.allPublicFields = {
 
 Factory.define('service', Services, {
   title: () => Random.id(),
-  slug: () => Random.id(),
   description: faker.lorem.sentence(),
   url: faker.internet.url(),
   logo: faker.internet.url(),
