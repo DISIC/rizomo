@@ -196,6 +196,18 @@
       "save": "Save",
       "update": "Update",
       "cancel": "Cancel"
+    },
+    "AdminSingleGroupPage": {
+      "edition": "Edition of the group",
+      "creation": "Creation of a new group",
+      "name": "Name",
+      "slug": "Slug",
+      "type": "Type",
+      "info": "Short description",
+      "note": "Long description of the group",
+      "save": "Save",
+      "update": "Update",
+      "cancel": "Cancel"
     }
   },
   "layouts": {

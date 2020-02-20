@@ -199,6 +199,18 @@
       "save": "Sauvegarder",
       "update": "Mettre à jour",
       "cancel": "Annuler"
+    },
+    "AdminSingleGroupPage": {
+      "edition": "Édition du groupe",
+      "creation": "Création d'un nouveau groupe",
+      "name": "Nom",
+      "slug": "Slug",
+      "type": "Type",
+      "info": "Courte description",
+      "note": "Longue description du groupe",
+      "save": "Sauvegarder",
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
     }
   },
   "layouts": {

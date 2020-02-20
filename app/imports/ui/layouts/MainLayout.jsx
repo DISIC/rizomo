@@ -22,6 +22,7 @@ const AdminCategoriesPage = lazy(() => import('../pages/AdminCategoriesPage'));
 const AdminServicesPage = lazy(() => import('../pages/AdminServicesPage'));
 const AdminUserValidationPage = lazy(() => import('../pages/AdminUserValidationPage'));
 const AdminGroupsPage = lazy(() => import('../pages/AdminGroupsPage'));
+const AdminSingleGroupPage = lazy(() => import('../pages/AdminSingleGroupPage'));
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +71,20 @@ function MainLayout() {
                   exact
                   path="/admingroups"
                   component={AdminGroupsPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  exact
+                  path="/admingroups/new"
+                  component={AdminSingleGroupPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  exact
+                  path="/admingroups/:_id"
+                  component={AdminSingleGroupPage}
                   userId={userId}
                   loadingUser={loadingUser}
                 />

@@ -74,7 +74,7 @@ export const updateGroup = new ValidatedMethod({
     'data.active': { type: Boolean, optional: true },
     'data.groupPadId': { type: String, optional: true },
     'data.digest': { type: String, optional: true },
-  }).validator(),
+  }).validator({ clean: true }),
 
   run({ groupId, data }) {
     // check group existence

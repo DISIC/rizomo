@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { publishComposite } from 'meteor/reywood:publish-composite';
+import { FindFromPublication } from 'meteor/percolate:find-from-publication';
 
 import { isActive } from '../../utils';
 import Groups from '../groups';
@@ -63,6 +64,13 @@ publishComposite('groups.adminof', function groupsAdminOf() {
       },
     ],
   };
+});
+
+FindFromPublication.publish('groups.one.admin', function GroupsOne({ _id }) {
+  if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin', _id)) {
+    return this.ready();
+  }
+  return Groups.find({ _id }, { fields: Groups.publicFields, sort: { name: 1 }, limit: 1 });
 });
 
 // publish one group and all users associated
