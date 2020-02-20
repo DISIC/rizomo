@@ -30,7 +30,7 @@ ProtectedRoute.defaultProps = {
 };
 
 ProtectedRoute.propTypes = {
-  component: PropTypes.func.isRequired,
+  component: PropTypes.elementType.isRequired,
   authenticated: PropTypes.bool.isRequired,
   loggingIn: PropTypes.bool.isRequired,
   location: PropTypes.objectOf(PropTypes.any),
