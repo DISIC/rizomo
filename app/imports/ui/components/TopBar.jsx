@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -37,7 +37,9 @@ function TopBar() {
   return (
     <AppBar position="fixed" color="secondary">
       <Toolbar>
-        <img src="/images/Logo-appseducation.png" className={classes.imgLogo} alt="Logo" />
+        <Link to="/">
+          <img src="/images/Logo-appseducation.png" className={classes.imgLogo} alt="Logo" />
+        </Link>
         <div className={classes.grow} />
         <LanguageSwitcher topbar />
         <Button onClick={() => console.log('go profile')} startIcon={<AccountCircle />}>
