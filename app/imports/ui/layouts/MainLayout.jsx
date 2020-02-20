@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import Typography from '@material-ui/core/Typography';
@@ -9,18 +9,20 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TopBar from '../components/TopBar';
 import ServicesPage from '../pages/ServicesPage';
 import GroupsPage from '../pages/GroupsPage';
-import AdminServicesPage from '../pages/AdminServicesPage';
-import AdminUserValidationPage from '../pages/AdminUserValidationPage';
 import NotFound from '../pages/NotFound';
 import { Context } from '../contexts/context';
-import AdminRoute from '../components/AdminRoute';
 import Spinner from '../components/Spinner';
 import SingleServicePage from '../pages/SingleServicePage';
-import AdminCategoriesPage from '../pages/AdminCategoriesPage';
 import PersonalSpace from '../pages/PersonalSpace';
-import AdminSingleServicePage from '../pages/AdminSingleServicePage';
 import MsgHandler from '../components/MsgHandler';
-import AdminGroupsPage from '../pages/AdminGroupsPage';
+import AdminRoute from '../components/AdminRoute';
+
+// dynamic imports
+const AdminSingleServicePage = lazy(() => import('../pages/AdminSingleServicePage'));
+const AdminCategoriesPage = lazy(() => import('../pages/AdminCategoriesPage'));
+const AdminServicesPage = lazy(() => import('../pages/AdminServicesPage'));
+const AdminUserValidationPage = lazy(() => import('../pages/AdminUserValidationPage'));
+const AdminGroupsPage = lazy(() => import('../pages/AdminGroupsPage'));
 
 // CSS
 const useStyles = makeStyles((theme) => ({
@@ -58,61 +60,63 @@ function MainLayout() {
         <Spinner full />
       ) : (
         <main className={classes.content}>
-          {user.isActive ? (
-            <Switch>
-              <Route exact path="/" component={PersonalSpace} />
-              <Route exact path="/services" component={ServicesPage} />
-              <Route exact path="/services/:slug" component={SingleServicePage} />
-              <Route exact path="/groups" component={GroupsPage} />
-              <AdminRoute
-                exact
-                path="/admingroups"
-                component={AdminGroupsPage}
-                userId={userId}
-                loadingUser={loadingUser}
-              />
-              <AdminRoute
-                exact
-                path="/adminservices"
-                component={AdminServicesPage}
-                userId={userId}
-                loadingUser={loadingUser}
-              />
-              <AdminRoute
-                exact
-                path="/adminservices/new"
-                component={AdminSingleServicePage}
-                userId={userId}
-                loadingUser={loadingUser}
-              />
-              <AdminRoute
-                exact
-                path="/adminservices/:_id"
-                component={AdminSingleServicePage}
-                userId={userId}
-                loadingUser={loadingUser}
-              />
-              <AdminRoute
-                path="/usersvalidation"
-                component={AdminUserValidationPage}
-                userId={userId}
-                loadingUser={loadingUser}
-              />
-              <AdminRoute
-                path="/admincategories"
-                component={AdminCategoriesPage}
-                userId={userId}
-                loadingUser={loadingUser}
-              />
 
-              <Route component={NotFound} />
-            </Switch>
-          ) : (
-            <Typography variant="h5" color="inherit" paragraph>
-              {i18n.__('layouts.MainLayout.inactiveAccount')}
-            </Typography>
-          )}
-          <MsgHandler />
+          <Suspense fallback={<Spinner full />}>
+            {user.isActive ? (
+              <Switch>
+                <Route exact path="/" component={PersonalSpace} />
+                <Route exact path="/services" component={ServicesPage} />
+                <Route exact path="/services/:slug" component={SingleServicePage} />
+                <Route exact path="/groups" component={GroupsPage} />
+                <AdminRoute
+                  exact
+                  path="/admingroups"
+                  component={AdminGroupsPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  exact
+                  path="/adminservices"
+                  component={AdminServicesPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  exact
+                  path="/adminservices/new"
+                  component={AdminSingleServicePage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  exact
+                  path="/adminservices/:_id"
+                  component={AdminSingleServicePage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  path="/usersvalidation"
+                  component={AdminUserValidationPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  path="/admincategories"
+                  component={AdminCategoriesPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <Route component={NotFound} />
+              </Switch>
+            ) : (
+              <Typography variant="h5" color="inherit" paragraph>
+                {i18n.__('layouts.MainLayout.inactiveAccount')}
+              </Typography>
+            )}
+            <MsgHandler />
+          </Suspense>
         </main>
       )}
     </div>

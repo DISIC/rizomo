@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, Suspense, lazy } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { blue } from '@material-ui/core/colors';
 import SignLayout from './SignLayout';
-import MainLayout from './MainLayout';
 import ProtectedRoute from '../components/ProtectedRoute';
 import PublicRoute from '../components/PublicRoute';
 import Spinner from '../components/Spinner';
 import DynamicStore, { Context } from '../contexts/context';
+
+// dynamic imports
+const MainLayout = lazy(() => import('./MainLayout'));
 
 const theme = createMuiTheme({
   palette: {
@@ -26,11 +28,13 @@ function App() {
   return loading ? (
     <Spinner />
   ) : (
-    <Switch>
-      <PublicRoute exact path="/signin" component={SignLayout} {...state} />
-      {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
-      <ProtectedRoute path="/" component={MainLayout} {...state} />
-    </Switch>
+    <Suspense fallback={<Spinner full />}>
+      <Switch>
+        <PublicRoute exact path="/signin" component={SignLayout} {...state} />
+        {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
+        <ProtectedRoute path="/" component={MainLayout} {...state} />
+      </Switch>
+    </Suspense>
   );
 }
 
