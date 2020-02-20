@@ -79,12 +79,14 @@ export const findUsers = new ValidatedMethod({
     const sort = {};
     sort[sortColumn] = sortOrder;
     const totalCount = Meteor.users.find(query).count();
-    const data = Meteor.users.find(query, {
-      fields: isAdmin ? Meteor.users.adminFields : Meteor.users.publicFields,
-      limit: pageSize,
-      skip,
-      sort,
-    }).fetch();
+    const data = Meteor.users
+      .find(query, {
+        fields: isAdmin ? Meteor.users.adminFields : Meteor.users.publicFields,
+        limit: pageSize,
+        skip,
+        sort,
+      })
+      .fetch();
     return { data, page, totalCount };
   },
 });
@@ -526,6 +528,22 @@ export const unfavService = new ValidatedMethod({
   },
 });
 
+export const setLanguage = new ValidatedMethod({
+  name: 'users.setLanguage',
+  validate: new SimpleSchema({
+    language: { type: String },
+  }).validator(),
+
+  run({ language }) {
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.setLanguage.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    Meteor.users.update(this.userId, {
+      $set: { language },
+    });
+  },
+});
+
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
   [
@@ -543,6 +561,7 @@ const LISTS_METHODS = _.pluck(
     favService,
     unfavService,
     findUsers,
+    setLanguage,
   ],
   'name',
 );

@@ -83,6 +83,10 @@ Meteor.users.schema = new SimpleSchema(
       regEx: SimpleSchema.RegEx.Email,
       optional: true,
     },
+    language: {
+      type: String,
+      optional: true,
+    },
   },
   { tracker: Tracker },
 );
@@ -173,6 +177,7 @@ Meteor.users.selfFields = {
   favServices: 1,
   structure: 1,
   primaryEmail: 1,
+  language: 1,
 };
 
 Meteor.users.adminFields = {
