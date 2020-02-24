@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonGroup: {
     display: 'flex',
-    justifynote: 'space-between',
+    justifyContent: 'space-between',
   },
 }));
 
@@ -152,16 +152,10 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               disabled
             />
             <FormControl>
-              <InputLabel htmlFor="note" id="type-select-label">
+              <InputLabel htmlFor="type" id="type-label">
                 {i18n.__('pages.AdminSingleGroupPage.type')}
               </InputLabel>
-              <Select
-                labelId="type-select-label"
-                id="type-select"
-                name="type"
-                value={groupData.type}
-                onChange={onUpdateField}
-              >
+              <Select labelId="type-label" id="type" name="type" value={groupData.type} onChange={onUpdateField}>
                 {Object.keys(Groups.typeLabels).map((val) => (
                   <MenuItem key={val} value={val}>
                     {i18n.__(Groups.typeLabels[val])}
