@@ -4,7 +4,8 @@ import { Tracker } from 'meteor/tracker';
 import { Factory } from 'meteor/dburles:factory';
 import { Random } from 'meteor/random';
 import faker from 'faker';
-import slugify from 'slugify';
+import { fileUpload } from '../../ui/utils/filesProcess';
+import slugy from '../../ui/utils/slugy';
 
 const Services = new Mongo.Collection('services');
 
@@ -34,11 +35,7 @@ Services.schema = new SimpleSchema(
       min: 1,
       autoValue() {
         const title = this.field('title').value;
-        const slug = slugify(title, {
-          replacement: '-', // replace spaces with replacement
-          remove: null, // regex to remove characters
-          lower: true, // result in lower case
-        });
+        const slug = slugy(title);
         return slug;
       },
     },
@@ -50,11 +47,35 @@ Services.schema = new SimpleSchema(
       max: 80,
     },
     url: String,
-    logo: String,
+    logo: {
+      type: String,
+      autoValue() {
+        if (this.value) {
+          return fileUpload({
+            name: `logo_${Random.id()}`,
+            file: this.value,
+            path: `services/${this.docId}/`,
+          });
+        }
+        return undefined;
+      },
+    },
     categories: { type: Array, defaultValue: [] },
     'categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
     screenshots: { type: Array, defaultValue: [] },
-    'screenshots.$': String,
+    'screenshots.$': {
+      type: String,
+      autoValue() {
+        if (this.value) {
+          return fileUpload({
+            name: `screenshot_${Random.id()}`,
+            file: this.value,
+            path: `services/${this.docId}/`,
+          });
+        }
+        return undefined;
+      },
+    },
   },
   { tracker: Tracker },
 );

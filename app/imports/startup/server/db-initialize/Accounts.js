@@ -4,7 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { ServiceConfiguration } from 'meteor/service-configuration';
 
 // required: loads accounts customization before initial users creation
-import AppRoles from '../../api/users/users';
+import AppRoles from '../../../api/users/users';
 import fakeData from './fakeData';
 
 if (Meteor.settings.keycloak) {
