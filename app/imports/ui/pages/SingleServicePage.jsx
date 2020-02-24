@@ -3,7 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   Container, makeStyles, Button, Typography, Grid, Chip, Tooltip, Fade,
 } from '@material-ui/core';
@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SingleServicePage = ({ service = [], ready, categories = [] }) => {
+  const history = useHistory();
   const classes = useStyles();
   const [{ user = {} }] = useContext(Context);
   const [loading, setLoading] = useState(false);
@@ -100,6 +101,10 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
     }
   };
 
+  const goBack = () => {
+    history.goBack();
+  };
+
   if (!ready || !service._id) {
     return <Spinner full />;
   }
@@ -113,18 +118,21 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
       <Container className={classes.root}>
         <Grid container spacing={2}>
           <Grid item md={12}>
-            <Link to="/services">
-              <Button className={classes.backButton} color="primary" startIcon={<ArrowBack />}>
-                {i18n.__('pages.SingleServicePage.backToList')}
-              </Button>
-            </Link>
+            <Button onClick={goBack} className={classes.backButton} color="primary" startIcon={<ArrowBack />}>
+              {i18n.__('pages.SingleServicePage.backToList')}
+            </Button>
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.cardGrid}>
             <div className={classes.titleContainer}>
               <img className={classes.logo} alt={`logo for ${service.title}`} src={service.logo} />
               <div className={classes.title}>
                 <Typography variant="h5">{service.title}</Typography>
-                <Typography>{service.team}</Typography>
+                <Typography variant="h6">{service.usage}</Typography>
+                <Typography>
+                  {i18n.__('pages.SingleServicePage.propulsedBy')}
+                  {' '}
+                  {service.team}
+                </Typography>
               </div>
             </div>
           </Grid>

@@ -1,7 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Meteor } from 'meteor/meteor';
+import React, { useContext, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
@@ -13,9 +11,9 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
-
+import { withTracker } from 'meteor/react-meteor-data';
 import {
-  InputAdornment, Typography, Chip, Badge, Fade, IconButton,
+  InputAdornment, Typography, Chip, Fade, IconButton, Button, Collapse,
 } from '@material-ui/core';
 import ServiceDetails from '../components/ServiceDetails';
 import Services from '../../api/services/services';
@@ -28,43 +26,87 @@ const useStyles = makeStyles((theme) => ({
   flex: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   cardGrid: {
-    paddingTop: theme.spacing(5),
+    paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(5),
   },
   chip: {
     margin: theme.spacing(1),
   },
-  badge: { position: 'inherit' },
+  smallGrid: {
+    height: 20,
+  },
+  badge: {
+    height: 20,
+    display: 'flex',
+    padding: '0 6px',
+    flexWrap: 'wrap',
+    fontSize: '0.75rem',
+    backgroundColor: theme.palette.primary.main,
+    color: `${theme.palette.secondary.main} !important`,
+    minWidth: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   gridItem: {
     display: 'flex',
     justifyContent: 'center',
+  },
+  small: {
+    padding: '5px !important',
+    transition: 'all 300ms ease-in-out',
   },
 }));
 
 function ServicesPage({ services, categories, ready }) {
   const classes = useStyles();
-  const [{ user, loadingUser }] = useContext(Context);
+  const [{
+    user, loadingUser, isMobile, servicePage,
+  }, dispatch] = useContext(Context);
+  const {
+    catList = [],
+    search = '',
+    searchToggle = false,
+    viewMode = 'card', // Possible values : "card" or "list"
+  } = servicePage;
+  const inputRef = useRef(null);
+
   const favs = loadingUser ? [] : user.favServices;
-  const [search, setSearch] = useState('');
-  const [catList, setCatList] = useState([]);
-  const [viewMode, setviewMode] = useState('card'); // Possible values : "card" or "list"
 
-  const handleChangeViewMode = (event, value) => {
-    setviewMode(value);
-  };
+  // focus on search input when it appears
+  useEffect(() => {
+    if (inputRef.current && searchToggle) {
+      inputRef.current.focus();
+    }
+  }, [searchToggle]);
 
-  const updateSearch = (e) => setSearch(e.target.value);
+  const updateGlobalState = (key, value) => dispatch({
+    type: 'servicePage',
+    data: {
+      ...servicePage,
+      [key]: value,
+    },
+  });
 
+  const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
+  const updateSearch = (e) => updateGlobalState('search', e.target.value);
+  const resetSearch = () => updateGlobalState('search', '');
+  const resetCatList = () => updateGlobalState('catList', []);
+  const changeViewMode = (_, value) => updateGlobalState('viewMode', value);
   const updateCatList = (catId) => {
     // Call by click on categories of services
     if (catList.includes(catId)) {
       // catId already in list so remove it
-      setCatList(catList.filter((id) => id !== catId));
+      updateGlobalState(
+        'catList',
+        catList.filter((id) => id !== catId),
+      );
     } else {
       // add new catId to list
-      setCatList([...catList, catId]);
+      updateGlobalState('catList', [...catList, catId]);
     }
   };
 
@@ -95,11 +137,16 @@ function ServicesPage({ services, categories, ready }) {
           <Container className={classes.cardGrid}>
             <Grid container spacing={4}>
               <Grid item xs={12} className={classes.flex}>
-                <Typography variant="h5">{i18n.__('pages.ServicesPage.title')}</Typography>
+                <Typography variant="h4" className={classes.flex}>
+                  {i18n.__('pages.ServicesPage.title')}
+                  <IconButton onClick={toggleSearch}>
+                    <SearchIcon fontSize="large" />
+                  </IconButton>
+                </Typography>
                 <ToggleButtonGroup
                   value={viewMode}
                   exclusive
-                  onChange={handleChangeViewMode}
+                  onChange={changeViewMode}
                   aria-label={i18n.__('pages.ServicesPage.viewMode')}
                 >
                   <ToggleButton
@@ -107,87 +154,94 @@ function ServicesPage({ services, categories, ready }) {
                     title={i18n.__('pages.ServicesPage.viewCard')}
                     aria-label={i18n.__('pages.ServicesPage.viewCard')}
                   >
-                    <DashboardIcon />
+                    <DashboardIcon color="primary" />
                   </ToggleButton>
                   <ToggleButton
                     value="list"
                     title={i18n.__('pages.ServicesPage.viewList')}
                     aria-label={i18n.__('pages.ServicesPage.viewList')}
                   >
-                    <ViewListIcon />
+                    <ViewListIcon color="primary" />
                   </ToggleButton>
                 </ToggleButtonGroup>
               </Grid>
-              <Grid item xs={12} sm={12} md={12}>
-                <TextField
-                  margin="normal"
-                  id="search"
-                  label={i18n.__('pages.ServicesPage.searchText')}
-                  name="search"
-                  fullWidth
-                  onChange={updateSearch}
-                  type="text"
-                  value={search}
-                  variant="outlined"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment: search ? (
-                      <InputAdornment position="end">
-                        <IconButton onClick={() => setSearch('')}>
-                          <ClearIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={12}>
-                <Typography variant="h6" display="inline">
-                  {i18n.__('pages.ServicesPage.categories')}
-                  {' :'}
-                </Typography>
-                {categories.map((cat) => (
-                  <Chip
-                    className={classes.chip}
-                    key={cat._id}
-                    label={(
-                      <>
-                        {cat.name}
-                        <Badge
-                          color="primary"
-                          className={classes.badge}
-                          badgeContent={cat.count}
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                          }}
-                        />
-                      </>
-                    )}
+            </Grid>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={12} md={6} className={searchToggle ? null : classes.small}>
+                <Collapse in={searchToggle} collapsedHeight={0}>
+                  <TextField
+                    margin="normal"
+                    id="search"
+                    label={i18n.__('pages.ServicesPage.searchText')}
+                    name="search"
+                    fullWidth
+                    onChange={updateSearch}
+                    type="text"
+                    value={search}
                     variant="outlined"
-                    color={catList.includes(cat._id) ? 'primary' : 'default'}
-                    onClick={() => updateCatList(cat._id)}
+                    inputProps={{
+                      ref: inputRef,
+                    }}
+                    // eslint-disable-next-line react/jsx-no-duplicate-props
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                      endAdornment: search ? (
+                        <InputAdornment position="end">
+                          <IconButton onClick={resetSearch}>
+                            <ClearIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null,
+                    }}
                   />
-                ))}
+                </Collapse>
               </Grid>
-              {viewMode === 'list'
+              <Grid item xs={12} sm={12} md={12} className={searchToggle ? null : classes.small}>
+                <Collapse in={searchToggle} collapsedHeight={0}>
+                  <>
+                    <Typography variant="h6" display="inline">
+                      {i18n.__('pages.ServicesPage.categories')}
+                    </Typography>
+                    <Button color="primary" onClick={resetCatList} startIcon={<ClearIcon />}>
+                      {i18n.__('pages.ServicesPage.reset')}
+                    </Button>
+                    <br />
+                    {categories.map((cat) => (
+                      <Chip
+                        className={classes.chip}
+                        key={cat._id}
+                        label={cat.name}
+                        deleteIcon={<span className={classes.badge}>{cat.count}</span>}
+                        onDelete={() => updateCatList(cat._id)}
+                        variant={catList.includes(cat._id) ? 'default' : 'outlined'}
+                        color={catList.includes(cat._id) ? 'primary' : 'default'}
+                        onClick={() => updateCatList(cat._id)}
+                      />
+                    ))}
+                  </>
+                </Collapse>
+              </Grid>
+            </Grid>
+            <Grid container spacing={4}>
+              {viewMode === 'list' && !isMobile
                 ? mapList((service) => (
-                  <Grid className={classes.gridItem} item xs={12} md={6}>
-                    <ServiceDetailsList key={service._id} service={service} favAction={favAction(service._id)} />
+                  <Grid className={classes.gridItem} item xs={12} md={6} key={service._id}>
+                    <ServiceDetailsList service={service} favAction={favAction(service._id)} />
                   </Grid>
                 ))
                 : mapList((service) => (
-                  <Grid className={classes.gridItem} item key={service._id} xs={12} sm={6} md={4} lg={3}>
+                  <Grid className={classes.gridItem} item key={service._id} xs={12} sm={6} md={4}>
                     <ServiceDetails
                       service={service}
                       favAction={favAction(service._id)}
                       updateCategories={updateCatList}
                       catList={catList}
                       categories={categories}
+                      isShort={!!(isMobile && viewMode === 'list')}
                     />
                   </Grid>
                 ))}

@@ -4,16 +4,14 @@ import { Meteor } from 'meteor/meteor';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import InfoIcon from '@material-ui/icons/Info';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
 import Tooltip from '@material-ui/core/Tooltip';
-import {
-  Button, CardHeader, Divider, Chip, Paper,
-} from '@material-ui/core';
+import { Button, CardHeader, IconButton } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 
@@ -22,6 +20,18 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 24,
+  },
+  cardActionShort: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  cardHeader: {
+    paddingLeft: 32,
+    paddingRight: 32,
+    paddingBottom: 32,
+    paddingTop: 24,
   },
   card: {
     height: '100%',
@@ -32,13 +42,31 @@ const useStyles = makeStyles((theme) => ({
   cardMedia: {
     maxWidth: '50px',
     objectFit: 'contain',
+    borderRadius: theme.shape.borderRadius,
   },
   cardContent: {
     flexGrow: 1,
-    backgroundColor: 'rgba(33,150,243, 0.02)',
+    backgroundColor: theme.palette.primary.light,
+    paddingLeft: 32,
+    paddingRight: 32,
+    paddingBottom: 32,
+    paddingTop: 24,
   },
-  buttonText: { textTransform: 'none' },
-  title: { fontWeight: 'bold', lineHeight: '1' },
+  cardContentMobile: {
+    flexGrow: 1,
+    paddingLeft: 32,
+    paddingRight: 32,
+    paddingBottom: 32,
+    paddingTop: 0,
+  },
+  buttonText: {
+    textTransform: 'none',
+    color: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
+    },
+  },
   paperChip: {
     display: 'flex',
     justifyContent: 'left',
@@ -57,9 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ServiceDetails({
-  service, favAction, categories, updateCategories, catList,
-}) {
+function ServiceDetails({ service, favAction, isShort }) {
   const classes = useStyles();
 
   const handleFavorite = () => {
@@ -87,14 +113,20 @@ function ServiceDetails({
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
   return (
-    <Card className={classes.card} elevation={6}>
+    <Card className={classes.card} elevation={3}>
       <CardHeader
+        className={classes.cardHeader}
         avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
         action={(
-          <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-            <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
-              {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
-            </Button>
+          <Tooltip
+            title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+            aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+          >
+            <Link to={`/services/${service.slug}`}>
+              <IconButton color="primary">
+                <ChevronRightIcon />
+              </IconButton>
+            </Link>
           </Tooltip>
         )}
         title={service.title}
@@ -103,13 +135,12 @@ function ServiceDetails({
           color: 'primary',
           className: classes.title,
         }}
-        subheader={service.team}
+        subheader={service.usage}
         subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
       />
-      <Divider variant="middle" />
-      <CardContent className={classes.cardContent}>
-        <Typography variant="body1">{service.description}</Typography>
-        <Paper variant="elevation" elevation={0} className={classes.paperChip}>
+      <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
+        {!isShort && <Typography variant="body1">{service.description}</Typography>}
+        {/* <Paper variant="elevation" elevation={0} className={classes.paperChip}>
           {service.categories.map((cat) => {
             const currentCategory = categories.find((categ) => categ._id === cat);
             return (
@@ -124,29 +155,24 @@ function ServiceDetails({
               />
             );
           })}
-        </Paper>
+        </Paper> */}
+        <div className={isShort ? classes.cardActionShort : classes.cardActions}>
+          <Button
+            className={classes.buttonText}
+            variant={isShort ? 'outlined' : 'contained'}
+            color={isShort ? 'primary' : 'secondary'}
+            onClick={() => window.open(service.url, '_blank')}
+          >
+            {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+          </Button>
+
+          <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+            <IconButton color="primary" className={classes.fab} onClick={handleFavorite}>
+              {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+            </IconButton>
+          </Tooltip>
+        </div>
       </CardContent>
-      <Divider variant="middle" />
-      <CardActions className={classes.cardActions}>
-        <Tooltip
-          title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-          aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-        >
-          <Link to={`/services/${service.slug}`}>
-            <Button variant="contained" color="primary">
-              <InfoIcon />
-            </Button>
-          </Link>
-        </Tooltip>
-        <Button
-          className={classes.buttonText}
-          variant="contained"
-          color="primary"
-          onClick={() => window.open(service.url, '_blank')}
-        >
-          {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-        </Button>
-      </CardActions>
     </Card>
   );
 }
@@ -154,9 +180,7 @@ function ServiceDetails({
 ServiceDetails.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
   favAction: PropTypes.string.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
-  updateCategories: PropTypes.func.isRequired,
-  catList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isShort: PropTypes.bool.isRequired,
 };
 
 export default ServiceDetails;

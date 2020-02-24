@@ -91,11 +91,12 @@ describe('services', function () {
       Meteor.users.update({ _id: userId }, { $set: { favServices: [serviceId] } });
       chatData = {
         title: 'Chat sur un nuage de liconre',
-        description: 'Discuter en Troubadour ',
+        description: "Chevaucher un dragon rose à pois. C'est en fait une fée pour piéger Peter Pan",
         url: 'https://chat.licorne.ovh',
         logo: 'https://rocket.chat/images/default/logo--dark.svg',
         categories: [],
         team: 'Dijon',
+        usage: 'Discuter en Troubadour',
         screenshots: [],
         content: "<div>c'est un service de fou</div>",
       };
@@ -152,7 +153,8 @@ describe('services', function () {
     describe('updateService', function () {
       const data = {
         title: 'Chat sur MIMOSA',
-        description: 'Discuter en Troubadour',
+        description: "Chevaucher un dragon rose à pois. C'est en fait une fée pour piéger Peter Pan",
+        usage: 'Discuter en Troubadour',
         url: 'https://chat.licorne.ovh',
         logo: 'https://rocket.chat/images/default/logo--dark.svg',
         categories: [],
@@ -168,6 +170,7 @@ describe('services', function () {
         assert.equal(service.url, data.url);
         assert.equal(service.logo, data.logo);
         assert.equal(service.team, data.team);
+        assert.equal(service.usage, data.usage);
         assert.deepEqual(service.screenshots, data.screenshots);
         assert.equal(service.content, data.content);
       });

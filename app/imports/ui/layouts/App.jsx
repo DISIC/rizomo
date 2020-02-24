@@ -1,25 +1,16 @@
 import React, { useContext, Suspense, lazy } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { blue } from '@material-ui/core/colors';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import SignLayout from './SignLayout';
 import ProtectedRoute from '../components/ProtectedRoute';
 import PublicRoute from '../components/PublicRoute';
 import Spinner from '../components/Spinner';
 import DynamicStore, { Context } from '../contexts/context';
+import lightTheme from '../themes/light';
 
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));
-
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: {
-      main: '#fff',
-    },
-  },
-});
 
 function App() {
   const [state] = useContext(Context);
@@ -39,7 +30,7 @@ function App() {
 }
 
 export default () => (
-  <MuiThemeProvider theme={theme}>
+  <MuiThemeProvider theme={lightTheme}>
     <BrowserRouter>
       <DynamicStore>
         <App />

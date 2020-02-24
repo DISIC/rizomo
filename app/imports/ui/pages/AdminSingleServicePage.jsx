@@ -81,6 +81,7 @@ const defaultState = {
   title: '',
   slug: '',
   team: '',
+  usage: '',
   description: '',
   content: '',
   url: '',
@@ -224,6 +225,15 @@ const AdminSingleServicePage = ({
               value={serviceData.team}
               name="team"
               label={i18n.__('pages.AdminSingleServicePage.team')}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              onChange={onUpdateField}
+              value={serviceData.usage}
+              name="usage"
+              label={i18n.__('pages.AdminSingleServicePage.usage')}
               variant="outlined"
               fullWidth
               margin="normal"

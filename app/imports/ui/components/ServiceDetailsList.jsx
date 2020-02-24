@@ -5,14 +5,14 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import InfoIcon from '@material-ui/icons/Info';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button, CardHeader } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   action: {
     display: 'flex',
     alignItems: 'center',
@@ -24,10 +24,12 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
+    padding: 5,
   },
   cardMedia: {
     maxWidth: '50px',
     objectFit: 'contain',
+    borderRadius: theme.shape.borderRadius,
   },
   fab: {
     '&:hover': {
@@ -64,7 +66,7 @@ export default function ServiceDetails({ service, favAction }) {
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
   return (
-    <Card className={classes.card} elevation={6}>
+    <Card className={classes.card} elevation={3}>
       <CardHeader
         classes={{ action: classes.action }}
         avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
@@ -78,25 +80,30 @@ export default function ServiceDetails({ service, favAction }) {
                 <PlayCircleFilledIcon />
               </Button>
             </Tooltip>
+            <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+              <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
+                {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+              </Button>
+            </Tooltip>
             <Tooltip
               title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
               aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
             >
               <Link to={`/services/${service.slug}`}>
                 <Button color="primary">
-                  <InfoIcon />
+                  <ChevronRightIcon />
                 </Button>
               </Link>
-            </Tooltip>
-            <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-              <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
-                {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
-              </Button>
             </Tooltip>
           </>
         )}
         title={service.title}
-        subheader={service.description}
+        titleTypographyProps={{
+          variant: 'h6',
+          color: 'primary',
+        }}
+        subheader={service.usage}
+        subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
       />
     </Card>
   );
