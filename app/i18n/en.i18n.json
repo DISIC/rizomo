@@ -15,6 +15,12 @@
         "open": "open",
         "moderated": "moderated",
         "private": "private"
+      },
+      "users": {
+        "candidates": "Candidates",
+        "members": "Members",
+        "animators": "Animators",
+        "admins": "Admins"
       }
     },
     "services": {
@@ -57,6 +63,22 @@
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
       "waitAccount": "Wait for an administrator to validate your account"
+    },
+    "GroupUsersList": {
+      "title": "Users Management",
+      "columnUsername": "username",
+      "columnFirstName": "firstName",
+      "columnLastName": "lastname",
+      "columnEmail": "email",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a user",
+        "pagination_labelRowsSelect": "users per page",
+        "body_emptyDataSourceMessage": "No user registered",
+        "body_addTooltip": "Add a user",
+        "body_editTooltip": "Modify this user",
+        "body_deleteTooltip": "Remove this user",
+        "body_editRow_deleteText": "Do you really want to remove this user?"
+      }
     }
   },
   "validatejs": {
@@ -144,6 +166,7 @@
       "columnInfo": "Description",
       "columnType": "Type",
       "columnMembers": "Members",
+      "columnCandidates": "Candidates",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a group",
         "pagination_labelRowsSelect": "groups per page",

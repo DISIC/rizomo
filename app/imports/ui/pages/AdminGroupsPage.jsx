@@ -27,13 +27,18 @@ function AdminGroupsPage({ groups, loading }) {
       field: '',
       render: (rowData) => (rowData && rowData.members ? rowData.members.length : null),
     },
+    {
+      title: i18n.__('pages.AdminGroupsPage.columnCandidates'),
+      field: '',
+      render: (rowData) => (rowData && rowData.candidates ? rowData.candidates.length : null),
+    },
   ];
 
   const options = {
     pageSize: 10,
     pageSizeOptions: [10, 20, 50, 100],
     paginationType: 'stepped',
-    actionsColumnIndex: 4,
+    actionsColumnIndex: 5,
     addRowPosition: 'first',
     emptyRowsWhenPaging: false,
   };

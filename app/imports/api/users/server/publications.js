@@ -28,6 +28,21 @@ Meteor.publish('users.request', function usersRequest() {
   );
 });
 
+// publish users waiting for activation by admin
+Meteor.publish('users.fromlist', function usersFromList(userIds = []) {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  return Meteor.users.find(
+    { _id: { $in: userIds } },
+    {
+      fields: {
+        username: 1, emails: 1, firstName: 1, lastName: 1,
+      },
+    },
+  );
+});
+
 // automatically publish assignments for current user
 Meteor.publish(null, function publishAssignments() {
   if (this.userId) {

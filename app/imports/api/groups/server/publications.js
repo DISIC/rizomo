@@ -81,27 +81,18 @@ publishComposite('groups.details', function groupDetails(groupId) {
   return {
     find() {
       check(groupId, String);
-      return Groups.find(groupId, { fields: Groups.publicFields });
+      return Groups.find(groupId, { fields: Groups.publicFields, sort: { name: 1 }, limit: 1 });
     },
     children: [
       {
         find(group) {
-          return Meteor.users.find({ _id: { $in: group.candidates } }, { fields: Meteor.users.publicFields });
-        },
-      },
-      {
-        find(group) {
-          return Meteor.users.find({ _id: { $in: group.members } }, { fields: Meteor.users.publicFields });
-        },
-      },
-      {
-        find(group) {
-          return Meteor.users.find({ _id: { $in: group.animators } }, { fields: Meteor.users.publicFields });
-        },
-      },
-      {
-        find(group) {
-          return Meteor.users.find({ _id: { $in: group.admins } }, { fields: Meteor.users.publicFields });
+          let group_users = group.candidates
+            .concat(group.members)
+            .concat(group.admins)
+            .concat(group.animators);
+          // remove duplicates
+          group_users = Array.from(new Set(group_users));
+          return Meteor.users.find({ _id: { $in: group_users } }, { fields: Meteor.users.publicFields });
         },
       },
     ],

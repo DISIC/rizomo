@@ -15,6 +15,12 @@
         "open": "ouvert",
         "moderated": "modéré",
         "private": "réservé"
+      },
+      "users": {
+        "candidates": "Candidats",
+        "members": "Membres",
+        "animators": "Animateurs",
+        "admins": "Administrateurs"
       }
     },
     "services": {
@@ -57,6 +63,22 @@
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
       "waitAccount": "Un administrateur va bientôt valider votre compte"
+    },
+    "GroupUsersList": {
+      "title": "Gestion des utilisateurs",
+      "columnUsername": "Pseudo",
+      "columnFirstName": "Prénom",
+      "columnLastName": "Nom",
+      "columnEmail": "Courriel",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Trouver un utilisateur",
+        "pagination_labelRowsSelect": "utilisateurs par page",
+        "body_emptyDataSourceMessage": "Aucun utilisateur enregistré",
+        "body_addTooltip": "Ajouter un utilisateur",
+        "body_editTooltip": "Modifier cet utilisateur",
+        "body_deleteTooltip": "Enlever cet utilisateur",
+        "body_editRow_deleteText": "Enlever vraiment cet utilisateur ?"
+      }
     }
   },
   "validatejs": {
@@ -147,6 +169,7 @@
       "columnInfo": "Description",
       "columnType": "Type",
       "columnMembers": "Membres",
+      "columnCandidates": "Candidats",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Rechercher un groupe",
         "pagination_labelRowsSelect": "groupes par page",

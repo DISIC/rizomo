@@ -13,6 +13,8 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Tabs,
+  Tab,
 } from '@material-ui/core';
 
 import PropTypes from 'prop-types';
@@ -24,6 +26,7 @@ import { useHistory } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { createGroup, updateGroup } from '../../api/groups/methods';
 import Groups from '../../api/groups/groups';
+import GroupsUsersList from '../components/GroupUsersList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,8 +40,34 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     display: 'flex',
     justifyContent: 'space-between',
+    marginTop: '10px',
   },
 }));
+
+function TabPanel(props) {
+  const {
+    userIds, value, index, role, groupId,
+  } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`scrollable-auto-tabpanel-${index}`}
+      aria-labelledby={`scrollable-auto-tab-${index}`}
+    >
+      {value === index && <GroupsUsersList userIds={userIds} role={role} groupId={groupId} />}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  userIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+  role: PropTypes.string.isRequired,
+  groupId: PropTypes.string.isRequired,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
 
 const defaultState = {
   name: '',
@@ -51,17 +80,23 @@ const defaultState = {
 const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const [groupData, setGroupData] = useState(defaultState);
   const [loading, setLoading] = useState(!!params._id);
+  const [tabId, setTabId] = React.useState(0);
   const [note, setNote] = useState('');
   const history = useHistory();
   const classes = useStyles();
 
   useEffect(() => {
+    console.log('GROUP USE EFFECT: ', group);
     if (params._id && group._id && loading) {
       setLoading(false);
       setGroupData(group);
       setNote(group.note || '');
     }
   }, [group]);
+
+  const handleChangeTab = (event, newValue) => {
+    setTabId(newValue);
+  };
 
   const onUpdateField = (event) => {
     const { name, value } = event.target;
@@ -177,6 +212,21 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               <InputLabel htmlFor="note">{i18n.__('pages.AdminSingleGroupPage.note')}</InputLabel>
               <ReactQuill id="note" value={note} onChange={onUpdateRichText} />
             </div>
+            {params._id ? (
+              // user management is not possible when creating a new group
+              <>
+                <Tabs value={tabId} onChange={handleChangeTab} indicatorColor="primary" textColor="primary" centered>
+                  <Tab label={i18n.__('api.groups.users.candidates')} />
+                  <Tab label={i18n.__('api.groups.users.members')} />
+                  <Tab label={i18n.__('api.groups.users.animators')} />
+                  <Tab label={i18n.__('api.groups.users.admins')} />
+                </Tabs>
+                <TabPanel value={tabId} index={0} userIds={group.candidates} role="candidate" groupId={group._id} />
+                <TabPanel value={tabId} index={1} userIds={group.members} role="member" groupId={group._id} />
+                <TabPanel value={tabId} index={2} userIds={group.animators} role="animator" groupId={group._id} />
+                <TabPanel value={tabId} index={3} userIds={group.admins} role="admin" groupId={group._id} />
+              </>
+            ) : null}
             <div className={classes.buttonGroup}>
               <Button variant="contained" color="primary" onClick={submitUpdateGroup}>
                 {params._id ? i18n.__('pages.AdminSingleGroupPage.update') : i18n.__('pages.AdminSingleGroupPage.save')}
