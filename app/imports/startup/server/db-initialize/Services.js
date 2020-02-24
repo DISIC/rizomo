@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import Services from '../../api/services/services';
+import Services from '../../../api/services/services';
 import fakeData from './fakeData';
 
 function createService(service) {

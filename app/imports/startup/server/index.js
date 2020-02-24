@@ -2,15 +2,15 @@
 import '../locales';
 
 // Set up some rate limiting and other important security settings.
-import './security';
+import './config/security';
 
 // This defines all the collections, publications and methods that the application provides
 // as an API to the client.
-import './ValidationError';
+import './config/ValidationError';
 import './register-api';
 
 // Set up roles, initial accounts and services
-import './Accounts';
-import './Groups';
-import './Services';
-import './Categories';
+import './db-initialize/Accounts';
+import './db-initialize/Groups';
+import './db-initialize/Services';
+import './db-initialize/Categories';

@@ -10,14 +10,13 @@ import {
   Typography,
   InputLabel,
   Chip,
-  InputAdornment,
   IconButton,
   Fade,
+  Grid,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import PropTypes from 'prop-types';
-import slugify from 'slugify';
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 import { useHistory } from 'react-router-dom';
@@ -26,6 +25,8 @@ import Categories from '../../api/categories/categories';
 import Spinner from '../components/Spinner';
 import { createService, updateService } from '../../api/services/methods';
 import Services from '../../api/services/services';
+import slugy from '../utils/slugy';
+import { toBase64 } from '../utils/filesProcess';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,12 +69,32 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0.5),
     },
   },
-  actionIcon: {
-    cursor: 'pointer',
-  },
   buttonGroup: {
     display: 'flex',
     justifyContent: 'space-between',
+    marginTop: theme.spacing(5),
+  },
+  screenshotWrapper: {
+    position: 'relative',
+  },
+  screenshotInput: {
+    position: 'absolute',
+    top: 16,
+    bottom: 16,
+    left: 16,
+    right: 16,
+    width: 'calc(100% - 32px)',
+    opacity: 0,
+    cursor: 'pointer',
+  },
+  screenshotDelete: {
+    cursor: 'pointer',
+    '&:hover': {
+      color: theme.palette.error.main,
+    },
+  },
+  screenshot: {
+    width: '100%',
   },
 }));
 
@@ -89,6 +110,8 @@ const defaultState = {
   categories: [],
   screenshots: [],
 };
+
+const PLACEHOLDER = 'https://via.placeholder.com/1600x900/CFD3EE/FFFFFF?text=Screenshot';
 
 const AdminSingleServicePage = ({
   categories, service, ready, match: { params },
@@ -113,15 +136,18 @@ const AdminSingleServicePage = ({
       setServiceData({
         ...serviceData,
         [name]: value,
-        slug: slugify(value, {
-          replacement: '-', // replace spaces with replacement
-          remove: null, // regex to remove characters
-          lower: true, // result in lower case
-        }),
+        slug: slugy(value),
       });
     } else {
       setServiceData({ ...serviceData, [name]: value });
     }
+  };
+
+  const onUpdateLogo = async (e) => {
+    const { files } = e.target;
+    const file = files[0];
+    const logo = await toBase64(file);
+    setServiceData({ ...serviceData, logo });
   };
 
   const onUpdateRichText = (html) => {
@@ -139,11 +165,13 @@ const AdminSingleServicePage = ({
     setServiceData({ ...serviceData, categories: newCategories });
   };
 
-  const updateScreenshots = (value, index) => {
+  const updateScreenshots = async (file, index) => {
     const { screenshots = [] } = serviceData;
-    screenshots[index] = value;
+    const screenshot = await toBase64(file);
+    screenshots[index] = screenshot;
     setServiceData({ ...serviceData, screenshots });
   };
+
   const removeScreenshots = (index) => {
     const { screenshots = [] } = serviceData;
     screenshots.splice(index, 1);
@@ -151,11 +179,11 @@ const AdminSingleServicePage = ({
   };
   const addScreenshots = () => {
     const { screenshots = [] } = serviceData;
-    screenshots.push('');
+    screenshots.push(PLACEHOLDER);
     setServiceData({ ...serviceData, screenshots });
   };
 
-  const submitUpdateService = () => {
+  const submitUpdateService = async () => {
     const method = params._id ? updateService : createService;
     setLoading(true);
     const { _id, slug, ...rest } = serviceData;
@@ -177,9 +205,9 @@ const AdminSingleServicePage = ({
     }
 
     method.call(args, (error) => {
-      setLoading(false);
       if (error) {
         msg.error(error.message);
+        setLoading(false);
       } else {
         msg.success(i18n.__('api.methods.operationSuccessMsg'));
         history.push('/adminservices');
@@ -243,9 +271,14 @@ const AdminSingleServicePage = ({
                 <img className={classes.logo} alt={`logo for ${serviceData.title}`} src={serviceData.logo} />
               )}
               <TextField
-                onChange={onUpdateField}
-                value={serviceData.logo}
+                onChange={onUpdateLogo}
                 name="logo"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  type: 'file',
+                }}
                 label={i18n.__('pages.AdminSingleServicePage.logo')}
                 variant="outlined"
                 fullWidth
@@ -297,9 +330,9 @@ const AdminSingleServicePage = ({
             <InputLabel>
               {i18n.__('pages.AdminSingleServicePage.screenshots')}
               {' '}
-  (
+(
               {(serviceData.screenshots && serviceData.screenshots.length) || 0}
-  )
+)
               <IconButton
                 color="primary"
                 aria-label={i18n.__('pages.AdminSingleServicePage.addScreenshots')}
@@ -308,40 +341,34 @@ const AdminSingleServicePage = ({
                 <AddIcon />
               </IconButton>
             </InputLabel>
-            {serviceData.screenshots
-              && serviceData.screenshots.map((screen, i) => (
-                <TextField
-                  key={Math.random()}
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  onChange={(e) => updateScreenshots(e.target.value, i)}
-                  value={screen}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <DeleteIcon className={classes.actionIcon} onClick={() => removeScreenshots(i)} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              ))}
+            <Grid container spacing={4}>
+              {serviceData.screenshots
+                && serviceData.screenshots.map((screen, i) => (
+                  <Grid lg={4} md={6} xs={12} item key={Math.random()} className={classes.screenshotWrapper}>
+                    <img className={classes.screenshot} alt={`screenshot ${i} for ${serviceData.title}`} src={screen} />
+                    <input
+                      type="file"
+                      className={classes.screenshotInput}
+                      onChange={(e) => updateScreenshots(e.target.files[0], i)}
+                    />
+                    <IconButton onClick={() => removeScreenshots(i)} className={classes.screenshotDelete}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Grid>
+                ))}
+            </Grid>
 
             <div className={classes.buttonGroup}>
               <Button variant="contained" color="primary" onClick={submitUpdateService}>
-                {
-                  params._id
-                    ? i18n.__('pages.AdminSingleServicePage.update')
-                    : i18n.__('pages.AdminSingleServicePage.save')
-                }
+                {params._id
+                  ? i18n.__('pages.AdminSingleServicePage.update')
+                  : i18n.__('pages.AdminSingleServicePage.save')}
               </Button>
 
               <Button variant="contained" onClick={() => history.push('/adminservices')}>
                 {i18n.__('pages.AdminSingleServicePage.cancel')}
               </Button>
-
             </div>
-
           </form>
         </Paper>
       </Container>
