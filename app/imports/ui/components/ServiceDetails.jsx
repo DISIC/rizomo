@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
   },
   cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     flexGrow: 1,
     backgroundColor: theme.palette.primary.light,
     paddingLeft: 32,
