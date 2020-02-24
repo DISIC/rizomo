@@ -28,7 +28,7 @@
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuServices": "Applications",
-      "menuGroupes": "Mes Groupes",
+      "menuGroupes": "Les Groupes",
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs"
     },
@@ -97,7 +97,8 @@
     },
     "ServicesPage": {
       "title": "Découvrez les applications",
-      "categories": "Catégories",
+      "categories": "Filtrer par catégories",
+      "reset": "Réinitialiser",
       "tabsLabel": "Onglet des services",
       "tabFavServicesLabel": "Mes services favoris",
       "tabAllServicesLabel": "Tous les services",
@@ -170,7 +171,8 @@
       "backToList": "Retour à la liste",
       "screenshots": "Captures d'écran",
       "categories": "Catégories",
-      "open": "Ouvrir"
+      "open": "Ouvrir",
+      "propulsedBy": "Propulsé par"
     },
     "PersonalSpace": {
       "welcome": "Bienvenue sur votre espace personnel"
@@ -181,6 +183,7 @@
       "title": "Titre",
       "slug": "Slug",
       "team": "Equipe",
+      "usage": "Utilisation de l'application",
       "logo": "Logo du service",
       "description": "Courte description",
       "url": "URL du service",

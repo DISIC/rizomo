@@ -15,6 +15,7 @@ const initialState = {
   language: getLang().substr(0, 2),
   loggingIn: Accounts.loggingIn(),
   authenticated: false,
+  servicePage: {},
   roles: [],
 };
 

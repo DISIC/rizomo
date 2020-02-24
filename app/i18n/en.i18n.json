@@ -28,7 +28,7 @@
     "MenuBar": {
       "menuMyspace": "Dashboard",
       "menuServices": "Applications",
-      "menuGroupes": "My Groups",
+      "menuGroupes": "Groups",
       "menuAdminServices": "Service Management",
       "menuAdminUserValidation": "User validation"
     },
@@ -94,7 +94,8 @@
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
       "title": "Discover the apps",
-      "categories": "Categories",
+      "categories": "Filter by categories",
+      "reset": "Reset filter",
       "tabsLabel": "Services tabs",
       "tabFavServicesLabel": "Favorite services",
       "tabAllServicesLabel": "All services",
@@ -167,7 +168,8 @@
       "backToList": "Back to the list",
       "screenshots": "Screenshots",
       "categories": "Categories",
-      "open": "Open"
+      "open": "Open",
+      "propulsedBy": "Propulsed by"
     },
     "PersonalSpace": {
       "welcome": "Welcome on your personal space"
@@ -178,6 +180,7 @@
       "title": "Title",
       "slug": "Slug",
       "team": "Team",
+      "usage": "App usage",
       "logo": "Logo of the application",
       "description": "Short description",
       "url": "URL of the service",
