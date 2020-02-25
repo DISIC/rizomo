@@ -65,11 +65,14 @@
       "waitAccount": "Un administrateur va bientôt valider votre compte"
     },
     "GroupUsersList": {
-      "title": "Gestion des utilisateurs",
+      "title": "",
+      "loadingTitle": "Chargement en cours ...",
       "columnUsername": "Pseudo",
       "columnFirstName": "Prénom",
       "columnLastName": "Nom",
       "columnEmail": "Courriel",
+      "validate_tooltip": "Accepter ce candidat",
+      "memberAdded": "Utilisateur promu comme membre",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Trouver un utilisateur",
         "pagination_labelRowsSelect": "utilisateurs par page",

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import i18n from 'meteor/universe:i18n';
 import setMaterialTableLocalization from './initMaterialTableLocalization';
-import Spinner from './Spinner';
 
 const GroupsUsersList = (props) => {
   const {
@@ -38,51 +38,72 @@ const GroupsUsersList = (props) => {
     emptyRowsWhenPaging: false,
   };
 
-  const data = userIds.map((userId) => Meteor.users.findOne(userId));
+  const [data, setData] = useState([]);
+  const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    if (ready === true) {
+      setData(userIds.map((userId) => Meteor.users.findOne(userId)));
+      setTitle(i18n.__('components.GroupUsersList.title'));
+    } else {
+      setTitle(i18n.__('components.GroupUsersList.loadingTitle'));
+    }
+  }, [ready]);
+
+  actions = [
+    {
+      icon: 'add',
+      tooltip: i18n.__('components.GroupUsersList.materialTableLocalization.body_addTooltip'),
+      isFreeAction: true,
+      onClick: () => alert('Not implemented'),
+    },
+  ];
+  if (role === 'candidate') {
+    actions.push({
+      icon: PersonAddIcon,
+      tooltip: i18n.__('components.GroupUsersList.validate_tooltip'),
+      onClick: (_, rowData) => {
+        Meteor.call('users.setMemberOf', { userId: rowData._id, groupId }, (err) => {
+          if (err) {
+            msg.error(err.reason);
+          } else {
+            msg.success(i18n.__('components.GroupUsersList.memberAdded'));
+          }
+        });
+      },
+    });
+  }
 
   return (
-    <>
-      {!ready ? (
-        <Spinner />
-      ) : (
-        <MaterialTable
-          // other props
-          title={i18n.__('components.GroupUsersList.title')}
-          columns={columns}
-          data={data}
-          options={options}
-          localization={setMaterialTableLocalization('components.GroupUsersList')}
-          actions={[
+    <MaterialTable
+      // other props
+      title={title}
+      columns={columns}
+      data={data}
+      options={options}
+      localization={setMaterialTableLocalization('components.GroupUsersList')}
+      actions={actions}
+      editable={{
+        onRowDelete: (oldData) => new Promise((resolve, reject) => {
+          Meteor.call(
+            removeMethods[role],
             {
-              icon: 'add',
-              tooltip: i18n.__('components.GroupUsersList.materialTableLocalization.body_addTooltip'),
-              isFreeAction: true,
-              onClick: () => alert('Not implemented'),
+              userId: oldData._id,
+              groupId,
             },
-          ]}
-          editable={{
-            onRowDelete: (oldData) => new Promise((resolve, reject) => {
-              Meteor.call(
-                removeMethods[role],
-                {
-                  userId: oldData._id,
-                  groupId,
-                },
-                (err, res) => {
-                  if (err) {
-                    msg.error(err.reason);
-                    reject(err);
-                  } else {
-                    msg.success(i18n.__('api.methods.operationSuccessMsg'));
-                    resolve(res);
-                  }
-                },
-              );
-            }),
-          }}
-        />
-      )}
-    </>
+            (err, res) => {
+              if (err) {
+                msg.error(err.reason);
+                reject(err);
+              } else {
+                msg.success(i18n.__('api.methods.operationSuccessMsg'));
+                resolve(res);
+              }
+            },
+          );
+        }),
+      }}
+    />
   );
 };
 

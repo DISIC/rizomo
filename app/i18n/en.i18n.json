@@ -65,11 +65,14 @@
       "waitAccount": "Wait for an administrator to validate your account"
     },
     "GroupUsersList": {
-      "title": "Users Management",
+      "title": "",
+      "loadingTitle": "Loading ...",
       "columnUsername": "username",
       "columnFirstName": "firstName",
       "columnLastName": "lastname",
       "columnEmail": "email",
+      "validate_tooltip": "Accept this candidate",
+      "memberAdded": "User set as member",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a user",
         "pagination_labelRowsSelect": "users per page",
