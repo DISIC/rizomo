@@ -53,6 +53,10 @@
       "menuAdminUserValidation": "Validation des utilisateurs",
       "menuAdminCategories": "Gestion des categories",
       "menuAdminGroups": "Gestion des Groupes"
+    },
+    "NotValidatedMessage": {
+      "inactiveAccount": "Votre compte n'a pas été activé",
+      "waitAccount": "Un administrateur va bientôt valider votre compte"
     }
   },
   "validatejs": {
@@ -111,7 +115,7 @@
       "title": "Gestion des Services",
       "columnLogo": "Logo",
       "columnTitle": "Nom",
-      "columnDescription": "Description",
+      "columnUsage": "Usage",
       "columnUrl": "Lien",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Rechercher un service",
@@ -119,6 +123,7 @@
         "body_emptyDataSourceMessage": "Aucun service enregistré",
         "body_addTooltip": "Ajouter un service",
         "body_editTooltip": "Modifier ce service",
+        "body_goTooltip": "Aller à ce service",
         "body_deleteTooltip": "Supprimer ce service",
         "body_editRow_deleteText": "Supprimer vraiment ce service ?"
       }
@@ -197,9 +202,7 @@
     }
   },
   "layouts": {
-    "MainLayout": {
-      "inactiveAccount": "Votre compte n'a pas été activé"
-    }
+    "MainLayout": {}
   },
   "languages": {
     "en": "Anglais",

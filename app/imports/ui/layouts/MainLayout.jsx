@@ -1,7 +1,5 @@
 import React, { useContext, lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import i18n from 'meteor/universe:i18n';
-import Typography from '@material-ui/core/Typography';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +14,7 @@ import SingleServicePage from '../pages/SingleServicePage';
 import PersonalSpace from '../pages/PersonalSpace';
 import MsgHandler from '../components/MsgHandler';
 import AdminRoute from '../components/AdminRoute';
+import NotValidatedMessage from '../components/NotValidatedMessage';
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/AdminSingleServicePage'));
@@ -60,7 +59,6 @@ function MainLayout() {
         <Spinner full />
       ) : (
         <main className={classes.content}>
-
           <Suspense fallback={<Spinner full />}>
             {user.isActive ? (
               <Switch>
@@ -111,9 +109,7 @@ function MainLayout() {
                 <Route component={NotFound} />
               </Switch>
             ) : (
-              <Typography variant="h5" color="inherit" paragraph>
-                {i18n.__('layouts.MainLayout.inactiveAccount')}
-              </Typography>
+              <NotValidatedMessage />
             )}
             <MsgHandler />
           </Suspense>
