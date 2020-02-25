@@ -86,7 +86,6 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log('GROUP USE EFFECT: ', group);
     if (params._id && group._id && loading) {
       setLoading(false);
       setGroupData(group);

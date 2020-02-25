@@ -4,7 +4,17 @@ import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import i18n from 'meteor/universe:i18n';
+import { Button, makeStyles, Collapse } from '@material-ui/core';
 import setMaterialTableLocalization from './initMaterialTableLocalization';
+import UserFinder from './UserFinder';
+
+const useStyles = makeStyles(() => ({
+  adduser: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    margin: '5px',
+  },
+}));
 
 const GroupsUsersList = (props) => {
   const {
@@ -16,6 +26,12 @@ const GroupsUsersList = (props) => {
     member: 'users.unsetMemberOf',
     animator: 'users.unsetAnimatorOf',
     admin: 'users.unsetAdminOf',
+  };
+  const addMethods = {
+    candidate: 'users.setCandidateOf',
+    member: 'users.setMemberOf',
+    animator: 'users.setAnimatorOf',
+    admin: 'users.setAdminOf',
   };
 
   const columns = [
@@ -30,7 +46,7 @@ const GroupsUsersList = (props) => {
   ];
 
   const options = {
-    pageSize: 5,
+    pageSize: 10,
     pageSizeOptions: [5, 10, 20, 50, 100],
     paginationType: 'stepped',
     actionsColumnIndex: 4,
@@ -40,6 +56,19 @@ const GroupsUsersList = (props) => {
 
   const [data, setData] = useState([]);
   const [title, setTitle] = useState('');
+  const [user, setUser] = useState(null);
+  const [showSearch, setShowSearch] = useState(false);
+  const classes = useStyles();
+
+  const addUser = () => {
+    Meteor.call(addMethods[role], { groupId, userId: user._id }, (err, _) => {
+      if (err) {
+        msg.error(err.reason);
+      } else {
+        msg.success(i18n.__('components.GroupUsersList.userAdded'));
+      }
+    });
+  };
 
   useEffect(() => {
     if (ready === true) {
@@ -55,7 +84,7 @@ const GroupsUsersList = (props) => {
       icon: 'add',
       tooltip: i18n.__('components.GroupUsersList.materialTableLocalization.body_addTooltip'),
       isFreeAction: true,
-      onClick: () => alert('Not implemented'),
+      onClick: () => setShowSearch(!showSearch),
     },
   ];
   if (role === 'candidate') {
@@ -75,35 +104,45 @@ const GroupsUsersList = (props) => {
   }
 
   return (
-    <MaterialTable
-      // other props
-      title={title}
-      columns={columns}
-      data={data}
-      options={options}
-      localization={setMaterialTableLocalization('components.GroupUsersList')}
-      actions={actions}
-      editable={{
-        onRowDelete: (oldData) => new Promise((resolve, reject) => {
-          Meteor.call(
-            removeMethods[role],
-            {
-              userId: oldData._id,
-              groupId,
-            },
-            (err, res) => {
-              if (err) {
-                msg.error(err.reason);
-                reject(err);
-              } else {
-                msg.success(i18n.__('api.methods.operationSuccessMsg'));
-                resolve(res);
-              }
-            },
-          );
-        }),
-      }}
-    />
+    <>
+      <Collapse in={showSearch} collapsedHeight={0}>
+        <div className={classes.adduser}>
+          <UserFinder onSelected={setUser} />
+          <Button variant="contained" disabled={!user} color="primary" onClick={addUser}>
+            {i18n.__('components.GroupUsersList.addUserButton')}
+          </Button>
+        </div>
+      </Collapse>
+      <MaterialTable
+        // other props
+        title={title}
+        columns={columns}
+        data={data}
+        options={options}
+        localization={setMaterialTableLocalization('components.GroupUsersList')}
+        actions={actions}
+        editable={{
+          onRowDelete: (oldData) => new Promise((resolve, reject) => {
+            Meteor.call(
+              removeMethods[role],
+              {
+                userId: oldData._id,
+                groupId,
+              },
+              (err, res) => {
+                if (err) {
+                  msg.error(err.reason);
+                  reject(err);
+                } else {
+                  msg.success(i18n.__('api.methods.operationSuccessMsg'));
+                  resolve(res);
+                }
+              },
+            );
+          }),
+        }}
+      />
+    </>
   );
 };
 

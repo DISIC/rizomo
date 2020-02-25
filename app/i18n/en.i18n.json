@@ -73,6 +73,8 @@
       "columnEmail": "email",
       "validate_tooltip": "Accept this candidate",
       "memberAdded": "User set as member",
+      "userAdded": "Successfully added user",
+      "addUserButton": "Add",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a user",
         "pagination_labelRowsSelect": "users per page",
@@ -82,6 +84,9 @@
         "body_deleteTooltip": "Remove this user",
         "body_editRow_deleteText": "Do you really want to remove this user?"
       }
+    },
+    "UserFinder": {
+      "noUser": "No user found"
     }
   },
   "validatejs": {
