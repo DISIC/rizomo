@@ -22,7 +22,7 @@ function AdminServicesPage({ services, loading }) {
       ),
     },
     { title: i18n.__('pages.AdminServicesPage.columnTitle'), field: 'title', defaultSort: 'asc' },
-    { title: i18n.__('pages.AdminServicesPage.columnDescription'), field: 'description' },
+    { title: i18n.__('pages.AdminServicesPage.columnUsage'), field: 'usage' },
     {
       title: i18n.__('pages.AdminServicesPage.columnUrl'),
       field: 'url',
@@ -63,6 +63,13 @@ function AdminServicesPage({ services, loading }) {
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
                   onClick: (event, rowData) => {
                     history.push(`/adminservices/${rowData._id}`);
+                  },
+                },
+                {
+                  icon: 'keyboard_arrow_right',
+                  tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_goTooltip'),
+                  onClick: (event, rowData) => {
+                    history.push(`/services/${rowData.slug}`);
                   },
                 },
                 {

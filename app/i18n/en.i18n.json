@@ -53,6 +53,10 @@
       "menuAdminUserValidation": "User validation",
       "menuAdminCategories": "Categories Management",
       "menuAdminGroups": "Groups Management"
+    },
+    "NotValidatedMessage": {
+      "inactiveAccount": "Your account has not been activated",
+      "waitAccount": "Wait for an administrator to validate your account"
     }
   },
   "validatejs": {
@@ -108,7 +112,7 @@
       "title": "Service Management",
       "columnLogo": "Logo",
       "columnTitle": "Name",
-      "columnDescription": "Description",
+      "columnUsage": "Usage",
       "columnUrl": "Link",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a service",
@@ -116,6 +120,7 @@
         "body_emptyDataSourceMessage": "No service registered",
         "body_addTooltip": "Add a service",
         "body_editTooltip": "Modify this service",
+        "body_goTooltip": "Go to this service",
         "body_deleteTooltip": "Remove this service",
         "body_editRow_deleteText": "Do you really want to delete this service?"
       }
@@ -194,9 +199,7 @@
     }
   },
   "layouts": {
-    "MainLayout": {
-      "inactiveAccount": "Your account has not been activated"
-    }
+    "MainLayout": {}
   },
   "languages": {
     "en": "English",
