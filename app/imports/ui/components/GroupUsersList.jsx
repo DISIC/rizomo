@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
 
 const GroupsUsersList = (props) => {
   const {
-    ready, userIds, groupId, role,
+    ready, userIds, groupId, userRole,
   } = props;
 
   const removeMethods = {
@@ -64,7 +64,7 @@ const GroupsUsersList = (props) => {
   const classes = useStyles();
 
   const addUser = () => {
-    Meteor.call(addMethods[role], { groupId, userId: user._id }, (err, _) => {
+    Meteor.call(addMethods[userRole], { groupId, userId: user._id }, (err) => {
       if (err) {
         msg.error(err.reason);
       } else {
@@ -82,7 +82,7 @@ const GroupsUsersList = (props) => {
     }
   }, [ready]);
 
-  actions = [
+  const actions = [
     {
       icon: 'add',
       tooltip: i18n.__('components.GroupUsersList.materialTableLocalization.body_addTooltip'),
@@ -90,7 +90,7 @@ const GroupsUsersList = (props) => {
       onClick: () => setShowSearch(!showSearch),
     },
   ];
-  if (role === 'candidate') {
+  if (userRole === 'candidate') {
     actions.push({
       icon: PersonAddIcon,
       tooltip: i18n.__('components.GroupUsersList.validate_tooltip'),
@@ -110,7 +110,7 @@ const GroupsUsersList = (props) => {
     <>
       <Collapse in={showSearch} collapsedHeight={0}>
         <div className={classes.adduser}>
-          <UserFinder onSelected={setUser} hidden={!showSearch} exclude={{ groupId, role }} />
+          <UserFinder onSelected={setUser} hidden={!showSearch} exclude={{ groupId, role: userRole }} />
           <Button variant="contained" disabled={!user} color="primary" onClick={addUser}>
             {i18n.__('components.GroupUsersList.addUserButton')}
           </Button>
@@ -130,7 +130,7 @@ const GroupsUsersList = (props) => {
         editable={{
           onRowDelete: (oldData) => new Promise((resolve, reject) => {
             Meteor.call(
-              removeMethods[role],
+              removeMethods[userRole],
               {
                 userId: oldData._id,
                 groupId,
@@ -156,16 +156,16 @@ GroupsUsersList.propTypes = {
   userIds: PropTypes.arrayOf(PropTypes.any).isRequired,
   ready: PropTypes.bool.isRequired,
   groupId: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
+  userRole: PropTypes.string.isRequired,
 };
 
-export default withTracker(({ userIds, groupId, role }) => {
+export default withTracker(({ userIds, groupId, userRole }) => {
   const subUsers = Meteor.subscribe('users.fromlist', userIds);
   const ready = subUsers.ready();
   return {
     ready,
     userIds,
     groupId,
-    role,
+    userRole,
   };
 })(GroupsUsersList);

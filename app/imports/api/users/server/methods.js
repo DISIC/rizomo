@@ -88,8 +88,8 @@ export const findUsers = new ValidatedMethod({
       ];
     }
     if (exclude) {
-      usersField = `${exclude.role}s`;
-      group = Groups.findOne(exclude.groupId);
+      const usersField = `${exclude.role}s`;
+      const group = Groups.findOne(exclude.groupId);
       if (group && group[usersField].length > 0) {
         if (Object.keys(query).length > 0) {
           query = { $and: [{ _id: { $nin: group[usersField] } }, query] };

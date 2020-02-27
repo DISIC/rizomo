@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TabPanel(props) {
   const {
-    userIds, value, index, role, groupId,
+    userIds, value, index, userRole, groupId,
   } = props;
 
   return (
@@ -56,17 +56,17 @@ function TabPanel(props) {
       id={`scrollable-auto-tabpanel-${index}`}
       aria-labelledby={`scrollable-auto-tab-${index}`}
     >
-      {value === index && <GroupsUsersList userIds={userIds} role={role} groupId={groupId} />}
+      {value === index && <GroupsUsersList userIds={userIds} userRole={userRole} groupId={groupId} />}
     </div>
   );
 }
 
 TabPanel.propTypes = {
   userIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-  role: PropTypes.string.isRequired,
+  userRole: PropTypes.string.isRequired,
   groupId: PropTypes.string.isRequired,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 const defaultState = {
@@ -220,10 +220,10 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                   <Tab label={i18n.__('api.groups.users.animators')} />
                   <Tab label={i18n.__('api.groups.users.admins')} />
                 </Tabs>
-                <TabPanel value={tabId} index={0} userIds={group.candidates} role="candidate" groupId={group._id} />
-                <TabPanel value={tabId} index={1} userIds={group.members} role="member" groupId={group._id} />
-                <TabPanel value={tabId} index={2} userIds={group.animators} role="animator" groupId={group._id} />
-                <TabPanel value={tabId} index={3} userIds={group.admins} role="admin" groupId={group._id} />
+                <TabPanel value={tabId} index={0} userIds={group.candidates} userRole="candidate" groupId={group._id} />
+                <TabPanel value={tabId} index={1} userIds={group.members} userRole="member" groupId={group._id} />
+                <TabPanel value={tabId} index={2} userIds={group.animators} userRole="animator" groupId={group._id} />
+                <TabPanel value={tabId} index={3} userIds={group.admins} userRole="admin" groupId={group._id} />
               </>
             ) : null}
             <div className={classes.buttonGroup}>

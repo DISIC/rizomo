@@ -86,13 +86,13 @@ publishComposite('groups.details', function groupDetails(groupId) {
     children: [
       {
         find(group) {
-          let group_users = group.candidates
+          let groupUsers = group.candidates
             .concat(group.members)
             .concat(group.admins)
             .concat(group.animators);
           // remove duplicates
-          group_users = Array.from(new Set(group_users));
-          return Meteor.users.find({ _id: { $in: group_users } }, { fields: Meteor.users.publicFields });
+          groupUsers = Array.from(new Set(groupUsers));
+          return Meteor.users.find({ _id: { $in: groupUsers } }, { fields: Meteor.users.publicFields });
         },
       },
     ],
