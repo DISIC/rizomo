@@ -75,6 +75,7 @@
       "memberAdded": "User set as member",
       "userAdded": "Successfully added user",
       "addUserButton": "Add",
+      "userRemoved": "User removed from group",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a user",
         "pagination_labelRowsSelect": "users per page",
@@ -86,7 +87,13 @@
       }
     },
     "UserFinder": {
-      "noUser": "No user found"
+      "noUser": "No user found",
+      "userLabel": "User",
+      "placeholder": "Type to search more users",
+      "clear": "Clear",
+      "loading": "Loading...",
+      "open": "Open",
+      "close": "Fermer"
     }
   },
   "validatejs": {

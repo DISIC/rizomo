@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import i18n from 'meteor/universe:i18n';
-import { Button, makeStyles, Collapse } from '@material-ui/core';
+import {
+  Button, makeStyles, Collapse, IconButton,
+} from '@material-ui/core';
 import setMaterialTableLocalization from './initMaterialTableLocalization';
 import UserFinder from './UserFinder';
 
@@ -12,7 +15,7 @@ const useStyles = makeStyles(() => ({
   adduser: {
     display: 'flex',
     justifyContent: 'flex-end',
-    margin: '5px',
+    margin: '10px',
   },
 }));
 
@@ -107,10 +110,13 @@ const GroupsUsersList = (props) => {
     <>
       <Collapse in={showSearch} collapsedHeight={0}>
         <div className={classes.adduser}>
-          <UserFinder onSelected={setUser} />
+          <UserFinder onSelected={setUser} hidden={!showSearch} exclude={{ groupId, role }} />
           <Button variant="contained" disabled={!user} color="primary" onClick={addUser}>
             {i18n.__('components.GroupUsersList.addUserButton')}
           </Button>
+          <IconButton onClick={() => setShowSearch(!showSearch)}>
+            <ExpandLessIcon />
+          </IconButton>
         </div>
       </Collapse>
       <MaterialTable
@@ -134,7 +140,7 @@ const GroupsUsersList = (props) => {
                   msg.error(err.reason);
                   reject(err);
                 } else {
-                  msg.success(i18n.__('api.methods.operationSuccessMsg'));
+                  msg.success(i18n.__('components.GroupUsersList.userRemoved'));
                   resolve(res);
                 }
               },

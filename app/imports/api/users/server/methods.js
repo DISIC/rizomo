@@ -19,6 +19,7 @@ import { structures } from '../structures';
 //   page: number of the page requested
 //   pageSize: number of entries per page
 //   sortColumn/sortOrder: sort entries on a specific field with given order (1/-1)
+//   exclude: specify a groupId and role (users in this role for this group will be excluded)
 export const findUsers = new ValidatedMethod({
   name: 'users.findUsers',
   validate: new SimpleSchema({
@@ -47,9 +48,21 @@ export const findUsers = new ValidatedMethod({
       defaultValue: 1,
       optional: true,
     },
+    exclude: {
+      type: Object,
+      optional: true,
+    },
+    'exclude.groupId': {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id,
+    },
+    'exclude.role': {
+      type: String,
+      allowedValues: ['candidate', 'member', 'animator', 'admin'],
+    },
   }).validator({ clean: true }),
   run({
-    page, pageSize, filter, sortColumn, sortOrder,
+    page, pageSize, filter, sortColumn, sortOrder, exclude,
   }) {
     const isAdmin = Roles.userIsInRole(this.userId, 'admin');
     // calculate number of entries to skip
@@ -61,20 +74,29 @@ export const findUsers = new ValidatedMethod({
           address: { $regex: `.*${filter}.*`, $options: 'i' },
         },
       };
-      query = {
-        $or: [
-          { emails },
-          {
-            username: { $regex: `.*${filter}.*`, $options: 'i' },
-          },
-          {
-            lastName: { $regex: `.*${filter}.*`, $options: 'i' },
-          },
-          {
-            firstName: { $regex: `.*${filter}.*`, $options: 'i' },
-          },
-        ],
-      };
+      query.$or = [
+        { emails },
+        {
+          username: { $regex: `.*${filter}.*`, $options: 'i' },
+        },
+        {
+          lastName: { $regex: `.*${filter}.*`, $options: 'i' },
+        },
+        {
+          firstName: { $regex: `.*${filter}.*`, $options: 'i' },
+        },
+      ];
+    }
+    if (exclude) {
+      usersField = `${exclude.role}s`;
+      group = Groups.findOne(exclude.groupId);
+      if (group && group[usersField].length > 0) {
+        if (Object.keys(query).length > 0) {
+          query = { $and: [{ _id: { $nin: group[usersField] } }, query] };
+        } else {
+          query = { _id: { $nin: group[usersField] } };
+        }
+      }
     }
     const sort = {};
     sort[sortColumn] = sortOrder;

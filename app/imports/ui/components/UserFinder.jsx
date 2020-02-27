@@ -7,16 +7,16 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import i18n from 'meteor/universe:i18n';
 import { InputAdornment } from '@material-ui/core';
+import debounce from '../utils/debounce';
 
-function UserFinder({ onSelected }) {
+function UserFinder({ onSelected, hidden, exclude }) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(false);
 
   function searchUsers() {
-    setLoading(true);
-    Meteor.call('users.findUsers', { filter, pageSize: 50 }, (error, res) => {
+    Meteor.call('users.findUsers', { filter, pageSize: 50, exclude }, (error, res) => {
       if (error) {
         setLoading(false);
         msg.error(error.reason);
@@ -27,30 +27,17 @@ function UserFinder({ onSelected }) {
     });
   }
 
-  debounce = function (func, wait, immediate) {
-    let timeout;
-    return function () {
-      const context = this;
-      const args = arguments;
-      const later = function () {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      const callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  };
-
-  const debouncedSearchUsers = debounce(searchUsers, 1000);
+  const debouncedSearchUsers = debounce(searchUsers, 500);
 
   React.useEffect(() => {
-    debouncedSearchUsers();
-  }, [filter]);
+    if (hidden === false) {
+      setLoading(true);
+      debouncedSearchUsers();
+    }
+  }, [filter, hidden]);
 
-  const handleFilter = (_, value) => {
-    setFilter(value);
+  const handleFilter = (_, value, reason) => {
+    if (reason != 'reset') setFilter(value);
   };
 
   return (
@@ -67,15 +54,20 @@ function UserFinder({ onSelected }) {
       getOptionSelected={(option, value) => option.username === value.name}
       getOptionLabel={(option) => `${option.username} (${option.firstName || ''} ${option.lastName || ''})`}
       noOptionsText={i18n.__('components.UserFinder.noUser')}
+      clearText={i18n.__('components.UserFinder.clear')}
+      loadingText={i18n.__('components.UserFinder.loading')}
+      openText={i18n.__('components.UserFinder.open')}
+      closeText={i18n.__('components.UserFinder.close')}
       onChange={(_, value) => onSelected(value)}
-      onInputChange={handleFilter}
       options={options}
       loading={loading}
+      onInputChange={handleFilter}
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Utilisateur"
+          label={i18n.__('components.UserFinder.userLabel')}
           variant="outlined"
+          placeholder={i18n.__('components.UserFinder.placeholder')}
           InputProps={{
             ...params.InputProps,
             endAdornment: (
@@ -96,8 +88,16 @@ function UserFinder({ onSelected }) {
   );
 }
 
+UserFinder.defaultProps = {
+  ignoreUsers: [],
+  hidden: false,
+  exclude: null,
+};
+
 UserFinder.propTypes = {
   onSelected: PropTypes.func.isRequired,
+  hidden: PropTypes.bool,
+  exclude: PropTypes.object,
 };
 
 export default UserFinder;

@@ -75,6 +75,7 @@
       "memberAdded": "Utilisateur promu comme membre",
       "userAdded": "Utilisateur ajouté avec succès",
       "addUserButton": "Ajouter",
+      "userRemoved": "Utilisateur supprimé du groupe",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Trouver un utilisateur",
         "pagination_labelRowsSelect": "utilisateurs par page",
@@ -86,7 +87,13 @@
       }
     },
     "UserFinder": {
-      "noUser": "Aucun utilisateur trouvé"
+      "noUser": "Aucun utilisateur trouvé",
+      "userLabel": "Utilisateur",
+      "placeholder": "Saisir pour rechercher",
+      "clear": "Effacer",
+      "loading": "Chargement...",
+      "open": "Ouvrir",
+      "close": "Fermer"
     }
   },
   "validatejs": {
