@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Categories from '../../../api/categories/categories';
-import fakeData from './fakeData';
+import fakeData from './fakeData.json';
 
 function createCategorie(categorie) {
   console.log(`  Creating categorie ${categorie.name}.`);

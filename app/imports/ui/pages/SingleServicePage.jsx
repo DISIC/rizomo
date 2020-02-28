@@ -178,9 +178,9 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
                 <Typography className={classes.smallTitle} variant="h5">
                   {i18n.__('pages.SingleServicePage.screenshots')}
                   {' '}
-(
+                  (
                   {service.screenshots.length}
-)
+                  )
                 </Typography>
               </Grid>
               {service.screenshots

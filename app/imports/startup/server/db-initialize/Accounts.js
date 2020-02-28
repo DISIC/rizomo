@@ -5,7 +5,7 @@ import { ServiceConfiguration } from 'meteor/service-configuration';
 
 // required: loads accounts customization before initial users creation
 import AppRoles from '../../../api/users/users';
-import fakeData from './fakeData';
+import fakeData from './fakeData.json';
 
 if (Meteor.settings.keycloak) {
   if (Meteor.settings.public.enableKeycloak === true) {

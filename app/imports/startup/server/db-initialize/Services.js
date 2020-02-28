@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Services from '../../../api/services/services';
-import fakeData from './fakeData';
+import fakeData from './fakeData.json';
 
 function createService(service) {
   const { title } = service;

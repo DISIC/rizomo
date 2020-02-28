@@ -330,9 +330,9 @@ const AdminSingleServicePage = ({
             <InputLabel>
               {i18n.__('pages.AdminSingleServicePage.screenshots')}
               {' '}
-(
+              (
               {(serviceData.screenshots && serviceData.screenshots.length) || 0}
-)
+              )
               <IconButton
                 color="primary"
                 aria-label={i18n.__('pages.AdminSingleServicePage.addScreenshots')}
