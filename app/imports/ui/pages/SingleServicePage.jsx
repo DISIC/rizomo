@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom';
 import {
   Container, makeStyles, Button, Typography, Grid, Chip, Tooltip, Fade,
 } from '@material-ui/core';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Services from '../../api/services/services';
 import Spinner from '../components/Spinner';
@@ -18,15 +18,17 @@ import Categories from '../../api/categories/categories';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-  },
-
-  backButton: {
-    marginTop: -30,
+    marginTop: theme.spacing(3),
   },
   cardGrid: {
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
     marginBottom: theme.spacing(3),
+  },
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   favoriteButton: {
     display: 'flex',
@@ -63,17 +65,22 @@ const useStyles = makeStyles((theme) => ({
   category: {
     marginLeft: theme.spacing(1),
   },
-  fab: {
+  openButton: {
+    textTransform: 'none',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.tertiary.main,
     '&:hover': {
-      color: 'red',
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.tertiary.main,
     },
   },
+  fab: {},
 }));
 
 const SingleServicePage = ({ service = [], ready, categories = [] }) => {
   const history = useHistory();
   const classes = useStyles();
-  const [{ user = {} }] = useContext(Context);
+  const [{ user = {}, isMobile }] = useContext(Context);
   const [loading, setLoading] = useState(false);
   const favorite = user.favServices && user.favServices.find((f) => f === service._id);
 
@@ -113,14 +120,22 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
     ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
+  const favButton = (
+    <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+      <Button variant="text" color="primary" disabled={loading} className={classes.fab} onClick={handleFavorite}>
+        {favorite ? <BookmarkIcon fontSize="large" /> : <BookmarkBorderIcon fontSize="large" />}
+      </Button>
+    </Tooltip>
+  );
   return (
     <Fade in>
       <Container className={classes.root}>
         <Grid container spacing={2}>
-          <Grid item md={12}>
-            <Button onClick={goBack} className={classes.backButton} color="primary" startIcon={<ArrowBack />}>
+          <Grid item xs={12} sm={12} md={12} className={classes.flex}>
+            <Button onClick={goBack} color="primary" startIcon={<ArrowBack />}>
               {i18n.__('pages.SingleServicePage.backToList')}
             </Button>
+            {isMobile && favButton}
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.cardGrid}>
             <div className={classes.titleContainer}>
@@ -137,18 +152,14 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
             </div>
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.favoriteButton}>
-            <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-              <Button
-                variant="text"
-                color="primary"
-                disabled={loading}
-                className={classes.fab}
-                onClick={handleFavorite}
-              >
-                {favorite ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />}
-              </Button>
-            </Tooltip>
-            <Button variant="outlined" color="primary" onClick={() => window.open(service.url, '_blank')}>
+            {!isMobile && favButton}
+            <Button
+              fullWidth={isMobile}
+              variant="outlined"
+              color="primary"
+              className={classes.openButton}
+              onClick={() => window.open(service.url, '_blank')}
+            >
               {i18n.__('pages.SingleServicePage.open')}
             </Button>
           </Grid>
@@ -161,8 +172,8 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
                 className={classes.category}
                 key={categ._id}
                 label={categ.name}
-                color="primary"
-                style={{ backgroundColor: categ.color }}
+                color="secondary"
+                // style={{ backgroundColor: categ.color }}
               />
             ))}
           </Grid>

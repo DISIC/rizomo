@@ -1,55 +1,60 @@
 import React, { useContext } from 'react';
-import { Meteor } from 'meteor/meteor';
-import i18n from 'meteor/universe:i18n';
-import { Roles } from 'meteor/alanning:roles';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Toolbar from '@material-ui/core/Toolbar';
-import { Button, Divider } from '@material-ui/core';
-
 import LanguageSwitcher from './LanguageSwitcher';
 import MenuBar from './MenuBar';
-import AdminMenu from './AdminMenu';
+import MainMenu from './MainMenu';
 import { Context } from '../contexts/context';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.tertiary.main,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    minHeight: 48,
+  },
   imgLogo: {
     maxHeight: '30px',
-    height: 'auto',
+    height: 30,
   },
   grow: {
     flexGrow: 1,
   },
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  rightContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItem: 'center',
+  },
 }));
 
-function TopBar() {
-  const [{ userId }] = useContext(Context);
-  const classes = useStyles();
-  const history = useHistory();
-  const isAdmin = Roles.userIsInRole(userId, 'admin');
+const SMALL_LOGO = 'Logo-A.svg';
+const LONG_LOGO = 'Logo-appseducation.png';
 
-  const handleLogout = () => {
-    Meteor.logout(() => history.push('/'));
-  };
+function TopBar() {
+  const [{ isMobile, user }] = useContext(Context);
+  const classes = useStyles();
+  const LOGO = `/images/${isMobile ? SMALL_LOGO : LONG_LOGO}`;
 
   return (
-    <AppBar position="fixed" color="secondary">
-      <Toolbar>
-        <Link to="/">
-          <img src="/images/Logo-appseducation.png" className={classes.imgLogo} alt="Logo" />
-        </Link>
-        <div className={classes.grow} />
+    <AppBar position="fixed" className={classes.root}>
+      <Link to="/" className={classes.imgLogo}>
+        <img src={LOGO} className={classes.imgLogo} alt="Logo" />
+      </Link>
+
+      {!isMobile && <MenuBar />}
+      <div className={classes.rightContainer}>
         <LanguageSwitcher topbar />
-        <Button onClick={() => console.log('go profile')} startIcon={<AccountCircle />}>
-          {i18n.__('components.TopBar.myAccount')}
-        </Button>
-        {isAdmin && <AdminMenu />}
-        <Button onClick={handleLogout}>{i18n.__('components.TopBar.menuLogoutLabel')}</Button>
-      </Toolbar>
-      <Divider />
-      <MenuBar />
+        <MainMenu user={user} />
+      </div>
     </AppBar>
   );
 }

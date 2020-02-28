@@ -2,15 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Button, CardHeader } from '@material-ui/core';
+import { Button, CardHeader, IconButton } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -25,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     padding: 5,
+    '& .MuiCardHeader-root': {
+      padding: 8,
+    },
   },
   cardMedia: {
     maxWidth: '50px',
@@ -38,65 +38,77 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ServiceDetails({ service, favAction }) {
+export default function ServiceDetails({ service }) {
   const classes = useStyles();
 
-  const handleFavorite = () => {
-    if (favAction === 'unfav') {
-      Meteor.call('users.unfavService', { serviceId: service._id }, (err) => {
-        if (err) {
-          msg.error(err.reason);
-        } else {
-          msg.success(i18n.__('components.ServiceDetails.unfavSuccessMsg'));
-        }
-      });
-    } else {
-      Meteor.call('users.favService', { serviceId: service._id }, (err) => {
-        if (err) {
-          msg.error(err.reason);
-        } else {
-          msg.success(i18n.__('components.ServiceDetails.favSuccessMsg'));
-        }
-      });
-    }
-  };
+  // const handleFavorite = () => {
+  //   if (favAction === 'unfav') {
+  //     Meteor.call('users.unfavService', { serviceId: service._id }, (err) => {
+  //       if (err) {
+  //         msg.error(err.reason);
+  //       } else {
+  //         msg.success(i18n.__('components.ServiceDetails.unfavSuccessMsg'));
+  //       }
+  //     });
+  //   } else {
+  //     Meteor.call('users.favService', { serviceId: service._id }, (err) => {
+  //       if (err) {
+  //         msg.error(err.reason);
+  //       } else {
+  //         msg.success(i18n.__('components.ServiceDetails.favSuccessMsg'));
+  //       }
+  //     });
+  //   }
+  // };
 
-  const favButtonLabel = favAction === 'unfav'
-    ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
-    : i18n.__('components.ServiceDetails.favButtonLabelFav');
+  // const favButtonLabel = favAction === 'unfav'
+  //   ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
+  //   : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
+  const detailsButton = (
+    <Tooltip
+      title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+      aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+    >
+      <Link to={`/services/${service.slug}`}>
+        <IconButton color="primary">
+          <ChevronRightIcon fontSize="large" />
+        </IconButton>
+      </Link>
+    </Tooltip>
+  );
+  // const actionButtons = (
+  //   <div style={{ display: 'flex' }}>
+  //     <Tooltip
+  //       title={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+  //       aria-label={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+  //     >
+  //       <Button
+  //         className={classes.buttonText}
+  //         variant="outlined"
+  //         color="primary"
+  //         onClick={() => window.open(service.url, '_blank')}
+  //       >
+  //         {i18n.__('components.ServiceDetails.open')}
+  //       </Button>
+  //     </Tooltip>
+  //     <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+  //       <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
+  //         {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+  //       </Button>
+  //     </Tooltip>
+  //   </div>
+  // );
   return (
     <Card className={classes.card} elevation={3}>
       <CardHeader
         classes={{ action: classes.action }}
-        avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
-        action={(
-          <>
-            <Tooltip
-              title={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-              aria-label={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-            >
-              <Button className={classes.buttonText} color="primary" onClick={() => window.open(service.url, '_blank')}>
-                <PlayCircleFilledIcon />
-              </Button>
-            </Tooltip>
-            <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-              <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
-                {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
-              </Button>
-            </Tooltip>
-            <Tooltip
-              title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-              aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-            >
-              <Link to={`/services/${service.slug}`}>
-                <Button color="primary">
-                  <ChevronRightIcon />
-                </Button>
-              </Link>
-            </Tooltip>
-          </>
+        avatar={(
+          <Button color="primary" variant="contained" onClick={() => window.open(service.url, '_blank')}>
+            <OpenInNewIcon fontSize="large" />
+          </Button>
         )}
+        action={detailsButton}
         title={service.title}
         titleTypographyProps={{
           variant: 'h6',
@@ -111,5 +123,5 @@ export default function ServiceDetails({ service, favAction }) {
 
 ServiceDetails.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
-  favAction: PropTypes.string.isRequired,
+  // favAction: PropTypes.string.isRequired,
 };

@@ -27,32 +27,36 @@
   "components": {
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
+      "menuMyspaceMobile": "Mon Espace",
       "menuServices": "Applications",
       "menuGroupes": "Les Groupes",
+      "menuGroupesMobile": "Groupes",
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Ouvrir l'application",
       "singleServiceButtonLabel": "Détails de l'application",
-      "favButtonLabelFav": "Ajouter à vos favoris",
-      "favButtonLabelNoFav": "Supprimer de vos favoris",
-      "unfavSuccessMsg": "Supprimé de vos favoris",
-      "favSuccessMsg": "Ajouté à vos favoris"
+      "favButtonLabelFav": "Ajouter à votre espace personnel",
+      "favButtonLabelNoFav": "Supprimer de votre espace personnel",
+      "unfavSuccessMsg": "Supprimé de votre espace personnel",
+      "favSuccessMsg": "Ajouté à votre espace personnel",
+      "open": "Ouvrir",
+      "pin": "Épingler",
+      "unpin": "Retirer"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Ouvrir le menu latéral",
       "userMenuOpenLabel": "Ouvrir le menu utilisateur",
-      "inputSearchLabel": "Rechercher...",
-      "menuProfileLabel": "Profil",
-      "menuLogoutLabel": "Se déconnecter",
-      "myAccount": "Mon Compte"
+      "inputSearchLabel": "Rechercher..."
     },
-    "AdminMenu": {
+    "MainMenu": {
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs",
       "menuAdminCategories": "Gestion des categories",
-      "menuAdminGroups": "Gestion des Groupes"
+      "menuAdminGroups": "Gestion des Groupes",
+      "menuProfileLabel": "Profil",
+      "menuLogoutLabel": "Se déconnecter"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
@@ -103,10 +107,19 @@
       "title": "Découvrez les applications",
       "categories": "Filtrer par catégories",
       "reset": "Réinitialiser",
+      "validate": "Valider",
       "tabsLabel": "Onglet des services",
-      "tabFavServicesLabel": "Mes services favoris",
+      "tabFavServicesLabel": "Mes services épinglés",
       "tabAllServicesLabel": "Tous les services",
       "searchText": "De quelle application avez-vous besoin ?",
+      "viewMode": "Changer le mode d'affichage",
+      "viewCard": "Mode cartes",
+      "viewList": "Mode liste",
+      "filter": "Filtrer"
+    },
+    "GroupsPage": {
+      "title": "Explorer les groupes",
+      "searchText": "Quel groupe cherchez-vous ?",
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste"

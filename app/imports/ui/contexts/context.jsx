@@ -16,6 +16,7 @@ const initialState = {
   loggingIn: Accounts.loggingIn(),
   authenticated: false,
   servicePage: {},
+  groupPage: {},
   roles: [],
 };
 

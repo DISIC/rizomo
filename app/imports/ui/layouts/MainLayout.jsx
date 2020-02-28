@@ -14,6 +14,7 @@ import SingleServicePage from '../pages/SingleServicePage';
 import PersonalSpace from '../pages/PersonalSpace';
 import MsgHandler from '../components/MsgHandler';
 import AdminRoute from '../components/AdminRoute';
+import MobileMenu from '../components/MobileMenu';
 import NotValidatedMessage from '../components/NotValidatedMessage';
 
 // dynamic imports
@@ -24,19 +25,20 @@ const AdminUserValidationPage = lazy(() => import('../pages/AdminUserValidationP
 const AdminGroupsPage = lazy(() => import('../pages/AdminGroupsPage'));
 
 // CSS
-const useStyles = makeStyles((theme) => ({
+const useStyles = (isMobile) => makeStyles((theme) => ({
   root: {
     display: 'flex',
     position: 'relative',
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: isMobile ? null : theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginTop: 130,
+    marginTop: 50,
+    marginBottom: 50,
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -48,8 +50,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MainLayout() {
-  const classes = useStyles();
-  const [{ userId, user, loadingUser }] = useContext(Context);
+  const [{
+    userId, user, loadingUser, isMobile,
+  }] = useContext(Context);
+  const classes = useStyles(isMobile)();
 
   return (
     <div className={classes.root}>
@@ -113,6 +117,7 @@ function MainLayout() {
             )}
             <MsgHandler />
           </Suspense>
+          {isMobile && <MobileMenu />}
         </main>
       )}
     </div>
