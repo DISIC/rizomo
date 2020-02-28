@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button, CardHeader, IconButton } from '@material-ui/core';
@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignSelf: 'end',
+    width: '100%',
   },
   cardHeader: {
     paddingLeft: 32,
@@ -61,13 +63,16 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 32,
     paddingBottom: 32,
     paddingTop: 0,
+    display: 'flex',
   },
   buttonText: {
     textTransform: 'none',
-    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.tertiary.main,
+    fontWeight: 'bold',
     '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.secondary.main,
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.tertiary.main,
     },
   },
   paperChip: {
@@ -82,17 +87,22 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.5),
   },
   fab: {
+    textTransform: 'none',
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.tertiary.main,
     '&:hover': {
-      color: 'red',
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.tertiary.main,
     },
   },
 }));
 
 function ServiceDetails({ service, favAction, isShort }) {
   const classes = useStyles();
+  const favorite = favAction === 'fav';
 
   const handleFavorite = () => {
-    if (favAction === 'unfav') {
+    if (!favorite) {
       Meteor.call('users.unfavService', { serviceId: service._id }, (err) => {
         if (err) {
           msg.error(err.reason);
@@ -111,7 +121,7 @@ function ServiceDetails({ service, favAction, isShort }) {
     }
   };
 
-  const favButtonLabel = favAction === 'unfav'
+  const favButtonLabel = !favorite
     ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
@@ -161,18 +171,26 @@ function ServiceDetails({ service, favAction, isShort }) {
         </Paper> */}
         <div className={isShort ? classes.cardActionShort : classes.cardActions}>
           <Button
+            size="large"
             className={classes.buttonText}
-            variant={isShort ? 'outlined' : 'contained'}
-            color={isShort ? 'primary' : 'secondary'}
+            variant="contained"
             onClick={() => window.open(service.url, '_blank')}
           >
             {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
           </Button>
 
           <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-            <IconButton color="primary" className={classes.fab} onClick={handleFavorite}>
-              {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
-            </IconButton>
+            <Button
+              // startIcon={favorite ? <BookmarkBorderIcon /> : <BookmarkIcon />}
+              variant="outlined"
+              color="primary"
+              size="large"
+              className={classes.fab}
+              onClick={handleFavorite}
+            >
+              {favorite ? <BookmarkBorderIcon /> : <BookmarkIcon />}
+              {/* {i18n.__(`components.ServiceDetails.${favorite ? '' : 'un'}pin`)} */}
+            </Button>
           </Tooltip>
         </div>
       </CardContent>

@@ -26,33 +26,37 @@
   },
   "components": {
     "MenuBar": {
-      "menuMyspace": "Dashboard",
+      "menuMyspace": "My Dashboard",
+      "menuMyspaceMobile": "Dashboard",
       "menuServices": "Applications",
-      "menuGroupes": "Groups",
+      "menuGroupes": "All Groups",
+      "menuGroupesMobile": "Groups",
       "menuAdminServices": "Service Management",
       "menuAdminUserValidation": "User validation"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Run this service",
       "singleServiceButtonLabel": "Learn more",
-      "favButtonLabelFav": "Add to your favorites",
-      "favButtonLabelNoFav": "Remove from your favorites",
-      "unfavSuccessMsg": "Removed from your favorites",
-      "favSuccessMsg": "Added to your favorites"
+      "favButtonLabelFav": "Add to your personal space",
+      "favButtonLabelNoFav": "Remove from your personal space",
+      "unfavSuccessMsg": "Removed from your personal space",
+      "favSuccessMsg": "Added to your personal space",
+      "open": "Open",
+      "pin": "Pin",
+      "unpin": "Unpin"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Open side menu",
       "userMenuOpenLabel": "Open user menu",
-      "inputSearchLabel": "Search...",
-      "menuProfileLabel": "Profile",
-      "menuLogoutLabel": "Logout",
-      "myAccount": "My Account"
+      "inputSearchLabel": "Search..."
     },
-    "AdminMenu": {
+    "MainMenu": {
       "menuAdminServices": "Service Management",
       "menuAdminUserValidation": "User validation",
       "menuAdminCategories": "Categories Management",
-      "menuAdminGroups": "Groups Management"
+      "menuAdminGroups": "Groups Management",
+      "menuProfileLabel": "Profile",
+      "menuLogoutLabel": "Logout"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
@@ -100,10 +104,19 @@
       "title": "Discover the apps",
       "categories": "Filter by categories",
       "reset": "Reset filter",
+      "validate": "Validate",
       "tabsLabel": "Services tabs",
       "tabFavServicesLabel": "Favorite services",
       "tabAllServicesLabel": "All services",
       "searchText": "Which app would you need ?",
+      "viewMode": "Change view mode",
+      "viewCard": "Card view",
+      "viewList": "List view",
+      "filter": "Filter"
+    },
+    "GroupsPage": {
+      "title": "Explore the groups",
+      "searchText": "Which group are you looking for ?",
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view"
