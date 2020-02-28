@@ -11,7 +11,7 @@ import { isActive } from '../../utils';
 import Services from '../../services/services';
 import Groups from '../../groups/groups';
 // initialize Meteor.users customizations
-import '../users';
+import AppRoles from '../users';
 import { structures } from '../structures';
 
 // users.findUsers: Returns users using pagination
@@ -58,7 +58,7 @@ export const findUsers = new ValidatedMethod({
     },
     'exclude.role': {
       type: String,
-      allowedValues: ['candidate', 'member', 'animator', 'admin'],
+      allowedValues: AppRoles,
     },
   }).validator({ clean: true }),
   run({

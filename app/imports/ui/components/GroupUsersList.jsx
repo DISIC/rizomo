@@ -76,7 +76,7 @@ const GroupsUsersList = (props) => {
 
   useEffect(() => {
     if (ready === true) {
-      usersField = `${userRole}s`;
+      const usersField = `${userRole}s`;
       setData(group[usersField].map((userId) => Meteor.users.findOne(userId)));
       setTitle(i18n.__('components.GroupUsersList.title'));
     } else {

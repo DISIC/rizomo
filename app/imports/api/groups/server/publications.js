@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { publishComposite } from 'meteor/reywood:publish-composite';
 import { FindFromPublication } from 'meteor/percolate:find-from-publication';
+import SimpleSchema from 'simpl-schema';
 
 import { isActive } from '../../utils';
 import Groups from '../groups';
+import AppRoles from '../../users/users';
 
 // publish all existing groups
 Meteor.publish('groups.all', function groupsAll() {
@@ -75,6 +76,16 @@ FindFromPublication.publish('groups.one.admin', function GroupsOne({ _id }) {
 
 // publish one group and all users associated with given role
 publishComposite('groups.users', function groupDetails({ groupId, role = 'member' }) {
+  new SimpleSchema({
+    groupId: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id,
+    },
+    role: {
+      type: String,
+      allowedValues: AppRoles,
+    },
+  }).validate({ groupId, role });
   if (!isActive(this.userId)) {
     return this.ready();
   }

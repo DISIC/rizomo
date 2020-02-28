@@ -16,11 +16,9 @@ function UserFinder({ onSelected, hidden, exclude }) {
   const [loading, setLoading] = useState(false);
 
   function searchUsers() {
-    console.log('search users : ', filter, exclude);
     Meteor.call('users.findUsers', { filter, pageSize: 50, exclude }, (error, res) => {
       if (error) {
         setLoading(false);
-        console.log(error);
         msg.error(error.reason);
       } else {
         setOptions(res.data);
