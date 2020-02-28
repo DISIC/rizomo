@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import setMaterialTableLocalization from './initMaterialTableLocalization';
 import UserFinder from './UserFinder';
+import Groups from '../../api/groups/groups';
 
 const useStyles = makeStyles(() => ({
   adduser: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles(() => ({
 
 const GroupsUsersList = (props) => {
   const {
-    ready, userIds, groupId, userRole,
+    ready, group, groupId, userRole,
   } = props;
 
   const removeMethods = {
@@ -75,12 +76,13 @@ const GroupsUsersList = (props) => {
 
   useEffect(() => {
     if (ready === true) {
-      setData(userIds.map((userId) => Meteor.users.findOne(userId)));
+      usersField = `${userRole}s`;
+      setData(group[usersField].map((userId) => Meteor.users.findOne(userId)));
       setTitle(i18n.__('components.GroupUsersList.title'));
     } else {
       setTitle(i18n.__('components.GroupUsersList.loadingTitle'));
     }
-  }, [ready]);
+  }, [ready, group]);
 
   const actions = [
     {
@@ -153,18 +155,19 @@ const GroupsUsersList = (props) => {
 };
 
 GroupsUsersList.propTypes = {
-  userIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+  group: PropTypes.objectOf(PropTypes.any).isRequired,
   ready: PropTypes.bool.isRequired,
   groupId: PropTypes.string.isRequired,
   userRole: PropTypes.string.isRequired,
 };
 
-export default withTracker(({ userIds, groupId, userRole }) => {
-  const subUsers = Meteor.subscribe('users.fromlist', userIds);
+export default withTracker(({ groupId, userRole }) => {
+  const subUsers = Meteor.subscribe('groups.users', { groupId, role: userRole });
+  const group = Groups.findOne(groupId);
   const ready = subUsers.ready();
   return {
     ready,
-    userIds,
+    group,
     groupId,
     userRole,
   };

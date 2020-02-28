@@ -73,26 +73,31 @@ FindFromPublication.publish('groups.one.admin', function GroupsOne({ _id }) {
   return Groups.find({ _id }, { fields: Groups.publicFields, sort: { name: 1 }, limit: 1 });
 });
 
-// publish one group and all users associated
-publishComposite('groups.details', function groupDetails(groupId) {
+// publish one group and all users associated with given role
+publishComposite('groups.users', function groupDetails({ groupId, role = 'member' }) {
   if (!isActive(this.userId)) {
     return this.ready();
   }
+  const usersField = `${role}s`;
   return {
     find() {
-      check(groupId, String);
-      return Groups.find(groupId, { fields: Groups.publicFields, sort: { name: 1 }, limit: 1 });
+      return Groups.find({ _id: groupId }, { fields: { [usersField]: 1 }, limit: 1, sort: { name: 1 } });
     },
     children: [
       {
         find(group) {
-          let groupUsers = group.candidates
-            .concat(group.members)
-            .concat(group.admins)
-            .concat(group.animators);
-          // remove duplicates
-          groupUsers = Array.from(new Set(groupUsers));
-          return Meteor.users.find({ _id: { $in: groupUsers } }, { fields: Meteor.users.publicFields });
+          const users = group[usersField];
+          return Meteor.users.find(
+            { _id: { $in: users } },
+            {
+              fields: {
+                username: 1,
+                emails: 1,
+                firstName: 1,
+                lastName: 1,
+              },
+            },
+          );
         },
       },
     ],
