@@ -16,7 +16,7 @@ Meteor.publish('services.all', function servicesAll() {
 });
 
 FindFromPublication.publish('services.one.admin', function servicesOne({ _id }) {
-  if (!isActive(this.userId) && Roles.userIsInRoles(this.userId, 'admin')) {
+  if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin')) {
     return this.ready();
   }
   return Services.find({ _id }, { fields: Services.allPublicFields, sort: { title: 1 }, limit: 1 });

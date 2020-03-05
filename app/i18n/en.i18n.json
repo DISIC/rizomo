@@ -15,6 +15,12 @@
         "open": "open",
         "moderated": "moderated",
         "private": "private"
+      },
+      "users": {
+        "candidates": "Candidates",
+        "members": "Members",
+        "animators": "Animators",
+        "admins": "Admins"
       }
     },
     "services": {
@@ -61,6 +67,37 @@
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
       "waitAccount": "Wait for an administrator to validate your account"
+    },
+    "GroupUsersList": {
+      "title": "",
+      "loadingTitle": "Loading ...",
+      "columnUsername": "username",
+      "columnFirstName": "firstName",
+      "columnLastName": "lastname",
+      "columnEmail": "email",
+      "validate_tooltip": "Accept this candidate",
+      "memberAdded": "User set as member",
+      "userAdded": "Successfully added user",
+      "addUserButton": "Add",
+      "userRemoved": "User removed from group",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a user",
+        "pagination_labelRowsSelect": "users per page",
+        "body_emptyDataSourceMessage": "No user registered",
+        "body_addTooltip": "Add a user",
+        "body_editTooltip": "Modify this user",
+        "body_deleteTooltip": "Remove this user",
+        "body_editRow_deleteText": "Do you really want to remove this user?"
+      }
+    },
+    "UserFinder": {
+      "noUser": "No user found",
+      "userLabel": "User",
+      "placeholder": "Type to search more users",
+      "clear": "Clear",
+      "loading": "Loading...",
+      "open": "Open",
+      "close": "Fermer"
     }
   },
   "validatejs": {
@@ -157,6 +194,7 @@
       "columnInfo": "Description",
       "columnType": "Type",
       "columnMembers": "Members",
+      "columnCandidates": "Candidates",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a group",
         "pagination_labelRowsSelect": "groups per page",
@@ -206,6 +244,18 @@
       "categories": "Categories",
       "screenshots": "Screenshots",
       "addScreenshots": "Add a screenshot",
+      "save": "Save",
+      "update": "Update",
+      "cancel": "Cancel"
+    },
+    "AdminSingleGroupPage": {
+      "edition": "Edition of the group",
+      "creation": "Creation of a new group",
+      "name": "Name",
+      "slug": "Slug",
+      "type": "Type",
+      "info": "Short description",
+      "note": "Long description of the group",
       "save": "Save",
       "update": "Update",
       "cancel": "Cancel"

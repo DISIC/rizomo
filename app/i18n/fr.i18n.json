@@ -15,6 +15,12 @@
         "open": "ouvert",
         "moderated": "modéré",
         "private": "réservé"
+      },
+      "users": {
+        "candidates": "Candidats",
+        "members": "Membres",
+        "animators": "Animateurs",
+        "admins": "Administrateurs"
       }
     },
     "services": {
@@ -61,6 +67,37 @@
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
       "waitAccount": "Un administrateur va bientôt valider votre compte"
+    },
+    "GroupUsersList": {
+      "title": "",
+      "loadingTitle": "Chargement en cours ...",
+      "columnUsername": "Pseudo",
+      "columnFirstName": "Prénom",
+      "columnLastName": "Nom",
+      "columnEmail": "Courriel",
+      "validate_tooltip": "Accepter ce candidat",
+      "memberAdded": "Utilisateur promu comme membre",
+      "userAdded": "Utilisateur ajouté avec succès",
+      "addUserButton": "Ajouter",
+      "userRemoved": "Utilisateur supprimé du groupe",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Trouver un utilisateur",
+        "pagination_labelRowsSelect": "utilisateurs par page",
+        "body_emptyDataSourceMessage": "Aucun utilisateur enregistré",
+        "body_addTooltip": "Ajouter un utilisateur",
+        "body_editTooltip": "Modifier cet utilisateur",
+        "body_deleteTooltip": "Enlever cet utilisateur",
+        "body_editRow_deleteText": "Enlever vraiment cet utilisateur ?"
+      }
+    },
+    "UserFinder": {
+      "noUser": "Aucun utilisateur trouvé",
+      "userLabel": "Utilisateur",
+      "placeholder": "Saisir pour rechercher",
+      "clear": "Effacer",
+      "loading": "Chargement...",
+      "open": "Ouvrir",
+      "close": "Fermer"
     }
   },
   "validatejs": {
@@ -160,6 +197,7 @@
       "columnInfo": "Description",
       "columnType": "Type",
       "columnMembers": "Membres",
+      "columnCandidates": "Candidats",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Rechercher un groupe",
         "pagination_labelRowsSelect": "groupes par page",
@@ -209,6 +247,18 @@
       "categories": "Catégories",
       "screenshots": "Captures d'écran",
       "addScreenshots": "Ajouter un écran",
+      "save": "Sauvegarder",
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
+    },
+    "AdminSingleGroupPage": {
+      "edition": "Édition du groupe",
+      "creation": "Création d'un nouveau groupe",
+      "name": "Nom",
+      "slug": "Slug",
+      "type": "Type",
+      "info": "Courte description",
+      "note": "Longue description du groupe",
       "save": "Sauvegarder",
       "update": "Mettre à jour",
       "cancel": "Annuler"

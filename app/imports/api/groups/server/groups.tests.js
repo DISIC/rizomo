@@ -141,12 +141,12 @@ describe('groups', function () {
       groupId = Factory.create('group', { owner: userId })._id;
       // Create a group owned by random user and set userId as admin
       group2Id = Factory.create('group', { owner: Random.id() })._id;
-      setAdminOf._execute({ userId: adminId }, { userId, groupId: group2Id });
       group3Id = Factory.create('group', { owner: Random.id() })._id;
       Factory.create('group', { name: 'group4', owner: userId });
       // create moderated/closed groups
       moderatedGroupId = Factory.create('group', { type: 5, owner: Random.id() })._id;
       closedGroupId = Factory.create('group', { type: 10, owner: Random.id() })._id;
+      setAdminOf._execute({ userId: adminId }, { userId, groupId: group2Id });
     });
     describe('(un)setAdminOf', function () {
       it('global admin can set/unset a user as admin of a group', function () {

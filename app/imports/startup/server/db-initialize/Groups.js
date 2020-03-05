@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Groups from '../../../api/groups/groups';
 import { createGroup } from '../../../api/groups/methods';
-import fakeData from './fakeData';
+import fakeData from './fakeData.json';
 
 /** When running app for first time, pass a settings file to set up default groups. */
 if (Groups.find().count() === 0) {

@@ -5,6 +5,7 @@ import SimpleSchema from 'simpl-schema';
 // import faker from "faker";
 import { Random } from 'meteor/random';
 import { Tracker } from 'meteor/tracker';
+import slugify from 'slugify';
 
 import Events from '../events/events';
 
@@ -30,6 +31,23 @@ Groups.schema = new SimpleSchema(
       index: true,
       unique: true,
       min: 1,
+    },
+    slug: {
+      type: String,
+      index: true,
+      unique: true,
+      min: 1,
+      autoValue() {
+        const name = this.field('name').value;
+        // if name is not being modified, do not calculate autovalue
+        if (name === undefined) return undefined;
+        const slug = slugify(name, {
+          replacement: '-', // replace spaces with replacement
+          remove: null, // regex to remove characters
+          lower: true, // result in lower case
+        });
+        return slug;
+      },
     },
     info: { type: String, optional: true },
     note: { type: String, optional: true },
@@ -61,6 +79,7 @@ Groups.typeLabels = {
 
 Groups.publicFields = {
   name: 1,
+  slug: 1,
   info: 1,
   note: 1,
   active: 1,
