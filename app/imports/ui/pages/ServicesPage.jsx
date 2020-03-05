@@ -301,9 +301,11 @@ function ServicesPage({ services, categories, ready }) {
                     <Typography variant="h6" display="inline">
                       {i18n.__('pages.ServicesPage.categories')}
                     </Typography>
-                    <Button color="primary" onClick={resetCatList} startIcon={<ClearIcon />}>
-                      {i18n.__('pages.ServicesPage.reset')}
-                    </Button>
+                    {catList.length > 0 ? (
+                      <Button color="primary" onClick={resetCatList} startIcon={<ClearIcon />}>
+                        {i18n.__('pages.ServicesPage.reset')}
+                      </Button>
+                    ) : null}
                     <br />
                     {categories.map((cat) => (
                       <Chip
@@ -357,33 +359,37 @@ function ServicesPage({ services, categories, ready }) {
                 </Toolbar>
               </AppBar>
               <List className={classes.categoriesList}>
-                {categories.map((cat) => (
-                  <>
-                    <ListItem button key={cat._id}>
-                      <ListItemText
-                        primary={cat.name}
-                        onClick={() => updateCatList(cat._id)}
-                        secondary={`${cat.count} applications`}
-                      />
+                {categories.map((cat) => [
+                  <ListItem button key={cat._id}>
+                    <ListItemText
+                      primary={cat.name}
+                      onClick={() => updateCatList(cat._id)}
+                      secondary={`${cat.count} applications`}
+                    />
 
-                      <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="add" onClick={() => updateCatList(cat._id)}>
-                          {catList.includes(cat._id) ? (
-                            <CheckCircleRoundedIcon fontSize="large" color="primary" />
-                          ) : (
-                            <RadioButtonUncheckedRoundedIcon fontSize="large" color="primary" />
-                          )}
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="add" onClick={() => updateCatList(cat._id)}>
+                        {catList.includes(cat._id) ? (
+                          <CheckCircleRoundedIcon fontSize="large" color="primary" />
+                        ) : (
+                          <RadioButtonUncheckedRoundedIcon fontSize="large" color="primary" />
+                        )}
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>,
 
-                    <Divider key={`${cat._id}divider`} />
-                  </>
-                ))}
+                  <Divider key={`${cat._id}divider`} />,
+                ])}
               </List>
               <AppBar className={classes.appBarBottom}>
                 <Toolbar className={classes.toolbarBottom}>
-                  <Button color="primary" variant="outlined" onClick={resetCatList} startIcon={<ClearIcon />}>
+                  <Button
+                    color="primary"
+                    disabled={catList.length === 0}
+                    variant="outlined"
+                    onClick={resetCatList}
+                    startIcon={<ClearIcon />}
+                  >
                     {i18n.__('pages.ServicesPage.reset')}
                   </Button>
                   <Button
