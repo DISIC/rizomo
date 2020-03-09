@@ -95,6 +95,13 @@ if (Meteor.isServer) {
   Accounts.onCreateUser((options, user) => {
     // pass the structure name in the options
     const newUser = { ...user };
+    if (user.services && user.services.keycloak) {
+      /* eslint no-console:off */
+      console.log('Creating new user after Keycloak authentication :');
+      console.log(`  Keycloak id: ${user.services.keycloak.id}`);
+      console.log(`  email: ${user.services.keycloak.email}`);
+      newUser.emails = [{ address: user.services.keycloak.email, verified: true }];
+    }
     if (options.firstName) newUser.firstName = options.firstName;
     if (options.lastName) newUser.lastName = options.lastName;
     if (options.structure) newUser.structure = options.structure;

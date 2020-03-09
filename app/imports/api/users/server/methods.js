@@ -566,6 +566,31 @@ export const setLanguage = new ValidatedMethod({
   },
 });
 
+// method to associate existing account with a Keycloak Id
+export const setKeycloakId = new ValidatedMethod({
+  name: 'users.setKeycloakId',
+  validate: new SimpleSchema({
+    email: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Email,
+    },
+    keycloakId: String,
+  }).validator(),
+
+  run({ email, keycloakId }) {
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    if (!authorized) {
+      throw new Meteor.Error('api.users.setKeycloakId.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+    const user = Accounts.findUserByEmail(email);
+    if (user) {
+      Meteor.users.update({ _id: user._id }, { $set: { services: { keycloak: { id: keycloakId } } } });
+      return user._id;
+    }
+    throw new Meteor.Error('api.users.setKeycloakId.unknownUser', i18n.__('api.users.unknownUser'));
+  },
+});
+
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
   [
@@ -584,6 +609,7 @@ const LISTS_METHODS = _.pluck(
     unfavService,
     findUsers,
     setLanguage,
+    setKeycloakId,
   ],
   'name',
 );

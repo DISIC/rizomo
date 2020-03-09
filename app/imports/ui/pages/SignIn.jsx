@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
@@ -47,6 +46,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+if (Meteor.settings.public.enableKeycloak === true) {
+  // notify login failure after redirect (useful if another account with same email already exists)
+  Accounts.onLoginFailure((details) => {
+    let errMsg;
+    if (details.error.reason === 'Email already exists.') {
+      errMsg = i18n.__('pages.SignIn.EmailAlreadyExists');
+    } else {
+      errMsg = `${i18n.__('pages.SignIn.keycloakError')} (${details.error.reason})`;
+    }
+    msg.error(errMsg);
+  });
+}
+
 function SignIn({ loggingIn }) {
   const classes = useStyles();
 
@@ -56,8 +68,6 @@ function SignIn({ loggingIn }) {
     touched: {},
     errors: {},
   });
-
-  const [openError, setOpenError] = useState(false);
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -91,7 +101,7 @@ function SignIn({ loggingIn }) {
       const { email, password } = formState.values;
       Meteor.loginWithPassword(email, password, (err) => {
         if (err) {
-          setOpenError(true);
+          msg.error(i18n.__('pages.SignIn.loginError'));
         }
       });
     }
@@ -101,16 +111,11 @@ function SignIn({ loggingIn }) {
     Meteor.loginWithKeycloak();
   };
 
-  const handleErrorClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenError(false);
-  };
-
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
   const useKeycloak = Meteor.settings.public.enableKeycloak;
-  return (
+  return useKeycloak && loggingIn ? (
+    <Spinner />
+  ) : (
     <Fade in>
       <>
         <Typography variant="h5" color="inherit" paragraph>
@@ -191,20 +196,6 @@ function SignIn({ loggingIn }) {
               </Grid>
             </>
           )}
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            open={openError}
-            autoHideDuration={4000}
-            onClose={handleErrorClose}
-            ContentProps={{
-              'aria-describedby': 'message-id',
-              className: classes.error,
-            }}
-            message={<span id="message-id">{i18n.__('pages.SignIn.loginError')}</span>}
-          />
         </form>
       </>
     </Fade>

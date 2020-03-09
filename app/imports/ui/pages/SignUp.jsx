@@ -18,7 +18,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { useHistory } from 'react-router-dom';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
-import { Snackbar } from '@material-ui/core';
 import CustomSelect from '../components/CustomSelect';
 import { structureOptions } from '../../api/users/structures';
 
@@ -99,7 +98,6 @@ export default function SignUp() {
   const [values, setValues] = React.useState({
     showPassword: false,
   });
-  const [openError, setOpenError] = useState(false);
 
   const structureLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -162,7 +160,7 @@ export default function SignUp() {
         },
         (error) => {
           if (error) {
-            setOpenError(true);
+            msg.error(i18n.__('pages.SignUp.createError'));
           } else {
             history.push('/');
           }
@@ -179,13 +177,6 @@ export default function SignUp() {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
-  };
-
-  const handleErrorClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenError(false);
   };
 
   return (
@@ -327,20 +318,6 @@ export default function SignUp() {
               {i18n.__('pages.SignUp.submitButtonLabel')}
             </Button>
           </Grid>
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            open={openError}
-            autoHideDuration={4000}
-            onClose={handleErrorClose}
-            ContentProps={{
-              'aria-describedby': 'message-id',
-              className: classes.error,
-            }}
-            message={<span id="message-id">{i18n.__('pages.SignUp.createError')}</span>}
-          />
         </form>
       </div>
     </Container>
