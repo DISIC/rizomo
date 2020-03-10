@@ -14,12 +14,12 @@ export const createGroup = new ValidatedMethod({
   validate: new SimpleSchema({
     name: { type: String, min: 1 },
     type: { type: SimpleSchema.Integer, min: 0 },
-    info: String,
-    note: String,
+    description: String,
+    content: String,
   }).validator(),
 
   run({
-    name, type, note, info,
+    name, type, content, description,
   }) {
     if (!isActive(this.userId)) {
       throw new Meteor.Error('api.groups.createGroup.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
@@ -27,8 +27,8 @@ export const createGroup = new ValidatedMethod({
     const groupId = Groups.insert({
       name,
       type,
-      note,
-      info,
+      content,
+      description,
       owner: this.userId,
       admins: [this.userId],
       active: true,
@@ -69,8 +69,8 @@ export const updateGroup = new ValidatedMethod({
     data: Object,
     'data.name': { type: String, min: 1, optional: true },
     'data.type': { type: SimpleSchema.Integer, min: 0, optional: true },
-    'data.info': { type: String, optional: true },
-    'data.note': { type: String, optional: true },
+    'data.description': { type: String, optional: true },
+    'data.content': { type: String, optional: true },
     'data.active': { type: Boolean, optional: true },
     'data.groupPadId': { type: String, optional: true },
     'data.digest': { type: String, optional: true },
@@ -93,7 +93,7 @@ export const updateGroup = new ValidatedMethod({
 });
 
 // groups.findGroups: Returns groups using pagination
-//   filter: string to search for in name or info (case insensitive search)
+//   filter: string to search for in name or description (case insensitive search)
 //   page: number of the page requested
 //   pageSize: number of entries per page
 //   sortColumn/sortOrder: sort entries on a specific field with given order (1/-1)
@@ -139,7 +139,7 @@ export const findGroups = new ValidatedMethod({
             name: { $regex: `.*${filter}.*`, $options: 'i' },
           },
           {
-            info: { $regex: `.*${filter}.*`, $options: 'i' },
+            description: { $regex: `.*${filter}.*`, $options: 'i' },
           },
         ],
       };

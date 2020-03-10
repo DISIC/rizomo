@@ -11,6 +11,6 @@ import './register-api';
 
 // Set up roles, initial accounts and services
 import './db-initialize/Accounts';
-import './db-initialize/Groups';
 import './db-initialize/Services';
 import './db-initialize/Categories';
+import './db-initialize/Groups';

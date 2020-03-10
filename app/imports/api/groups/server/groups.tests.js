@@ -59,7 +59,7 @@ describe('groups', function () {
     describe('groups.all', function () {
       it('sends all groups', function (done) {
         const collector = new PublicationCollector({ userId });
-        collector.collect('groups.all', (collections) => {
+        collector.collect('groups.all', {}, (collections) => {
           chai.assert.equal(collections.groups.length, 4);
           done();
         });
@@ -410,8 +410,8 @@ describe('groups', function () {
           {
             name: 'mongroupe',
             type: 0,
-            info: 'une info',
-            note: 'une note',
+            description: 'une description',
+            content: 'une note',
           },
         );
         const group = Groups.findOne({ name: 'mongroupe' });
@@ -428,8 +428,8 @@ describe('groups', function () {
               {
                 name: 'group4',
                 type: 0,
-                info: 'une info',
-                note: 'une note',
+                description: 'une description',
+                content: 'une note',
               },
             );
           },
@@ -445,8 +445,8 @@ describe('groups', function () {
               {
                 name: 'mongroupe',
                 type: 0,
-                info: 'une info',
-                note: 'une note',
+                description: 'une description',
+                content: 'une note',
               },
             );
           },
@@ -491,30 +491,30 @@ describe('groups', function () {
         // Throws if non owner/admin user, or logged out user, tries to delete the group
         assert.throws(
           () => {
-            updateGroup._execute({ userId }, { groupId: group3Id, data: { info: 'test' } });
+            updateGroup._execute({ userId }, { groupId: group3Id, data: { description: 'test' } });
           },
           Meteor.Error,
           /api.groups.updateGroup.notPermitted/,
         );
         assert.throws(
           () => {
-            updateGroup._execute({}, { groupId, data: { info: 'test' } });
+            updateGroup._execute({}, { groupId, data: { description: 'test' } });
           },
           Meteor.Error,
           /api.groups.updateGroup.notPermitted/,
         );
       });
       it('does update a group you own', function () {
-        updateGroup._execute({ userId }, { groupId, data: { info: 'test' } });
-        assert.equal(Groups.findOne(groupId).info, 'test');
+        updateGroup._execute({ userId }, { groupId, data: { description: 'test' } });
+        assert.equal(Groups.findOne(groupId).description, 'test');
       });
       it('does update a group you are admin of', function () {
-        updateGroup._execute({ userId }, { groupId: group2Id, data: { info: 'test' } });
-        assert.equal(Groups.findOne(group2Id).info, 'test');
+        updateGroup._execute({ userId }, { groupId: group2Id, data: { description: 'test' } });
+        assert.equal(Groups.findOne(group2Id).description, 'test');
       });
       it('does update any group when you are global admin', function () {
-        updateGroup._execute({ userId: adminId }, { groupId: group3Id, data: { info: 'test' } });
-        assert.equal(Groups.findOne(group3Id).info, 'test');
+        updateGroup._execute({ userId: adminId }, { groupId: group3Id, data: { description: 'test' } });
+        assert.equal(Groups.findOne(group3Id).description, 'test');
       });
       it('does fail to update group if name already taken', function () {
         assert.throws(

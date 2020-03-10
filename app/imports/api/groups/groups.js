@@ -31,6 +31,7 @@ Groups.schema = new SimpleSchema(
       index: true,
       unique: true,
       min: 1,
+      max: 60,
     },
     slug: {
       type: String,
@@ -49,8 +50,8 @@ Groups.schema = new SimpleSchema(
         return slug;
       },
     },
-    info: { type: String, optional: true },
-    note: { type: String, optional: true },
+    description: { type: String, optional: true },
+    content: { type: String, optional: true },
     active: Boolean,
     groupPadID: { type: String, optional: true },
     digest: { type: String, optional: true },
@@ -80,8 +81,8 @@ Groups.typeLabels = {
 Groups.publicFields = {
   name: 1,
   slug: 1,
-  info: 1,
-  note: 1,
+  description: 1,
+  content: 1,
   active: 1,
   groupPadID: 1,
   digest: 1,

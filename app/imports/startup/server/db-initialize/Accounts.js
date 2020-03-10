@@ -4,6 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { ServiceConfiguration } from 'meteor/service-configuration';
 
 // required: loads accounts customization before initial users creation
+import faker from 'faker';
 import AppRoles from '../../../api/users/users';
 import fakeData from './fakeData.json';
 
@@ -59,12 +60,25 @@ AppRoles.forEach((role) => {
 });
 
 /** When running app for first time, pass a settings file to set up a default user account. */
+const NUMBER_OF_FAKE_USERS = 300;
 if (Meteor.users.find().count() === 0) {
   if (Meteor.settings.private.fillWithFakeData) {
     console.log('Creating the default user(s)');
     fakeData.defaultAccounts.map(({
       email, password, role, structure, firstName, lastName,
     }) => createUser(email, password, role, structure, firstName, lastName));
+    if (Meteor.isDevelopment) {
+      const array = new Array(NUMBER_OF_FAKE_USERS);
+      array.fill(0);
+      array.map(() => createUser(
+        faker.internet.email(),
+        faker.internet.password(),
+        null,
+        faker.company.companyName(),
+        faker.name.firstName(),
+        faker.name.lastName(),
+      ));
+    }
   } else {
     console.log('No default users to create !  Please invoke meteor with a settings file.');
   }

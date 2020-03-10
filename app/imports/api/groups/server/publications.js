@@ -8,12 +8,55 @@ import { isActive } from '../../utils';
 import Groups from '../groups';
 import AppRoles from '../../users/users';
 
+Meteor.methods({
+  'get_groups.all_count': ({ search }) => {
+    const regex = new RegExp(search, 'i');
+
+    return Groups.find(
+      {
+        type: { $ne: 10 },
+        $or: [
+          {
+            name: { $regex: regex },
+          },
+          {
+            description: { $regex: regex },
+          },
+        ],
+      },
+      { fields: Groups.publicFields, sort: { name: 1 } },
+    ).count();
+  },
+});
+
+const ITEM_PER_PAGE = 9;
+
 // publish all existing groups
-Meteor.publish('groups.all', function groupsAll() {
+Meteor.publish('groups.all', function groupsAll({ page, search, ...rest }) {
   if (!isActive(this.userId)) {
     return this.ready();
   }
-  return Groups.find({}, { fields: Groups.publicFields, sort: { name: 1 } });
+  const regex = new RegExp(search, 'i');
+
+  return Groups.find(
+    {
+      type: { $ne: 10 },
+      $or: [
+        {
+          name: { $regex: regex },
+        },
+        {
+          description: { $regex: regex },
+        },
+      ],
+    },
+    {
+      fields: Groups.publicFields,
+      sort: { name: 1 },
+      limit: ITEM_PER_PAGE * page,
+      ...rest,
+    },
+  );
 });
 
 // publish groups that user is member of

@@ -38,7 +38,7 @@ const useStyles = (isMobile) => makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginTop: 50,
-    marginBottom: 50,
+    marginBottom: isMobile ? 100 : 50,
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -70,6 +70,7 @@ function MainLayout() {
                 <Route exact path="/services" component={ServicesPage} />
                 <Route exact path="/services/:slug" component={SingleServicePage} />
                 <Route exact path="/groups" component={GroupsPage} />
+                <Route exact path="/groups/:slug" component={GroupsPage} />
                 <AdminRoute
                   exact
                   path="/admingroups"
