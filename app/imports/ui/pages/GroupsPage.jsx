@@ -1,10 +1,15 @@
 import React, { useContext, useRef, useEffect } from 'react';
-import { Meteor } from 'meteor/meteor';
-import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Fade, Container, Grid, Typography, IconButton, Collapse, TextField, InputAdornment,
+  Fade,
+  Container,
+  Grid,
+  Typography,
+  IconButton,
+  Collapse,
+  TextField,
+  InputAdornment,
+  Button,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ViewListIcon from '@material-ui/icons/ViewList';
@@ -19,6 +24,8 @@ import Spinner from '../components/Spinner';
 import Groups from '../../api/groups/groups';
 import GroupDetails from '../components/GroupDetails';
 import { Context } from '../contexts/context';
+import { usePagination, useOnScreen } from '../utils/hooks';
+import GroupDetailsList from '../components/GroupDetailsList';
 
 const useStyles = makeStyles(() => ({
   small: {
@@ -30,6 +37,12 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  mobileButtonContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: '0 !important',
+  },
   spaceBetween: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -40,15 +53,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function GroupsPage({ groups, loading }) {
+function GroupsPage() {
   const [{ isMobile, groupPage }, dispatch] = useContext(Context);
   const classes = useStyles();
-
+  const ref = useRef();
+  const onScreen = useOnScreen(ref, '0px');
   const {
     search = '',
     searchToggle = false,
     viewMode = 'card', // Possible values : "card" or "list"
   } = groupPage;
+  const {
+    nextPage, loading, items, total,
+  } = usePagination('groups.all', { search }, Groups, {}, {});
 
   const inputRef = useRef(null);
 
@@ -58,6 +75,12 @@ function GroupsPage({ groups, loading }) {
       inputRef.current.focus();
     }
   }, [searchToggle]);
+
+  useEffect(() => {
+    if (onScreen && !loading && total !== items.length) {
+      nextPage();
+    }
+  }, [onScreen]);
 
   const updateGlobalState = (key, value) => dispatch({
     type: 'groupPage',
@@ -73,12 +96,12 @@ function GroupsPage({ groups, loading }) {
   const changeViewMode = (_, value) => updateGlobalState('viewMode', value);
 
   const filterGroups = (group) => {
-    let searchText = group.name + group.info + group.digest;
+    let searchText = group.name + group.description + group.digest;
     searchText = searchText.toLowerCase();
     if (!search) return true;
     return searchText.indexOf(search.toLowerCase()) > -1;
   };
-  const mapList = (func) => groups.filter((group) => filterGroups(group)).map(func);
+  const mapList = (func) => items.filter((group) => filterGroups(group)).map(func);
 
   const toggleButtons = (
     <ToggleButtonGroup value={viewMode} exclusive aria-label={i18n.__('pages.GroupsPage.viewMode')}>
@@ -138,52 +161,56 @@ function GroupsPage({ groups, loading }) {
   );
 
   return (
-    <>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <Fade in>
-          <Container>
-            <Grid container spacing={4}>
-              <Grid item xs={12} className={isMobile ? null : classes.flex}>
-                <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
-                  {i18n.__('pages.GroupsPage.title')}
-                  <IconButton onClick={toggleSearch}>
-                    <SearchIcon fontSize="large" />
-                  </IconButton>
-                </Typography>
-                <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>
+    <Fade in>
+      <Container>
+        <Grid container spacing={4}>
+          <Grid item xs={12} className={isMobile ? null : classes.flex}>
+            <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
+              {i18n.__('pages.GroupsPage.title')}
+              {' '}
+              (
+              {total}
+              )
+              <IconButton onClick={toggleSearch}>
+                <SearchIcon fontSize="large" />
+              </IconButton>
+            </Typography>
+            <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>
+          </Grid>
+        </Grid>
+        <Grid container spacing={4}>
+          {searchField}
+          {isMobile && (
+            <Grid item xs={12} sm={12} className={classes.mobileButtonContainer}>
+              <div />
+              {toggleButtons}
+            </Grid>
+          )}
+        </Grid>
+        <Grid container spacing={isMobile ? 2 : 4}>
+          {isMobile && viewMode === 'list'
+            ? mapList((group) => (
+              <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
+                <GroupDetailsList key={group.name} group={group} />
               </Grid>
-            </Grid>
-            <Grid container spacing={4}>
-              {searchField}
-            </Grid>
-            <Grid container spacing={isMobile ? 2 : 4}>
-              {mapList((group) => (
-                <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
-                  <GroupDetails key={group.name} group={group} />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Fade>
-      )}
-    </>
+            ))
+            : mapList((group) => (
+              <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
+                <GroupDetails key={group.name} group={group} isShort={!isMobile && viewMode === 'list'} />
+              </Grid>
+            ))}
+          <Grid ref={ref} item xs={12} sm={12} md={12} lg={12}>
+            {loading && <Spinner />}
+            {total === items.length && !loading && (
+              <Button variant="contained" fullWidth>
+                {i18n.__('pages.GroupsPage.endOfList')}
+              </Button>
+            )}
+          </Grid>
+        </Grid>
+      </Container>
+    </Fade>
   );
 }
 
-GroupsPage.propTypes = {
-  groups: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loading: PropTypes.bool.isRequired,
-};
-
-export default withTracker(() => {
-  const groupsHandle = Meteor.subscribe('groups.memberof');
-  const groupsAll = Meteor.subscribe('groups.all');
-  const loading = !groupsHandle.ready() || !groupsAll.ready();
-  const groups = Groups.find({}, { sort: { name: 1 } }).fetch();
-  return {
-    groups,
-    loading,
-  };
-})(GroupsPage);
+export default GroupsPage;

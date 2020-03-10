@@ -15,7 +15,7 @@ function AdminGroupsPage({ groups, loading }) {
   const history = useHistory();
   const columns = [
     { title: i18n.__('pages.AdminGroupsPage.columnName'), field: 'name', defaultSort: 'asc' },
-    { title: i18n.__('pages.AdminGroupsPage.columnInfo'), field: 'info' },
+    { title: i18n.__('pages.AdminGroupsPage.columnInfo'), field: 'description' },
     {
       title: i18n.__('pages.AdminGroupsPage.columnType'),
       field: 'type',

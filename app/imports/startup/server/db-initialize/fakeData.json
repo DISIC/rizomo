@@ -157,22 +157,22 @@
       "owner": "admin@ac-dijon.fr",
       "name": "Tous",
       "type": 0,
-      "info": "Groupe commun",
-      "note": ""
+      "description": "Groupe commun",
+      "content": ""
     },
     {
       "owner": "admin@ac-dijon.fr",
       "name": "Dev",
       "type": 5,
-      "info": "Développeurs",
-      "note": ""
+      "description": "Développeurs",
+      "content": ""
     },
     {
       "owner": "admin@ac-dijon.fr",
       "name": "SNP",
       "type": 5,
-      "info": "Apps Education",
-      "note": ""
+      "description": "Apps Education",
+      "content": ""
     }
   ],
   "defaultCategories": [

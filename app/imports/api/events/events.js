@@ -24,7 +24,7 @@ Events.schema = new SimpleSchema(
     startsAt: Date,
     endsAt: Date,
     allDay: Boolean,
-    info: String,
+    description: String,
     lieu: String,
     groupe: {
       type: String,

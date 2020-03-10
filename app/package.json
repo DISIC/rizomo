@@ -7,7 +7,7 @@
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "lint": "eslint . --ext js,jsx",
     "lintfix": "eslint --fix . --ext js,jsx",
-    "visualize": "meteor --production --extra-packages bundle-visualizer"
+    "visualize": "meteor --production --extra-packages bundle-visualizer --settings ../config/settings.development.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",

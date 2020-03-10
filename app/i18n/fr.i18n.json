@@ -98,6 +98,22 @@
       "loading": "Chargement...",
       "open": "Ouvrir",
       "close": "Fermer"
+    },
+    "GroupDetails": {
+      "favButtonLabelNoFav": "Supprimer de votre espace personnel",
+      "favButtonLabelFav": "Ajouter à votre espace personnel",
+      "singleGroupButtonLabel": "Détails du groupe",
+      "joinPublicGroupButtonLabel": "Rejoindre le groupe",
+      "askToJoinModerateGroupButtonLabel": "Demander à rejoindre",
+      "groupMember": "Membre",
+      "waitingForValidation": "En validation",
+      "leaveGroup": "Quitter le groupe",
+      "publicGroup": "Groupe public",
+      "moderateGroup": "Groupe restreint",
+      "groupLeft": "Vous avez quitté le groupe",
+      "groupJoined": "Vous êtes membre du groupe",
+      "candidateSent": "L'administrateur du groupe va être notifié de votre demande",
+      "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe"
     }
   },
   "validatejs": {
@@ -161,7 +177,8 @@
       "searchText": "Quel groupe cherchez-vous ?",
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
-      "viewList": "Mode liste"
+      "viewList": "Mode liste",
+      "endOfList": "Fin de la liste"
     },
     "AdminServicesPage": {
       "title": "Gestion des Services",
@@ -259,8 +276,8 @@
       "name": "Nom",
       "slug": "Slug",
       "type": "Type",
-      "info": "Courte description",
-      "note": "Longue description du groupe",
+      "description": "Courte description",
+      "content": "Longue description du groupe",
       "save": "Sauvegarder",
       "update": "Mettre à jour",
       "cancel": "Annuler"

@@ -71,8 +71,8 @@ TabPanel.propTypes = {
 const defaultState = {
   name: '',
   slug: '',
-  info: '',
-  note: '',
+  description: '',
+  content: '',
   type: Number(Object.keys(Groups.typeLabels)[0]),
 };
 
@@ -80,7 +80,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const [groupData, setGroupData] = useState(defaultState);
   const [loading, setLoading] = useState(!!params._id);
   const [tabId, setTabId] = React.useState(0);
-  const [note, setNote] = useState('');
+  const [content, setContent] = useState('');
   const history = useHistory();
   const classes = useStyles();
 
@@ -88,7 +88,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
     if (params._id && group._id && loading) {
       setLoading(false);
       setGroupData(group);
-      setNote(group.note || '');
+      setContent(group.content || '');
     }
   }, [group]);
 
@@ -116,7 +116,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   };
 
   const onUpdateRichText = (html) => {
-    setNote(html);
+    setContent(html);
   };
 
   const submitUpdateGroup = () => {
@@ -130,13 +130,13 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
         groupId: params._id,
         data: {
           ...rest,
-          note,
+          content,
         },
       };
     } else {
       args = {
         ...rest,
-        note,
+        content,
       };
     }
 
@@ -198,17 +198,17 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
             </FormControl>
             <TextField
               onChange={onUpdateField}
-              value={groupData.info}
-              name="info"
-              label={i18n.__('pages.AdminSingleGroupPage.info')}
+              value={groupData.description}
+              name="description"
+              label={i18n.__('pages.AdminSingleGroupPage.description')}
               variant="outlined"
               fullWidth
               multiline
               margin="normal"
             />
             <div className={classes.wysiwyg}>
-              <InputLabel htmlFor="note">{i18n.__('pages.AdminSingleGroupPage.note')}</InputLabel>
-              <ReactQuill id="note" value={note} onChange={onUpdateRichText} />
+              <InputLabel htmlFor="content">{i18n.__('pages.AdminSingleGroupPage.content')}</InputLabel>
+              <ReactQuill id="content" value={content} onChange={onUpdateRichText} />
             </div>
             {params._id ? (
               // user management is not possible when creating a new group
