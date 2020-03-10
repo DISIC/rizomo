@@ -106,6 +106,7 @@
       "joinPublicGroupButtonLabel": "Join the public group",
       "askToJoinModerateGroupButtonLabel": "Request to join the group",
       "groupMember": "Member",
+      "groupCandidate": "Membership awaiting",
       "waitingForValidation": "On validation",
       "leaveGroup": "Leave group",
       "publicGroup": "Public group",

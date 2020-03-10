@@ -24,7 +24,7 @@ import i18n from 'meteor/universe:i18n';
 import { Context } from '../contexts/context';
 import Spinner from './Spinner';
 
-const useStyles = ({ type }, member, isShort) => makeStyles((theme) => ({
+const useStyles = ({ type }, member, candidate, isShort) => makeStyles((theme) => ({
   avatar: {
     backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
     width: theme.spacing(7),
@@ -82,12 +82,13 @@ const useStyles = ({ type }, member, isShort) => makeStyles((theme) => ({
   },
   buttonText: {
     textTransform: 'none',
-    backgroundColor: member ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-    color: member ? 'green' : theme.palette.tertiary.main,
+    backgroundColor:
+        member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
+    color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
     fontWeight: 'bold',
     '&:hover': {
-      color: member ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-      backgroundColor: member ? null : theme.palette.tertiary.main,
+      color: member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
+      backgroundColor: member || candidate ? null : theme.palette.tertiary.main,
     },
   },
   paperChip: {
@@ -121,7 +122,7 @@ function GroupDetails({ group, isShort }) {
   const member = !![...members, ...animators, ...admins].find((id) => id === userId);
   const candidate = !!candidates.find((id) => id === userId);
 
-  const classes = useStyles(group, member, isShort)();
+  const classes = useStyles(group, member, candidate, isShort)();
 
   const handleJoinGroup = () => {
     const method = member ? 'unsetMemberOf' : type === 0 ? 'setMemberOf' : 'setCandidateOf';
@@ -169,13 +170,17 @@ function GroupDetails({ group, isShort }) {
 
   const groupType = member
     ? i18n.__('components.GroupDetails.groupMember')
-    : type === 0
-      ? i18n.__('components.GroupDetails.publicGroup')
-      : i18n.__('components.GroupDetails.moderateGroup');
+    : candidate
+      ? i18n.__('components.GroupDetails.groupCandidate')
+      : type === 0
+        ? i18n.__('components.GroupDetails.publicGroup')
+        : i18n.__('components.GroupDetails.moderateGroup');
   const iconHeader = member && type === 0 ? (
     <CheckIcon />
   ) : member && type === 5 ? (
     <VerifiedUserIcon />
+  ) : candidate && type === 5 ? (
+    <WatchLaterIcon />
   ) : type === 0 ? (
     <PeopleIcon />
   ) : (
@@ -224,9 +229,9 @@ function GroupDetails({ group, isShort }) {
             startIcon={icon()}
             className={classes.buttonText}
             size="large"
-            variant={member ? 'text' : 'contained'}
-            disableElevation={member}
-            onClick={member ? null : handleJoinGroup}
+            variant={member || candidate ? 'text' : 'contained'}
+            disableElevation={member || candidate}
+            onClick={member || candidate ? null : handleJoinGroup}
           >
             {text()}
           </Button>

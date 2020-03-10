@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
+import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import PeopleIcon from '@material-ui/icons/People';
 import { Context } from '../contexts/context';
 
@@ -44,20 +45,24 @@ const useStyles = makeStyles((theme) => ({
 
 const GroupDetailsList = ({ group }) => {
   const {
-    members, animators, admins, type,
+    candidates, members, animators, admins, type,
   } = group;
   const [{ userId }] = useContext(Context);
   const member = !![...members, ...animators, ...admins].find((id) => id === userId);
-  // const candidate = !!candidates.find((id) => id === userId);
+  const candidate = !!candidates.find((id) => id === userId);
   const classes = useStyles();
 
   const groupType = member
     ? i18n.__('components.GroupDetails.groupMember')
-    : type === 0
-      ? i18n.__('components.GroupDetails.publicGroup')
-      : i18n.__('components.GroupDetails.moderateGroup');
+    : candidate
+      ? i18n.__('components.GroupDetails.groupCandidate')
+      : type === 0
+        ? i18n.__('components.GroupDetails.publicGroup')
+        : i18n.__('components.GroupDetails.moderateGroup');
 
-  const iconHeader = member && type === 0 ? (
+  const iconHeader = candidate && type === 5 ? (
+    <WatchLaterIcon fontSize="large" />
+  ) : member && type === 0 ? (
     <CheckIcon fontSize="large" />
   ) : member && type === 5 ? (
     <VerifiedUserIcon fontSize="large" />
