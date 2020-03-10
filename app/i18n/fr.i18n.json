@@ -122,6 +122,8 @@
       "forgotPwd": "Mot de passe oublié ?",
       "createAccount": "Créer un compte",
       "loginError": "Erreur: Mauvais compte ou mot de passe",
+      "keycloakError": "Erreur de connexion",
+      "EmailAlreadyExists": "Erreur: Un compte existant utilise le même email",
       "loginKeycloak": "Se connecter avec OpenID"
     },
     "SignUp": {

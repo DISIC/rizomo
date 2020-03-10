@@ -12,7 +12,6 @@ import { Context } from '../contexts/context';
 import Spinner from '../components/Spinner';
 import SingleServicePage from '../pages/SingleServicePage';
 import PersonalSpace from '../pages/PersonalSpace';
-import MsgHandler from '../components/MsgHandler';
 import AdminRoute from '../components/AdminRoute';
 import MobileMenu from '../components/MobileMenu';
 import NotValidatedMessage from '../components/NotValidatedMessage';
@@ -130,7 +129,6 @@ function MainLayout() {
             ) : (
               <NotValidatedMessage />
             )}
-            <MsgHandler />
           </Suspense>
           {isMobile && <MobileMenu />}
         </main>

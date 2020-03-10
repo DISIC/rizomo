@@ -8,6 +8,7 @@ import PublicRoute from '../components/PublicRoute';
 import Spinner from '../components/Spinner';
 import DynamicStore, { Context } from '../contexts/context';
 import lightTheme from '../themes/light';
+import MsgHandler from '../components/MsgHandler';
 
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));
@@ -36,5 +37,6 @@ export default () => (
         <App />
       </DynamicStore>
     </BrowserRouter>
+    <MsgHandler />
   </MuiThemeProvider>
 );
