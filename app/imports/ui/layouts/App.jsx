@@ -3,12 +3,12 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import SignLayout from './SignLayout';
-import ProtectedRoute from '../components/ProtectedRoute';
-import PublicRoute from '../components/PublicRoute';
-import Spinner from '../components/Spinner';
+import ProtectedRoute from '../components/system/ProtectedRoute';
+import PublicRoute from '../components/system/PublicRoute';
+import Spinner from '../components/system/Spinner';
+import MsgHandler from '../components/system/MsgHandler';
 import DynamicStore, { Context } from '../contexts/context';
 import lightTheme from '../themes/light';
-import MsgHandler from '../components/MsgHandler';
 
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));

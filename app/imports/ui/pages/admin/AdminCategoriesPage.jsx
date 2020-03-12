@@ -5,10 +5,10 @@ import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import { Container, Fade } from '@material-ui/core';
-import Spinner from '../components/Spinner';
-import { createCategorie, updateCategorie, removeCategorie } from '../../api/categories/methods';
-import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
-import Categories from '../../api/categories/categories';
+import Spinner from '../../components/system/Spinner';
+import { createCategorie, updateCategorie, removeCategorie } from '../../../api/categories/methods';
+import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
+import Categories from '../../../api/categories/categories';
 
 const handleResult = (resolve, reject) => (error, result) => {
   if (error) {

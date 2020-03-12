@@ -4,7 +4,7 @@ import {
   makeStyles, Menu, Button, MenuItem, IconButton,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { Context } from '../contexts/context';
+import { Context } from '../../contexts/context';
 
 const LanguageSwitcher = ({ topbar }) => {
   const allLanguages = i18n.getLanguages();

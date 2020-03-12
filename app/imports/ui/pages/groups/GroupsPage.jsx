@@ -20,12 +20,12 @@ import ClearIcon from '@material-ui/icons/Clear';
 import i18n from 'meteor/universe:i18n';
 
 // components
-import Spinner from '../components/Spinner';
-import Groups from '../../api/groups/groups';
-import GroupDetails from '../components/GroupDetails';
-import { Context } from '../contexts/context';
-import { usePagination, useOnScreen } from '../utils/hooks';
-import GroupDetailsList from '../components/GroupDetailsList';
+import Spinner from '../../components/system/Spinner';
+import Groups from '../../../api/groups/groups';
+import GroupDetails from '../../components/groups/GroupDetails';
+import { Context } from '../../contexts/context';
+import { usePagination, useOnScreen } from '../../utils/hooks';
+import GroupDetailsList from '../../components/groups/GroupDetailsList';
 
 const useStyles = makeStyles(() => ({
   small: {

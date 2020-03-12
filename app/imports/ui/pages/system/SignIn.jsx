@@ -11,7 +11,7 @@ import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Fade } from '@material-ui/core';
-import Spinner from '../components/Spinner';
+import Spinner from '../../components/system/Spinner';
 
 validate.options = {
   fullMessages: false,

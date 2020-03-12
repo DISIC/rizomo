@@ -6,9 +6,9 @@ import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { Container, Fade } from '@material-ui/core';
-import Spinner from '../components/Spinner';
-import '../../api/users/users';
-import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
+import Spinner from '../../components/system/Spinner';
+import '../../../api/users/users';
+import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
 
 function AdminUserValidationPage({ usersrequest, loading }) {
   const columns = [

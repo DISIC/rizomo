@@ -10,10 +10,10 @@ import {
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import Services from '../../api/services/services';
-import Spinner from '../components/Spinner';
-import { Context } from '../contexts/context';
-import Categories from '../../api/categories/categories';
+import Services from '../../../api/services/services';
+import Spinner from '../../components/system/Spinner';
+import { Context } from '../../contexts/context';
+import Categories from '../../../api/categories/categories';
 
 const useStyles = makeStyles((theme) => ({
   root: {

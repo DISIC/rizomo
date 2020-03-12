@@ -23,10 +23,10 @@ import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 import { useHistory } from 'react-router-dom';
 
-import Spinner from '../components/Spinner';
-import { createGroup, updateGroup } from '../../api/groups/methods';
-import Groups from '../../api/groups/groups';
-import GroupsUsersList from '../components/GroupUsersList';
+import Spinner from '../../components/system/Spinner';
+import { createGroup, updateGroup } from '../../../api/groups/methods';
+import Groups from '../../../api/groups/groups';
+import GroupsUsersList from '../../components/admin/GroupUsersList';
 
 const useStyles = makeStyles((theme) => ({
   root: {

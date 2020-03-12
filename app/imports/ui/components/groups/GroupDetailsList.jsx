@@ -12,7 +12,7 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import PeopleIcon from '@material-ui/icons/People';
-import { Context } from '../contexts/context';
+import { Context } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   action: {

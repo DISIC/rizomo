@@ -21,8 +21,8 @@ import {
 } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 
-import { Context } from '../contexts/context';
-import Spinner from './Spinner';
+import { Context } from '../../contexts/context';
+import Spinner from '../system/Spinner';
 
 const useStyles = ({ type }, member, candidate, isShort) => makeStyles((theme) => ({
   avatar: {

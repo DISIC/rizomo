@@ -7,7 +7,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import i18n from 'meteor/universe:i18n';
 import { InputAdornment } from '@material-ui/core';
-import debounce from '../utils/debounce';
+import debounce from '../../utils/debounce';
 
 function UserFinder({ onSelected, hidden, exclude }) {
   const [open, setOpen] = useState(false);

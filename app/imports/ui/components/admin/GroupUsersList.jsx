@@ -8,9 +8,9 @@ import i18n from 'meteor/universe:i18n';
 import {
   Button, makeStyles, Collapse, IconButton,
 } from '@material-ui/core';
-import setMaterialTableLocalization from './initMaterialTableLocalization';
+import setMaterialTableLocalization from '../initMaterialTableLocalization';
 import UserFinder from './UserFinder';
-import Groups from '../../api/groups/groups';
+import Groups from '../../../api/groups/groups';
 
 const useStyles = makeStyles(() => ({
   adduser: {
