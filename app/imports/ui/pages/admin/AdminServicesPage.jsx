@@ -6,10 +6,10 @@ import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
 import { Container, Fade } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import Spinner from '../components/Spinner';
-import Services from '../../api/services/services';
-import { removeService } from '../../api/services/methods';
-import setMaterialTableLocalization from '../components/initMaterialTableLocalization';
+import Spinner from '../../components/system/Spinner';
+import Services from '../../../api/services/services';
+import { removeService } from '../../../api/services/methods';
+import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
 
 function AdminServicesPage({ services, loading }) {
   const history = useHistory();

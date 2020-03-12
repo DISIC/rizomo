@@ -18,8 +18,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { useHistory } from 'react-router-dom';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
-import CustomSelect from '../components/CustomSelect';
-import { structureOptions } from '../../api/users/structures';
+import CustomSelect from '../../components/admin/CustomSelect';
+import { structureOptions } from '../../../api/users/structures';
 
 validate.options = {
   fullMessages: false,

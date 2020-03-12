@@ -8,10 +8,10 @@ import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 
 import { Typography, Fade } from '@material-ui/core';
-import ServiceDetails from '../components/ServiceDetails';
-import Services from '../../api/services/services';
-import Spinner from '../components/Spinner';
+import ServiceDetails from '../components/services/ServiceDetails';
+import Spinner from '../components/system/Spinner';
 import { Context } from '../contexts/context';
+import Services from '../../api/services/services';
 import Categories from '../../api/categories/categories';
 
 const useStyles = makeStyles((theme) => ({

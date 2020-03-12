@@ -35,12 +35,12 @@ import {
   Divider,
   ListItemSecondaryAction,
 } from '@material-ui/core';
-import ServiceDetails from '../components/ServiceDetails';
-import Services from '../../api/services/services';
-import Categories from '../../api/categories/categories';
-import Spinner from '../components/Spinner';
-import { Context } from '../contexts/context';
-import ServiceDetailsList from '../components/ServiceDetailsList';
+import ServiceDetails from '../../components/services/ServiceDetails';
+import Services from '../../../api/services/services';
+import Categories from '../../../api/categories/categories';
+import Spinner from '../../components/system/Spinner';
+import { Context } from '../../contexts/context';
+import ServiceDetailsList from '../../components/services/ServiceDetailsList';
 
 const useStyles = (isMobile) => makeStyles((theme) => ({
   flex: {

@@ -4,25 +4,28 @@ import { Route, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import TopBar from '../components/TopBar';
-import ServicesPage from '../pages/ServicesPage';
-import GroupsPage from '../pages/GroupsPage';
-import NotFound from '../pages/NotFound';
+// components
+import TopBar from '../components/menus/TopBar';
+import Spinner from '../components/system/Spinner';
+import AdminRoute from '../components/system/AdminRoute';
+import MobileMenu from '../components/menus/MobileMenu';
+import NotValidatedMessage from '../components/system/NotValidatedMessage';
 import { Context } from '../contexts/context';
-import Spinner from '../components/Spinner';
-import SingleServicePage from '../pages/SingleServicePage';
+
+// pages
+import ServicesPage from '../pages/services/ServicesPage';
+import SingleServicePage from '../pages/services/SingleServicePage';
+import GroupsPage from '../pages/groups/GroupsPage';
+import NotFound from '../pages/system/NotFound';
 import PersonalSpace from '../pages/PersonalSpace';
-import AdminRoute from '../components/AdminRoute';
-import MobileMenu from '../components/MobileMenu';
-import NotValidatedMessage from '../components/NotValidatedMessage';
 
 // dynamic imports
-const AdminSingleServicePage = lazy(() => import('../pages/AdminSingleServicePage'));
-const AdminCategoriesPage = lazy(() => import('../pages/AdminCategoriesPage'));
-const AdminServicesPage = lazy(() => import('../pages/AdminServicesPage'));
-const AdminUserValidationPage = lazy(() => import('../pages/AdminUserValidationPage'));
-const AdminGroupsPage = lazy(() => import('../pages/AdminGroupsPage'));
-const AdminSingleGroupPage = lazy(() => import('../pages/AdminSingleGroupPage'));
+const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
+const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPage'));
+const AdminServicesPage = lazy(() => import('../pages/admin/AdminServicesPage'));
+const AdminUserValidationPage = lazy(() => import('../pages/admin/AdminUserValidationPage'));
+const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
+const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupPage'));
 
 // CSS
 const useStyles = (isMobile) => makeStyles((theme) => ({

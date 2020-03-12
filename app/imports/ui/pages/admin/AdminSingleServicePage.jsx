@@ -21,12 +21,12 @@ import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 import { useHistory } from 'react-router-dom';
 
-import Categories from '../../api/categories/categories';
-import Spinner from '../components/Spinner';
-import { createService, updateService } from '../../api/services/methods';
-import Services from '../../api/services/services';
-import slugy from '../utils/slugy';
-import { toBase64 } from '../utils/filesProcess';
+import Categories from '../../../api/categories/categories';
+import Spinner from '../../components/system/Spinner';
+import { createService, updateService } from '../../../api/services/methods';
+import Services from '../../../api/services/services';
+import slugy from '../../utils/slugy';
+import { toBase64 } from '../../utils/filesProcess';
 
 const useStyles = makeStyles((theme) => ({
   root: {

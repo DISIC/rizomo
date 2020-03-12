@@ -4,9 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { Route, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import SignUp from '../pages/SignUp';
-import SignIn from '../pages/SignIn';
-import LanguageSwitcher from '../components/LanguageSwitcher';
+import LanguageSwitcher from '../components/system/LanguageSwitcher';
+import SignUp from '../pages/system/SignUp';
+import SignIn from '../pages/system/SignIn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
