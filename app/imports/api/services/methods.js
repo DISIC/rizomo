@@ -6,7 +6,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 
-import { isActive } from '../utils';
+import { isActive, getLabel } from '../utils';
 import Services from './services';
 
 export const createService = new ValidatedMethod({
@@ -25,7 +25,7 @@ export const createService = new ValidatedMethod({
 export const removeService = new ValidatedMethod({
   name: 'services.removeService',
   validate: new SimpleSchema({
-    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.services.labels.id') },
   }).validator(),
 
   run({ serviceId }) {
@@ -51,7 +51,7 @@ export const removeService = new ValidatedMethod({
 export const updateService = new ValidatedMethod({
   name: 'services.updateService',
   validate: new SimpleSchema({
-    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.services.labels.id') },
     data: Services.schema.omit('slug'),
   }).validator(),
 

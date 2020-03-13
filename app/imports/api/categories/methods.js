@@ -6,13 +6,13 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 
-import { isActive } from '../utils';
+import { isActive, getLabel } from '../utils';
 import Categories from './categories';
 
 export const createCategorie = new ValidatedMethod({
   name: 'categories.createCategorie',
   validate: new SimpleSchema({
-    name: { type: String, min: 1 },
+    name: { type: String, min: 1, label: getLabel('api.categories.labels.name') },
   }).validator(),
 
   run({ name }) {
@@ -29,7 +29,7 @@ export const createCategorie = new ValidatedMethod({
 export const removeCategorie = new ValidatedMethod({
   name: 'categories.removeCategorie',
   validate: new SimpleSchema({
-    categoryId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    categoryId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.categories.labels.id') },
   }).validator(),
 
   run({ categoryId }) {
@@ -53,9 +53,9 @@ export const removeCategorie = new ValidatedMethod({
 export const updateCategorie = new ValidatedMethod({
   name: 'categories.updateCategorie',
   validate: new SimpleSchema({
-    categoryId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    categoryId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.categories.labels.id') },
     data: Object,
-    'data.name': { type: String, min: 1 },
+    'data.name': { type: String, min: 1, label: getLabel('api.categories.labels.name') },
   }).validator(),
 
   run({ categoryId, data }) {

@@ -3,8 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
-
-import { checkDomain } from '../utils';
+import { getLabel, checkDomain } from '../utils';
 
 const AppRoles = ['candidate', 'member', 'animator', 'admin'];
 
@@ -13,18 +12,22 @@ Meteor.users.schema = new SimpleSchema(
     username: {
       type: String,
       optional: true,
+      label: getLabel('api.users.labels.username'),
     },
     firstName: {
       type: String,
       optional: true,
+      label: getLabel('api.users.labels.firstName'),
     },
     lastName: {
       type: String,
       optional: true,
+      label: getLabel('api.users.labels.lastName'),
     },
     emails: {
       type: Array,
       optional: true,
+      label: getLabel('api.users.labels.emails'),
     },
     'emails.$': {
       type: Object,
@@ -32,9 +35,11 @@ Meteor.users.schema = new SimpleSchema(
     'emails.$.address': {
       type: String,
       regEx: SimpleSchema.RegEx.Email,
+      label: getLabel('api.users.labels.emailAddress'),
     },
     'emails.$.verified': {
       type: Boolean,
+      label: getLabel('api.users.labels.emailVerified'),
     },
     // Use this registered_emails field if you are using splendido:meteor-accounts-emails-field
     // splendido:meteor-accounts-meld
@@ -48,28 +53,33 @@ Meteor.users.schema = new SimpleSchema(
     // },
     createdAt: {
       type: Date,
+      label: getLabel('api.users.labels.createdAt'),
     },
     profile: {
       type: Object,
       optional: true,
       blackbox: true,
+      label: getLabel('api.users.labels.profile'),
     },
     // Make sure this services field is in your schema if you're using any of the accounts packages
     services: {
       type: Object,
       optional: true,
       blackbox: true,
+      label: getLabel('api.users.labels.services'),
     },
     // In order to avoid an 'Exception in setInterval callback' from Meteor
     heartbeat: {
       type: Date,
       optional: true,
+      label: getLabel('api.users.labels.heartbeat'),
     },
-    isActive: { type: Boolean, defaultValue: false },
-    isRequest: { type: Boolean, defaultValue: true },
+    isActive: { type: Boolean, defaultValue: false, label: getLabel('api.users.labels.isActive') },
+    isRequest: { type: Boolean, defaultValue: true, label: getLabel('api.users.labels.isRequest') },
     favServices: {
       type: Array,
       defaultValue: [],
+      label: getLabel('api.users.labels.favServices'),
     },
     'favServices.$': {
       type: { type: String, regEx: SimpleSchema.RegEx.Id },
@@ -77,15 +87,18 @@ Meteor.users.schema = new SimpleSchema(
     structure: {
       type: String,
       optional: true,
+      label: getLabel('api.users.labels.structure'),
     },
     primaryEmail: {
       type: String,
       regEx: SimpleSchema.RegEx.Email,
       optional: true,
+      label: getLabel('api.users.labels.primaryEmail'),
     },
     language: {
       type: String,
       optional: true,
+      label: getLabel('api.users.labels.language'),
     },
   },
   { tracker: Tracker },

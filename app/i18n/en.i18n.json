@@ -1,11 +1,36 @@
 {
   "api": {
+    "categories": {
+      "labels": {
+        "id": "Category Id",
+        "name": "Name"
+      }
+    },
     "users": {
       "unknownUser": "User does not exist.",
       "mustBeLoggedIn": "You must be logged in.",
       "adminNeeded": "You don't have admin rights.",
       "adminGiven": "Admin rights have been given to user: ",
-      "notPermitted": "You don't have sufficient rights."
+      "notPermitted": "You don't have sufficient rights.",
+      "labels": {
+        "id": "User Id",
+        "username": "User Name",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "emails": "Emails",
+        "emailAddress": "Email Address",
+        "emailVerified": "Email Verified",
+        "createdAt": "User Creation Date",
+        "profile": "Profile",
+        "services": "Services",
+        "heartbeat": "Heartbeat",
+        "isActive": "User Is Active",
+        "isRequest": "User Awaits Activation",
+        "favServices": "Favorite Services",
+        "structure": "Attachment Structure",
+        "primaryEmail": "Primary Email",
+        "language": "Preferred Language"
+      }
     },
     "groups": {
       "unknownGroup": "Group does not exist.",
@@ -16,7 +41,17 @@
         "moderated": "moderated",
         "private": "private"
       },
-      "users": {
+      "labels": {
+        "id": "Label Id",
+        "name": "Name",
+        "slug": "Slug",
+        "desciption": "Description",
+        "content": "Long description",
+        "active": "Active",
+        "groupPadID": "Group Pad ID",
+        "digest": "Digest",
+        "type": "Type",
+        "owner": "Owner",
         "candidates": "Candidates",
         "members": "Members",
         "animators": "Animators",
@@ -24,10 +59,46 @@
       }
     },
     "services": {
-      "unknownService": "Service does not exist."
+      "unknownService": "Service does not exist.",
+      "labels": {
+        "id": "Service Id",
+        "title": "Title",
+        "slug": "Slug",
+        "team": "Team",
+        "usage": "Usage",
+        "content": "Long description",
+        "description": "Description",
+        "logo": "Logo",
+        "categories": "Categories",
+        "screenshots": "Screenshots"
+      }
+    },
+    "events": {
+      "labels": {
+        "id": "Event Id",
+        "title": "Title",
+        "startsAt": "Start Date",
+        "endsAt": "End Date",
+        "allDay": "Full Day",
+        "description": "Description",
+        "location": "Location",
+        "groupId": "Group Id",
+        "eventPadId": "Event Pad Id",
+        "participantId": "Participant Id"
+      }
     },
     "methods": {
-      "operationSuccessMsg": "Operation succedeed."
+      "operationSuccessMsg": "Operation succedeed.",
+      "labels": {
+        "page": "Page",
+        "pageSize": "Page Size",
+        "filter": "Filter",
+        "sortColumn": "Sort Column",
+        "sortOrder": "Sort Order",
+        "excludeGroupId": "Excluded Group Id",
+        "excludeRole": "Excluded Role",
+        "keycloakId": "Keycloak Id"
+      }
     }
   },
   "components": {
@@ -287,5 +358,45 @@
   "languages": {
     "en": "English",
     "fr": "French"
+  },
+  "SimpleSchema": {
+    "required": "{$label} is required",
+    "minString": "{$label} must be at least {$min} characters",
+    "maxString": "{$label} cannot exceed {$max} characters",
+    "minNumber": "{$label} must be at least {$min}",
+    "maxNumber": "{$label} cannot exceed {$max}",
+    "minNumberExclusive": "{$label} must be greater than {$min}",
+    "maxNumberExclusive": "{$label} must be less than {$max}",
+    "minDate": "{$label} must be on or after {$min}",
+    "maxDate": "{$label} cannot be after {$max}",
+    "badDate": "{$label} is not a valid date",
+    "minCount": "You must specify at least {$minCount} values",
+    "maxCount": "You cannot specify more than {$maxCount} values",
+    "noDecimal": "{$label} must be an integer",
+    "notAllowed": "{$value} is not an allowed value",
+    "expectedType": "{$label} must be of type {$dataType}",
+    "keyNotInSchema": "{$name} is not allowed by the schema",
+    "RegEx": {
+      "Default": "failed regular expression validation",
+      "Email": "must be a valid email address",
+      "EmailWithTLD": "must be a valid email address",
+      "Domain": "must be a valid domain",
+      "WeakDomain": "must be a valid domain",
+      "IP": "must be a valid IPv4 or IPv6 address",
+      "IPv4": "must be a valid IPv4 address",
+      "IPv6": "must be a valid IPv6 address",
+      "Url": "must be a valid URL",
+      "Id": "must be a valid alphanumeric ID",
+      "ZipCode": "must be a valid ZIP code",
+      "Phone": "must be a valid phone number"
+    },
+    "dataTypes": {
+      "String": "String",
+      "Number": "Number",
+      "Integer": "Integer",
+      "Boolean": "Boolean",
+      "Array": "Array",
+      "Object": "Object"
+    }
   }
 }

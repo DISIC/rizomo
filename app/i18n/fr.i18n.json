@@ -1,11 +1,36 @@
 {
   "api": {
+    "categories": {
+      "labels": {
+        "id": "Id de Catégorie",
+        "name": "Nom"
+      }
+    },
     "users": {
       "unknownUser": "L'utilisateur n'existe pas.",
       "mustBeLoggedIn": "Vous devez être connecté.",
       "adminNeeded": "Vous n'êtes pas administrateur.",
       "adminGiven": "Les droits d'administration ont été donnés à cet utilisateur: ",
-      "notPermitted": "Vous n'avez pas les droits suffisants."
+      "notPermitted": "Vous n'avez pas les droits suffisants.",
+      "labels": {
+        "id": "Id Utilisateur",
+        "username": "Pseudonyme",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "emails": "Adresses Électroniques",
+        "emailAddress": "Adresse Électronique",
+        "emailVerified": "Adresse Vérifiée",
+        "createdAt": "Crée Le",
+        "profile": "Profil",
+        "services": "Services",
+        "heartbeat": "heartbeat",
+        "isActive": "Utilisateur Actif",
+        "isRequest": "Utilisateur En Attente De Validation",
+        "favServices": "Services Favoris",
+        "structure": "Structure De Rattachement",
+        "primaryEmail": "Adresse Électronique principale",
+        "language": "Langage Préféré"
+      }
     },
     "groups": {
       "unknownGroup": "Le groupe n'existe pas.",
@@ -16,7 +41,17 @@
         "moderated": "modéré",
         "private": "réservé"
       },
-      "users": {
+      "labels": {
+        "id": "Id de Label",
+        "name": "Nom",
+        "slug": "Slug",
+        "desciption": "Description",
+        "content": "Description longue",
+        "active": "Actif",
+        "groupPadID": "Id de Pad du groupe",
+        "digest": "Digest",
+        "type": "Type",
+        "owner": "Propriétaire",
         "candidates": "Candidats",
         "members": "Membres",
         "animators": "Animateurs",
@@ -24,10 +59,46 @@
       }
     },
     "services": {
-      "unknownService": "Le service n'existe pas."
+      "unknownService": "Le service n'existe pas.",
+      "labels": {
+        "id": "Id de Service",
+        "title": "Titre",
+        "slug": "Slug",
+        "team": "Équipe",
+        "usage": "Usage",
+        "content": "Description longue",
+        "description": "Description",
+        "logo": "Logo",
+        "categories": "Catégories",
+        "screenshots": "Captures d'écran"
+      }
+    },
+    "events": {
+      "labels": {
+        "id": "Id d'Évènement",
+        "title": "Intitulé",
+        "startsAt": "Date De Début",
+        "endsAt": "Date De Fin",
+        "allDay": "Journée Complète",
+        "description": "Description",
+        "location": "Lieu",
+        "groupId": "Id de groupe",
+        "eventPadId": "Id De Pad",
+        "participantId": "Id De Participant"
+      }
     },
     "methods": {
-      "operationSuccessMsg": "Opération réalisée avec succès."
+      "operationSuccessMsg": "Opération réalisée avec succès.",
+      "labels": {
+        "page": "Page",
+        "pageSize": "Taille de Page",
+        "filter": "Filtre",
+        "sortColumn": "Colonne de Tri",
+        "sortOrder": "Ordre de Tri",
+        "excludeGroupId": "Identifiant Du Groupe Exclus",
+        "excludeRole": "Rôle Exclus",
+        "keycloakId": "Identifiant Keycloak"
+      }
     }
   },
   "components": {
@@ -290,5 +361,45 @@
   "languages": {
     "en": "Anglais",
     "fr": "Français"
+  },
+  "SimpleSchema": {
+    "required": "{$label} est requis",
+    "minString": "{$label} doit faire au moins {$min} caractères",
+    "maxString": "{$label} est limité à {$max} caractères",
+    "minNumber": "{$label} doit être supérieur ou égal à {$min}",
+    "maxNumber": "{$label} doit être inférieur ou égal à {$max}",
+    "minNumberExclusive": "{$label} doit être supérieur à {$min}",
+    "maxNumberExclusive": "{$label} doit être inférieur à {$max}",
+    "minDate": "{$label} doit être postérieur à {$min}",
+    "maxDate": "{$label} doit être antérieur à {$max}",
+    "badDate": "{$label} n'est pas une tâche valide",
+    "minCount": "Vous devez saisir plus de {$minCount} valeurs",
+    "maxCount": "Vous devez saisir moins de {$maxCount} valeurs",
+    "noDecimal": "{$label} doit être un entier ",
+    "notAllowed": "{$value} n'est pas une valeur acceptée",
+    "expectedType": "{$label} doit être du type {$dataType}",
+    "keyNotInSchema": "{$name} n'est pas autorisé par le schéma",
+    "RegEx": {
+      "Default": "Echec de validation de l'expression régulière",
+      "Email": "doit être une adresse e-mail valide",
+      "EmailWithTLD": "doit être une adresse e-mail valide",
+      "Domain": "doit être un domaine valide",
+      "WeakDomain": "doit être un domaine valide",
+      "IP": "doit être une adresse IPv4/IPv6 valide",
+      "IPv4": "doit être une adresse IPv4 valide",
+      "IPv6": "doit être une adresse IPv6 valide",
+      "Url": "doit être une URL valide",
+      "Id": "doit être un identifiant alphanumérique valide",
+      "ZipCode": "doit être un code postal valide",
+      "Phone": "doit être un numéro de téléphone valide"
+    },
+    "dataTypes": {
+      "String": "Chaine de caractères",
+      "Number": "Numérique",
+      "Integer": "Entier",
+      "Boolean": "Booléen",
+      "Array": "Tableau",
+      "Object": "Objet"
+    }
   }
 }
