@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 
-export const usePagination = (subName, args = {}, Collection, query = {}, options = {}) => {
+export const usePagination = (subName, args = {}, Collection, query = {}, options = {}, itemPerPage) => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const subscription = useTracker(() => Meteor.subscribe(subName, { ...args, page }));
+  const subscription = useTracker(() => Meteor.subscribe(subName, { ...args, page, itemPerPage }));
   const loading = useTracker(() => !subscription.ready());
 
-  const items = useTracker(() => Collection.find(query, options).fetch(), [page, loading, total]);
+  const items = useTracker(
+    () => Collection.findFromPublication(subName, query, { ...options, limit: itemPerPage }).fetch(),
+    [page, loading, total],
+  );
 
   useEffect(() => {
     Meteor.call(`get_${subName}_count`, args, (error, result) => setTotal(result));

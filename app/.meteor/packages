@@ -39,4 +39,4 @@ service-configuration@1.0.11
 reywood:publish-composite
 percolate:find-from-publication
 
-mexar:mdt@0.0.4
+mexar:mdt@0.0.6

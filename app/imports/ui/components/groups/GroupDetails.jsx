@@ -113,14 +113,12 @@ const useStyles = ({ type }, member, candidate, isShort) => makeStyles((theme) =
   },
 }));
 
-function GroupDetails({ group, isShort }) {
-  const {
-    members, candidates, animators, admins, type,
-  } = group;
+function GroupDetails({
+  group = {}, isShort, member, candidate,
+}) {
+  const { type } = group;
   const [{ userId }] = useContext(Context);
   const [loading, setLoading] = useState(false);
-  const member = !![...members, ...animators, ...admins].find((id) => id === userId);
-  const candidate = !!candidates.find((id) => id === userId);
 
   const classes = useStyles(group, member, candidate, isShort)();
 
@@ -163,29 +161,15 @@ function GroupDetails({ group, isShort }) {
       return i18n.__('components.GroupDetails.joinPublicGroupButtonLabel');
     }
     if (candidate) {
-      return i18n.__('components.GroupDetails.waitingForValidation');
+      return i18n.__('components.GroupDetails.groupCandidate');
     }
     return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
   };
 
-  const groupType = member
-    ? i18n.__('components.GroupDetails.groupMember')
-    : candidate
-      ? i18n.__('components.GroupDetails.groupCandidate')
-      : type === 0
-        ? i18n.__('components.GroupDetails.publicGroup')
-        : i18n.__('components.GroupDetails.moderateGroup');
-  const iconHeader = member && type === 0 ? (
-    <CheckIcon />
-  ) : member && type === 5 ? (
-    <VerifiedUserIcon />
-  ) : candidate && type === 5 ? (
-    <WatchLaterIcon />
-  ) : type === 0 ? (
-    <PeopleIcon />
-  ) : (
-    <SecurityIcon />
-  );
+  const groupType = type === 0
+    ? i18n.__('components.GroupDetails.publicGroup')
+    : i18n.__('components.GroupDetails.moderateGroup');
+  const iconHeader = type === 0 ? <PeopleIcon /> : <SecurityIcon />;
 
   return (
     <Card className={classes.card} elevation={3}>
@@ -244,6 +228,8 @@ function GroupDetails({ group, isShort }) {
 GroupDetails.propTypes = {
   group: PropTypes.objectOf(PropTypes.any).isRequired,
   isShort: PropTypes.bool.isRequired,
+  member: PropTypes.bool.isRequired,
+  candidate: PropTypes.bool.isRequired,
 };
 
 export default GroupDetails;

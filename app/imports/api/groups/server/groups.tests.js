@@ -65,6 +65,15 @@ describe('groups', function () {
         });
       });
     });
+    describe('groups.one', function () {
+      it('sends all groups', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('groups.one', { slug: 'mongroupe' }, (collections) => {
+          chai.assert.equal(collections.groups.length, 1);
+          done();
+        });
+      });
+    });
     describe('groups.findGroups method', function () {
       it('fetches a page of groups', function () {
         let results = findGroups._execute({ userId }, { pageSize: 3 });

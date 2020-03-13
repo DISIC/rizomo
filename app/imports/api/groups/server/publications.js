@@ -8,57 +8,6 @@ import { isActive } from '../../utils';
 import Groups from '../groups';
 import AppRoles from '../../users/users';
 
-Meteor.methods({
-  'get_groups.all_count': ({ search }) => {
-    const regex = new RegExp(search, 'i');
-
-    return Groups.find(
-      {
-        type: { $ne: 10 },
-        $or: [
-          {
-            name: { $regex: regex },
-          },
-          {
-            description: { $regex: regex },
-          },
-        ],
-      },
-      { fields: Groups.publicFields, sort: { name: 1 } },
-    ).count();
-  },
-});
-
-const ITEM_PER_PAGE = 9;
-
-// publish all existing groups
-Meteor.publish('groups.all', function groupsAll({ page, search, ...rest }) {
-  if (!isActive(this.userId)) {
-    return this.ready();
-  }
-  const regex = new RegExp(search, 'i');
-
-  return Groups.find(
-    {
-      type: { $ne: 10 },
-      $or: [
-        {
-          name: { $regex: regex },
-        },
-        {
-          description: { $regex: regex },
-        },
-      ],
-    },
-    {
-      fields: Groups.publicFields,
-      sort: { name: 1 },
-      limit: ITEM_PER_PAGE * page,
-      ...rest,
-    },
-  );
-});
-
 // publish groups that user is member of
 publishComposite('groups.memberof', function groupsMemberOf() {
   if (!isActive(this.userId)) {
@@ -87,7 +36,7 @@ publishComposite('groups.adminof', function groupsAdminOf() {
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return {
       find() {
-        return Groups.find({}, { fields: Groups.publicFields });
+        return Groups.find({}, { fields: Groups.adminField });
       },
     };
   }
@@ -114,7 +63,7 @@ FindFromPublication.publish('groups.one.admin', function GroupsOne({ _id }) {
   if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin', _id)) {
     return this.ready();
   }
-  return Groups.find({ _id }, { fields: Groups.publicFields, sort: { name: 1 }, limit: 1 });
+  return Groups.find({ _id }, { fields: Groups.adminField, sort: { name: 1 }, limit: 1 });
 });
 
 // publish one group and all users associated with given role
@@ -156,4 +105,60 @@ publishComposite('groups.users', function groupDetails({ groupId, role = 'member
       },
     ],
   };
+});
+
+// build query for all groups
+const queryAllGroups = ({ search }) => {
+  const regex = new RegExp(search, 'i');
+  return {
+    type: { $ne: 10 },
+    $or: [
+      {
+        name: { $regex: regex },
+      },
+      {
+        description: { $regex: regex },
+      },
+    ],
+  };
+};
+
+Meteor.methods({
+  'get_groups.all_count': ({ search }) => {
+    const query = queryAllGroups({ search });
+    return Groups.find(query, { fields: Groups.publicFields, sort: { name: 1 } }).count();
+  },
+});
+
+// publish all existing groups
+FindFromPublication.publish('groups.all', function groupsAll({
+  page, search, itemPerPage, ...rest
+}) {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  const query = queryAllGroups({ search });
+
+  return Groups.find(query, {
+    fields: Groups.publicFields,
+    skip: itemPerPage * (page - 1),
+    limit: itemPerPage,
+    sort: { name: 1 },
+    ...rest,
+  });
+});
+
+// publish one group based on its slug
+FindFromPublication.publish('groups.one', function groupsOne({ slug }) {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  return Groups.find(
+    { slug },
+    {
+      fields: Groups.allPublicFields,
+      limit: 1,
+      sort: { name: -1 },
+    },
+  );
 });
