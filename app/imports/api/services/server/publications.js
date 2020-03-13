@@ -22,6 +22,13 @@ FindFromPublication.publish('services.one.admin', function servicesOne({ _id }) 
   return Services.find({ _id }, { fields: Services.allPublicFields, sort: { title: 1 }, limit: 1 });
 });
 
+FindFromPublication.publish('services.group', function servicesGroup({ ids }) {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  return Services.find({ _id: { $in: ids } }, { fields: Services.allPublicFields, sort: { title: 1 }, limit: 100 });
+});
+
 publishComposite('services.one', ({ slug }) => ({
   find() {
     // Find top ten highest scoring posts

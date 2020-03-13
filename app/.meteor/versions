@@ -59,7 +59,7 @@ meteorhacks:picker@1.0.3
 meteortesting:browser-tests@1.0.0
 meteortesting:mocha@1.1.4
 meteortesting:mocha-core@7.0.0
-mexar:mdt@0.0.4
+mexar:mdt@0.0.6
 minifier-css@1.5.0
 minifier-js@2.6.0
 minimongo@1.4.5

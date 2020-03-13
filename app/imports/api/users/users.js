@@ -218,6 +218,7 @@ Meteor.users.publicFields = {
   isActive: 1,
   isRequest: 1,
   structure: 1,
+  emails: 1,
 };
 
 Meteor.users.deny({

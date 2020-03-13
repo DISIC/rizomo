@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -10,9 +10,8 @@ import { Link } from 'react-router-dom';
 import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
-import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import PeopleIcon from '@material-ui/icons/People';
-import { Context } from '../../contexts/context';
+import WatchLaterIcon from '@material-ui/icons/WatchLater';
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -43,13 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const GroupDetailsList = ({ group }) => {
-  const {
-    candidates, members, animators, admins, type,
-  } = group;
-  const [{ userId }] = useContext(Context);
-  const member = !![...members, ...animators, ...admins].find((id) => id === userId);
-  const candidate = !!candidates.find((id) => id === userId);
+const GroupDetailsList = ({ group, member, candidate }) => {
+  const { type } = group;
   const classes = useStyles();
 
   const groupType = member
@@ -116,6 +110,8 @@ const GroupDetailsList = ({ group }) => {
 
 GroupDetailsList.propTypes = {
   group: PropTypes.objectOf(PropTypes.any).isRequired,
+  member: PropTypes.bool.isRequired,
+  candidate: PropTypes.bool.isRequired,
 };
 
 export default GroupDetailsList;

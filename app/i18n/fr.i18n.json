@@ -55,7 +55,8 @@
         "candidates": "Candidats",
         "members": "Membres",
         "animators": "Animateurs",
-        "admins": "Administrateurs"
+        "admins": "Administrateurs",
+        "applications": "ID de l'application"
       }
     },
     "services": {
@@ -185,7 +186,8 @@
       "groupLeft": "Vous avez quitté le groupe",
       "groupJoined": "Vous êtes membre du groupe",
       "candidateSent": "L'administrateur du groupe va être notifié de votre demande",
-      "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe"
+      "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe",
+      "candidateCancel": "Votre requête a été annulée"
     }
   },
   "validatejs": {
@@ -353,6 +355,25 @@
       "save": "Sauvegarder",
       "update": "Mettre à jour",
       "cancel": "Annuler"
+    },
+    "SingleGroupPage": {
+      "backToList": "Retour à la liste",
+      "leaveGroup": "Quitter le groupe",
+      "seeLess": "Voir moins",
+      "seeMore": "Voir plus",
+      "addressBook": "Annuaire",
+      "addressBookUsage": "Liste des utilisateurs du groupe",
+      "cancelCandidate": "Annuler la candidature",
+      "groupLeft": "Vous avez quitté le groupe",
+      "groupJoined": "Vous êtes membre du groupe",
+      "candidateSent": "L'administrateur du groupe va être notifié de votre demande",
+      "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe",
+      "candidateCancel": "Votre requête a été annulée"
+    },
+    "AddressBook": {
+      "sendEmail": "Envoyer un email à",
+      "back": "Retour au groupe",
+      "searchText": "Quel utilisateur cherchez-vous ?"
     }
   },
   "layouts": {

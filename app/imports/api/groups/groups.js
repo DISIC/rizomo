@@ -63,6 +63,14 @@ Groups.schema = new SimpleSchema(
       allowedValues: [0, 5, 10], // 0 Ouvert, 5 Modéré, 10 Fermé
       label: getLabel('api.groups.labels.type'),
     },
+    applications: {
+      type: Array,
+      optional: true,
+    },
+    'applications.$': {
+      type: String,
+      label: getLabel('api.groups.labels.applications'),
+    },
     owner: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.owner') },
     admins: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.admins') },
     'admins.$': { type: String, regEx: SimpleSchema.RegEx.Id },
@@ -86,16 +94,24 @@ Groups.publicFields = {
   name: 1,
   slug: 1,
   description: 1,
-  content: 1,
   active: 1,
   groupPadID: 1,
   digest: 1,
   type: 1,
   owner: 1,
+};
+Groups.allPublicFields = {
+  content: 1,
+  applications: 1,
+  ...Groups.publicFields,
+};
+
+Groups.adminField = {
   admins: 1,
   animators: 1,
   members: 1,
   candidates: 1,
+  ...Groups.allPublicFields,
 };
 
 Groups.helpers({

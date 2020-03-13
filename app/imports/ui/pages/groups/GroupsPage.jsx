@@ -1,15 +1,7 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Fade,
-  Container,
-  Grid,
-  Typography,
-  IconButton,
-  Collapse,
-  TextField,
-  InputAdornment,
-  Button,
+  Fade, Container, Grid, Typography, IconButton, Collapse, TextField, InputAdornment,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ViewListIcon from '@material-ui/icons/ViewList';
@@ -17,14 +9,16 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ClearIcon from '@material-ui/icons/Clear';
+import Pagination from '@material-ui/lab/Pagination';
 import i18n from 'meteor/universe:i18n';
+import { Roles } from 'meteor/alanning:roles';
+import { useTracker } from 'meteor/react-meteor-data';
 
 // components
-import Spinner from '../../components/system/Spinner';
 import Groups from '../../../api/groups/groups';
 import GroupDetails from '../../components/groups/GroupDetails';
 import { Context } from '../../contexts/context';
-import { usePagination, useOnScreen } from '../../utils/hooks';
+import { usePagination } from '../../utils/hooks';
 import GroupDetailsList from '../../components/groups/GroupDetailsList';
 
 const useStyles = makeStyles(() => ({
@@ -51,23 +45,39 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'center',
   },
+  pagination: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
+const ITEM_PER_PAGE = 9;
+
 function GroupsPage() {
-  const [{ isMobile, groupPage }, dispatch] = useContext(Context);
+  const [{ isMobile, groupPage, userId }, dispatch] = useContext(Context);
   const classes = useStyles();
-  const ref = useRef();
-  const onScreen = useOnScreen(ref, '0px');
   const {
     search = '',
     searchToggle = false,
     viewMode = 'card', // Possible values : "card" or "list"
   } = groupPage;
   const {
-    nextPage, loading, items, total,
-  } = usePagination('groups.all', { search }, Groups, {}, {});
+    changePage, page, items, total,
+  } = usePagination(
+    'groups.all',
+    { search },
+    Groups,
+    {},
+    { sort: { name: 1 } },
+    ITEM_PER_PAGE,
+  );
+  const memberGroups = useTracker(() => Roles.getScopesForUser(userId, ['member', 'animator']));
+  const candidateGroups = useTracker(() => Roles.getScopesForUser(userId, ['candidate']));
 
   const inputRef = useRef(null);
+  const handleChangePage = (event, value) => {
+    changePage(value);
+  };
 
   // focus on search input when it appears
   useEffect(() => {
@@ -75,12 +85,11 @@ function GroupsPage() {
       inputRef.current.focus();
     }
   }, [searchToggle]);
-
   useEffect(() => {
-    if (onScreen && !loading && total !== items.length) {
-      nextPage();
+    if (page !== 1) {
+      changePage(1);
     }
-  }, [onScreen]);
+  }, [search]);
 
   const updateGlobalState = (key, value) => dispatch({
     type: 'groupPage',
@@ -96,7 +105,7 @@ function GroupsPage() {
   const changeViewMode = (_, value) => updateGlobalState('viewMode', value);
 
   const filterGroups = (group) => {
-    let searchText = group.name + group.description + group.digest;
+    let searchText = group.name + group.description + group.digest || '';
     searchText = searchText.toLowerCase();
     if (!search) return true;
     return searchText.indexOf(search.toLowerCase()) > -1;
@@ -188,25 +197,38 @@ function GroupsPage() {
           )}
         </Grid>
         <Grid container spacing={isMobile ? 2 : 4}>
+          {total > ITEM_PER_PAGE && (
+            <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
+              <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+            </Grid>
+          )}
           {isMobile && viewMode === 'list'
             ? mapList((group) => (
               <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
-                <GroupDetailsList key={group.name} group={group} />
+                <GroupDetailsList
+                  key={group.name}
+                  group={group}
+                  candidate={candidateGroups.includes(group._id)}
+                  member={memberGroups.includes(group._id)}
+                />
               </Grid>
             ))
             : mapList((group) => (
               <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
-                <GroupDetails key={group.name} group={group} isShort={!isMobile && viewMode === 'list'} />
+                <GroupDetails
+                  key={group.name}
+                  group={group}
+                  isShort={!isMobile && viewMode === 'list'}
+                  candidate={candidateGroups.includes(group._id)}
+                  member={memberGroups.includes(group._id)}
+                />
               </Grid>
             ))}
-          <Grid ref={ref} item xs={12} sm={12} md={12} lg={12}>
-            {loading && <Spinner />}
-            {total === items.length && !loading && (
-              <Button variant="contained" fullWidth>
-                {i18n.__('pages.GroupsPage.endOfList')}
-              </Button>
-            )}
-          </Grid>
+          {total > ITEM_PER_PAGE && (
+            <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
+              <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+            </Grid>
+          )}
         </Grid>
       </Container>
     </Fade>

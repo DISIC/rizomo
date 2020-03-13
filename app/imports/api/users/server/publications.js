@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+import { FindFromPublication } from 'meteor/percolate:find-from-publication';
 import { isActive } from '../../utils';
+import Groups from '../../groups/groups';
 
 // publish additional fields for current user
 Meteor.publish('userData', function publishUserData() {
@@ -37,7 +39,10 @@ Meteor.publish('users.fromlist', function usersFromList(userIds = []) {
     { _id: { $in: userIds } },
     {
       fields: {
-        username: 1, emails: 1, firstName: 1, lastName: 1,
+        username: 1,
+        emails: 1,
+        firstName: 1,
+        lastName: 1,
       },
     },
   );
@@ -63,4 +68,47 @@ Meteor.publish(null, function publishRoles() {
     return Meteor.roles.find({});
   }
   return this.ready();
+});
+
+// build query for all users from group
+const queryUsersFromGroup = ({ slug, search }) => {
+  const { admins, members, animators } = Groups.findOne({ slug });
+  const ids = [...admins, ...members, ...animators];
+  const regex = new RegExp(search, 'i');
+  const fieldsToSearch = ['firstName', 'lastName', 'emails.address', 'username'];
+  const searchQuery = fieldsToSearch.map((field) => ({ [field]: { $regex: regex } }));
+  return {
+    _id: { $in: ids },
+    $or: searchQuery,
+  };
+};
+
+// publish all users from a group
+FindFromPublication.publish('users.group', function usersFromGroup({
+  page, itemPerPage, slug, search, ...rest
+}) {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  const query = queryUsersFromGroup({ slug, search });
+
+  return Meteor.users.find(query, {
+    fields: Meteor.users.publicFields,
+    skip: itemPerPage * (page - 1),
+    limit: itemPerPage,
+    sort: { lastName: 1 },
+    ...rest,
+  });
+});
+// count all users from a group
+Meteor.methods({
+  'get_users.group_count': ({ search, slug }) => {
+    const query = queryUsersFromGroup({ slug, search });
+
+    return Meteor.users
+      .find(query, {
+        sort: { lastName: 1 },
+      })
+      .count();
+  },
 });

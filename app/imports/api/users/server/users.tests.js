@@ -85,7 +85,6 @@ describe('users', function () {
         assert.equal(data.length, 2);
         assert.equal(page, 1);
         assert.equal(totalCount, 4);
-        assert.notProperty(data[0], 'emails');
       });
       it('fetches a page of users as normal user with a filter', function () {
         const { data, page, totalCount } = findUsers._execute({ userId }, { filter: 'user@ac-test.fr' });

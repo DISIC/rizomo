@@ -100,6 +100,7 @@ const useStyles = makeStyles((theme) => ({
 function ServiceDetails({ service, favAction, isShort }) {
   const classes = useStyles();
   const favorite = favAction === 'fav';
+  const isAddressBook = service._id === 'addressbook';
 
   const handleFavorite = () => {
     if (!favorite) {
@@ -129,13 +130,19 @@ function ServiceDetails({ service, favAction, isShort }) {
     <Card className={classes.card} elevation={3}>
       <CardHeader
         className={classes.cardHeader}
-        avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
+        avatar={
+          isAddressBook ? (
+            service.logo
+          ) : (
+            <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
+          )
+        }
         action={(
           <Tooltip
             title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
             aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
           >
-            <Link to={`/services/${service.slug}`}>
+            <Link to={isAddressBook ? service.url : `/services/${service.slug}`}>
               <IconButton color="primary">
                 <ChevronRightIcon />
               </IconButton>
@@ -169,38 +176,46 @@ function ServiceDetails({ service, favAction, isShort }) {
             );
           })}
         </Paper> */}
-        <div className={isShort ? classes.cardActionShort : classes.cardActions}>
-          <Button
-            size="large"
-            className={classes.buttonText}
-            variant="contained"
-            onClick={() => window.open(service.url, '_blank')}
-          >
-            {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-          </Button>
-
-          <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+        {!isAddressBook && (
+          <div className={isShort ? classes.cardActionShort : classes.cardActions}>
             <Button
-              // startIcon={favorite ? <BookmarkBorderIcon /> : <BookmarkIcon />}
-              variant="outlined"
-              color="primary"
               size="large"
-              className={classes.fab}
-              onClick={handleFavorite}
+              className={classes.buttonText}
+              variant="contained"
+              onClick={() => window.open(service.url, '_blank')}
             >
-              {favorite ? <BookmarkBorderIcon /> : <BookmarkIcon />}
-              {/* {i18n.__(`components.ServiceDetails.${favorite ? '' : 'un'}pin`)} */}
+              {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
             </Button>
-          </Tooltip>
-        </div>
+
+            {!!favAction && (
+              <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+                <Button
+                  // startIcon={favorite ? <BookmarkBorderIcon /> : <BookmarkIcon />}
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                  className={classes.fab}
+                  onClick={handleFavorite}
+                >
+                  {favorite ? <BookmarkBorderIcon /> : <BookmarkIcon />}
+                  {/* {i18n.__(`components.ServiceDetails.${favorite ? '' : 'un'}pin`)} */}
+                </Button>
+              </Tooltip>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
 }
 
+ServiceDetails.defaultProps = {
+  favAction: null,
+};
+
 ServiceDetails.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
-  favAction: PropTypes.string.isRequired,
+  favAction: PropTypes.string,
   isShort: PropTypes.bool.isRequired,
 };
 
