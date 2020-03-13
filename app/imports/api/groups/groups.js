@@ -6,6 +6,7 @@ import SimpleSchema from 'simpl-schema';
 import { Random } from 'meteor/random';
 import { Tracker } from 'meteor/tracker';
 import slugify from 'slugify';
+import { getLabel } from '../utils';
 
 import Events from '../events/events';
 
@@ -32,12 +33,14 @@ Groups.schema = new SimpleSchema(
       unique: true,
       min: 1,
       max: 60,
+      label: getLabel('api.groups.labels.name'),
     },
     slug: {
       type: String,
       index: true,
       unique: true,
       min: 1,
+      label: getLabel('api.groups.labels.slug'),
       autoValue() {
         const name = this.field('name').value;
         // if name is not being modified, do not calculate autovalue
@@ -50,23 +53,24 @@ Groups.schema = new SimpleSchema(
         return slug;
       },
     },
-    description: { type: String, optional: true },
-    content: { type: String, optional: true },
-    active: Boolean,
-    groupPadID: { type: String, optional: true },
-    digest: { type: String, optional: true },
+    description: { type: String, optional: true, label: getLabel('api.groups.labels.description') },
+    content: { type: String, optional: true, label: getLabel('api.groups.labels.content') },
+    active: { type: Boolean, label: getLabel('api.groups.labels.active') },
+    groupPadID: { type: String, optional: true, label: getLabel('api.groups.labels.groupPadID') },
+    digest: { type: String, optional: true, label: getLabel('api.groups.labels.digest') },
     type: {
       type: SimpleSchema.Integer,
       allowedValues: [0, 5, 10], // 0 Ouvert, 5 Modéré, 10 Fermé
+      label: getLabel('api.groups.labels.type'),
     },
-    owner: { type: String, regEx: SimpleSchema.RegEx.Id },
-    admins: { type: Array, defaultValue: [] },
+    owner: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.owner') },
+    admins: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.admins') },
     'admins.$': { type: String, regEx: SimpleSchema.RegEx.Id },
-    animators: { type: Array, defaultValue: [] },
+    animators: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.animators') },
     'animators.$': { type: String, regEx: SimpleSchema.RegEx.Id },
-    members: { type: Array, defaultValue: [] },
+    members: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.members') },
     'members.$': { type: String, regEx: SimpleSchema.RegEx.Id },
-    candidates: { type: Array, defaultValue: [] },
+    candidates: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.candidates') },
     'candidates.$': { type: String, regEx: SimpleSchema.RegEx.Id },
   },
   { tracker: Tracker },

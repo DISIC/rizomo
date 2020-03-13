@@ -6,16 +6,16 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 
-import { isActive } from '../utils';
+import { isActive, getLabel } from '../utils';
 import Groups from './groups';
 
 export const createGroup = new ValidatedMethod({
   name: 'groups.createGroup',
   validate: new SimpleSchema({
-    name: { type: String, min: 1 },
-    type: { type: SimpleSchema.Integer, min: 0 },
-    description: String,
-    content: String,
+    name: { type: String, min: 1, label: getLabel('api.groups.labels.name') },
+    type: { type: SimpleSchema.Integer, min: 0, label: getLabel('api.groups.labels.type') },
+    description: { type: String, label: getLabel('api.groups.labels.description') },
+    content: { type: String, label: getLabel('api.groups.labels.content') },
   }).validator(),
 
   run({
@@ -40,7 +40,7 @@ export const createGroup = new ValidatedMethod({
 export const removeGroup = new ValidatedMethod({
   name: 'groups.removeGroup',
   validate: new SimpleSchema({
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ groupId }) {
@@ -65,15 +65,25 @@ export const removeGroup = new ValidatedMethod({
 export const updateGroup = new ValidatedMethod({
   name: 'groups.updateGroup',
   validate: new SimpleSchema({
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
     data: Object,
-    'data.name': { type: String, min: 1, optional: true },
-    'data.type': { type: SimpleSchema.Integer, min: 0, optional: true },
-    'data.description': { type: String, optional: true },
-    'data.content': { type: String, optional: true },
-    'data.active': { type: Boolean, optional: true },
-    'data.groupPadId': { type: String, optional: true },
-    'data.digest': { type: String, optional: true },
+    'data.name': {
+      type: String,
+      min: 1,
+      optional: true,
+      label: getLabel('api.groups.labels.name'),
+    },
+    'data.type': {
+      type: SimpleSchema.Integer,
+      allowedValues: [0, 5, 10],
+      optional: true,
+      label: getLabel('api.groups.labels.type'),
+    },
+    'data.description': { type: String, optional: true, label: getLabel('api.groups.labels.description') },
+    'data.content': { type: String, optional: true, label: getLabel('api.groups.labels.content') },
+    'data.active': { type: Boolean, optional: true, label: getLabel('api.groups.labels.active') },
+    'data.groupPadId': { type: String, optional: true, label: getLabel('api.groups.labels.groupPadId') },
+    'data.digest': { type: String, optional: true, label: getLabel('api.groups.labels.digest') },
   }).validator({ clean: true }),
 
   run({ groupId, data }) {
@@ -105,25 +115,34 @@ export const findGroups = new ValidatedMethod({
       min: 1,
       defaultValue: 1,
       optional: true,
+      label: getLabel('api.methods.labels.page'),
     },
     pageSize: {
       type: SimpleSchema.Integer,
       min: 1,
       defaultValue: 10,
       optional: true,
+      label: getLabel('api.methods.labels.pageSize'),
     },
-    filter: { type: String, defaultValue: '', optional: true },
+    filter: {
+      type: String,
+      defaultValue: '',
+      optional: true,
+      label: getLabel('api.methods.labels.filter'),
+    },
     sortColumn: {
       type: String,
       allowedValues: ['_id', ...Groups.schema.objectKeys()],
       defaultValue: 'name',
       optional: true,
+      label: getLabel('api.methods.labels.sortColumn'),
     },
     sortOrder: {
       type: SimpleSchema.Integer,
       allowedValues: [1, -1],
       defaultValue: 1,
       optional: true,
+      label: getLabel('api.methods.labels.sortOrder'),
     },
   }).validator({ clean: true }),
   run({

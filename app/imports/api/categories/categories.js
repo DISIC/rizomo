@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import { Factory } from 'meteor/dburles:factory';
 import { Random } from 'meteor/random';
+import { getLabel } from '../utils';
 
 const Categories = new Mongo.Collection('categories');
 
@@ -26,6 +27,7 @@ Categories.schema = new SimpleSchema(
       index: true,
       unique: true,
       min: 1,
+      label: getLabel('api.categories.labels.name'),
     },
   },
   { tracker: Tracker },

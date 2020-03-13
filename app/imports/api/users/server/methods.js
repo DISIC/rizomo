@@ -7,7 +7,7 @@ import SimpleSchema from 'simpl-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 
-import { isActive } from '../../utils';
+import { isActive, getLabel } from '../../utils';
 import Services from '../../services/services';
 import Groups from '../../groups/groups';
 // initialize Meteor.users customizations
@@ -28,25 +28,34 @@ export const findUsers = new ValidatedMethod({
       min: 1,
       defaultValue: 1,
       optional: true,
+      label: getLabel('api.methods.labels.page'),
     },
     pageSize: {
       type: SimpleSchema.Integer,
       min: 1,
       defaultValue: 10,
       optional: true,
+      label: getLabel('api.methods.labels.pageSize'),
     },
-    filter: { type: String, defaultValue: '', optional: true },
+    filter: {
+      type: String,
+      defaultValue: '',
+      optional: true,
+      label: getLabel('api.methods.labels.filter'),
+    },
     sortColumn: {
       type: String,
       allowedValues: ['_id', ...Meteor.users.schema.objectKeys()],
       defaultValue: 'username',
       optional: true,
+      label: getLabel('api.methods.labels.sortColumn'),
     },
     sortOrder: {
       type: SimpleSchema.Integer,
       allowedValues: [1, -1],
       defaultValue: 1,
       optional: true,
+      label: getLabel('api.methods.labels.sortOrder'),
     },
     exclude: {
       type: Object,
@@ -55,10 +64,12 @@ export const findUsers = new ValidatedMethod({
     'exclude.groupId': {
       type: String,
       regEx: SimpleSchema.RegEx.Id,
+      label: getLabel('api.methods.labels.excludeGroupId'),
     },
     'exclude.role': {
       type: String,
       allowedValues: AppRoles,
+      label: getLabel('api.methods.labels.excludeRole'),
     },
   }).validator({ clean: true }),
   run({
@@ -116,7 +127,7 @@ export const findUsers = new ValidatedMethod({
 export const setUsername = new ValidatedMethod({
   name: 'users.setUsername',
   validate: new SimpleSchema({
-    username: { type: String, min: 1 },
+    username: { type: String, min: 1, label: getLabel('api.users.labels.username') },
   }).validator(),
 
   run({ username }) {
@@ -135,6 +146,7 @@ export const setStructure = new ValidatedMethod({
     structure: {
       type: String,
       allowedValues: structures,
+      label: getLabel('api.users.labels.structure'),
     },
   }).validator(),
 
@@ -151,7 +163,7 @@ export const setStructure = new ValidatedMethod({
 export const setAdmin = new ValidatedMethod({
   name: 'users.setAdmin',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
   }).validator(),
 
   run({ userId }) {
@@ -173,7 +185,7 @@ export const setAdmin = new ValidatedMethod({
 export const setActive = new ValidatedMethod({
   name: 'users.setActive',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
   }).validator(),
 
   run({ userId }) {
@@ -194,7 +206,7 @@ export const setActive = new ValidatedMethod({
 export const unsetActive = new ValidatedMethod({
   name: 'users.unsetActive',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
   }).validator(),
 
   run({ userId }) {
@@ -215,7 +227,7 @@ export const unsetActive = new ValidatedMethod({
 export const unsetAdmin = new ValidatedMethod({
   name: 'users.unsetAdmin',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
   }).validator(),
 
   run({ userId }) {
@@ -237,8 +249,8 @@ export const unsetAdmin = new ValidatedMethod({
 export const setAdminOf = new ValidatedMethod({
   name: 'users.setAdminOf',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ userId, groupId }) {
@@ -268,8 +280,8 @@ export const setAdminOf = new ValidatedMethod({
 export const unsetAdminOf = new ValidatedMethod({
   name: 'users.unsetAdminOf',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ userId, groupId }) {
@@ -299,8 +311,8 @@ export const unsetAdminOf = new ValidatedMethod({
 export const setAnimatorOf = new ValidatedMethod({
   name: 'users.setAnimatorOf',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ userId, groupId }) {
@@ -330,8 +342,8 @@ export const setAnimatorOf = new ValidatedMethod({
 export const unsetAnimatorOf = new ValidatedMethod({
   name: 'users.unsetAnimatorOf',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ userId, groupId }) {
@@ -361,8 +373,8 @@ export const unsetAnimatorOf = new ValidatedMethod({
 export const setMemberOf = new ValidatedMethod({
   name: 'users.setMemberOf',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ userId, groupId }) {
@@ -405,8 +417,8 @@ export const setMemberOf = new ValidatedMethod({
 export const unsetMemberOf = new ValidatedMethod({
   name: 'users.unsetMemberOf',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ userId, groupId }) {
@@ -438,8 +450,8 @@ export const unsetMemberOf = new ValidatedMethod({
 export const setCandidateOf = new ValidatedMethod({
   name: 'users.setCandidateOf',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ userId, groupId }) {
@@ -475,8 +487,8 @@ export const setCandidateOf = new ValidatedMethod({
 export const unsetCandidateOf = new ValidatedMethod({
   name: 'users.unsetCandidateOf',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator(),
 
   run({ userId, groupId }) {
@@ -508,7 +520,7 @@ export const unsetCandidateOf = new ValidatedMethod({
 export const favService = new ValidatedMethod({
   name: 'users.favService',
   validate: new SimpleSchema({
-    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.services.labels.id') },
   }).validator(),
 
   run({ serviceId }) {
@@ -533,7 +545,7 @@ export const favService = new ValidatedMethod({
 export const unfavService = new ValidatedMethod({
   name: 'users.unfavService',
   validate: new SimpleSchema({
-    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.services.labels.id') },
   }).validator(),
 
   run({ serviceId }) {
@@ -553,7 +565,7 @@ export const unfavService = new ValidatedMethod({
 export const setLanguage = new ValidatedMethod({
   name: 'users.setLanguage',
   validate: new SimpleSchema({
-    language: { type: String },
+    language: { type: String, label: getLabel('api.users.labels.language') },
   }).validator(),
 
   run({ language }) {
@@ -573,8 +585,9 @@ export const setKeycloakId = new ValidatedMethod({
     email: {
       type: String,
       regEx: SimpleSchema.RegEx.Email,
+      label: getLabel('api.users.labels.emailAddress'),
     },
-    keycloakId: String,
+    keycloakId: { type: String, label: getLabel('api.methods.labels.keycloakId') },
   }).validator(),
 
   run({ email, keycloakId }) {

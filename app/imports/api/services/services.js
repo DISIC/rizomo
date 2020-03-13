@@ -6,6 +6,7 @@ import { Random } from 'meteor/random';
 import faker from 'faker';
 import { fileUpload } from '../../ui/utils/filesProcess';
 import slugy from '../../ui/utils/slugy';
+import { getLabel } from '../utils';
 
 const Services = new Mongo.Collection('services');
 
@@ -27,12 +28,14 @@ Services.schema = new SimpleSchema(
     title: {
       type: String,
       min: 1,
+      label: getLabel('api.services.labels.title'),
     },
     slug: {
       type: String,
       index: true,
       unique: true,
       min: 1,
+      label: getLabel('api.services.labels.slug'),
       autoValue() {
         const title = this.field('title').value;
         // if name is not being modified, do not calculate autovalue
@@ -41,16 +44,18 @@ Services.schema = new SimpleSchema(
         return slug;
       },
     },
-    team: String,
-    usage: String,
-    content: String,
+    team: { type: String, label: getLabel('api.services.labels.team') },
+    usage: { type: String, label: getLabel('api.services.labels.usage') },
+    content: { type: String, label: getLabel('api.services.labels.content') },
     description: {
       type: String,
       max: 80,
+      label: getLabel('api.services.labels.description'),
     },
-    url: String,
+    url: { type: String, label: getLabel('api.services.labels.url') },
     logo: {
       type: String,
+      label: getLabel('api.services.labels.logo'),
       autoValue() {
         if (this.value) {
           return fileUpload({
@@ -62,9 +67,9 @@ Services.schema = new SimpleSchema(
         return undefined;
       },
     },
-    categories: { type: Array, defaultValue: [] },
+    categories: { type: Array, defaultValue: [], label: getLabel('api.services.labels.categories') },
     'categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
-    screenshots: { type: Array, defaultValue: [] },
+    screenshots: { type: Array, defaultValue: [], label: getLabel('api.services.labels.screenshots') },
     'screenshots.$': {
       type: String,
       autoValue() {
