@@ -36,7 +36,7 @@ publishComposite('groups.adminof', function groupsAdminOf() {
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return {
       find() {
-        return Groups.find({}, { fields: Groups.adminField });
+        return Groups.find({}, { fields: Groups.adminFields });
       },
     };
   }
@@ -52,7 +52,7 @@ publishComposite('groups.adminof', function groupsAdminOf() {
     children: [
       {
         find(role) {
-          return Groups.find(role.scope, { fields: Groups.publicFields });
+          return Groups.find(role.scope, { fields: Groups.adminFields });
         },
       },
     ],
@@ -60,10 +60,10 @@ publishComposite('groups.adminof', function groupsAdminOf() {
 });
 
 FindFromPublication.publish('groups.one.admin', function GroupsOne({ _id }) {
-  if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin', _id)) {
+  if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, ['admin', 'animator'], _id)) {
     return this.ready();
   }
-  return Groups.find({ _id }, { fields: Groups.adminField, sort: { name: 1 }, limit: 1 });
+  return Groups.find({ _id }, { fields: Groups.adminFields, sort: { name: 1 }, limit: 1 });
 });
 
 // publish one group and all users associated with given role

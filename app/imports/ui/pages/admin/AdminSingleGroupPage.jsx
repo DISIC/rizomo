@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import i18n from 'meteor/universe:i18n';
 import {
@@ -22,11 +22,13 @@ import slugify from 'slugify';
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 import { useHistory } from 'react-router-dom';
+import { Roles } from 'meteor/alanning:roles';
 
 import Spinner from '../../components/system/Spinner';
 import { createGroup, updateGroup } from '../../../api/groups/methods';
 import Groups from '../../../api/groups/groups';
 import GroupsUsersList from '../../components/admin/GroupUsersList';
+import { Context } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +85,9 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const [content, setContent] = useState('');
   const history = useHistory();
   const classes = useStyles();
+
+  const [{ userId }] = useContext(Context);
+  const isAdmin = Roles.userIsInRole(userId, 'admin', params._id);
 
   useEffect(() => {
     if (params._id && group._id && loading) {
@@ -146,7 +151,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
         msg.error(error.message);
       } else {
         msg.success(i18n.__('api.methods.operationSuccessMsg'));
-        history.push('/admingroups');
+        history.goBack();
       }
     });
   };
@@ -173,6 +178,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               variant="outlined"
               fullWidth
               margin="normal"
+              disabled={!isAdmin}
             />
             <TextField
               onChange={onUpdateField}
@@ -188,7 +194,14 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               <InputLabel htmlFor="type" id="type-label">
                 {i18n.__('pages.AdminSingleGroupPage.type')}
               </InputLabel>
-              <Select labelId="type-label" id="type" name="type" value={groupData.type} onChange={onUpdateField}>
+              <Select
+                labelId="type-label"
+                id="type"
+                name="type"
+                value={groupData.type}
+                onChange={onUpdateField}
+                disabled={!isAdmin}
+              >
                 {Object.keys(Groups.typeLabels).map((val) => (
                   <MenuItem key={val} value={val}>
                     {i18n.__(Groups.typeLabels[val])}
@@ -214,15 +227,15 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               // user management is not possible when creating a new group
               <>
                 <Tabs value={tabId} onChange={handleChangeTab} indicatorColor="primary" textColor="primary" centered>
-                  <Tab label={i18n.__('api.groups.labels.candidates')} />
+                  {groupData.type === 5 && <Tab label={i18n.__('api.groups.labels.candidates')} />}
                   <Tab label={i18n.__('api.groups.labels.members')} />
                   <Tab label={i18n.__('api.groups.labels.animators')} />
                   <Tab label={i18n.__('api.groups.labels.admins')} />
                 </Tabs>
-                <TabPanel value={tabId} index={0} userRole="candidate" groupId={group._id} />
-                <TabPanel value={tabId} index={1} userRole="member" groupId={group._id} />
-                <TabPanel value={tabId} index={2} userRole="animator" groupId={group._id} />
-                <TabPanel value={tabId} index={3} userRole="admin" groupId={group._id} />
+                {groupData.type === 5 && <TabPanel value={tabId} index={0} userRole="candidate" groupId={group._id} />}
+                <TabPanel value={tabId} index={groupData.type === 5 ? 1 : 0} userRole="member" groupId={group._id} />
+                <TabPanel value={tabId} index={groupData.type === 5 ? 2 : 1} userRole="animator" groupId={group._id} />
+                <TabPanel value={tabId} index={groupData.type === 5 ? 3 : 2} userRole="admin" groupId={group._id} />
               </>
             ) : null}
             <div className={classes.buttonGroup}>
@@ -230,7 +243,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                 {params._id ? i18n.__('pages.AdminSingleGroupPage.update') : i18n.__('pages.AdminSingleGroupPage.save')}
               </Button>
 
-              <Button variant="contained" onClick={() => history.push('/admingroups')}>
+              <Button variant="contained" onClick={() => history.goBack()}>
                 {i18n.__('pages.AdminSingleGroupPage.cancel')}
               </Button>
             </div>

@@ -36,13 +36,14 @@
       "unknownGroup": "Le groupe n'existe pas.",
       "adminGroupNeeded": "Vous n'avez pas les droits d'administration sur ce groupe.",
       "moderatedGroupOnly": "Cette action est possible seulement sur un groupe modéré.",
+      "userNotFound": "Utilisateur non retrouvé",
       "types": {
         "open": "ouvert",
         "moderated": "modéré",
         "private": "réservé"
       },
       "labels": {
-        "id": "Id de Label",
+        "id": "Id de Groupe",
         "name": "Nom",
         "slug": "Slug",
         "desciption": "Description",
@@ -175,6 +176,7 @@
       "favButtonLabelNoFav": "Supprimer de votre espace personnel",
       "favButtonLabelFav": "Ajouter à votre espace personnel",
       "singleGroupButtonLabel": "Détails du groupe",
+      "manageGroupButtonLabel": "Administrer ce groupe",
       "joinPublicGroupButtonLabel": "Rejoindre le groupe",
       "askToJoinModerateGroupButtonLabel": "Demander à rejoindre",
       "groupMember": "Membre",

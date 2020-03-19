@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
@@ -8,9 +8,11 @@ import i18n from 'meteor/universe:i18n';
 import {
   Button, makeStyles, Collapse, IconButton,
 } from '@material-ui/core';
+import { Roles } from 'meteor/alanning:roles';
 import setMaterialTableLocalization from '../initMaterialTableLocalization';
 import UserFinder from './UserFinder';
 import Groups from '../../../api/groups/groups';
+import { Context } from '../../contexts/context';
 
 const useStyles = makeStyles(() => ({
   adduser: {
@@ -58,6 +60,16 @@ const GroupsUsersList = (props) => {
     emptyRowsWhenPaging: false,
   };
 
+  const [{ userId }] = useContext(Context);
+  const isAdmin = Roles.userIsInRole(userId, 'admin', groupId);
+
+  const unknownUser = {
+    username: `<${i18n.__('api.groups.userNotFound')}>`,
+    firstName: '---',
+    lastName: '---',
+    emails: [{ address: '---', verified: false }],
+  };
+
   const [data, setData] = useState([]);
   const [title, setTitle] = useState('');
   const [user, setUser] = useState(null);
@@ -74,10 +86,25 @@ const GroupsUsersList = (props) => {
     });
   };
 
+  function userDeletable(userData) {
+    if (userRole === 'admin' || userRole === 'animator') {
+      // can only remove self if not admin
+      return isAdmin || userData._id === userId;
+    }
+    return true;
+  }
+
   useEffect(() => {
     if (ready === true) {
       const usersField = `${userRole}s`;
-      setData(group[usersField].map((userId) => Meteor.users.findOne(userId)));
+      const users = {};
+      Meteor.users
+        .find()
+        .fetch()
+        .forEach((entry) => {
+          users[entry._id] = entry;
+        });
+      setData(group[usersField].map((uId) => users[uId] || { ...unknownUser, _id: uId }));
       setTitle(i18n.__('components.GroupUsersList.title'));
     } else {
       setTitle(i18n.__('components.GroupUsersList.loadingTitle'));
@@ -112,7 +139,12 @@ const GroupsUsersList = (props) => {
     <>
       <Collapse in={showSearch} collapsedHeight={0}>
         <div className={classes.adduser}>
-          <UserFinder onSelected={setUser} hidden={!showSearch} exclude={{ groupId, role: userRole }} />
+          <UserFinder
+            onSelected={setUser}
+            hidden={!showSearch}
+            exclude={{ groupId, role: userRole }}
+            opened={showSearch}
+          />
           <Button variant="contained" disabled={!user} color="primary" onClick={addUser}>
             {i18n.__('components.GroupUsersList.addUserButton')}
           </Button>
@@ -130,6 +162,7 @@ const GroupsUsersList = (props) => {
         localization={setMaterialTableLocalization('components.GroupUsersList')}
         actions={actions}
         editable={{
+          isDeletable: (rowData) => userDeletable(rowData),
           onRowDelete: (oldData) => new Promise((resolve, reject) => {
             Meteor.call(
               removeMethods[userRole],

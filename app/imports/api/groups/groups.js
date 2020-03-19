@@ -106,7 +106,7 @@ Groups.allPublicFields = {
   ...Groups.publicFields,
 };
 
-Groups.adminField = {
+Groups.adminFields = {
   admins: 1,
   animators: 1,
   members: 1,

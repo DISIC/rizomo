@@ -99,6 +99,7 @@ describe('groups', function () {
     let groupId;
     let group2Id;
     let group3Id;
+    let group4Id;
     let moderatedGroupId;
     let closedGroupId;
     let userId;
@@ -148,10 +149,12 @@ describe('groups', function () {
       Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
       // Create a group owned by userId
       groupId = Factory.create('group', { owner: userId })._id;
+      setAdminOf._execute({ userId: adminId }, { userId, groupId });
       // Create a group owned by random user and set userId as admin
       group2Id = Factory.create('group', { owner: Random.id() })._id;
       group3Id = Factory.create('group', { owner: Random.id() })._id;
-      Factory.create('group', { name: 'group4', owner: userId });
+      group4Id = Factory.create('group', { name: 'group4', owner: userId })._id;
+      setAdminOf._execute({ userId: adminId }, { userId, groupId: group4Id });
       // create moderated/closed groups
       moderatedGroupId = Factory.create('group', { type: 5, owner: Random.id() })._id;
       closedGroupId = Factory.create('group', { type: 10, owner: Random.id() })._id;

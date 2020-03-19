@@ -77,27 +77,9 @@ function MainLayout() {
                 <Route exact path="/groups" component={GroupsPage} />
                 <Route exact path="/groups/:slug" component={SingleGroupPage} />
                 <Route exact path="/groups/:slug/addressbook" component={AddressBook} />
-                <AdminRoute
-                  exact
-                  path="/admingroups"
-                  component={AdminGroupsPage}
-                  userId={userId}
-                  loadingUser={loadingUser}
-                />
-                <AdminRoute
-                  exact
-                  path="/admingroups/new"
-                  component={AdminSingleGroupPage}
-                  userId={userId}
-                  loadingUser={loadingUser}
-                />
-                <AdminRoute
-                  exact
-                  path="/admingroups/:_id"
-                  component={AdminSingleGroupPage}
-                  userId={userId}
-                  loadingUser={loadingUser}
-                />
+                <Route exact path="/admingroups" component={AdminGroupsPage} />
+                <Route exact path="/admingroups/new" component={AdminSingleGroupPage} />
+                <Route exact path="/admingroups/:_id" component={AdminSingleGroupPage} />
                 <AdminRoute
                   exact
                   path="/adminservices"
