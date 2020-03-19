@@ -93,12 +93,20 @@ export const updateGroup = new ValidatedMethod({
       throw new Meteor.Error('api.groups.updateGroup.unknownGroup', i18n.__('api.groups.unknownGroup'));
     }
     // check if current user has admin rights on group (or global admin)
-    const isAdmin = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin', groupId);
-    const authorized = isAdmin || this.userId === group.owner;
+    const isAllowed = isActive(this.userId) && Roles.userIsInRole(this.userId, ['admin', 'animator'], groupId);
+    const authorized = isAllowed || this.userId === group.owner;
     if (!authorized) {
       throw new Meteor.Error('api.groups.updateGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
-    Groups.update({ _id: groupId }, { $set: data });
+    let groupData = {};
+    if (!Roles.userIsInRole(this.userId, 'admin', groupId)) {
+      // animator can only update description and content
+      if (data.description) groupData.description = data.description;
+      if (data.content) groupData.content = data.content;
+    } else {
+      groupData = { ...data };
+    }
+    Groups.update({ _id: groupId }, { $set: groupData });
   },
 });
 

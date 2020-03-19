@@ -17,6 +17,7 @@ import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
 import ClearIcon from '@material-ui/icons/Clear';
+import EditIcon from '@material-ui/icons/Edit';
 import { Context } from '../../contexts/context';
 import Groups from '../../../api/groups/groups';
 import Services from '../../../api/services/services';
@@ -46,6 +47,10 @@ const useStyles = (member, candidate, type) => makeStyles((theme) => ({
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
     marginBottom: theme.spacing(3),
+  },
+  actionButtons: {
+    flexDirection: 'inherit',
+    alignItems: 'flex-end',
   },
   titleContainer: {
     display: 'flex',
@@ -98,6 +103,16 @@ const useStyles = (member, candidate, type) => makeStyles((theme) => ({
       backgroundColor: member || candidate ? null : theme.palette.tertiary.main,
     },
   },
+  buttonAdmin: {
+    textTransform: 'none',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.tertiary.main,
+    fontWeight: 'bold',
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.tertiary.main,
+    },
+  },
   fab: {},
   avatar: {
     backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
@@ -113,6 +128,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
   const [openedContent, toggleOpenedContent] = useState(false);
   const member = Roles.userIsInRole(userId, ['member', 'animator'], group._id);
   const candidate = Roles.userIsInRole(userId, ['candidate'], group._id);
+  const admin = Roles.userIsInRole(userId, ['admin', 'animator'], group._id);
   const classes = useStyles(member, candidate, type)();
 
   const handleOpenedContent = () => {
@@ -196,16 +212,29 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
             </div>
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.favoriteButton}>
-            <Button
-              startIcon={icon()}
-              className={classes.buttonText}
-              size="large"
-              variant={member || candidate ? 'text' : 'contained'}
-              disableElevation={member || candidate}
-              onClick={member || candidate ? null : handleJoinGroup}
-            >
-              {text()}
-            </Button>
+            <Grid container className={classes.actionButtons} spacing={1}>
+              <Grid item>
+                <Button
+                  startIcon={icon()}
+                  className={classes.buttonText}
+                  size="large"
+                  variant={member || candidate ? 'text' : 'contained'}
+                  disableElevation={member || candidate}
+                  onClick={member || candidate ? null : handleJoinGroup}
+                >
+                  {text()}
+                </Button>
+              </Grid>
+              <Grid item>
+                {admin && (
+                  <Link to={`/admingroups/${group._id}`}>
+                    <Button startIcon={<EditIcon />} className={classes.buttonAdmin} size="large" variant="contained">
+                      {i18n.__('components.GroupDetails.manageGroupButtonLabel')}
+                    </Button>
+                  </Link>
+                )}
+              </Grid>
+            </Grid>
           </Grid>
 
           <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>

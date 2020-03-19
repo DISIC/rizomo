@@ -36,13 +36,14 @@
       "unknownGroup": "Group does not exist.",
       "adminGroupNeeded": "You don't have admin rights on this group.",
       "moderatedGroupOnly": "This action is available for moderated group only.",
+      "userNotFound": "User not found",
       "types": {
         "open": "open",
         "moderated": "moderated",
         "private": "private"
       },
       "labels": {
-        "id": "Label Id",
+        "id": "Group Id",
         "name": "Name",
         "slug": "Slug",
         "desciption": "Description",
@@ -175,6 +176,7 @@
       "favButtonLabelNoFav": "Remove from your personal space",
       "favButtonLabelFav": "Add to your personal space",
       "singleGroupButtonLabel": "Learn more",
+      "manageGroupButtonLabel": "Manage this group",
       "joinPublicGroupButtonLabel": "Join the public group",
       "askToJoinModerateGroupButtonLabel": "Request to join the group",
       "groupMember": "Member",

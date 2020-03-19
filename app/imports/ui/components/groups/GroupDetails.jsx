@@ -15,6 +15,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
+import EditIcon from '@material-ui/icons/Edit';
 
 import {
   Button, CardHeader, Avatar, IconButton,
@@ -114,7 +115,7 @@ const useStyles = ({ type }, member, candidate, isShort) => makeStyles((theme) =
 }));
 
 function GroupDetails({
-  group = {}, isShort, member, candidate,
+  group = {}, isShort, member, candidate, admin,
 }) {
   const { type } = group;
   const [{ userId }] = useContext(Context);
@@ -219,6 +220,18 @@ function GroupDetails({
           >
             {text()}
           </Button>
+          {admin && (
+            <Tooltip
+              title={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
+              aria-label={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
+            >
+              <Link to={`/admingroups/${group._id}`}>
+                <IconButton color="primary">
+                  <EditIcon />
+                </IconButton>
+              </Link>
+            </Tooltip>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -230,6 +243,7 @@ GroupDetails.propTypes = {
   isShort: PropTypes.bool.isRequired,
   member: PropTypes.bool.isRequired,
   candidate: PropTypes.bool.isRequired,
+  admin: PropTypes.bool.isRequired,
 };
 
 export default GroupDetails;

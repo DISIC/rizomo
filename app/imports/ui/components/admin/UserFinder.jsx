@@ -9,7 +9,9 @@ import i18n from 'meteor/universe:i18n';
 import { InputAdornment } from '@material-ui/core';
 import debounce from '../../utils/debounce';
 
-function UserFinder({ onSelected, hidden, exclude }) {
+function UserFinder({
+  onSelected, hidden, exclude, opened,
+}) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [filter, setFilter] = useState('');
@@ -26,6 +28,10 @@ function UserFinder({ onSelected, hidden, exclude }) {
       }
     });
   }
+
+  React.useEffect(() => {
+    setOpen(opened);
+  }, [opened]);
 
   const debouncedSearchUsers = debounce(searchUsers, 500);
 
@@ -91,12 +97,14 @@ function UserFinder({ onSelected, hidden, exclude }) {
 UserFinder.defaultProps = {
   hidden: false,
   exclude: null,
+  opened: false,
 };
 
 UserFinder.propTypes = {
   onSelected: PropTypes.func.isRequired,
   hidden: PropTypes.bool,
   exclude: PropTypes.objectOf(PropTypes.string),
+  opened: PropTypes.bool,
 };
 
 export default UserFinder;

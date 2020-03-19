@@ -18,12 +18,15 @@ export const adminMenu = [
     content: 'menuAdminCategories',
   },
   {
-    path: '/admingroups',
-    content: 'menuAdminGroups',
-  },
-  {
     path: '/usersvalidation',
     content: 'menuAdminUserValidation',
+  },
+];
+
+export const userMenu = [
+  {
+    path: '/admingroups',
+    content: 'menuAdminGroups',
   },
 ];
 
@@ -38,8 +41,14 @@ const MainMenu = ({ user = {} }) => {
     history.push(path);
     setAnchorEl(null);
   };
+  let menu;
+  if (isAdmin) {
+    menu = [...userMenu, ...adminMenu];
+  } else {
+    menu = [...userMenu];
+  }
   const T = i18n.createComponent('components.MainMenu');
-  const currentLink = adminMenu.find((link) => {
+  const currentLink = menu.find((link) => {
     if (link.path === pathname || pathname.search(link.path) > -1) {
       return true;
     }
@@ -55,7 +64,7 @@ const MainMenu = ({ user = {} }) => {
         style={{ textTransform: 'none' }}
         endIcon={<ExpandMoreIcon />}
       >
-        {user.firstName}
+        {user.firstName || ''}
       </Button>
       <Menu
         id="main-menu"
@@ -77,20 +86,19 @@ const MainMenu = ({ user = {} }) => {
           <T>menuProfileLabel</T>
         </MenuItem>
 
-        <MenuItem onClick={Meteor.logout}>
+        <MenuItem onClick={() => Meteor.logout()}>
           <T>menuLogoutLabel</T>
         </MenuItem>
-        {isAdmin && <Divider />}
-        {isAdmin
-          && adminMenu.map((item) => (
-            <MenuItem
-              key={item.path}
-              onClick={() => handleMenuClick(item.path)}
-              selected={currentLink ? currentLink.path === item.path : false}
-            >
-              <T>{item.content}</T>
-            </MenuItem>
-          ))}
+        <Divider />
+        {menu.map((item) => (
+          <MenuItem
+            key={item.path}
+            onClick={() => handleMenuClick(item.path)}
+            selected={currentLink ? currentLink.path === item.path : false}
+          >
+            <T>{item.content}</T>
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );

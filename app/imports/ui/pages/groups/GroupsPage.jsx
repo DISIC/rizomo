@@ -73,6 +73,8 @@ function GroupsPage() {
   );
   const memberGroups = useTracker(() => Roles.getScopesForUser(userId, ['member', 'animator']));
   const candidateGroups = useTracker(() => Roles.getScopesForUser(userId, ['candidate']));
+  const managedGroups = useTracker(() => Roles.getScopesForUser(userId, ['animator', 'admin']));
+  const isAdmin = Roles.userIsInRole(userId, 'admin');
 
   const inputRef = useRef(null);
   const handleChangePage = (event, value) => {
@@ -221,6 +223,7 @@ function GroupsPage() {
                   isShort={!isMobile && viewMode === 'list'}
                   candidate={candidateGroups.includes(group._id)}
                   member={memberGroups.includes(group._id)}
+                  admin={isAdmin || managedGroups.includes(group._id)}
                 />
               </Grid>
             ))}
