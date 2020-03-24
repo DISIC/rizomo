@@ -140,6 +140,26 @@ export const setUsername = new ValidatedMethod({
   },
 });
 
+export const checkUsername = new ValidatedMethod({
+  name: 'users.checkUsername',
+  validate: new SimpleSchema({
+    username: { type: String, min: 1, label: getLabel('api.users.labels.username') },
+  }).validator(),
+
+  run({ username }) {
+    // check that user is logged in
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.setUsername.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    // return false if another user as an email or username matching username
+    let user = Accounts.findUserByUsername(username, { fields: { _id: 1 } });
+    if (user && user._id !== this.userId) return false;
+    user = Accounts.findUserByEmail(username, { fields: { _id: 1 } });
+    if (user && user._id !== this.userId) return false;
+    return true;
+  },
+});
+
 export const setStructure = new ValidatedMethod({
   name: 'users.setStructure',
   validate: new SimpleSchema({

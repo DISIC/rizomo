@@ -230,6 +230,13 @@
       "submitButtonLabel": "Inscription",
       "createError": "Erreur: problème lors de la création du compte"
     },
+    "ProfilePage": {
+      "title": "Mes préférences",
+      "useEmail": "Utiliser mon email",
+      "nameError": "Ce pseudonyme n'est pas disponible",
+      "update": "Mettre à jour",
+      "reset": "Réinitialiser"
+    },
     "NotFound": {
       "backButtonLabel": "Retour",
       "message": "Page inexistante !"
