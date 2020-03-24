@@ -6,7 +6,7 @@ import {
 import PropTypes from 'prop-types';
 import { Context } from '../../contexts/context';
 
-const LanguageSwitcher = ({ topbar }) => {
+const LanguageSwitcher = ({ topbar, relative }) => {
   const allLanguages = i18n.getLanguages();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [{ language }, dispatch] = useContext(Context);
@@ -22,9 +22,9 @@ const LanguageSwitcher = ({ topbar }) => {
   const useStyles = makeStyles(() => ({
     switcher: {
       color: 'red',
-      position: topbar ? null : 'absolute',
-      right: topbar ? null : 60,
-      bottom: topbar ? null : 30,
+      position: topbar || relative ? null : 'absolute',
+      right: topbar || relative ? null : 60,
+      bottom: topbar || relative ? null : 30,
     },
     flag: {
       height: 15,
@@ -70,8 +70,10 @@ export default LanguageSwitcher;
 
 LanguageSwitcher.defaultProps = {
   topbar: false, // trigger if the switcher is in the topbar or not
+  relative: false, // trigger if the switcher position is absolute or relative
 };
 
 LanguageSwitcher.propTypes = {
   topbar: PropTypes.bool,
+  relative: PropTypes.bool,
 };

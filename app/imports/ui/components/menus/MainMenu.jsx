@@ -82,7 +82,7 @@ const MainMenu = ({ user = {} }) => {
           horizontal: 'center',
         }}
       >
-        <MenuItem onClick={() => console.log('go profile')} selected={pathname === '/profile'}>
+        <MenuItem onClick={() => handleMenuClick('/profile')} selected={pathname === '/profile'}>
           <T>menuProfileLabel</T>
         </MenuItem>
 

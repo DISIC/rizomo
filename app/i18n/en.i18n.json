@@ -230,6 +230,13 @@
       "submitButtonLabel": "Sign Up",
       "createError": "Error: impossible to create this account"
     },
+    "ProfilePage": {
+      "title": "My settings",
+      "useEmail": "Use my email",
+      "nameError": "Name not available",
+      "update": "Update",
+      "reset": "Reset"
+    },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
       "title": "Discover the apps",
