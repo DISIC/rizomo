@@ -12,9 +12,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
     padding: '16px',
-  },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/1600x900/?nature)',
+    backgroundImage: 'url(images/bg-laboite.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundColor: theme.palette.grey[50],
     backgroundSize: 'cover',
@@ -48,7 +46,7 @@ export default function SignLayout() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid container item xs={false} sm={4} md={7} className={classes.image} spacing={4}>
+      <Grid container item xs={false} sm={4} md={7} spacing={4}>
         <Grid item md={12}>
           <div className={classes.mainFeaturedPostContent} />
         </Grid>
