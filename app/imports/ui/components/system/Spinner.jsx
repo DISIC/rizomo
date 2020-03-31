@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const divStyle = {
   width: '100%',
   textAlign: 'center',
-  marginTop: 60,
+  marginTop: 50,
 };
 
 const divStyleFull = {

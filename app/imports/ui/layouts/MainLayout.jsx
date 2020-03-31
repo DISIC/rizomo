@@ -2,6 +2,7 @@ import React, { useContext, lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 // components
 import TopBar from '../components/menus/TopBar';
@@ -20,8 +21,6 @@ import PersonalSpace from '../pages/PersonalSpace';
 import SingleGroupPage from '../pages/groups/SingleGroupPage';
 import AddressBook from '../pages/groups/AddressBook';
 import ProfilePage from '../pages/system/ProfilePage';
-import ArticlesPage from '../pages/articles/ArticlesPage';
-import EditArticlePage from '../pages/articles/EditArticlePage';
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -45,7 +44,7 @@ const useStyles = (isMobile) => makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginTop: 60,
+    marginTop: 50,
     marginBottom: isMobile ? 100 : 50,
   },
   contentShift: {
@@ -65,6 +64,7 @@ function MainLayout() {
 
   return (
     <div className={classes.root}>
+      <CssBaseline />
       <TopBar />
       {loadingUser ? (
         <Spinner full />
@@ -76,9 +76,6 @@ function MainLayout() {
                 <Route exact path="/" component={PersonalSpace} />
                 <Route exact path="/profile" component={ProfilePage} />
                 <Route exact path="/services" component={ServicesPage} />
-                <Route exact path="/publications" component={ArticlesPage} />
-                <Route exact path="/publications/new" component={EditArticlePage} />
-                <Route exact path="/publications/:slug" component={EditArticlePage} />
                 <Route exact path="/services/:slug" component={SingleServicePage} />
                 <Route exact path="/groups" component={GroupsPage} />
                 <Route exact path="/groups/:slug" component={SingleGroupPage} />
