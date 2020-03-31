@@ -21,6 +21,8 @@ import PersonalSpace from '../pages/PersonalSpace';
 import SingleGroupPage from '../pages/groups/SingleGroupPage';
 import AddressBook from '../pages/groups/AddressBook';
 import ProfilePage from '../pages/system/ProfilePage';
+import ArticlesPage from '../pages/articles/ArticlesPage';
+import EditArticlePage from '../pages/articles/EditArticlePage';
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -75,6 +77,9 @@ function MainLayout() {
                 <Route exact path="/" component={PersonalSpace} />
                 <Route exact path="/profile" component={ProfilePage} />
                 <Route exact path="/services" component={ServicesPage} />
+                <Route exact path="/publications" component={ArticlesPage} />
+                <Route exact path="/publications/new" component={EditArticlePage} />
+                <Route exact path="/publications/:slug" component={EditArticlePage} />
                 <Route exact path="/services/:slug" component={SingleServicePage} />
                 <Route exact path="/groups" component={GroupsPage} />
                 <Route exact path="/groups/:slug" component={SingleGroupPage} />

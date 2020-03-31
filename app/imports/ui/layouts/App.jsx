@@ -1,5 +1,5 @@
 import React, { useContext, Suspense, lazy } from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import SignLayout from './SignLayout';
@@ -9,6 +9,8 @@ import Spinner from '../components/system/Spinner';
 import MsgHandler from '../components/system/MsgHandler';
 import DynamicStore, { Context } from '../contexts/context';
 import lightTheme from '../themes/light';
+import PublicArticlePage from '../pages/articles/PublicArticlePage';
+import PublicArticleDetailsPage from '../pages/articles/PublicArticleDetailsPage';
 
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));
@@ -24,6 +26,8 @@ function App() {
       <Switch>
         <PublicRoute exact path="/signin" component={SignLayout} {...state} />
         {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
+        <Route exact path="/public/:userId" component={PublicArticlePage} />
+        <Route exact path="/public/:userId/:slug" component={PublicArticleDetailsPage} />
         <ProtectedRoute path="/" component={MainLayout} {...state} />
       </Switch>
     </Suspense>

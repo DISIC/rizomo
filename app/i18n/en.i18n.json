@@ -108,6 +108,7 @@
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
       "menuServices": "Applications",
+      "menuPublications": "Publications",
       "menuGroupes": "All Groups",
       "menuGroupesMobile": "Groups",
       "menuAdminServices": "Service Management",
@@ -190,6 +191,13 @@
       "candidateSent": "The admin will be notified of your request",
       "alreadyCandidate": "You already sent a requet to the group",
       "candidateCancel": "Your request has been canceled"
+    },
+    "ArticleDetails": {
+      "editArticleButtonLabel": "Edit this publication",
+      "open": "Open this publication",
+      "publicButton": "Open this publication public page",
+      "publishedOn": "Published on the",
+      "noDescription": "There is no description for this publication"
     }
   },
   "validatejs": {
@@ -381,6 +389,31 @@
       "sendEmail": "Send an email to",
       "back": "Back to the group",
       "searchText": "Which user are you looking for ?"
+    },
+    "ArticlesPage": {
+      "title": "Your publications",
+      "openPublicPage": "Your public page",
+      "searchText": "What are you looking for ?"
+    },
+    "EditArticlePage": {
+      "title": "Edit this publication",
+      "creationTitle": "New publication",
+      "successUpdate": "Publication updated successfully",
+      "successCreate": "Publication created successfully",
+      "titleLabel": "Title",
+      "slugLabel": "URL to the publication's page",
+      "descriptionLabel": "Short description of this publication",
+      "contentLabel": "Content of the publication",
+      "update": "Update",
+      "save": "Create",
+      "cancel": "Cancel"
+    },
+    "PublicArticlePage": {
+      "title": "Publications by",
+      "searchText": "What are you looking for ?"
+    },
+    "PublicArticleDetailsPage": {
+      "backToList": "Back to the list"
     }
   },
   "layouts": {
