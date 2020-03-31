@@ -124,6 +124,44 @@ export const findUsers = new ValidatedMethod({
   },
 });
 
+export const removeUser = new ValidatedMethod({
+  name: 'users.removeUser',
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+  }).validator(),
+
+  run({ userId }) {
+    // check if current user has global admin rights or self removal
+    const authorized = isActive(this.userId) && (Roles.userIsInRole(this.userId, 'admin') || userId === this.userId);
+    if (!authorized) {
+      throw new Meteor.Error('api.users.setAdmin.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    // check user existence
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.setAdmin.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    // delete role assignements and remove from groups
+    const groups = Roles.getScopesForUser(userId);
+    groups.forEach((groupId) => {
+      Groups.update(
+        { _id: groupId },
+        {
+          $pull: {
+            admins: userId,
+            members: userId,
+            animators: userId,
+            candidates: userId,
+          },
+        },
+      );
+    });
+    Meteor.roleAssignment.remove({ 'user._id': userId });
+    // FIXME : delete personalspace when available
+    Meteor.users.remove({ _id: userId });
+  },
+});
+
 export const setUsername = new ValidatedMethod({
   name: 'users.setUsername',
   validate: new SimpleSchema({
@@ -255,6 +293,11 @@ export const unsetAdmin = new ValidatedMethod({
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
     if (!authorized) {
       throw new Meteor.Error('api.users.unsetAdmin.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+    // check that user is not the only existing admin
+    const admins = Roles.getUsersInRole('admin').fetch();
+    if (admins.length === 1) {
+      throw new Meteor.Error('api.users.unsetAdmin.lastAdmin', i18n.__('api.users.lastAdminError'));
     }
     // check user existence
     const user = Meteor.users.findOne({ _id: userId });
@@ -626,6 +669,7 @@ const LISTS_METHODS = _.pluck(
     setUsername,
     setStructure,
     setActive,
+    removeUser,
     setAdminOf,
     unsetAdminOf,
     setAnimatorOf,

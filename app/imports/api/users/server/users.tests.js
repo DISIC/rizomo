@@ -151,6 +151,16 @@ describe('users', function () {
         unsetAdmin._execute({ userId: adminId }, { userId });
         assert.equal(Roles.userIsInRole(userId, 'admin'), false);
       });
+      it('last admin user can not unset himself as admin', function () {
+        // Throws if non admin user, or logged out user
+        assert.throws(
+          () => {
+            unsetAdmin._execute({ userId: adminId }, { userId: adminId });
+          },
+          Meteor.Error,
+          /api.users.unsetAdmin.lastAdmin/,
+        );
+      });
       it('only global admin can set/unset a user as admin', function () {
         // Throws if non admin user, or logged out user
         assert.throws(

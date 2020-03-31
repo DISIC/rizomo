@@ -18,6 +18,10 @@ export const adminMenu = [
     content: 'menuAdminCategories',
   },
   {
+    path: '/adminusers',
+    content: 'menuAdminUsers',
+  },
+  {
     path: '/usersvalidation',
     content: 'menuAdminUserValidation',
   },
