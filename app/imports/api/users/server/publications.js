@@ -3,6 +3,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { FindFromPublication } from 'meteor/percolate:find-from-publication';
 import { isActive } from '../../utils';
 import Groups from '../../groups/groups';
+import Articles from '../../articles/articles';
 
 // publish additional fields for current user
 Meteor.publish('userData', function publishUserData() {
@@ -100,14 +101,52 @@ FindFromPublication.publish('users.group', function usersFromGroup({
     ...rest,
   });
 });
-// count all users from a group
+
+// build query for all users who published articles
+const queryUsersPublishers = ({ search }) => {
+  const allArticles = Articles.find({}, { fields: { userId: 1 } });
+  const ids = allArticles.map(({ userId }) => userId);
+  const regex = new RegExp(search, 'i');
+  const fieldsToSearch = ['firstName', 'lastName', 'emails.address', 'username'];
+  const searchQuery = fieldsToSearch.map((field) => ({ [field]: { $regex: regex } }));
+  return {
+    _id: { $in: ids },
+    $or: searchQuery,
+  };
+};
+
+// publish all users who published articles
+FindFromPublication.publish('users.publishers', ({
+  page, itemPerPage, search, ...rest
+}) => {
+  const query = queryUsersPublishers({ search });
+
+  return Meteor.users.find(query, {
+    fields: Meteor.users.publicFields,
+    skip: itemPerPage * (page - 1),
+    limit: itemPerPage,
+    ...rest,
+  });
+});
+
 Meteor.methods({
+  // count all users from a group
   'get_users.group_count': ({ search, slug }) => {
     const query = queryUsersFromGroup({ slug, search });
 
     return Meteor.users
       .find(query, {
         sort: { lastName: 1 },
+      })
+      .count();
+  },
+  // count all users who published
+  'get_users.publishers_count': ({ search }) => {
+    const query = queryUsersPublishers({ search });
+
+    return Meteor.users
+      .find(query, {
+        sort: { firstName: 1, lastName: 1 },
       })
       .count();
   },

@@ -8,3 +8,5 @@ import '../../api/categories/methods';
 import '../../api/categories/server/publications';
 import '../../api/languages/methods';
 import '../../api/files/server/methods';
+import '../../api/articles/methods';
+import '../../api/articles/server/publications';

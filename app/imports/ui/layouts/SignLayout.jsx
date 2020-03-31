@@ -1,5 +1,4 @@
 import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { Route, Switch } from 'react-router-dom';
@@ -45,7 +44,6 @@ export default function SignLayout() {
 
   return (
     <Grid container component="main" className={classes.root}>
-      <CssBaseline />
       <Grid container item xs={false} sm={4} md={7} spacing={4}>
         <Grid item md={12}>
           <div className={classes.mainFeaturedPostContent} />
