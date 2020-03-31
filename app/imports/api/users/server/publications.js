@@ -112,3 +112,43 @@ Meteor.methods({
       .count();
   },
 });
+
+// build query for all users from group
+const queryUsersAdmin = ({ search }) => {
+  const regex = new RegExp(search, 'i');
+  const fieldsToSearch = ['firstName', 'lastName', 'emails.address', 'username'];
+  const searchQuery = fieldsToSearch.map((field) => ({ [field]: { $regex: regex } }));
+  return {
+    $or: searchQuery,
+  };
+};
+
+// publish all users from a group
+FindFromPublication.publish('users.admin', function usersAdmin({
+  page, itemPerPage, search, ...rest
+}) {
+  if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin')) {
+    return this.ready();
+  }
+  const query = queryUsersAdmin({ search });
+
+  return Meteor.users.find(query, {
+    fields: Meteor.users.adminFields,
+    skip: itemPerPage * (page - 1),
+    limit: itemPerPage,
+    sort: { lastName: 1 },
+    ...rest,
+  });
+});
+// count all users
+Meteor.methods({
+  'get_users.admin_count': ({ search }) => {
+    const query = queryUsersAdmin({ search });
+
+    return Meteor.users
+      .find(query, {
+        sort: { lastName: 1 },
+      })
+      .count();
+  },
+});

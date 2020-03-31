@@ -12,6 +12,7 @@
       "adminNeeded": "Vous n'êtes pas administrateur.",
       "adminGiven": "Les droits d'administration ont été donnés à cet utilisateur: ",
       "notPermitted": "Vous n'avez pas les droits suffisants.",
+      "lastAdminError": "Impossible de supprimer les droits du dernier administrateur",
       "labels": {
         "id": "Id Utilisateur",
         "username": "Pseudonyme",
@@ -134,6 +135,7 @@
       "menuAdminUserValidation": "Validation des utilisateurs",
       "menuAdminCategories": "Gestion des categories",
       "menuAdminGroups": "Gestion des Groupes",
+      "menuAdminUsers": "Gestion des utilisateurs",
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter"
     },
@@ -309,6 +311,19 @@
         "body_deleteTooltip": "Supprimer ce groupe",
         "body_editRow_deleteText": "Supprimer vraiment ce groupe ?"
       }
+    },
+    "AdminUsersPage": {
+      "searchText": "Quel utilisateur cherchez-vous ?",
+      "admin": "Administrateur",
+      "setAdmin": "Donner les droits d'administrateur",
+      "unsetAdmin": "Enlever les droits d'administrateur",
+      "deleteUser": "Supprimer l'utilisateur",
+      "deleteUserConfirmation": "Supprimer vraiment cet utilisateur ?",
+      "deleteSelfConfirmation": "Vous allez supprimer votre propre compte. Continuer ?",
+      "cancelDelete": "Annuler la suppression",
+      "successSetAdmin": "Droits d'administrateur donnés",
+      "successUnsetAdmin": "Droits d'administateur révoqués",
+      "successDeleteUser": "Utilisateur supprimé"
     },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",

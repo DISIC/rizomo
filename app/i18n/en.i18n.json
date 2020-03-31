@@ -12,6 +12,7 @@
       "adminNeeded": "You don't have admin rights.",
       "adminGiven": "Admin rights have been given to user: ",
       "notPermitted": "You don't have sufficient rights.",
+      "lastAdminError": "Can not remove rights on last admin user",
       "labels": {
         "id": "User Id",
         "username": "User Name",
@@ -131,6 +132,7 @@
     },
     "MainMenu": {
       "menuAdminServices": "Service Management",
+      "menuAdminUsers": "Users Management",
       "menuAdminUserValidation": "User validation",
       "menuAdminCategories": "Categories Management",
       "menuAdminGroups": "Groups Management",
@@ -306,6 +308,19 @@
         "body_deleteTooltip": "Remove this group",
         "body_editRow_deleteText": "Do you really want to delete this group ?"
       }
+    },
+    "AdminUsersPage": {
+      "searchText": "Which user are you looking for ?",
+      "admin": "Administrator",
+      "setAdmin": "Give admin rights",
+      "unsetAdmin": "Remove admin rights",
+      "deleteUser": "Remove user",
+      "deleteUserConfirmation": "Do you really want to delete this user ?",
+      "deleteSelfConfirmation": "You are about to delete your own account. Continue ?",
+      "cancelDelete": "Cancel deletion",
+      "successSetAdmin": "admin rights have been granted",
+      "successUnsetAdmin": "admin rights have been revoked",
+      "successDeleteUser": "User deleted"
     },
     "AdminUserValidationPage": {
       "title": "User validation",
