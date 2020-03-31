@@ -110,7 +110,7 @@ const useStyles = (isMobile) => makeStyles((theme) => ({
     zIndex: theme.zIndex.modal,
   },
   categoriesList: {
-    marginTop: 60,
+    marginTop: 50,
   },
   appBarBottom: {
     bottom: 0,

@@ -17,8 +17,6 @@ const initialState = {
   authenticated: false,
   servicePage: {},
   groupPage: {},
-  articlePage: {},
-  publishersPage: {},
   roles: [],
 };
 

@@ -663,17 +663,6 @@ export const setKeycloakId = new ValidatedMethod({
   },
 });
 
-export const findUser = new ValidatedMethod({
-  name: 'users.findUser',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-  }).validator(),
-
-  run({ userId }) {
-    return Meteor.users.findOne({ _id: userId }, { fields: { firstName: 1, lastName: 1, primaryEmail: 1 } });
-  },
-});
-
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
   [
@@ -692,7 +681,6 @@ const LISTS_METHODS = _.pluck(
     favService,
     unfavService,
     findUsers,
-    findUser,
     setLanguage,
     setKeycloakId,
   ],

@@ -109,7 +109,6 @@
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
       "menuServices": "Applications",
-      "menuPublications": "Publications",
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
       "menuAdminServices": "Gestion des Services",
@@ -193,13 +192,6 @@
       "candidateSent": "L'administrateur du groupe va être notifié de votre demande",
       "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe",
       "candidateCancel": "Votre requête a été annulée"
-    },
-    "ArticleDetails": {
-      "editArticleButtonLabel": "Editer cette publication",
-      "open": "Ouvrir cette publication",
-      "publicButton": "Ouvrir la page publique de cette publication",
-      "publishedOn": "Publiée le",
-      "noDescription": "Il n'y a pas de description pour cette publication"
     }
   },
   "validatejs": {
@@ -406,38 +398,6 @@
       "sendEmail": "Envoyer un email à",
       "back": "Retour au groupe",
       "searchText": "Quel utilisateur cherchez-vous ?"
-    },
-    "ArticlesPage": {
-      "title": "Vos publications",
-      "openPublicPage": "Votre page publique",
-      "searchText": "Que recherchez-vous ?"
-    },
-    "EditArticlePage": {
-      "title": "Edition de la publication",
-      "creationTitle": "Nouvelle publication",
-      "successUpdate": "Publication mise à jour avec succès",
-      "successCreate": "Publication créée avec succès",
-      "titleLabel": "Titre",
-      "slugLabel": "URL public de la publication",
-      "descriptionLabel": "Courte description de cette publication",
-      "contentLabel": "Contenu de cette publication",
-      "update": "Mettre à jour",
-      "save": "Créer",
-      "cancel": "Annuler"
-    },
-    "PublicArticlePage": {
-      "title": "Publications de",
-      "searchText": "Que recherchez-vous ?",
-      "goToList": "Voir les auteurs"
-    },
-    "PublicArticleDetailsPage": {
-      "backToList": "Retour à la liste",
-      "goToList": "Aller à la liste"
-    },
-    "PublishersPage": {
-      "title": "Liste des auteurs",
-      "searchText": "Qui recherchez-vous ?",
-      "goToPublications": "Voir les publications de cet auteur"
     }
   },
   "layouts": {

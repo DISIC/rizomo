@@ -21,20 +21,10 @@ const reducer = (state, action) => {
         ...state,
         servicePage: { ...data },
       };
-    case 'articlePage':
-      return {
-        ...state,
-        articlePage: { ...data },
-      };
     case 'groupPage':
       return {
         ...state,
         groupPage: { ...data },
-      };
-    case 'publishersPage':
-      return {
-        ...state,
-        publishersPage: { ...data },
       };
     case 'mobile':
       return {
