@@ -413,7 +413,8 @@
       "searchText": "What are you looking for ?"
     },
     "PublicArticleDetailsPage": {
-      "backToList": "Back to the list"
+      "backToList": "Back to the list",
+      "goToList": "Go to the list"
     }
   },
   "layouts": {

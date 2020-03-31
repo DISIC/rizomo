@@ -108,8 +108,8 @@ function ArticlesPage() {
               </Link>
 
               <Tooltip
-                title={i18n.__('components.ArticlesPage.openPublicPage')}
-                aria-label={i18n.__('components.ArticlesPage.openPublicPage')}
+                title={i18n.__('pages.ArticlesPage.openPublicPage')}
+                aria-label={i18n.__('pages.ArticlesPage.openPublicPage')}
               >
                 <IconButton onClick={() => window.open(`${Meteor.absoluteUrl()}public/${Meteor.userId()}`, '_blank')}>
                   <OpenInNewIcon fontSize="large" />

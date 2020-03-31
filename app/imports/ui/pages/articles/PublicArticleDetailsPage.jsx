@@ -52,11 +52,21 @@ function PublicArticleDetailsPage({
   const classes = useStyles();
   const [user, setUser] = useState({});
 
+  const isFirstRender = history.action === 'POP';
+
   useEffect(() => {
     Meteor.call('users.findUser', { userId }, (error, result) => {
       setUser(result);
     });
   }, []);
+
+  const handleGoList = () => {
+    if (isFirstRender) {
+      history.push(`/public/${userId}`);
+    } else {
+      history.goBack();
+    }
+  };
   if (!ready) {
     return <Spinner />;
   }
@@ -67,8 +77,8 @@ function PublicArticleDetailsPage({
         <Container className={classes.root}>
           <Grid container spacing={4}>
             <Grid item xs={12} sm={12} md={12} className={classes.flex}>
-              <Button color="primary" startIcon={<ArrowBack />} onClick={history.goBack}>
-                {i18n.__('pages.PublicArticleDetailsPage.backToList')}
+              <Button color="primary" startIcon={<ArrowBack />} onClick={handleGoList}>
+                {i18n.__(`pages.PublicArticleDetailsPage.${isFirstRender ? 'goToList' : 'backToList'}`)}
               </Button>
             </Grid>
             <Grid item xs={12} className={isMobile ? null : classes.flex}>

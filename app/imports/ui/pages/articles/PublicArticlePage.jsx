@@ -167,7 +167,7 @@ function PublicArticlePage({
               )}
               {mapList((article) => (
                 <Grid className={classes.gridItem} item key={article._id} md={12}>
-                  <ArticleDetails Page article={article} />
+                  <ArticleDetails publicPage article={article} />
                 </Grid>
               ))}
               {total > ITEM_PER_PAGE && (

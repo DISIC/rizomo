@@ -48,8 +48,6 @@ export const updateArticle = new ValidatedMethod({
   }).validator(),
 
   run({ data, articleId }) {
-    console.log(data);
-    console.log('lol');
     // check article existence
     const article = Articles.findOne({ _id: articleId });
     if (article === undefined) {

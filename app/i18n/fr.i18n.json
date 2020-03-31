@@ -415,7 +415,8 @@
       "searchText": "Que recherchez-vous ?"
     },
     "PublicArticleDetailsPage": {
-      "backToList": "Retour à la liste"
+      "backToList": "Retour à la liste",
+      "goToList": "Aller à la liste"
     }
   },
   "layouts": {
