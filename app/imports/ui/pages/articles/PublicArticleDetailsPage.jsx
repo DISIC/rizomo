@@ -13,7 +13,7 @@ import TopBar from '../../components/menus/TopBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: 50,
+    marginTop: 60,
     marginBottom: theme.spacing(4),
   },
   flex: {

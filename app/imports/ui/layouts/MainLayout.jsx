@@ -2,7 +2,6 @@ import React, { useContext, lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 // components
 import TopBar from '../components/menus/TopBar';
@@ -45,7 +44,7 @@ const useStyles = (isMobile) => makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginTop: 50,
+    marginTop: 60,
     marginBottom: isMobile ? 100 : 50,
   },
   contentShift: {
@@ -65,7 +64,6 @@ function MainLayout() {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <TopBar />
       {loadingUser ? (
         <Spinner full />

@@ -18,6 +18,7 @@ const initialState = {
   servicePage: {},
   groupPage: {},
   articlePage: {},
+  publishersPage: {},
   roles: [],
 };
 

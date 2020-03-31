@@ -31,6 +31,11 @@ const reducer = (state, action) => {
         ...state,
         groupPage: { ...data },
       };
+    case 'publishersPage':
+      return {
+        ...state,
+        publishersPage: { ...data },
+      };
     case 'mobile':
       return {
         ...state,

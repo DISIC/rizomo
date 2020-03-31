@@ -410,11 +410,17 @@
     },
     "PublicArticlePage": {
       "title": "Publications by",
-      "searchText": "What are you looking for ?"
+      "searchText": "What are you looking for ?",
+      "goToList": "See the authors"
     },
     "PublicArticleDetailsPage": {
       "backToList": "Back to the list",
       "goToList": "Go to the list"
+    },
+    "PublishersPage": {
+      "title": "Authors list",
+      "searchText": "Who are you looking for ?",
+      "goToPublications": "See this author's publications"
     }
   },
   "layouts": {

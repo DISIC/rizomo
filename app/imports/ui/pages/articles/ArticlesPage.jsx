@@ -66,6 +66,11 @@ function ArticlesPage() {
   const handleChangePage = (event, value) => {
     changePage(value);
   };
+  useEffect(() => {
+    if (page !== 1) {
+      changePage(1);
+    }
+  }, [search]);
 
   const updateGlobalState = (key, value) => dispatch({
     type: 'articlePage',

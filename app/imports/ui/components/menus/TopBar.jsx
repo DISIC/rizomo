@@ -47,7 +47,7 @@ function TopBar({ publicMenu }) {
 
   return (
     <AppBar position="fixed" className={classes.root}>
-      <Link to="/" className={classes.imgLogo}>
+      <Link to={publicMenu ? '/public' : '/'} className={classes.imgLogo}>
         <img src={LOGO} className={classes.imgLogo} alt="Logo" />
       </Link>
 

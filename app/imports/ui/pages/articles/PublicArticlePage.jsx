@@ -8,9 +8,11 @@ import Container from '@material-ui/core/Container';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import Grid from '@material-ui/core/Grid';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import i18n from 'meteor/universe:i18n';
+import { Link } from 'react-router-dom';
 import {
-  InputAdornment, Typography, Fade, IconButton, Collapse,
+  InputAdornment, Typography, Fade, IconButton, Collapse, Button,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import Articles from '../../../api/articles/articles';
@@ -22,7 +24,7 @@ import TopBar from '../../components/menus/TopBar';
 
 const useStyles = makeStyles(() => ({
   root: {
-    marginTop: 50,
+    marginTop: 60,
   },
   flex: {
     display: 'flex',
@@ -111,6 +113,13 @@ function PublicArticlePage({
       <Fade in>
         <Container className={classes.root}>
           <Grid container spacing={4}>
+            <Grid item xs={12} sm={12} md={12}>
+              <Link to="/public">
+                <Button color="primary" startIcon={<ArrowBack />}>
+                  {i18n.__('pages.PublicArticlePage.goToList')}
+                </Button>
+              </Link>
+            </Grid>
             <Grid item xs={12} className={isMobile ? null : classes.flex}>
               <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
                 {!!user.firstName && `${i18n.__('pages.PublicArticlePage.title')} ${user.firstName} ${user.lastName}`}

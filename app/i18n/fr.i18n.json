@@ -412,11 +412,17 @@
     },
     "PublicArticlePage": {
       "title": "Publications de",
-      "searchText": "Que recherchez-vous ?"
+      "searchText": "Que recherchez-vous ?",
+      "goToList": "Voir les auteurs"
     },
     "PublicArticleDetailsPage": {
       "backToList": "Retour à la liste",
       "goToList": "Aller à la liste"
+    },
+    "PublishersPage": {
+      "title": "Liste des auteurs",
+      "searchText": "Qui recherchez-vous ?",
+      "goToPublications": "Voir les publications de cet auteur"
     }
   },
   "layouts": {
