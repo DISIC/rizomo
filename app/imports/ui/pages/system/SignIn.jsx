@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Fade } from '@material-ui/core';
 import Spinner from '../../components/system/Spinner';
+import AppVersion from '../../components/system/AppVersion';
 
 validate.options = {
   fullMessages: false,
@@ -122,7 +123,7 @@ function SignIn({ loggingIn }) {
           {i18n.__('pages.SignIn.appDescription')}
         </Typography>
         <Typography variant="h6" color="inherit" paragraph>
-          {i18n.__('pages.SignIn.appVersion')}
+          <AppVersion />
         </Typography>
         <form onSubmit={handleSignIn} className={classes.form} noValidate>
           {loggingIn && <Spinner full />}

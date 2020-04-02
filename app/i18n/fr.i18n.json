@@ -192,6 +192,9 @@
       "candidateSent": "L'administrateur du groupe va être notifié de votre demande",
       "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe",
       "candidateCancel": "Votre requête a été annulée"
+    },
+    "AppVersion": {
+      "title": "Version Alpha Test"
     }
   },
   "validatejs": {
