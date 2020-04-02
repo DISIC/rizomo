@@ -192,6 +192,9 @@
       "candidateSent": "The admin will be notified of your request",
       "alreadyCandidate": "You already sent a requet to the group",
       "candidateCancel": "Your request has been canceled"
+    },
+    "AppVersion": {
+      "title": "Test Alpha Version"
     }
   },
   "validatejs": {

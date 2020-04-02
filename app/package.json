@@ -1,6 +1,7 @@
 {
   "name": "app",
   "private": true,
+  "version": "0.0.2",
   "scripts": {
     "start": "meteor --no-release-check --settings ../config/settings.development.json",
     "test": "meteor test --once --driver-package meteortesting:mocha --allow-superuser",

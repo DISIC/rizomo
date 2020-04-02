@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
+import AppVersion from '../system/AppVersion';
 
 export const adminMenu = [
   {
@@ -103,6 +104,10 @@ const MainMenu = ({ user = {} }) => {
             <T>{item.content}</T>
           </MenuItem>
         ))}
+        <Divider />
+        <MenuItem>
+          <AppVersion />
+        </MenuItem>
       </Menu>
     </>
   );
