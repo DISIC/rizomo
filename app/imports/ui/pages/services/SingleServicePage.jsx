@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     height: 100,
     width: 100,
-    boxShadow: theme.shadows[2],
     borderRadius: theme.shape.borderRadius,
   },
   title: {
