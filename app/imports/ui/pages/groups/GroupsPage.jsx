@@ -71,7 +71,8 @@ function GroupsPage() {
     { sort: { name: 1 } },
     ITEM_PER_PAGE,
   );
-  const memberGroups = useTracker(() => Roles.getScopesForUser(userId, ['member', 'animator']));
+  const animatorGroups = useTracker(() => Roles.getScopesForUser(userId, 'animator'));
+  const memberGroups = useTracker(() => Roles.getScopesForUser(userId, 'member'));
   const candidateGroups = useTracker(() => Roles.getScopesForUser(userId, ['candidate']));
   const managedGroups = useTracker(() => Roles.getScopesForUser(userId, ['animator', 'admin']));
   const isAdmin = Roles.userIsInRole(userId, 'admin');
@@ -212,6 +213,7 @@ function GroupsPage() {
                   group={group}
                   candidate={candidateGroups.includes(group._id)}
                   member={memberGroups.includes(group._id)}
+                  animator={animatorGroups.includes(group._id)}
                 />
               </Grid>
             ))
@@ -223,6 +225,7 @@ function GroupsPage() {
                   isShort={!isMobile && viewMode === 'list'}
                   candidate={candidateGroups.includes(group._id)}
                   member={memberGroups.includes(group._id)}
+                  animator={animatorGroups.includes(group._id)}
                   admin={isAdmin || managedGroups.includes(group._id)}
                 />
               </Grid>

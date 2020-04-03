@@ -182,6 +182,7 @@
       "joinPublicGroupButtonLabel": "Join the public group",
       "askToJoinModerateGroupButtonLabel": "Request to join the group",
       "groupMember": "Member",
+      "groupAnimator": "Animator",
       "groupCandidate": "Membership awaiting",
       "waitingForValidation": "On validation",
       "leaveGroup": "Leave group",
@@ -195,6 +196,22 @@
     },
     "AppVersion": {
       "title": "Test Alpha Version"
+    },
+    "PersonalZone": {
+      "delZoneLabel": "Delete this zone",
+      "forbiddenDelZoneLabel": "Empty this zone before delete it",
+      "upZoneLabel": "Move up this zone",
+      "downZoneLabel": "Move down this zone",
+      "addPersonalLink": "Add a personal in this zone",
+      "modifyTitle": "Modify zone title"
+    },
+    "PersonalLinkDetails": {
+      "visitLink": "Visit this link",
+      "delLink": "Delete this link",
+      "titleLabel": "Link title",
+      "urlLabel": "Link url",
+      "modifyLink": "Modify this link",
+      "saveLink": "Save this lien"
     }
   },
   "validatejs": {
@@ -347,8 +364,13 @@
       "open": "Open",
       "propulsedBy": "Propulsed by"
     },
-    "PersonalSpace": {
-      "welcome": "Welcome on your personal space"
+    "PersonalPage": {
+      "welcome": "Welcome on your personal space",
+      "noFavYet": "Add here some elements from Applications tab",
+      "unsorted": "To be sorted",
+      "addZoneStartButton": "Add a new zone at start",
+      "addZoneEndButton": "Add a new zone at the end",
+      "toggleEdition": "Toggle edition mode"
     },
     "AdminSingleServicePage": {
       "edition": "Edition of the service",
@@ -393,7 +415,9 @@
       "groupJoined": "You are now a member of this group",
       "candidateSent": "The admin will be notified of your request",
       "alreadyCandidate": "You already sent a requet to the group",
-      "candidateCancel": "Your request has been canceled"
+      "candidateCancel": "Your request has been canceled",
+      "stopAnimating": "Stop animating this group",
+      "animationLeft": "You are no longer animator of this group"
     },
     "AddressBook": {
       "sendEmail": "Send an email to",

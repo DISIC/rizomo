@@ -11,8 +11,10 @@ import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-import { createService, removeService, updateService } from '../methods';
-import { favService, unfavService } from '../../users/server/methods';
+import {
+  createService, removeService, updateService, favService, unfavService,
+} from '../methods';
+
 import './publications';
 import Services from '../services';
 
@@ -207,7 +209,7 @@ describe('services', function () {
             favService._execute({}, { serviceId });
           },
           Meteor.Error,
-          /api.users.favService.notPermitted/,
+          /api.services.favService.notPermitted/,
         );
       });
       it('does not unset a service as favorite if not logged in', function () {
@@ -216,7 +218,7 @@ describe('services', function () {
             unfavService._execute({}, { serviceId });
           },
           Meteor.Error,
-          /api.users.unfavService.notPermitted/,
+          /api.services.unfavService.notPermitted/,
         );
       });
     });

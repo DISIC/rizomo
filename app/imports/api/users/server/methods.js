@@ -8,11 +8,12 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 
 import { isActive, getLabel } from '../../utils';
-import Services from '../../services/services';
 import Groups from '../../groups/groups';
 // initialize Meteor.users customizations
 import AppRoles from '../users';
 import { structures } from '../structures';
+import { favGroup, unfavGroup } from '../../groups/methods';
+import PersonalSpaces from '../../personalspaces/personalspaces';
 
 // users.findUsers: Returns users using pagination
 //   filter: string to search for in username/firstname/lastname/emails (case insensitive search)
@@ -157,7 +158,7 @@ export const removeUser = new ValidatedMethod({
       );
     });
     Meteor.roleAssignment.remove({ 'user._id': userId });
-    // FIXME : delete personalspace when available
+    PersonalSpaces.remove({ userId });
     Meteor.users.remove({ _id: userId });
   },
 });
@@ -367,6 +368,10 @@ export const unsetAdminOf = new ValidatedMethod({
     if (group.admins.indexOf(userId) !== -1) {
       Groups.update(groupId, { $pull: { admins: userId } });
     }
+    // if user has no longer roles, remove group from personalspace
+    if (!Roles.userIsInRole(userId, ['animator', 'member', 'candidate'], groupId)) {
+      unfavGroup._execute({ userId }, { groupId });
+    }
   },
 });
 
@@ -398,6 +403,8 @@ export const setAnimatorOf = new ValidatedMethod({
     if (group.animators.indexOf(userId) === -1) {
       Groups.update(groupId, { $push: { animators: userId } });
     }
+    // update user personalSpace
+    favGroup._execute({ userId }, { groupId });
   },
 });
 
@@ -427,6 +434,10 @@ export const unsetAnimatorOf = new ValidatedMethod({
     // update info in group collection
     if (group.animators.indexOf(userId) !== -1) {
       Groups.update(groupId, { $pull: { animators: userId } });
+    }
+    // if user has no longer roles, remove group from personalspace
+    if (!Roles.userIsInRole(userId, ['member', 'admin', 'candidate'], groupId)) {
+      unfavGroup._execute({ userId }, { groupId });
     }
   },
 });
@@ -472,6 +483,8 @@ export const setMemberOf = new ValidatedMethod({
         $pull: { candidates: userId },
       });
     }
+    // update user personalSpace
+    favGroup._execute({ userId }, { groupId });
   },
 });
 
@@ -503,6 +516,10 @@ export const unsetMemberOf = new ValidatedMethod({
       Groups.update(groupId, {
         $pull: { members: userId },
       });
+    }
+    // if user has no longer roles, remove group from personalspace
+    if (!Roles.userIsInRole(userId, ['animator', 'admin', 'candidate'], groupId)) {
+      unfavGroup._execute({ userId }, { groupId });
     }
   },
 });
@@ -541,6 +558,8 @@ export const setCandidateOf = new ValidatedMethod({
         $push: { candidates: userId },
       });
     }
+    // update user personalSpace
+    favGroup._execute({ userId }, { groupId });
   },
 });
 
@@ -573,50 +592,9 @@ export const unsetCandidateOf = new ValidatedMethod({
         $pull: { candidates: userId },
       });
     }
-  },
-});
-
-export const favService = new ValidatedMethod({
-  name: 'users.favService',
-  validate: new SimpleSchema({
-    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.services.labels.id') },
-  }).validator(),
-
-  run({ serviceId }) {
-    if (!this.userId) {
-      throw new Meteor.Error('api.users.favService.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
-    }
-    // check service existence
-    const service = Services.findOne(serviceId);
-    if (service === undefined) {
-      throw new Meteor.Error('api.users.favService.unknownService', i18n.__('api.services.unknownService'));
-    }
-    const user = Meteor.users.findOne(this.userId);
-    // store service in user favorite services
-    if (user.favServices.indexOf(serviceId) === -1) {
-      Meteor.users.update(this.userId, {
-        $push: { favServices: serviceId },
-      });
-    }
-  },
-});
-
-export const unfavService = new ValidatedMethod({
-  name: 'users.unfavService',
-  validate: new SimpleSchema({
-    serviceId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.services.labels.id') },
-  }).validator(),
-
-  run({ serviceId }) {
-    if (!this.userId) {
-      throw new Meteor.Error('api.users.unfavService.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
-    }
-    const user = Meteor.users.findOne(this.userId);
-    // remove service from user favorite services
-    if (user.favServices.indexOf(serviceId) !== -1) {
-      Meteor.users.update(this.userId, {
-        $pull: { favServices: serviceId },
-      });
+    // if user has no longer roles, remove group from personalspace
+    if (!Roles.userIsInRole(userId, ['animator', 'member', 'admin'], groupId)) {
+      unfavGroup._execute({ userId }, { groupId });
     }
   },
 });
@@ -678,8 +656,6 @@ const LISTS_METHODS = _.pluck(
     unsetMemberOf,
     setCandidateOf,
     unsetCandidateOf,
-    favService,
-    unfavService,
     findUsers,
     setLanguage,
     setKeycloakId,

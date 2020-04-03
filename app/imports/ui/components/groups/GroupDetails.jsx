@@ -115,13 +115,13 @@ const useStyles = ({ type }, member, candidate, isShort) => makeStyles((theme) =
 }));
 
 function GroupDetails({
-  group = {}, isShort, member, candidate, admin,
+  group = {}, isShort, member, candidate, admin, animator,
 }) {
   const { type } = group;
   const [{ userId }] = useContext(Context);
   const [loading, setLoading] = useState(false);
 
-  const classes = useStyles(group, member, candidate, isShort)();
+  const classes = useStyles(group, member || animator, candidate, isShort)();
 
   const handleJoinGroup = () => {
     const method = member ? 'unsetMemberOf' : type === 0 ? 'setMemberOf' : 'setCandidateOf';
@@ -142,7 +142,7 @@ function GroupDetails({
   };
 
   const icon = () => {
-    if (member) {
+    if (member || animator) {
       return type === 5 ? <VerifiedUserIcon /> : <CheckIcon />;
     }
     if (type === 0) {
@@ -155,6 +155,9 @@ function GroupDetails({
   };
 
   const text = () => {
+    if (animator) {
+      return i18n.__('components.GroupDetails.groupAnimator');
+    }
     if (member) {
       return i18n.__('components.GroupDetails.groupMember');
     }
@@ -201,7 +204,7 @@ function GroupDetails({
           variant: 'body2',
           color: type === 0 ? 'primary' : 'secondary',
           style: {
-            color: member ? 'green' : null,
+            color: member || animator ? 'green' : null,
             display: 'flex',
             alignItems: 'center',
           },
@@ -214,9 +217,9 @@ function GroupDetails({
             startIcon={icon()}
             className={classes.buttonText}
             size="large"
-            variant={member || candidate ? 'text' : 'contained'}
-            disableElevation={member || candidate}
-            onClick={member || candidate ? null : handleJoinGroup}
+            variant={member || animator || candidate ? 'text' : 'contained'}
+            disableElevation={member || animator || candidate}
+            onClick={member || animator || candidate ? null : handleJoinGroup}
           >
             {text()}
           </Button>
@@ -244,6 +247,7 @@ GroupDetails.propTypes = {
   member: PropTypes.bool.isRequired,
   candidate: PropTypes.bool.isRequired,
   admin: PropTypes.bool.isRequired,
+  animator: PropTypes.bool.isRequired,
 };
 
 export default GroupDetails;

@@ -3,7 +3,7 @@ import faker from 'faker';
 import { Roles } from 'meteor/alanning:roles';
 import Groups from '../../../api/groups/groups';
 import Services from '../../../api/services/services';
-import { createGroup } from '../../../api/groups/methods';
+import { createGroup, favGroup } from '../../../api/groups/methods';
 import fakeData from './fakeData.json';
 
 const users = (number) => {
@@ -12,47 +12,55 @@ const users = (number) => {
   return Meteor.users.find({}, { limit, skip, fields: { _id: 1 } }).map(({ _id }) => _id);
 };
 
+const updatePersonalSpace = (usersList, groupId) => {
+  usersList.forEach((userId) => {
+    favGroup._execute({ userId }, { groupId });
+  });
+};
+
 /** When running app for first time, pass a settings file to set up default groups. */
 if (Groups.find().count() === 0) {
   if (Meteor.settings.private.fillWithFakeData) {
     console.log('Creating the default groups');
-    fakeData.defaultGroups.map(({
-      owner, name, type, description, content,
-    }) => {
+    fakeData.defaultGroups.map((group) => {
       // find owner userId
-      const user = Meteor.users.findOne({ username: owner });
+      const user = Meteor.users.findOne({ username: group.owner });
+      const animators = users(10);
+      const members = users(1000);
+      const candidates = group.type === 5 ? users(100) : [];
       if (!user) {
-        console.log(`can not create group ${name}: owner not found in database`);
+        console.log(`can not create group ${group.name}: owner not found in database`);
       } else {
-        console.log(`  Creating group ${name}.`);
+        console.log(`  Creating group ${group.name}.`);
 
         if (Meteor.isDevelopment) {
           const groupId = Groups.insert({
-            name,
-            type,
-            content,
-            description,
+            ...group,
             owner: user._id,
             admins: [user._id],
             active: true,
-            animators: users(10),
-            members: users(1000),
-            candidates: users(100),
+            animators,
+            members,
+            candidates,
           });
           Roles.addUsersToRoles(user._id, 'admin', groupId);
+          Roles.addUsersToRoles(animators, 'animator', groupId);
+          Roles.addUsersToRoles(members, 'member', groupId);
+          Roles.addUsersToRoles(candidates, 'candidate', groupId);
+          updatePersonalSpace([...new Set([...animators, ...members, ...candidates])], groupId);
         } else {
           createGroup._execute(
             { userId: user._id },
             {
-              name,
-              type,
-              description,
-              content,
+              name: group.name,
+              type: group.type,
+              description: group.description,
+              content: group.content,
             },
           );
         }
       }
-      return name;
+      return group.name;
     });
     if (Meteor.isDevelopment) {
       const ANIMATORS_RANDOM = 10;
@@ -92,6 +100,7 @@ if (Groups.find().count() === 0) {
         Roles.addUsersToRoles(animators, 'animator', groupId);
         Roles.addUsersToRoles(members, 'member', groupId);
         Roles.addUsersToRoles(candidates, 'candidate', groupId);
+        updatePersonalSpace([...new Set([...animators, ...members, ...candidates])], groupId);
       });
     }
   } else {

@@ -8,6 +8,60 @@ import i18n from 'meteor/universe:i18n';
 
 import { isActive, getLabel } from '../utils';
 import Groups from './groups';
+import { addGroup, removeElement } from '../personalspaces/methods';
+
+export const favGroup = new ValidatedMethod({
+  name: 'groups.favGroup',
+  validate: new SimpleSchema({
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
+  }).validator(),
+
+  run({ groupId }) {
+    if (!isActive(this.userId)) {
+      throw new Meteor.Error('api.groups.favGroup.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    // check group existence
+    const service = Groups.findOne(groupId);
+    if (service === undefined) {
+      throw new Meteor.Error('api.groups.favGroup.unknownService', i18n.__('api.groups.unknownGroup'));
+    }
+    const user = Meteor.users.findOne(this.userId);
+    // store group in user favorite groups
+    if (user.favGroups === undefined) {
+      Meteor.users.update(this.userId, {
+        $set: { favGroups: [groupId] },
+      });
+    } else if (user.favGroups.indexOf(groupId) === -1) {
+      Meteor.users.update(this.userId, {
+        $push: { favGroups: groupId },
+      });
+    }
+    // update user personalSpace
+    addGroup._execute({ userId: this.userId }, { groupId });
+  },
+});
+
+export const unfavGroup = new ValidatedMethod({
+  name: 'groups.unfavGroup',
+  validate: new SimpleSchema({
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
+  }).validator(),
+
+  run({ groupId }) {
+    if (!isActive(this.userId)) {
+      throw new Meteor.Error('api.groups.unfavGroup.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    const user = Meteor.users.findOne(this.userId);
+    // remove group from user favorite groups
+    if (user.favGroups.indexOf(groupId) !== -1) {
+      Meteor.users.update(this.userId, {
+        $pull: { favGroups: groupId },
+      });
+    }
+    // update user personalSpace
+    removeElement._execute({ userId: this.userId }, { type: 'group', elementId: groupId });
+  },
+});
 
 export const createGroup = new ValidatedMethod({
   name: 'groups.createGroup',
@@ -34,6 +88,7 @@ export const createGroup = new ValidatedMethod({
       active: true,
     });
     Roles.addUsersToRoles(this.userId, 'admin', groupId);
+    favGroup._execute({ userId: this.userId }, { groupId });
   },
 });
 
@@ -185,7 +240,7 @@ export const findGroups = new ValidatedMethod({
 });
 
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([createGroup, removeGroup, updateGroup, findGroups], 'name');
+const LISTS_METHODS = _.pluck([favGroup, unfavGroup, createGroup, removeGroup, updateGroup, findGroups], 'name');
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second

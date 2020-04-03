@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   Container, makeStyles, Button, Typography, Grid, Avatar, Fade, Divider,
 } from '@material-ui/core';
@@ -18,6 +18,9 @@ import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
 import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import Tooltip from '@material-ui/core/Tooltip';
 import { Context } from '../../contexts/context';
 import Groups from '../../../api/groups/groups';
 import Services from '../../../api/services/services';
@@ -113,6 +116,14 @@ const useStyles = (member, candidate, type) => makeStyles((theme) => ({
       backgroundColor: theme.palette.tertiary.main,
     },
   },
+  buttonFav: {
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.tertiary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.tertiary.main,
+    },
+  },
   fab: {},
   avatar: {
     backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
@@ -123,27 +134,40 @@ const useStyles = (member, candidate, type) => makeStyles((theme) => ({
 
 const SingleGroupPage = ({ group = {}, ready, services }) => {
   const { type } = group;
-  const [{ userId }] = useContext(Context);
+  const [{ userId, user }] = useContext(Context);
   const [loading, setLoading] = useState(false);
   const [openedContent, toggleOpenedContent] = useState(false);
-  const member = Roles.userIsInRole(userId, ['member', 'animator'], group._id);
+  const animator = Roles.userIsInRole(userId, 'animator', group._id);
+  const member = Roles.userIsInRole(userId, 'member', group._id);
   const candidate = Roles.userIsInRole(userId, ['candidate'], group._id);
   const admin = Roles.userIsInRole(userId, ['admin', 'animator'], group._id);
-  const classes = useStyles(member, candidate, type)();
+  const favorite = user.favGroups.includes(group._id);
+  const classes = useStyles(member || animator, candidate, type)();
+  const history = useHistory();
 
   const handleOpenedContent = () => {
     toggleOpenedContent(!openedContent);
   };
 
   const handleJoinGroup = () => {
-    const method = member
-      ? 'unsetMemberOf'
-      : type === 0
-        ? 'setMemberOf'
-        : candidate
-          ? 'unsetCandidateOf'
-          : 'setCandidateOf';
-    const message = member ? 'groupLeft' : type === 0 ? 'groupJoined' : candidate ? 'candidateCancel' : 'candidateSent';
+    const method = animator
+      ? 'unsetAnimatorOf'
+      : member
+        ? 'unsetMemberOf'
+        : type === 0
+          ? 'setMemberOf'
+          : candidate
+            ? 'unsetCandidateOf'
+            : 'setCandidateOf';
+    const message = animator
+      ? 'animationLeft'
+      : member
+        ? 'groupLeft'
+        : type === 0
+          ? 'groupJoined'
+          : candidate
+            ? 'candidateCancel'
+            : 'candidateSent';
 
     setLoading(true);
     Meteor.call(`users.${method}`, { userId, groupId: group._id }, (err) => {
@@ -155,12 +179,38 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
       }
     });
   };
+
+  const handleFavorite = () => {
+    if (favorite) {
+      Meteor.call('groups.unfavGroup', { groupId: group._id }, (err) => {
+        if (err) {
+          msg.error(err.reason);
+        } else {
+          msg.success(i18n.__('components.ServiceDetails.unfavSuccessMsg'));
+        }
+      });
+    } else {
+      Meteor.call('groups.favGroup', { groupId: group._id }, (err) => {
+        if (err) {
+          msg.error(err.reason);
+        } else {
+          msg.success(i18n.__('components.ServiceDetails.favSuccessMsg'));
+        }
+      });
+    }
+  };
+
+  const favButtonLabel = favorite
+    ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
+    : i18n.__('components.ServiceDetails.favButtonLabelFav');
+  const showFavorite = admin && !candidate && !member && !animator;
+
   const groupType = i18n.__(`components.GroupDetails.${type === 0 ? 'publicGroup' : 'moderateGroup'}`);
 
   const IconHeader = (props) => (type === 0 ? <PeopleIcon {...props} /> : <SecurityIcon {...props} />);
 
   const icon = () => {
-    if (member) {
+    if (member || animator) {
       return type === 5 ? <VerifiedUserIcon /> : <CheckIcon />;
     }
     if (type === 0) {
@@ -173,6 +223,9 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
   };
 
   const text = () => {
+    if (animator) {
+      return i18n.__('components.GroupDetails.groupAnimator');
+    }
     if (member) {
       return i18n.__('components.GroupDetails.groupMember');
     }
@@ -185,17 +238,19 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
   };
 
+  const goBack = () => {
+    history.goBack();
+  };
+
   return (
     <Fade in>
       <Container className={classes.root}>
         {!ready && !loading && <Spinner full />}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={12} className={classes.flex}>
-            <Link to="/groups">
-              <Button color="primary" startIcon={<ArrowBack />}>
-                {i18n.__('pages.SingleGroupPage.backToList')}
-              </Button>
-            </Link>
+            <Button onClick={goBack} color="primary" startIcon={<ArrowBack />}>
+              {i18n.__('pages.SingleServicePage.backToList')}
+            </Button>
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.cardGrid}>
             <div className={classes.titleContainer}>
@@ -218,22 +273,31 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                   startIcon={icon()}
                   className={classes.buttonText}
                   size="large"
-                  variant={member || candidate ? 'text' : 'contained'}
-                  disableElevation={member || candidate}
-                  onClick={member || candidate ? null : handleJoinGroup}
+                  variant={member || animator || candidate ? 'text' : 'contained'}
+                  disableElevation={member || animator || candidate}
+                  onClick={animator || member || candidate ? null : handleJoinGroup}
                 >
                   {text()}
                 </Button>
               </Grid>
-              <Grid item>
-                {admin && (
+              {admin && (
+                <Grid item>
                   <Link to={`/admingroups/${group._id}`}>
                     <Button startIcon={<EditIcon />} className={classes.buttonAdmin} size="large" variant="contained">
                       {i18n.__('components.GroupDetails.manageGroupButtonLabel')}
                     </Button>
                   </Link>
-                )}
-              </Grid>
+                </Grid>
+              )}
+              {showFavorite && (
+                <Grid item>
+                  <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+                    <Button className={classes.buttonFav} size="large" variant="outlined" onClick={handleFavorite}>
+                      {favorite ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                    </Button>
+                  </Tooltip>
+                </Grid>
+              )}
             </Grid>
           </Grid>
 
@@ -247,7 +311,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
               <ServiceDetails service={service} isShort />
             </Grid>
           ))}
-          {(member || type === 0) && (
+          {(member || animator || type === 0) && (
             <Grid item xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
               <ServiceDetails
                 service={{
@@ -276,7 +340,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
           <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
             <Divider style={{ marginBottom: 30 }} />
 
-            {(member || candidate) && (
+            {(animator || member || candidate) && (
               <Button
                 style={{ border: 'red', color: 'red' }}
                 color="primary"
@@ -285,7 +349,9 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                 variant="outlined"
                 onClick={handleJoinGroup}
               >
-                {i18n.__(`pages.SingleGroupPage.${member ? 'leaveGroup' : 'cancelCandidate'}`)}
+                {i18n.__(
+                  `pages.SingleGroupPage.${animator ? 'stopAnimating' : member ? 'leaveGroup' : 'cancelCandidate'}`,
+                )}
               </Button>
             )}
           </Grid>
