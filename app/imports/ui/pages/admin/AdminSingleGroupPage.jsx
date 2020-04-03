@@ -178,7 +178,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               variant="outlined"
               fullWidth
               margin="normal"
-              disabled={!isAdmin}
+              disabled={!isAdmin && !!params._id}
             />
             <TextField
               onChange={onUpdateField}
@@ -200,7 +200,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                 name="type"
                 value={groupData.type}
                 onChange={onUpdateField}
-                disabled={!isAdmin}
+                disabled={!isAdmin && !!params._id}
               >
                 {Object.keys(Groups.typeLabels).map((val) => (
                   <MenuItem key={val} value={val}>

@@ -42,23 +42,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const GroupDetailsList = ({ group, member, candidate }) => {
+const GroupDetailsList = ({
+  group, member, candidate, animator,
+}) => {
   const { type } = group;
   const classes = useStyles();
 
-  const groupType = member
-    ? i18n.__('components.GroupDetails.groupMember')
-    : candidate
-      ? i18n.__('components.GroupDetails.groupCandidate')
-      : type === 0
-        ? i18n.__('components.GroupDetails.publicGroup')
-        : i18n.__('components.GroupDetails.moderateGroup');
+  const groupType = animator
+    ? i18n.__('components.GroupDetails.groupAnimator')
+    : member
+      ? i18n.__('components.GroupDetails.groupMember')
+      : candidate
+        ? i18n.__('components.GroupDetails.groupCandidate')
+        : type === 0
+          ? i18n.__('components.GroupDetails.publicGroup')
+          : i18n.__('components.GroupDetails.moderateGroup');
 
   const iconHeader = candidate && type === 5 ? (
     <WatchLaterIcon fontSize="large" />
-  ) : member && type === 0 ? (
+  ) : (animator || member) && type === 0 ? (
     <CheckIcon fontSize="large" />
-  ) : member && type === 5 ? (
+  ) : (animator || member) && type === 5 ? (
     <VerifiedUserIcon fontSize="large" />
   ) : type === 0 ? (
     <PeopleIcon fontSize="large" />
@@ -84,7 +88,7 @@ const GroupDetailsList = ({ group, member, candidate }) => {
         classes={{ action: classes.action }}
         avatar={(
           <Button
-            style={{ color: 'white', backgroundColor: member ? 'green' : null }}
+            style={{ color: 'white', backgroundColor: member || animator ? 'green' : null }}
             color={type === 5 ? 'secondary' : 'primary'}
             variant="contained"
           >
@@ -101,7 +105,7 @@ const GroupDetailsList = ({ group, member, candidate }) => {
         subheaderTypographyProps={{
           variant: 'body2',
           color: type === 5 ? 'secondary' : 'primary',
-          style: { color: member ? 'green' : null },
+          style: { color: member || animator ? 'green' : null },
         }}
       />
     </Card>
@@ -112,6 +116,7 @@ GroupDetailsList.propTypes = {
   group: PropTypes.objectOf(PropTypes.any).isRequired,
   member: PropTypes.bool.isRequired,
   candidate: PropTypes.bool.isRequired,
+  animator: PropTypes.bool.isRequired,
 };
 
 export default GroupDetailsList;

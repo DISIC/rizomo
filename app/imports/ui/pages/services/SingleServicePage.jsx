@@ -86,7 +86,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
   const handleFavorite = () => {
     if (favorite) {
       setLoading(true);
-      Meteor.call('users.unfavService', { serviceId: service._id }, (err) => {
+      Meteor.call('services.unfavService', { serviceId: service._id }, (err) => {
         setLoading(false);
         if (err) {
           msg.error(err.reason);
@@ -96,7 +96,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
       });
     } else {
       setLoading(true);
-      Meteor.call('users.favService', { serviceId: service._id }, (err) => {
+      Meteor.call('services.favService', { serviceId: service._id }, (err) => {
         setLoading(false);
         if (err) {
           msg.error(err.reason);

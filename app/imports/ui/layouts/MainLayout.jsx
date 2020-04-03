@@ -17,7 +17,7 @@ import ServicesPage from '../pages/services/ServicesPage';
 import SingleServicePage from '../pages/services/SingleServicePage';
 import GroupsPage from '../pages/groups/GroupsPage';
 import NotFound from '../pages/system/NotFound';
-import PersonalSpace from '../pages/PersonalSpace';
+import PersonalPage from '../pages/PersonalPage';
 import SingleGroupPage from '../pages/groups/SingleGroupPage';
 import AddressBook from '../pages/groups/AddressBook';
 import ProfilePage from '../pages/system/ProfilePage';
@@ -73,7 +73,7 @@ function MainLayout() {
           <Suspense fallback={<Spinner full />}>
             {user.isActive ? (
               <Switch>
-                <Route exact path="/" component={PersonalSpace} />
+                <Route exact path="/" component={PersonalPage} />
                 <Route exact path="/profile" component={ProfilePage} />
                 <Route exact path="/services" component={ServicesPage} />
                 <Route exact path="/services/:slug" component={SingleServicePage} />

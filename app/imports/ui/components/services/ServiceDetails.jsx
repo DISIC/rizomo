@@ -9,6 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+// import OpenWithIcon from '@material-ui/icons/OpenWith';
 
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button, CardHeader, IconButton } from '@material-ui/core';
@@ -104,7 +105,7 @@ function ServiceDetails({ service, favAction, isShort }) {
 
   const handleFavorite = () => {
     if (!favorite) {
-      Meteor.call('users.unfavService', { serviceId: service._id }, (err) => {
+      Meteor.call('services.unfavService', { serviceId: service._id }, (err) => {
         if (err) {
           msg.error(err.reason);
         } else {
@@ -112,7 +113,7 @@ function ServiceDetails({ service, favAction, isShort }) {
         }
       });
     } else {
-      Meteor.call('users.favService', { serviceId: service._id }, (err) => {
+      Meteor.call('services.favService', { serviceId: service._id }, (err) => {
         if (err) {
           msg.error(err.reason);
         } else {
@@ -128,6 +129,14 @@ function ServiceDetails({ service, favAction, isShort }) {
 
   return (
     <Card className={classes.card} elevation={3}>
+      {/* <CardHeader
+        className={handleClasseName}
+        action={(
+          <IconButton color="primary">
+            <OpenWithIcon />
+          </IconButton>
+        )}
+      /> */}
       <CardHeader
         className={classes.cardHeader}
         avatar={
