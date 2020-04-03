@@ -7,10 +7,12 @@ import { Fade } from '@material-ui/core';
 export default function NotFound() {
   return (
     <Fade in>
-      <h2>{i18n.__('pages.NotFound.message')}</h2>
-      <p>
-        <Link to="/">{i18n.__('pages.NotFound.backButtonLabel')}</Link>
-      </p>
+      <>
+        <h2>{i18n.__('pages.NotFound.message')}</h2>
+        <p>
+          <Link to="/">{i18n.__('pages.NotFound.backButtonLabel')}</Link>
+        </p>
+      </>
     </Fade>
   );
 }
