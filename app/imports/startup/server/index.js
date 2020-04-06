@@ -14,3 +14,4 @@ import './db-initialize/Accounts';
 import './db-initialize/Services';
 import './db-initialize/Categories';
 import './db-initialize/Groups';
+import './db-initialize/Articles';

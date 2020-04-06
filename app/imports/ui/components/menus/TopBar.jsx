@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import LanguageSwitcher from '../system/LanguageSwitcher';
@@ -39,24 +40,32 @@ const useStyles = makeStyles((theme) => ({
 const SMALL_LOGO = 'Logo-A.svg';
 const LONG_LOGO = 'Logo-appseducation.png';
 
-function TopBar() {
+function TopBar({ publicMenu }) {
   const [{ isMobile, user }] = useContext(Context);
   const classes = useStyles();
   const LOGO = `/images/${isMobile ? SMALL_LOGO : LONG_LOGO}`;
 
   return (
     <AppBar position="fixed" className={classes.root}>
-      <Link to="/" className={classes.imgLogo}>
+      <Link to={publicMenu ? '/public' : '/'} className={classes.imgLogo}>
         <img src={LOGO} className={classes.imgLogo} alt="Logo" />
       </Link>
 
-      {!isMobile && <MenuBar />}
+      {!isMobile && !publicMenu && <MenuBar />}
       <div className={classes.rightContainer}>
         <LanguageSwitcher topbar />
-        <MainMenu user={user} />
+        {!publicMenu && <MainMenu user={user} />}
       </div>
     </AppBar>
   );
 }
 
 export default TopBar;
+
+TopBar.propTypes = {
+  publicMenu: PropTypes.bool,
+};
+
+TopBar.defaultProps = {
+  publicMenu: false,
+};

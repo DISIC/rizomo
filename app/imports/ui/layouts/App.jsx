@@ -1,7 +1,8 @@
 import React, { useContext, Suspense, lazy } from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
 import SignLayout from './SignLayout';
 import ProtectedRoute from '../components/system/ProtectedRoute';
 import PublicRoute from '../components/system/PublicRoute';
@@ -12,6 +13,9 @@ import lightTheme from '../themes/light';
 
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));
+const PublicArticlePage = lazy(() => import('../pages/articles/PublicArticlePage'));
+const PublicArticleDetailsPage = lazy(() => import('../pages/articles/PublicArticleDetailsPage'));
+const PublishersPage = lazy(() => import('../pages/articles/PublishersPage'));
 
 function App() {
   const [state] = useContext(Context);
@@ -20,13 +24,19 @@ function App() {
   return loading ? (
     <Spinner />
   ) : (
-    <Suspense fallback={<Spinner full />}>
-      <Switch>
-        <PublicRoute exact path="/signin" component={SignLayout} {...state} />
-        {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
-        <ProtectedRoute path="/" component={MainLayout} {...state} />
-      </Switch>
-    </Suspense>
+    <>
+      <CssBaseline />
+      <Suspense fallback={<Spinner full />}>
+        <Switch>
+          <PublicRoute exact path="/signin" component={SignLayout} {...state} />
+          {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
+          <Route exact path="/public/" component={PublishersPage} />
+          <Route exact path="/public/:userId" component={PublicArticlePage} />
+          <Route exact path="/public/:userId/:slug" component={PublicArticleDetailsPage} />
+          <ProtectedRoute path="/" component={MainLayout} {...state} />
+        </Switch>
+      </Suspense>
+    </>
   );
 }
 

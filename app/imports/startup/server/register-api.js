@@ -10,3 +10,5 @@ import '../../api/languages/methods';
 import '../../api/files/server/methods';
 import '../../api/personalspaces/methods';
 import '../../api/personalspaces/server/publications';
+import '../../api/articles/methods';
+import '../../api/articles/server/publications';

@@ -6,6 +6,7 @@ import { PropTypes } from 'prop-types';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 export const links = [
   {
@@ -26,6 +27,12 @@ export const links = [
     path: '/services',
     content: 'menuServices',
     icon: <SearchIcon />,
+    admin: false,
+  },
+  {
+    path: '/publications',
+    content: 'menuPublications',
+    icon: <DescriptionIcon />,
     admin: false,
   },
 ];
