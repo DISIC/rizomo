@@ -90,6 +90,20 @@
         "participantId": "Participant Id"
       }
     },
+    "articles": {
+      "mustBeLoggedIn": "You must be logged in.",
+      "adminArticleNeeded": "You don't have admin rights on this publication",
+      "unknownArticle": "This publication does not exists",
+      "labels": {
+        "title": "Title",
+        "slug": "Publication's URL",
+        "userId": "Author's ID",
+        "description": "Short description",
+        "content": "Content of the publication",
+        "createdAt": "Creation date",
+        "updatedAt": "Update date"
+      }
+    },
     "methods": {
       "operationSuccessMsg": "Operation succedeed.",
       "labels": {
@@ -109,6 +123,7 @@
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
       "menuServices": "Applications",
+      "menuPublications": "Publications",
       "menuGroupes": "All Groups",
       "menuGroupesMobile": "Groups",
       "menuAdminServices": "Service Management",
@@ -212,6 +227,13 @@
       "urlLabel": "Link url",
       "modifyLink": "Modify this link",
       "saveLink": "Save this lien"
+    },
+    "ArticleDetails": {
+      "editArticleButtonLabel": "Edit this publication",
+      "open": "Open this publication",
+      "publicButton": "Open this publication public page",
+      "publishedOn": "Published on the",
+      "noDescription": "There is no description for this publication"
     }
   },
   "validatejs": {
@@ -423,6 +445,38 @@
       "sendEmail": "Send an email to",
       "back": "Back to the group",
       "searchText": "Which user are you looking for ?"
+    },
+    "ArticlesPage": {
+      "title": "Your publications",
+      "openPublicPage": "All publications page",
+      "searchText": "What are you looking for ?"
+    },
+    "EditArticlePage": {
+      "title": "Edit this publication",
+      "creationTitle": "New publication",
+      "successUpdate": "Publication updated successfully",
+      "successCreate": "Publication created successfully",
+      "titleLabel": "Title",
+      "slugLabel": "URL to the publication's page",
+      "descriptionLabel": "Short description of this publication",
+      "contentLabel": "Content of the publication",
+      "update": "Update",
+      "save": "Create",
+      "cancel": "Cancel"
+    },
+    "PublicArticlePage": {
+      "title": "Publications by",
+      "searchText": "What are you looking for ?",
+      "goToList": "See the authors"
+    },
+    "PublicArticleDetailsPage": {
+      "backToList": "Back to the list",
+      "goToList": "Go to the list"
+    },
+    "PublishersPage": {
+      "title": "Authors list",
+      "searchText": "Who are you looking for ?",
+      "goToPublications": "See this author's publications"
     }
   },
   "layouts": {

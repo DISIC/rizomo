@@ -90,6 +90,20 @@
         "participantId": "Id De Participant"
       }
     },
+    "articles": {
+      "mustBeLoggedIn": "Vous devez être connecté.",
+      "adminArticleNeeded": "Vous n'avez pas les droits d'administration sur cette publication.",
+      "unknownArticle": "Cette publication n'existe pas",
+      "labels": {
+        "title": "Titre",
+        "slug": "URL de la publication",
+        "userId": "ID de l'auteur",
+        "description": "Courte description",
+        "content": "Contenu de la publication",
+        "createdAt": "Date de création",
+        "updatedAt": "Date de mise à jour"
+      }
+    },
     "methods": {
       "operationSuccessMsg": "Opération réalisée avec succès.",
       "labels": {
@@ -109,6 +123,7 @@
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
       "menuServices": "Applications",
+      "menuPublications": "Publications",
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
       "menuAdminServices": "Gestion des Services",
@@ -212,6 +227,13 @@
       "urlLabel": "Url du lien",
       "modifyLink": "Modifier le lien",
       "saveLink": "Enregistrer le lien"
+    },
+    "ArticleDetails": {
+      "editArticleButtonLabel": "Editer cette publication",
+      "open": "Ouvrir cette publication",
+      "publicButton": "Ouvrir la page publique de cette publication",
+      "publishedOn": "Publiée le",
+      "noDescription": "Il n'y a pas de description pour cette publication"
     }
   },
   "validatejs": {
@@ -425,6 +447,38 @@
       "sendEmail": "Envoyer un email à",
       "back": "Retour au groupe",
       "searchText": "Quel utilisateur cherchez-vous ?"
+    },
+    "ArticlesPage": {
+      "title": "Vos publications",
+      "openPublicPage": "Voir toutes les publications",
+      "searchText": "Que recherchez-vous ?"
+    },
+    "EditArticlePage": {
+      "title": "Edition de la publication",
+      "creationTitle": "Nouvelle publication",
+      "successUpdate": "Publication mise à jour avec succès",
+      "successCreate": "Publication créée avec succès",
+      "titleLabel": "Titre",
+      "slugLabel": "URL public de la publication",
+      "descriptionLabel": "Courte description de cette publication",
+      "contentLabel": "Contenu de cette publication",
+      "update": "Mettre à jour",
+      "save": "Créer",
+      "cancel": "Annuler"
+    },
+    "PublicArticlePage": {
+      "title": "Publications de",
+      "searchText": "Que recherchez-vous ?",
+      "goToList": "Voir les auteurs"
+    },
+    "PublicArticleDetailsPage": {
+      "backToList": "Retour à la liste",
+      "goToList": "Aller à la liste"
+    },
+    "PublishersPage": {
+      "title": "Liste des auteurs",
+      "searchText": "Qui recherchez-vous ?",
+      "goToPublications": "Voir les publications de cet auteur"
     }
   },
   "layouts": {
