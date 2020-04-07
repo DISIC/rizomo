@@ -13,12 +13,13 @@
       "adminGiven": "Les droits d'administration ont été donnés à cet utilisateur: ",
       "notPermitted": "Vous n'avez pas les droits suffisants.",
       "lastAdminError": "Impossible de supprimer les droits du dernier administrateur",
+      "managedByKeycloak": "Cette information doit être gérée dans Keycloak",
       "labels": {
         "id": "Id Utilisateur",
         "username": "Pseudonyme",
         "firstName": "Prénom",
         "lastName": "Nom",
-        "emails": "Adresses Électroniques",
+        "emails": "Adresse Électronique",
         "emailAddress": "Adresse Électronique",
         "emailVerified": "Adresse Vérifiée",
         "createdAt": "Crée Le",
@@ -277,9 +278,14 @@
     "ProfilePage": {
       "title": "Mes préférences",
       "useEmail": "Utiliser mon email",
-      "nameError": "Ce pseudonyme n'est pas disponible",
+      "usernameError": "Ce pseudonyme n'est pas disponible",
+      "emailAlreadyExists": "Cette adresse électronique est déjà utilisée",
       "update": "Mettre à jour",
-      "reset": "Réinitialiser"
+      "reset": "Réinitialiser",
+      "valueRequired": "Ce champ ne peut pas être vide",
+      "updateSuccess": "Profil mis à jour avec succès",
+      "noModifications": "Aucun changement à appliquer",
+      "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour."
     },
     "NotFound": {
       "backButtonLabel": "Retour",

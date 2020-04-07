@@ -13,12 +13,13 @@
       "adminGiven": "Admin rights have been given to user: ",
       "notPermitted": "You don't have sufficient rights.",
       "lastAdminError": "Can not remove rights on last admin user",
+      "managedByKeycloak": "This information must be managed in Keycloak",
       "labels": {
         "id": "User Id",
         "username": "User Name",
         "firstName": "First Name",
         "lastName": "Last Name",
-        "emails": "Emails",
+        "emails": "Email",
         "emailAddress": "Email Address",
         "emailVerified": "Email Verified",
         "createdAt": "User Creation Date",
@@ -277,9 +278,14 @@
     "ProfilePage": {
       "title": "My settings",
       "useEmail": "Use my email",
-      "nameError": "Name not available",
+      "usernameError": "Name not available",
+      "emailAlreadyExists": "Email already exists",
       "update": "Update",
-      "reset": "Reset"
+      "reset": "Reset",
+      "valueRequired": "This field can not be empty",
+      "updateSuccess": "Profile update success",
+      "noModifications": "No changes to apply",
+      "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data."
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
