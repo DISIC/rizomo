@@ -15,6 +15,8 @@ import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import faker from 'faker';
+import Groups from '../../api/groups/groups';
+import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import PersonalZone from '../components/personalspace/PersonalZone';
@@ -91,10 +93,55 @@ function PersonalPage({ personalspace, isLoading }) {
   const classes = useStyles();
   const [customDrag, setcustomDrag] = useState(false);
 
+  const checkElementExists = (elem) => {
+    switch (elem.type) {
+      case 'service': {
+        return Services.findOne(elem.element_id) !== undefined;
+      }
+      case 'group': {
+        return Groups.findOne(elem.element_id) !== undefined;
+      }
+      default: {
+        return true;
+      }
+    }
+  };
+
+  const checkPersonalSpace = (ps) => {
+    let didDelete = false;
+
+    for (let i = ps.unsorted.length - 1; i >= 0; i -= 1) {
+      if (!checkElementExists(ps.unsorted[i])) {
+        ps.unsorted.splice(i, 1);
+        didDelete = true;
+      }
+    }
+
+    ps.sorted.map((zone, zi) => {
+      for (let i = zone.elements.length - 1; i >= 0; i -= 1) {
+        if (!checkElementExists(zone.elements[i])) {
+          ps.sorted[zi].elements.splice(i, 1);
+          didDelete = true;
+        }
+      }
+      return true;
+    });
+
+    if (didDelete) {
+      Meteor.call('personalspaces.updatePersonalSpace', { data: ps }, (err) => {
+        if (err) {
+          msg.error(err.reason);
+        }
+      });
+    }
+
+    return ps;
+  };
+
   const [localPS, setLocalPS] = useState({});
   useEffect(() => {
     if (personalspace) {
-      setLocalPS(personalspace);
+      setLocalPS(checkPersonalSpace(personalspace));
     }
   }, [personalspace]);
 
