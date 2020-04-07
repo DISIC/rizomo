@@ -254,8 +254,10 @@ const PersonalZone = ({
           : elements.map((elem) => {
             switch (elem.type) {
               case 'service': {
-                const myservice = Services.findOne(elem.element_id) || {};
-                return myservice === {} ? null : (
+                const myservice = Services.findOne(elem.element_id);
+                return myservice === undefined ? (
+                  <></>
+                ) : (
                   <Grid
                     className={classes.gridItem}
                     item
@@ -271,8 +273,10 @@ const PersonalZone = ({
                 );
               }
               case 'group': {
-                const mygroup = Groups.findOne(elem.element_id) || {};
-                return mygroup === {} ? null : (
+                const mygroup = Groups.findOne(elem.element_id);
+                return mygroup === undefined ? (
+                  <></>
+                ) : (
                   <Grid
                     className={classes.gridItem}
                     item
