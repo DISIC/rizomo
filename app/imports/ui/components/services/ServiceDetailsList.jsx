@@ -104,7 +104,11 @@ export default function ServiceDetails({ service }) {
       <CardHeader
         classes={{ action: classes.action }}
         avatar={(
-          <Button color="primary" variant="contained" onClick={() => window.open(service.url, '_blank')}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
+          >
             <OpenInNewIcon fontSize="large" />
           </Button>
         )}

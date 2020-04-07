@@ -191,7 +191,7 @@ function PersonalLinkDetails({
             size="large"
             className={classes.buttonText}
             variant="contained"
-            onClick={() => window.open(url, '_blank')}
+            onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
           >
             {i18n.__('components.PersonalLinkDetails.visitLink')}
           </Button>

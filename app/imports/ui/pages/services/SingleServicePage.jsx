@@ -157,7 +157,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
               variant="outlined"
               color="primary"
               className={classes.openButton}
-              onClick={() => window.open(service.url, '_blank')}
+              onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
             >
               {i18n.__('pages.SingleServicePage.open')}
             </Button>
