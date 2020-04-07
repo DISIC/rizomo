@@ -89,7 +89,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PersonalPage({ personalspace, isLoading }) {
+function PersonalPage({
+  personalspace, isLoading, allServices, allGroups,
+}) {
   const classes = useStyles();
   const [customDrag, setcustomDrag] = useState(false);
 
@@ -140,7 +142,7 @@ function PersonalPage({ personalspace, isLoading }) {
 
   const [localPS, setLocalPS] = useState({});
   useEffect(() => {
-    if (personalspace) {
+    if (personalspace && allServices && allGroups) {
       setLocalPS(checkPersonalSpace(personalspace));
     }
   }, [personalspace]);
@@ -355,13 +357,19 @@ function PersonalPage({ personalspace, isLoading }) {
 PersonalPage.propTypes = {
   personalspace: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
+  allServices: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allGroups: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default withTracker(() => {
   const subscription = Meteor.subscribe('personalspaces.self');
   const personalspace = PersonalSpaces.findOne() || { userId: this.userId, unsorted: [], sorted: [] };
+  const allServices = Services.find().fetch();
+  const allGroups = Groups.find().fetch();
   return {
     personalspace,
     isLoading: !subscription.ready(),
+    allServices,
+    allGroups,
   };
 })(PersonalPage);

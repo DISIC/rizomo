@@ -114,6 +114,8 @@ export const removeGroup = new ValidatedMethod({
     // remove all roles set on this group
     Roles.removeScope(groupId);
     Groups.remove(groupId);
+    // remove from users favorite groups
+    Meteor.users.update({ favGroups: { $all: [groupId] } }, { $pull: { favGroups: groupId } }, { multi: true });
   },
 });
 
