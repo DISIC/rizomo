@@ -191,7 +191,7 @@ function ServiceDetails({ service, favAction, isShort }) {
               size="large"
               className={classes.buttonText}
               variant="contained"
-              onClick={() => window.open(service.url, '_blank')}
+              onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
             >
               {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
             </Button>
