@@ -219,7 +219,7 @@
       "upZoneLabel": "Move up this zone",
       "downZoneLabel": "Move down this zone",
       "addPersonalLink": "Add a personal in this zone",
-      "emptyDragZone": "Put services here",
+      "emptyDragZone": "Drop elements here",
       "modifyTitle": "Modify zone title"
     },
     "PersonalLinkDetails": {
