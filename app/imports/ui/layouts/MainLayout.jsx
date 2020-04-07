@@ -123,7 +123,10 @@ function MainLayout() {
                 <Route component={NotFound} />
               </Switch>
             ) : (
-              <NotValidatedMessage />
+              <Switch>
+                <Route exact path="/profile" component={ProfilePage} />
+                <Route component={NotValidatedMessage} />
+              </Switch>
             )}
           </Suspense>
           {isMobile && <MobileMenu />}

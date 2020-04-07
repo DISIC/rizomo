@@ -219,6 +219,61 @@ export const setStructure = new ValidatedMethod({
   },
 });
 
+export const setName = new ValidatedMethod({
+  name: 'users.setName',
+  validate: new SimpleSchema({
+    firstName: {
+      type: String,
+      min: 1,
+      label: getLabel('api.users.labels.firstName'),
+      optional: true,
+    },
+    lastName: {
+      type: String,
+      min: 1,
+      label: getLabel('api.users.labels.lastName'),
+      optional: true,
+    },
+  }).validator(),
+
+  run(data) {
+    if (Meteor.settings.public.enableKeycloak === true) {
+      throw new Meteor.Error('api.user.setName.disabled', i18n.__('api.users.managedByKeycloak'));
+    }
+    // check that user is logged in
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.setName.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    if (Object.keys(data).length !== 0) Meteor.users.update({ _id: this.userId }, { $set: data });
+  },
+});
+
+export const setEmail = new ValidatedMethod({
+  name: 'users.setEmail',
+  validate: new SimpleSchema({
+    email: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Email,
+      label: getLabel('api.users.labels.emailAddress'),
+      optional: true,
+    },
+  }).validator(),
+
+  run({ email }) {
+    if (Meteor.settings.public.enableKeycloak === true) {
+      throw new Meteor.Error('api.user.setEmail.disabled', i18n.__('api.users.managedByKeycloak'));
+    }
+    // check that user is logged in
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.setEmail.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    const oldEmail = Meteor.users.findOne(this.userId).emails[0].address;
+    Accounts.addEmail(this.userId, email);
+    Accounts.removeEmail(this.userId, oldEmail);
+    // FIXME: new address should be verified (send verificationEmail)
+  },
+});
+
 export const setAdmin = new ValidatedMethod({
   name: 'users.setAdmin',
   validate: new SimpleSchema({
