@@ -219,6 +219,7 @@
       "upZoneLabel": "Move up this zone",
       "downZoneLabel": "Move down this zone",
       "addPersonalLink": "Add a personal in this zone",
+      "emptyDragZone": "Put services here",
       "modifyTitle": "Modify zone title"
     },
     "PersonalLinkDetails": {
@@ -261,7 +262,7 @@
       "loginError": "Error: Bad account or password",
       "keycloakError": "Connection error",
       "EmailAlreadyExists": "Error: An account already exists with the same email",
-      "loginKeycloak": "Login with OpenID"
+      "loginKeycloak": "Login"
     },
     "SignUp": {
       "appDescription": "Create new account",

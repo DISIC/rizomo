@@ -219,6 +219,7 @@
       "upZoneLabel": "Faire monter cette zone",
       "downZoneLabel": "Faire descendre cette zone",
       "addPersonalLink": "Ajouter un lien personnel à cette zone",
+      "emptyDragZone": "Glissez les services ici",
       "modifyTitle": "Modifier le titre de la zone"
     },
     "PersonalLinkDetails": {
@@ -261,7 +262,7 @@
       "loginError": "Erreur: Mauvais compte ou mot de passe",
       "keycloakError": "Erreur de connexion",
       "EmailAlreadyExists": "Erreur: Un compte existant utilise le même email",
-      "loginKeycloak": "Se connecter avec OpenID"
+      "loginKeycloak": "Se connecter"
     },
     "SignUp": {
       "appDescription": "Création de votre compte",

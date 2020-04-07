@@ -81,11 +81,11 @@ const useStyles = makeStyles((theme) => ({
   },
   emptyDragZone: {
     '&::before': {
-      border: `4px solid ${theme.palette.primary.main}`,
-      borderRadius: '50%',
+      // border: `4px solid ${theme.palette.primary.main}`,
+      // borderRadius: '50%',
     },
     '&::after': {
-      content: "'+'",
+      content: `"${i18n.__('components.PersonalZone.emptyDragZone')}"`,
     },
   },
   title: {
