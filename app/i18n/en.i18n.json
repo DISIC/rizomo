@@ -240,6 +240,15 @@
     },
     "ValidationButton": {
       "sure": "Are you sure ?"
+    },
+    "UploaderNotifier": {
+      "errorTitle": "An Error has occurred",
+      "fileTooLargeTitle": "File too large",
+      "fileTooLarge": "This file is too large, please select a file less than",
+      "formatNotAcceptedTitle": "Wrong format",
+      "formatNotAccepted": "This file's format is not accepted, please upload one of",
+      "uploadInProgress": "Upload in progress",
+      "uploadFinished": "Upload finished"
     }
   },
   "validatejs": {

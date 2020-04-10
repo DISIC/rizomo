@@ -10,9 +10,8 @@ export const toBase64 = (image) => new Promise((resolve, reject) => {
 });
 
 export const getExtension = (type) => {
-  const string1 = type.split('/')[1];
-  const string2 = string1.split(';base64')[0];
-  return string2;
+  const string = type.split('/')[1];
+  return string.split(';base64')[0];
 };
 
 export const minioSrcBuilder = (src) => {
@@ -22,17 +21,24 @@ export const minioSrcBuilder = (src) => {
   return `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${minioPort}` : ''}/${minioBucket}/${src}`;
 };
 
-export const fileUpload = ({ name, file, path }) => {
+export const fileUpload = async ({ name, file, path }, callback) => {
   if (file.slice(0, 5) === 'data:') {
     const type = getExtension(file);
-    if (Meteor.isServer) {
-      Meteor.call('files.upload', {
+    Meteor.call(
+      'files.upload',
+      {
         file: file.replace(`data:image/${type};base64,`, ''),
-        name: `${name}.${type}`,
+        name: `${name}.${type === 'svg+xml' ? 'svg' : type}`,
         path,
-      });
-    }
-    return minioSrcBuilder(`${path}${name}.${type}`);
+      },
+      (error) => {
+        if (error) {
+          callback(null, error);
+        } else {
+          callback(minioSrcBuilder(`${path}${name}.${type === 'svg+xml' ? 'svg' : type}`));
+        }
+      },
+    );
   }
   return file;
 };

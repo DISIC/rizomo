@@ -26,7 +26,7 @@ import Spinner from '../../components/system/Spinner';
 import { createService, updateService } from '../../../api/services/methods';
 import Services from '../../../api/services/services';
 import slugy from '../../utils/slugy';
-import { toBase64 } from '../../utils/filesProcess';
+import ImageAdminUploader from '../../components/admin/ImageAdminUploader';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logoWrapper: {
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
   },
   wysiwyg: {
     marginTop: theme.spacing(3),
@@ -77,16 +77,6 @@ const useStyles = makeStyles((theme) => ({
   screenshotWrapper: {
     position: 'relative',
   },
-  screenshotInput: {
-    position: 'absolute',
-    top: 16,
-    bottom: 16,
-    left: 16,
-    right: 16,
-    width: 'calc(100% - 32px)',
-    opacity: 0,
-    cursor: 'pointer',
-  },
   screenshotDelete: {
     cursor: 'pointer',
     '&:hover': {
@@ -95,6 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
   screenshot: {
     width: '100%',
+    minHeight: 200,
   },
 }));
 
@@ -111,21 +102,44 @@ const defaultState = {
   screenshots: [],
 };
 
-const PLACEHOLDER = 'https://via.placeholder.com/1600x900/CFD3EE/FFFFFF?text=Screenshot';
+const PLACEHOLDER = 'https://fakeimg.pl/900x600/';
 
 const AdminSingleServicePage = ({
   categories, service, ready, match: { params },
 }) => {
-  const [serviceData, setServiceData] = useState(defaultState);
+  const [serviceData, setServiceData] = useState({ ...defaultState });
   const [loading, setLoading] = useState(!!params._id);
   const [content, setContent] = useState('');
   const history = useHistory();
   const classes = useStyles();
 
+  const removeUndefined = () => {
+    let args;
+    if (!params._id) {
+      args = {
+        toRemove: [...serviceData.screenshots, serviceData.logo],
+        path: 'services/undefined',
+      };
+    } else {
+      args = {
+        toKeep: [...service.screenshots, service.logo],
+        path: `services/${params._id}`,
+      };
+    }
+    Meteor.call('files.selectedRemove', args);
+  };
+
+  const onCancel = () => {
+    removeUndefined();
+    history.push('/adminservices');
+  };
+
+  // useEffect(() => removeUndefined, []); // TO UNDERSTAND :)
+
   useEffect(() => {
     if (params._id && service._id && loading) {
       setLoading(false);
-      setServiceData(service);
+      setServiceData({ ...service });
       setContent(service.content);
     }
   }, [service]);
@@ -143,18 +157,11 @@ const AdminSingleServicePage = ({
     }
   };
 
-  const onUpdateLogo = async (e) => {
-    const { files } = e.target;
-    const file = files[0];
-    const logo = await toBase64(file);
-    setServiceData({ ...serviceData, logo });
-  };
+  const onUpdateLogo = (logo) => setServiceData({ ...serviceData, logo });
 
-  const onUpdateRichText = (html) => {
-    setContent(html);
-  };
+  const onUpdateRichText = (html) => setContent(html);
 
-  const updateCategories = (categId) => {
+  const onUpdateCategories = (categId) => {
     const newCategories = [...serviceData.categories];
     const index = newCategories.findIndex((c) => c === categId);
     if (index > -1) {
@@ -165,25 +172,33 @@ const AdminSingleServicePage = ({
     setServiceData({ ...serviceData, categories: newCategories });
   };
 
-  const updateScreenshots = async (file, index) => {
-    const { screenshots = [] } = serviceData;
-    const screenshot = await toBase64(file);
-    screenshots[index] = screenshot;
-    setServiceData({ ...serviceData, screenshots });
+  const onUpdateScreenshots = (screenshot, index) => {
+    const newData = JSON.parse(JSON.stringify(serviceData));
+    newData.screenshots[index] = screenshot;
+    setServiceData(newData);
   };
 
-  const removeScreenshots = (index) => {
-    const { screenshots = [] } = serviceData;
-    screenshots.splice(index, 1);
-    setServiceData({ ...serviceData, screenshots });
+  const onRemoveScreenshots = (screen) => {
+    const newData = JSON.parse(JSON.stringify(serviceData));
+    newData.screenshots = newData.screenshots.filter((img) => img !== screen);
+
+    if (!params._id) {
+      const args = {
+        toRemove: [screen],
+        path: 'services/undefined',
+      };
+      Meteor.call('files.selectedRemove', args);
+    }
+
+    setServiceData(newData);
   };
-  const addScreenshots = () => {
-    const { screenshots = [] } = serviceData;
-    screenshots.push(PLACEHOLDER);
-    setServiceData({ ...serviceData, screenshots });
+  const onAddScreenshots = () => {
+    const newData = JSON.parse(JSON.stringify(serviceData));
+    newData.screenshots.push(PLACEHOLDER);
+    setServiceData(newData);
   };
 
-  const submitUpdateService = async () => {
+  const onSubmitUpdateService = () => {
     const method = params._id ? updateService : createService;
     setLoading(true);
     const { _id, slug, ...rest } = serviceData;
@@ -267,22 +282,16 @@ const AdminSingleServicePage = ({
               margin="normal"
             />
             <div className={classes.logoWrapper}>
-              {Boolean(serviceData.logo) && (
-                <img className={classes.logo} alt={`logo for ${serviceData.title}`} src={serviceData.logo} />
-              )}
-              <TextField
-                onChange={onUpdateLogo}
+              <div>{i18n.__('pages.AdminSingleServicePage.logo')}</div>
+              <ImageAdminUploader
+                onImageChange={onUpdateLogo}
                 name="logo"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  type: 'file',
-                }}
-                label={i18n.__('pages.AdminSingleServicePage.logo')}
-                variant="outlined"
-                fullWidth
-                margin="normal"
+                className={classes.logo}
+                alt={`logo for ${serviceData.title}`}
+                src={serviceData.logo}
+                path={`services/${params._id}/`}
+                width={100}
+                height={100}
               />
             </div>
             <TextField
@@ -321,7 +330,7 @@ const AdminSingleServicePage = ({
                     variant={isActive ? 'outlined' : 'default'}
                     className={isActive ? classes.activeChip : classes.chip}
                     style={{ backgroudColor: categ.color }}
-                    onClick={() => updateCategories(categ._id)}
+                    onClick={() => onUpdateCategories(categ._id)}
                   />
                 );
               })}
@@ -335,8 +344,8 @@ const AdminSingleServicePage = ({
               )
               <IconButton
                 color="primary"
-                aria-label={i18n.__('pages.AdminSingleServicePage.addScreenshots')}
-                onClick={addScreenshots}
+                aria-label={i18n.__('pages.AdminSingleServicePage.onAddScreenshots')}
+                onClick={onAddScreenshots}
               >
                 <AddIcon />
               </IconButton>
@@ -345,13 +354,17 @@ const AdminSingleServicePage = ({
               {serviceData.screenshots
                 && serviceData.screenshots.map((screen, i) => (
                   <Grid lg={4} md={6} xs={12} item key={Math.random()} className={classes.screenshotWrapper}>
-                    <img className={classes.screenshot} alt={`screenshot ${i} for ${serviceData.title}`} src={screen} />
-                    <input
-                      type="file"
-                      className={classes.screenshotInput}
-                      onChange={(e) => updateScreenshots(e.target.files[0], i)}
+                    <ImageAdminUploader
+                      onImageChange={(image) => onUpdateScreenshots(image, i)}
+                      name={`screenshot_${i}`}
+                      className={classes.screenshot}
+                      alt={`screenshot for ${serviceData.title}`}
+                      src={screen}
+                      path={`services/${params._id}/`}
+                      width={900}
+                      height={600}
                     />
-                    <IconButton onClick={() => removeScreenshots(i)} className={classes.screenshotDelete}>
+                    <IconButton onClick={() => onRemoveScreenshots(screen)} className={classes.screenshotDelete}>
                       <DeleteIcon />
                     </IconButton>
                   </Grid>
@@ -359,13 +372,13 @@ const AdminSingleServicePage = ({
             </Grid>
 
             <div className={classes.buttonGroup}>
-              <Button variant="contained" color="primary" onClick={submitUpdateService}>
+              <Button variant="contained" color="primary" onClick={onSubmitUpdateService}>
                 {params._id
                   ? i18n.__('pages.AdminSingleServicePage.update')
                   : i18n.__('pages.AdminSingleServicePage.save')}
               </Button>
 
-              <Button variant="contained" onClick={() => history.push('/adminservices')}>
+              <Button variant="contained" onClick={onCancel}>
                 {i18n.__('pages.AdminSingleServicePage.cancel')}
               </Button>
             </div>
