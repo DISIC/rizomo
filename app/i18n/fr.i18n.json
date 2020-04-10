@@ -237,6 +237,9 @@
       "publicButton": "Ouvrir la page publique de cette publication",
       "publishedOn": "Publiée le",
       "noDescription": "Il n'y a pas de description pour cette publication"
+    },
+    "ValidationButton": {
+      "sure": "Êtes-vous sûr(e) ?"
     }
   },
   "validatejs": {
@@ -466,13 +469,15 @@
       "creationTitle": "Nouvelle publication",
       "successUpdate": "Publication mise à jour avec succès",
       "successCreate": "Publication créée avec succès",
+      "successDelete": "Publication supprimée avec succès",
       "titleLabel": "Titre",
       "slugLabel": "URL public de la publication",
       "descriptionLabel": "Courte description de cette publication",
       "contentLabel": "Contenu de cette publication",
       "update": "Mettre à jour",
       "save": "Créer",
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "delete": "Supprimer"
     },
     "PublicArticlePage": {
       "title": "Publications de",

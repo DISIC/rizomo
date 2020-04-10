@@ -4,6 +4,7 @@ import i18n from 'meteor/universe:i18n';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { withTracker } from 'meteor/react-meteor-data';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {
   TextField, Typography, InputLabel, Container, Grid, makeStyles, Button,
 } from '@material-ui/core';
@@ -12,7 +13,8 @@ import Spinner from '../../components/system/Spinner';
 import { Context } from '../../contexts/context';
 import { useObjectState } from '../../utils/hooks';
 import slugy from '../../utils/slugy';
-import { updateArticle, createArticle } from '../../../api/articles/methods';
+import { updateArticle, createArticle, removeArticle } from '../../../api/articles/methods';
+import ValidationButton from '../../components/system/ValidationButton';
 
 const useStyles = makeStyles((theme) => ({
   flex: {
@@ -123,6 +125,19 @@ function EditArticlePage({
     setContent(html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ''));
   };
 
+  const deleteArticle = () => {
+    setLoading(true);
+    removeArticle.call({ articleId: article._id }, (err) => {
+      setLoading(false);
+      if (err) {
+        msg.error(err.reason);
+      } else {
+        msg.success(i18n.__('pages.EditArticlePage.successDelete'));
+        history.push('/publications');
+      }
+    });
+  };
+
   const submitUpdateArticle = () => {
     setLoading(true);
     const method = slug ? updateArticle : createArticle;
@@ -197,6 +212,14 @@ function EditArticlePage({
           <Button variant="contained" onClick={() => history.push('/publications')}>
             {i18n.__('pages.EditArticlePage.cancel')}
           </Button>
+          {!!slug && (
+            <ValidationButton
+              color="red"
+              icon={<DeleteIcon />}
+              text={i18n.__('pages.EditArticlePage.delete')}
+              onAction={deleteArticle}
+            />
+          )}
         </div>
       </form>
     </Container>

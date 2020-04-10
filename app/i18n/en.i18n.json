@@ -237,6 +237,9 @@
       "publicButton": "Open this publication public page",
       "publishedOn": "Published on the",
       "noDescription": "There is no description for this publication"
+    },
+    "ValidationButton": {
+      "sure": "Are you sure ?"
     }
   },
   "validatejs": {
@@ -464,13 +467,15 @@
       "creationTitle": "New publication",
       "successUpdate": "Publication updated successfully",
       "successCreate": "Publication created successfully",
+      "successDelete": "Publication deleted sucessfully",
       "titleLabel": "Title",
       "slugLabel": "URL to the publication's page",
       "descriptionLabel": "Short description of this publication",
       "contentLabel": "Content of the publication",
       "update": "Update",
       "save": "Create",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "delete": "Delete"
     },
     "PublicArticlePage": {
       "title": "Publications by",
