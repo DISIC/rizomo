@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonText: {
     color: theme.palette.tertiary.main,
-    marginRight: theme.spacing(3),
+    marginRight: theme.spacing(2),
   },
   cardMedia: {
     maxWidth: '50px',
@@ -64,6 +64,7 @@ export default function ArticleDetails({ article, publicPage }) {
         aria-label={i18n.__('components.ArticleDetails.publicButton')}
       >
         <Button
+          className={classes.buttonText}
           color="primary"
           variant="contained"
           onClick={() => window.open(`${Meteor.absoluteUrl()}public/${Meteor.userId()}/${article.slug}`, '_blank')}
