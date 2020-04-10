@@ -11,8 +11,8 @@ import Articles from './articles';
 export const createArticle = new ValidatedMethod({
   name: 'articles.createArticle',
   validate: new SimpleSchema({
-    data: Articles.schema.omit('createdAt', 'updatedAt', 'userId'),
-  }).validator(),
+    data: Articles.schema.omit('createdAt', 'updatedAt', 'userId', 'slug'),
+  }).validator({ clean: true }),
 
   run({ data }) {
     if (!isActive(this.userId)) {
@@ -44,8 +44,8 @@ export const updateArticle = new ValidatedMethod({
   name: 'articles.updateArticle',
   validate: new SimpleSchema({
     articleId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.articles.labels.id') },
-    data: Articles.schema,
-  }).validator(),
+    data: Articles.schema.omit('createdAt', 'updatedAt', 'userId', 'slug'),
+  }).validator({ clean: true }),
 
   run({ data, articleId }) {
     // check article existence

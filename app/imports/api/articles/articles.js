@@ -83,6 +83,8 @@ Articles.publicFields = {
 Factory.define('article', Articles, {
   title: () => Random.id(),
   content: faker.lorem.sentence(),
+  description: faker.lorem.sentence(),
+  userId: () => Random.id(),
 });
 
 Articles.attachSchema(Articles.schema);

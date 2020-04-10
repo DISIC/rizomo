@@ -96,6 +96,7 @@
       "adminArticleNeeded": "Vous n'avez pas les droits d'administration sur cette publication.",
       "unknownArticle": "Cette publication n'existe pas",
       "labels": {
+        "id": "Id d'article",
         "title": "Titre",
         "slug": "URL de la publication",
         "userId": "ID de l'auteur",
