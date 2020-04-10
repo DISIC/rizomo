@@ -6,45 +6,61 @@ export const MOBILE_SIZE = 768;
 const reducer = (state, action) => {
   const { type, data = {} } = action;
   const { language, width } = data;
+  const newState = JSON.parse(JSON.stringify(state));
   switch (type) {
     case 'language':
-      if (state.user && state.user.language !== language) {
+      if (newState.user && newState.user.language !== language) {
         Meteor.call('users.setLanguage', { language });
       }
       i18n.setLocale(language);
       return {
-        ...state,
+        ...newState,
         language,
       };
     case 'servicePage':
       return {
-        ...state,
+        ...newState,
         servicePage: { ...data },
       };
     case 'articlePage':
       return {
-        ...state,
+        ...newState,
         articlePage: { ...data },
       };
     case 'groupPage':
       return {
-        ...state,
+        ...newState,
         groupPage: { ...data },
       };
     case 'publishersPage':
       return {
-        ...state,
+        ...newState,
         publishersPage: { ...data },
       };
     case 'mobile':
       return {
-        ...state,
+        ...newState,
         isMobile: width < MOBILE_SIZE,
       };
     case 'user':
       return {
-        ...state,
+        ...newState,
         ...data,
+      };
+    case 'uploads.add':
+      newState.uploads.push(data);
+      return {
+        ...newState,
+      };
+    case 'uploads.remove':
+      return {
+        ...newState,
+        uploads: newState.uploads.filter((img) => img.fileName !== data.fileName),
+      };
+    case 'uploads.update':
+      return {
+        ...newState,
+        uploads: { ...data },
       };
     default:
       throw new Error();

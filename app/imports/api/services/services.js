@@ -4,7 +4,6 @@ import { Tracker } from 'meteor/tracker';
 import { Factory } from 'meteor/dburles:factory';
 import { Random } from 'meteor/random';
 import faker from 'faker';
-import { fileUpload } from '../../ui/utils/filesProcess';
 import slugy from '../../ui/utils/slugy';
 import { getLabel } from '../utils';
 
@@ -56,33 +55,11 @@ Services.schema = new SimpleSchema(
     logo: {
       type: String,
       label: getLabel('api.services.labels.logo'),
-      autoValue() {
-        if (this.value) {
-          return fileUpload({
-            name: `logo_${Random.id()}`,
-            file: this.value,
-            path: `services/${this.docId}/`,
-          });
-        }
-        return undefined;
-      },
     },
     categories: { type: Array, defaultValue: [], label: getLabel('api.services.labels.categories') },
     'categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
     screenshots: { type: Array, defaultValue: [], label: getLabel('api.services.labels.screenshots') },
-    'screenshots.$': {
-      type: String,
-      autoValue() {
-        if (this.value) {
-          return fileUpload({
-            name: `screenshot_${Random.id()}`,
-            file: this.value,
-            path: `services/${this.docId}/`,
-          });
-        }
-        return undefined;
-      },
-    },
+    'screenshots.$': { type: String },
   },
   { tracker: Tracker },
 );

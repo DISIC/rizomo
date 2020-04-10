@@ -240,6 +240,15 @@
     },
     "ValidationButton": {
       "sure": "Êtes-vous sûr(e) ?"
+    },
+    "UploaderNotifier": {
+      "errorTitle": "Une erreur s'est produite",
+      "fileTooLargeTitle": "Fichier trop gros",
+      "fileTooLarge": "Ce fichier est trop gros, veuillez choisir un fichier de moins de",
+      "formatNotAcceptedTitle": "Mauvais format",
+      "formatNotAccepted": "Le format de ce fichier n'est pas accepté, veuillez choisir un fichier de l'un de ces format",
+      "uploadInProgress": "Téléversement en cours",
+      "uploadFinished": "Téléversement terminé"
     }
   },
   "validatejs": {

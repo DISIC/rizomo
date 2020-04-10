@@ -4,7 +4,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 
-import useWindowSize from '../utils/useWIndowSize';
+import { useWindowSize } from '../utils/hooks';
 import reducer, { MOBILE_SIZE } from './reducer';
 import getLang from '../utils/getLang';
 
@@ -20,6 +20,7 @@ const initialState = {
   articlePage: {},
   publishersPage: {},
   roles: [],
+  uploads: [],
 };
 
 const logger = (state, action) => {

@@ -19,7 +19,22 @@ export const createService = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.services.createService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    Services.insert(args);
+    const serviceId = Services.insert(args);
+    Services.update(serviceId, {
+      $set: {
+        logo: args.logo.replace('/undefined/', `/${serviceId}/`),
+        screenshots: args.screenshots.map((screen) => screen.replace('/undefined/', `/${serviceId}/`)),
+      },
+    });
+
+    if (Meteor.isServer && !Meteor.isTest) {
+      const files = [args.logo, ...args.screenshots];
+      Meteor.call('files.move', {
+        sourcePath: 'services/undefined/',
+        destinationPath: `services/${serviceId}/`,
+        files,
+      });
+    }
   },
 });
 
@@ -44,7 +59,7 @@ export const removeService = new ValidatedMethod({
     // remove service from users favorites
     Meteor.users.update({ favServices: { $all: [serviceId] } }, { $pull: { favServices: serviceId } }, { multi: true });
     if (Meteor.isServer && !Meteor.isTest) {
-      Meteor.call('files.remove', { path: `services/${service._id}` });
+      Meteor.call('files.removeFolder', { path: `services/${service._id}` });
     }
   },
 });
@@ -68,6 +83,14 @@ export const updateService = new ValidatedMethod({
       throw new Meteor.Error('api.services.updateService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
     Services.update({ _id: serviceId }, { $set: data });
+
+    if (Meteor.isServer && !Meteor.isTest) {
+      const files = [data.logo, ...data.screenshots];
+      Meteor.call('files.selectedRemove', {
+        path: `services/${serviceId}/`,
+        toKeep: files,
+      });
+    }
   },
 });
 
