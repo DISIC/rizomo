@@ -15,8 +15,9 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import Groups from '../groups';
+import PersonalSpaces from '../../personalspaces/personalspaces';
 import {
-  createGroup, removeGroup, updateGroup, findGroups,
+  createGroup, removeGroup, updateGroup, findGroups, favGroup, unfavGroup,
 } from '../methods';
 import './publications';
 import {
@@ -29,6 +30,15 @@ import {
   setAnimatorOf,
   unsetAnimatorOf,
 } from '../../users/server/methods';
+
+function pspaceHasGroup(user, id) {
+  const pspace = PersonalSpaces.findOne({
+    userId: user,
+    unsorted: { $elemMatch: { type: 'group', element_id: id } },
+  });
+  const inFavs = Meteor.users.findOne(user).favGroups.includes(id);
+  return pspace !== undefined && inFavs;
+}
 
 describe('groups', function () {
   describe('mutators', function () {
@@ -108,6 +118,7 @@ describe('groups', function () {
     beforeEach(function () {
       // Clear
       Groups.remove({});
+      PersonalSpaces.remove({});
       Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
       Meteor.roles.remove({});
@@ -205,20 +216,24 @@ describe('groups', function () {
         let group = Groups.findOne(group3Id);
         assert.equal(Roles.userIsInRole(userId, 'animator', group3Id), true);
         assert.include(group.animators, userId, 'group animators list contains userId');
+        assert.equal(pspaceHasGroup(userId, group3Id), true, 'group is in personal space');
         unsetAnimatorOf._execute({ userId: adminId }, { userId, groupId: group3Id });
         group = Groups.findOne(group3Id);
         assert.equal(Roles.userIsInRole(userId, 'animator', group3Id), false);
         assert.notInclude(group.animators, userId, "group animators list shouldn't contain userId");
+        assert.equal(pspaceHasGroup(userId, group3Id), false, 'group is no longer in personal space');
       });
       it('group admin can set/unset a user as animator of a group', function () {
         setAnimatorOf._execute({ userId }, { userId: otherUserId, groupId: group2Id });
         let group = Groups.findOne(group2Id);
         assert.equal(Roles.userIsInRole(otherUserId, 'animator', group2Id), true);
         assert.include(group.animators, otherUserId, 'group animators list contains otherUserId');
+        assert.equal(pspaceHasGroup(otherUserId, group2Id), true, 'group is in personal space');
         unsetAnimatorOf._execute({ userId }, { userId: otherUserId, groupId: group2Id });
         group = Groups.findOne(group2Id);
         assert.equal(Roles.userIsInRole(otherUserId, 'animator', group2Id), false);
         assert.notInclude(group.animators, otherUserId, "group animators list shouldn't contain otherUserId");
+        assert.equal(pspaceHasGroup(otherUserId, group2Id), false, 'group is no longer in personal space');
       });
       it('only global or group admin can set/unset a user as animator of a group', function () {
         // Throws if non owner/admin user, or logged out user
@@ -244,20 +259,24 @@ describe('groups', function () {
         let group = Groups.findOne(group3Id);
         assert.equal(Roles.userIsInRole(userId, 'member', group3Id), true);
         assert.include(group.members, userId, 'group members list contains userId');
+        assert.equal(pspaceHasGroup(userId, group3Id), true, 'group is in personal space');
         unsetMemberOf._execute({ userId: adminId }, { userId, groupId: group3Id });
         group = Groups.findOne(group3Id);
         assert.equal(Roles.userIsInRole(userId, 'member', group3Id), false);
         assert.notInclude(group.members, userId, "group members list shouldn't contain userId");
+        assert.equal(pspaceHasGroup(userId, group3Id), false, 'group is no longer in personal space');
       });
       it('group admin can set/unset a user as member of a group', function () {
         setMemberOf._execute({ userId }, { userId: otherUserId, groupId: group2Id });
         let group = Groups.findOne(group2Id);
         assert.equal(Roles.userIsInRole(otherUserId, 'member', group2Id), true);
         assert.include(group.members, otherUserId, 'group members list contains otherUserId');
+        assert.equal(pspaceHasGroup(otherUserId, group2Id), true, 'group is in personal space');
         unsetMemberOf._execute({ userId }, { userId: otherUserId, groupId: group2Id });
         group = Groups.findOne(group2Id);
         assert.equal(Roles.userIsInRole(otherUserId, 'member', group2Id), false);
         assert.notInclude(group.members, otherUserId, "group members list shouldn't contain otherUserId");
+        assert.equal(pspaceHasGroup(otherUserId, group2Id), false, 'group is no longer in personal space');
       });
       it('group animator can set/unset a user as member of a group', function () {
         setAnimatorOf._execute({ userId: adminId }, { userId: otherUserId, groupId: group2Id });
@@ -265,20 +284,25 @@ describe('groups', function () {
         let group = Groups.findOne(group2Id);
         assert.equal(Roles.userIsInRole(userId, 'member', group2Id), true);
         assert.include(group.members, userId, 'group members list contains userId');
+        assert.equal(pspaceHasGroup(userId, group2Id), true, 'group is in personal space');
         unsetMemberOf._execute({ userId: otherUserId }, { userId, groupId: group2Id });
         group = Groups.findOne(group2Id);
         assert.equal(Roles.userIsInRole(userId, 'member', group2Id), false);
         assert.notInclude(group.members, userId, "group members list shouldn't contain userId");
+        // as userId is also admin of group2, group is kept in personal space
+        assert.equal(pspaceHasGroup(userId, group2Id), true, 'group is still in personal space');
       });
       it('normal user can set/unset himself as member only for open groups', function () {
         setMemberOf._execute({ userId }, { userId, groupId: group3Id });
         let group = Groups.findOne(group3Id);
         assert.equal(Roles.userIsInRole(userId, 'member', group3Id), true);
         assert.include(group.members, userId, 'group members list contains userId');
+        assert.equal(pspaceHasGroup(userId, group3Id), true, 'group is in personal space');
         unsetMemberOf._execute({ userId }, { userId, groupId: group3Id });
         group = Groups.findOne(group3Id);
         assert.equal(Roles.userIsInRole(userId, 'member', group3Id), false);
         assert.notInclude(group.members, userId, "group members list shouldn't contain userId");
+        assert.equal(pspaceHasGroup(userId, group3Id), false, 'group is no longer in personal space');
         assert.throws(
           () => {
             setMemberOf._execute({ userId }, { userId, groupId: moderatedGroupId });
@@ -346,10 +370,12 @@ describe('groups', function () {
         let group = Groups.findOne(moderatedGroupId);
         assert.equal(Roles.userIsInRole(userId, 'candidate', moderatedGroupId), true);
         assert.include(group.candidates, userId, 'group candidates list contains userId');
+        assert.equal(pspaceHasGroup(userId, moderatedGroupId), true, 'group is in personal space');
         unsetCandidateOf._execute({ userId: adminId }, { userId, groupId: moderatedGroupId });
         group = Groups.findOne(moderatedGroupId);
         assert.equal(Roles.userIsInRole(userId, 'candidate', moderatedGroupId), false);
         assert.notInclude(group.candidates, userId, "group candidates list shouldn't contain userId");
+        assert.equal(pspaceHasGroup(userId, moderatedGroupId), false, 'group is no longer in personal space');
         // the 2 below exceptions will be tested only for global admin (depends on group type, not user permissions)
         assert.throws(
           () => {
@@ -372,10 +398,12 @@ describe('groups', function () {
         let group = Groups.findOne(moderatedGroupId);
         assert.equal(Roles.userIsInRole(otherUserId, 'candidate', moderatedGroupId), true);
         assert.include(group.candidates, otherUserId, 'group candidates list contains userId');
+        assert.equal(pspaceHasGroup(otherUserId, moderatedGroupId), true, 'group is in personal space');
         unsetCandidateOf._execute({ userId }, { userId: otherUserId, groupId: moderatedGroupId });
         group = Groups.findOne(moderatedGroupId);
         assert.equal(Roles.userIsInRole(otherUserId, 'candidate', moderatedGroupId), false);
         assert.notInclude(group.candidates, otherUserId, "group candidates list shouldn't contain userId");
+        assert.equal(pspaceHasGroup(otherUserId, moderatedGroupId), false, 'group is no longer in personal space');
       });
       it('group animator can set/unset a user as candidate of a moderated group', function () {
         setAnimatorOf._execute({ userId: adminId }, { userId: otherUserId, groupId: moderatedGroupId });
@@ -383,20 +411,24 @@ describe('groups', function () {
         let group = Groups.findOne(moderatedGroupId);
         assert.equal(Roles.userIsInRole(userId, 'candidate', moderatedGroupId), true);
         assert.include(group.candidates, userId, 'group candidates list contains userId');
+        assert.equal(pspaceHasGroup(userId, moderatedGroupId), true, 'group is in personal space');
         unsetCandidateOf._execute({ userId: otherUserId }, { userId, groupId: moderatedGroupId });
         group = Groups.findOne(moderatedGroupId);
         assert.equal(Roles.userIsInRole(userId, 'candidate', moderatedGroupId), false);
         assert.notInclude(group.candidates, userId, "group candidates list shouldn't contain userId");
+        assert.equal(pspaceHasGroup(userId, moderatedGroupId), false, 'group is no longer in personal space');
       });
       it('normal user can set/unset himself as candidate only for moderated groups', function () {
         setCandidateOf._execute({ userId }, { userId, groupId: moderatedGroupId });
         let group = Groups.findOne(moderatedGroupId);
         assert.equal(Roles.userIsInRole(userId, 'candidate', moderatedGroupId), true);
         assert.include(group.candidates, userId, 'group candidates list contains userId');
+        assert.equal(pspaceHasGroup(userId, moderatedGroupId), true, 'group is in personal space');
         unsetCandidateOf._execute({ userId }, { userId, groupId: moderatedGroupId });
         group = Groups.findOne(moderatedGroupId);
         assert.equal(Roles.userIsInRole(userId, 'candidate', moderatedGroupId), false);
         assert.notInclude(group.candidates, userId, "group candidates list shouldn't contain userId");
+        assert.equal(pspaceHasGroup(userId, moderatedGroupId), false, 'group is no longer in personal space');
       });
       it('normal users can not set/unset another user as candidate of a group', function () {
         assert.throws(
@@ -431,6 +463,7 @@ describe('groups', function () {
         assert.equal(group.active, true);
         assert.equal(group.owner, userId);
         assert.equal(Roles.userIsInRole(userId, 'admin', group._id), true);
+        assert.equal(pspaceHasGroup(userId, group._id), true, 'group is in personal space');
       });
       it('does fail to create a group if name already taken', function () {
         assert.throws(
@@ -535,6 +568,36 @@ describe('groups', function () {
           },
           Meteor.ClientError,
           /E11000 duplicate key error collection: meteor.groups index: c2_name dup key: { : "group4" }/,
+        );
+      });
+    });
+    describe('(un)favGroup', function () {
+      it('does (un)set a group as favorite', function () {
+        favGroup._execute({ userId }, { groupId });
+        let user = Meteor.users.findOne(userId);
+        assert.include(user.favGroups, groupId, 'favorite groups list contains groupId');
+        assert.equal(pspaceHasGroup(userId, groupId), true, 'group is in personal space');
+        unfavGroup._execute({ userId }, { groupId });
+        user = Meteor.users.findOne(userId);
+        assert.notInclude(user.favGroups, groupId, 'favorite groups list does not contain groupId');
+        assert.equal(pspaceHasGroup(userId, groupId), false, 'group is no longer in personal space');
+      });
+      it('does not set a group as favorite if not logged in', function () {
+        assert.throws(
+          () => {
+            favGroup._execute({}, { groupId });
+          },
+          Meteor.Error,
+          /api.groups.favGroup.notPermitted/,
+        );
+      });
+      it('does not unset a group as favorite if not logged in', function () {
+        assert.throws(
+          () => {
+            unfavGroup._execute({}, { groupId });
+          },
+          Meteor.Error,
+          /api.groups.unfavGroup.notPermitted/,
         );
       });
     });

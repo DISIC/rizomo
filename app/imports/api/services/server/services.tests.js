@@ -17,6 +17,16 @@ import {
 
 import './publications';
 import Services from '../services';
+import PersonalSpaces from '../../personalspaces/personalspaces';
+
+function pspaceHasService(user, id) {
+  const pspace = PersonalSpaces.findOne({
+    userId: user,
+    unsorted: { $elemMatch: { type: 'service', element_id: id } },
+  });
+  const inFavs = Meteor.users.findOne(user).favServices.includes(id);
+  return pspace !== undefined && inFavs;
+}
 
 describe('services', function () {
   describe('mutators', function () {
@@ -61,6 +71,8 @@ describe('services', function () {
     let chatData;
     beforeEach(function () {
       // Clear
+      Services.remove({});
+      PersonalSpaces.remove({});
       Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
       Meteor.roles.remove({});
@@ -199,9 +211,11 @@ describe('services', function () {
         favService._execute({ userId }, { serviceId });
         let user = Meteor.users.findOne(userId);
         assert.include(user.favServices, serviceId, 'favorite service list contains serviceId');
+        assert.equal(pspaceHasService(userId, serviceId), true, 'service is in personal space');
         unfavService._execute({ userId }, { serviceId });
         user = Meteor.users.findOne(userId);
         assert.notInclude(user.favServices, serviceId, 'favorite service list does not contains serviceId');
+        assert.equal(pspaceHasService(userId, serviceId), false, 'service is no longer in personal space');
       });
       it('does not set a service as favorite if not logged in', function () {
         assert.throws(

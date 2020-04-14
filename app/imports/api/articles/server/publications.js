@@ -19,7 +19,7 @@ const queryAllArticles = ({ search, userId }) => {
 };
 
 Meteor.methods({
-  'get_articles.all_count': function ({ search, userId }) {
+  'get_articles.all_count': function getArticlesAllCount({ search, userId }) {
     const query = queryAllArticles({ search, userId: userId || this.userId });
     return Articles.find(query).count();
   },

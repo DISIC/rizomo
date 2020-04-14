@@ -1,9 +1,9 @@
 export const toBase64 = (image) => new Promise((resolve, reject) => {
   const reader = new FileReader();
-  reader.onload = function () {
+  reader.onload = function onloadResolve() {
     resolve(reader.result);
   };
-  reader.onerror = function (error) {
+  reader.onerror = function onerrorReject(error) {
     reject(error);
   };
   reader.readAsDataURL(image);
