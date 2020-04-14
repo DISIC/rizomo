@@ -4,6 +4,7 @@
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { chai, assert } from 'meteor/practicalmeteor:chai';
 import faker from 'faker';
+import { Factory } from 'meteor/dburles:factory';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import { Accounts } from 'meteor/accounts-base';
@@ -11,9 +12,22 @@ import { Roles } from 'meteor/alanning:roles';
 import '../../../../i18n/en.i18n.json';
 
 import {
-  setAdmin, unsetAdmin, setStructure, setUsername, setActive, unsetActive, findUsers,
+  setAdmin,
+  unsetAdmin,
+  setStructure,
+  setUsername,
+  setName,
+  setEmail,
+  setLanguage,
+  setActive,
+  unsetActive,
+  findUsers,
+  removeUser,
+  setMemberOf,
 } from './methods';
 import { structures } from '../structures';
+import Groups from '../../groups/groups';
+import PersonalSpaces from '../../personalspaces/personalspaces';
 import './publications';
 
 describe('users', function () {
@@ -113,12 +127,16 @@ describe('users', function () {
     let adminId;
     let email;
     let emailAdmin;
+    let groupId;
     beforeEach(function () {
       // Clear
       Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
       Meteor.roles.remove({});
+      Groups.remove({});
+      PersonalSpaces.remove({});
       Roles.createRole('admin');
+      Roles.createRole('member');
       // Generate 'users'
       email = faker.internet.email();
       userId = Accounts.createUser({
@@ -142,6 +160,9 @@ describe('users', function () {
       Roles.addUsersToRoles(adminId, 'admin');
       // set users as active
       Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
+      // create a group and set userId as member
+      groupId = Factory.create('group', { owner: adminId })._id;
+      setMemberOf._execute({ userId: adminId }, { userId, groupId });
     });
     describe('(un)setAdmin', function () {
       it('global admin can set/unset a user as admin', function () {
@@ -242,6 +263,108 @@ describe('users', function () {
           },
           Meteor.Error,
           /api.users.setStructure.notLoggedIn/,
+        );
+      });
+    });
+    describe('setName', function () {
+      it('users can set their firstname and lastname', function () {
+        setName._execute({ userId }, { firstName: 'newFirstname', lastName: 'newLastname' });
+        const user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.firstName, 'newFirstname');
+        assert.equal(user.lastName, 'newLastname');
+      });
+      it('only logged in users can set their name', function () {
+        assert.throws(
+          () => {
+            setName._execute({}, { firstName: 'newFirstname', lastName: 'newLastname' });
+          },
+          Meteor.Error,
+          /api.users.setName.notLoggedIn/,
+        );
+      });
+    });
+    describe('setEmail', function () {
+      it('users can set their email address', function () {
+        setEmail._execute({ userId }, { email: 'toto@test.org' });
+        const user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.emails[0].address, 'toto@test.org');
+        assert.equal(user.emails[0].verified, false);
+      });
+      it('users can not use an already existing email address', function () {
+        assert.throws(
+          () => {
+            setEmail._execute({ userId }, { email: emailAdmin });
+          },
+          Meteor.Error,
+          /Email already exists. \[403\]/,
+        );
+      });
+      it('only logged in users can set their email address', function () {
+        assert.throws(
+          () => {
+            setEmail._execute({}, { email: 'toto@test.org' });
+          },
+          Meteor.Error,
+          /api.users.setEmail.notLoggedIn/,
+        );
+      });
+    });
+    describe('setLanguage', function () {
+      it('users can set their preferred language', function () {
+        setLanguage._execute({ userId }, { language: 'fr' });
+        const user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.language, 'fr');
+      });
+      it('only logged in users can set their language', function () {
+        assert.throws(
+          () => {
+            setLanguage._execute({}, { language: 'fr' });
+          },
+          Meteor.Error,
+          /api.users.setLanguage.notPermitted/,
+        );
+      });
+    });
+    describe('removeUser', function () {
+      it('global admin can remove an existing user and associated data', function () {
+        // check that user data exists before deletion
+        let pspace = PersonalSpaces.findOne({ userId });
+        assert.property(pspace, 'unsorted');
+        let group = Groups.findOne(groupId);
+        assert.include(group.members, userId);
+        assert.equal(Roles.userIsInRole(userId, 'member', groupId), true);
+        removeUser._execute({ userId: adminId }, { userId });
+        const user = Meteor.users.findOne(userId);
+        // check that personalspace, roles and group entries are removed
+        assert.equal(user, undefined);
+        group = Groups.findOne(groupId);
+        assert.notInclude(group.members, userId);
+        assert.equal(Roles.userIsInRole(userId, 'member', groupId), false);
+        pspace = PersonalSpaces.findOne({ userId });
+        assert.equal(pspace, undefined);
+      });
+      it('non admin users can remove their own account and associated data', function () {
+        let user = Meteor.users.findOne(userId);
+        removeUser._execute({ userId }, { userId });
+        user = Meteor.users.findOne(userId);
+        assert.equal(user, undefined);
+        // check that personalspace, roles and group entries are removed
+      });
+      it('only global admin can remove another user', function () {
+        // Throws if non admin user, or logged out user
+        assert.throws(
+          () => {
+            removeUser._execute({ userId }, { userId: adminId });
+          },
+          Meteor.Error,
+          /api.users.removeUser.notPermitted/,
+        );
+        assert.throws(
+          () => {
+            removeUser._execute({}, { userId });
+          },
+          Meteor.Error,
+          /api.users.removeUser.notPermitted/,
         );
       });
     });

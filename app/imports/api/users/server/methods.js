@@ -135,12 +135,12 @@ export const removeUser = new ValidatedMethod({
     // check if current user has global admin rights or self removal
     const authorized = isActive(this.userId) && (Roles.userIsInRole(this.userId, 'admin') || userId === this.userId);
     if (!authorized) {
-      throw new Meteor.Error('api.users.setAdmin.notPermitted', i18n.__('api.users.notPermitted'));
+      throw new Meteor.Error('api.users.removeUser.notPermitted', i18n.__('api.users.notPermitted'));
     }
     // check user existence
     const user = Meteor.users.findOne({ _id: userId });
     if (user === undefined) {
-      throw new Meteor.Error('api.users.setAdmin.unknownUser', i18n.__('api.users.unknownUser'));
+      throw new Meteor.Error('api.users.removeUser.unknownUser', i18n.__('api.users.unknownUser'));
     }
     // delete role assignements and remove from groups
     const groups = Roles.getScopesForUser(userId);
