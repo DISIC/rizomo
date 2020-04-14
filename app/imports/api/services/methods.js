@@ -29,11 +29,15 @@ export const createService = new ValidatedMethod({
 
     if (Meteor.isServer && !Meteor.isTest) {
       const files = [args.logo, ...args.screenshots];
-      Meteor.call('files.move', {
-        sourcePath: 'services/undefined/',
-        destinationPath: `services/${serviceId}/`,
-        files,
-      });
+      try {
+        Meteor.call('files.move', {
+          sourcePath: 'services/undefined/',
+          destinationPath: `services/${serviceId}/`,
+          files,
+        });
+      } catch (error) {
+        throw new Meteor.Error('api.services.createService.moveError', error.message);
+      }
     }
   },
 });

@@ -134,8 +134,14 @@ export const moveFiles = new ValidatedMethod({
         `${destinationPath}/${newFile}`,
         `${minioBucket}/${sourcePath}/${newFile}`,
         conds,
-        () => {
+        (err) => {
           s3Client.removeObject(minioBucket, `${sourcePath}/${newFile}`);
+          if (err) {
+            console.log(
+              `Error copying ${newFile} from ${minioBucket}/${sourcePath}/${newFile} to ${destinationPath}/${newFile}`,
+            );
+            console.log(err);
+          }
         },
       );
     });
