@@ -72,6 +72,10 @@ const useStyles = (member, candidate, type) => makeStyles((theme) => ({
   openedContent: {
     textAlign: 'justify',
     marginBottom: theme.spacing(3),
+    '& p': {
+      marginTop: 0,
+      marginBottom: 0,
+    },
   },
   content: {
     textAlign: 'justify',

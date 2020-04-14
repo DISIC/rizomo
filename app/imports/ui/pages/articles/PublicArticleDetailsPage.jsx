@@ -33,6 +33,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
+  content: {
+    textAlign: 'justify',
+    marginBottom: theme.spacing(3),
+    '& p': {
+      marginTop: 0,
+      marginBottom: 0,
+    },
+  },
   buttonGroup: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -92,7 +100,7 @@ function PublicArticleDetailsPage({
               </Typography>
             </Grid>
             <Grid item xs={12} className={isMobile ? null : classes.flex}>
-              <div dangerouslySetInnerHTML={{ __html: article.content }} />
+              <div className={classes.content} dangerouslySetInnerHTML={{ __html: article.content }} />
             </Grid>
           </Grid>
         </Container>
