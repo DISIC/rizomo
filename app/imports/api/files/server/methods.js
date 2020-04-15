@@ -126,7 +126,7 @@ export const moveFiles = new ValidatedMethod({
 
     const conds = new Minio.CopyConditions();
     files.forEach((file) => {
-      const toReplace = `${HOST}${sourcePath}`;
+      const toReplace = `${HOST}${sourcePath}/`;
       const newFile = file.replace(toReplace, '');
 
       s3Client.copyObject(
