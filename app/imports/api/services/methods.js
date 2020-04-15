@@ -31,8 +31,8 @@ export const createService = new ValidatedMethod({
       const files = [args.logo, ...args.screenshots];
       try {
         Meteor.call('files.move', {
-          sourcePath: 'services/undefined/',
-          destinationPath: `services/${serviceId}/`,
+          sourcePath: 'services/undefined',
+          destinationPath: `services/${serviceId}`,
           files,
         });
       } catch (error) {
