@@ -315,7 +315,16 @@ const AdminSingleServicePage = ({
             />
             <div className={classes.wysiwyg}>
               <InputLabel htmlFor="content">{i18n.__('pages.AdminSingleServicePage.content')}</InputLabel>
-              <ReactQuill id="content" value={content} onChange={onUpdateRichText} />
+              <ReactQuill
+                id="content"
+                value={content}
+                onChange={onUpdateRichText}
+                modules={{
+                  clipboard: {
+                    matchVisual: false,
+                  },
+                }}
+              />
             </div>
 
             <InputLabel id="categories-label">{i18n.__('pages.AdminSingleServicePage.categories')}</InputLabel>

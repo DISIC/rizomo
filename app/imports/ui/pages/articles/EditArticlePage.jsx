@@ -72,6 +72,9 @@ const quillOptions = {
         image: imageHandler,
       },
     },
+    clipboard: {
+      matchVisual: false,
+    },
   },
   formats: [
     'header',
