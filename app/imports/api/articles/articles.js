@@ -39,8 +39,12 @@ Articles.schema = new SimpleSchema(
         const title = this.field('title').value;
         // if name is not being modified, do not calculate autovalue
         if (title === undefined) return undefined;
-        const slug = slugy(title);
-        return slug;
+        if (this.isInsert) {
+          const date = new Date();
+          const slug = slugy(`${title}_${date.toISOString()}`);
+          return slug;
+        }
+        return this.value;
       },
     },
     userId: {

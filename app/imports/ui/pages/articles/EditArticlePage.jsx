@@ -165,9 +165,10 @@ function EditArticlePage({
   const onUpdateField = (event) => {
     const { name, value } = event.target;
     if (name === 'title') {
+      const date = new Date();
       setData({
         [name]: value,
-        slug: slugy(value),
+        slug: article._id ? article.slug : slugy(`${value}_${date.toISOString()}`),
       });
     } else if (name === 'description') {
       setData({ [name]: value.substring(0, 400) });
