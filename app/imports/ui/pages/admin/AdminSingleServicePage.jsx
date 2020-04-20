@@ -26,7 +26,7 @@ import Spinner from '../../components/system/Spinner';
 import { createService, updateService } from '../../../api/services/methods';
 import Services from '../../../api/services/services';
 import slugy from '../../utils/slugy';
-import ImageAdminUploader from '../../components/admin/ImageAdminUploader';
+import ImageAdminUploader from '../../components/uploader/ImageAdminUploader';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -289,7 +289,7 @@ const AdminSingleServicePage = ({
                 className={classes.logo}
                 alt={`logo for ${serviceData.title}`}
                 src={serviceData.logo}
-                path={`services/${params._id}/`}
+                path={`services/${params._id}`}
                 width={100}
                 height={100}
               />
@@ -369,7 +369,7 @@ const AdminSingleServicePage = ({
                       className={classes.screenshot}
                       alt={`screenshot for ${serviceData.title}`}
                       src={screen}
-                      path={`services/${params._id}/`}
+                      path={`services/${params._id}`}
                       width={900}
                       height={600}
                     />

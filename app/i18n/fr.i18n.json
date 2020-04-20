@@ -154,7 +154,8 @@
       "menuAdminGroups": "Gestion des Groupes",
       "menuAdminUsers": "Gestion des utilisateurs",
       "menuProfileLabel": "Profil",
-      "menuLogoutLabel": "Se déconnecter"
+      "menuLogoutLabel": "Se déconnecter",
+      "menuMedias": "Stockage de Médias"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
@@ -242,6 +243,8 @@
       "sure": "Êtes-vous sûr(e) ?"
     },
     "UploaderNotifier": {
+      "storageFullTitle": "Votre stockage est plein",
+      "storageFull": "Vous ne pouvez pas téléverser ce fichier car vous êtes limité à",
       "errorTitle": "Une erreur s'est produite",
       "fileTooLargeTitle": "Fichier trop gros",
       "fileTooLarge": "Ce fichier est trop gros, veuillez choisir un fichier de moins de",
@@ -501,6 +504,11 @@
       "title": "Liste des auteurs",
       "searchText": "Qui recherchez-vous ?",
       "goToPublications": "Voir les publications de cet auteur"
+    },
+    "MediaStoragePage": {
+      "title": "Stockage de fichiers",
+      "usage": "Utilisation",
+      "delete": "Supprimer"
     }
   },
   "layouts": {

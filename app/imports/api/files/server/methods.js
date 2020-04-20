@@ -25,18 +25,21 @@ export const filesupload = new ValidatedMethod({
   }).validator(),
   async run({ file, path, name }) {
     try {
-      const filePath = `${path}${name}`;
+      const filePath = `${path}/${name}`;
       // check if current user has admin rights
       const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
-      if (!authorized) {
-        throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
-      }
+      const isUserPath = path === `users/${this.userId}`;
 
-      const buffer = Buffer.from(file, 'base64');
+      if (!authorized && !isUserPath) {
+        throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+      }
+      const fileArray = file.split(',');
+      const [fileData, fileData2] = fileArray;
+      const buffer = Buffer.from(fileData2 || fileData, 'base64');
       const result = await s3Client.putObject(minioBucket, filePath, buffer);
       return result;
     } catch (error) {
-      throw new Meteor.Error(error, error.message);
+      throw new Meteor.Error(error.typeError, error.message);
     }
   },
 });
@@ -52,13 +55,19 @@ export const removeFilesFolder = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    const stream = s3Client.listObjectsV2(minioBucket, path, true, '');
-    stream.on('data', (obj) => {
-      s3Client.removeObject(minioBucket, obj.name);
+    const results = new Promise((resolve, reject) => {
+      const stream = s3Client.listObjectsV2(minioBucket, path, true, '');
+      stream.on('data', (obj) => {
+        s3Client.removeObject(minioBucket, obj.name);
+      });
+      stream.on('error', (error) => {
+        reject(error);
+      });
+      stream.on('end', () => {
+        resolve();
+      });
     });
-    stream.on('error', (error) => {
-      console.log(error);
-    });
+    return results;
   },
 });
 
@@ -80,32 +89,48 @@ export const removeSelectedFiles = new ValidatedMethod({
   async run({ path, toRemove = [], toKeep = [] }) {
     // check if current user has admin rights
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
-    if (!authorized) {
+    const isUserPath = path === `users/${this.userId}`;
+
+    if (!authorized && !isUserPath) {
       throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
     }
     if (toRemove.length) {
-      const objectNames = toRemove.map((img) => img.replace(HOST, ''));
-      const stream = s3Client.listObjectsV2(minioBucket, `${path}/`, true, '');
-      stream.on('data', (obj) => {
-        if (objectNames.find((img) => img === obj.name)) {
-          s3Client.removeObject(minioBucket, obj.name);
-        }
+      const results = new Promise((resolve, reject) => {
+        const objectNames = toRemove.map((img) => img.replace(HOST, ''));
+        const stream = s3Client.listObjectsV2(minioBucket, `${path}/`, true, '');
+        stream.on('data', (obj) => {
+          if (objectNames.find((img) => img === obj.name)) {
+            s3Client.removeObject(minioBucket, obj.name);
+          }
+        });
+        stream.on('error', (error) => {
+          reject(error);
+        });
+        stream.on('end', () => {
+          resolve();
+        });
       });
-      stream.on('error', (error) => {
-        console.log(error);
-      });
-    } else if (toKeep.length) {
-      const objectNames = toKeep.map((img) => img.replace(HOST, ''));
-      const stream = s3Client.listObjectsV2(minioBucket, path, true, '');
-      stream.on('data', (obj) => {
-        if (!objectNames.includes(obj.name)) {
-          s3Client.removeObject(minioBucket, obj.name);
-        }
-      });
-      stream.on('error', (error) => {
-        console.log(error);
-      });
+      return results;
     }
+    if (toKeep.length) {
+      const results = new Promise((resolve, reject) => {
+        const objectNames = toKeep.map((img) => img.replace(HOST, ''));
+        const stream = s3Client.listObjectsV2(minioBucket, path, true, '');
+        stream.on('data', (obj) => {
+          if (!objectNames.includes(obj.name)) {
+            s3Client.removeObject(minioBucket, obj.name);
+          }
+        });
+        stream.on('error', (error) => {
+          reject(error);
+        });
+        stream.on('end', () => {
+          resolve();
+        });
+      });
+      return results;
+    }
+    return null;
   },
 });
 
@@ -148,8 +173,41 @@ export const moveFiles = new ValidatedMethod({
   },
 });
 
+export const getFilesForCurrentUser = new ValidatedMethod({
+  name: 'files.user',
+  validate: null,
+  async run() {
+    const authorized = isActive(this.userId);
+    if (!authorized) {
+      throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+    try {
+      const results = new Promise((resolve, reject) => {
+        const stream = s3Client.listObjects(minioBucket, `users/${this.userId}`, true, '');
+        const files = [];
+        stream.on('data', (obj) => {
+          files.push(obj);
+        });
+        stream.on('error', (err) => {
+          reject(err);
+        });
+
+        stream.on('end', () => {
+          resolve(files);
+        });
+      });
+      return results;
+    } catch (error) {
+      throw new Meteor.Error(error.typeError, error.message);
+    }
+  },
+});
+
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([removeFilesFolder, filesupload, removeSelectedFiles, moveFiles], 'name');
+const LISTS_METHODS = _.pluck(
+  [removeFilesFolder, filesupload, removeSelectedFiles, moveFiles, getFilesForCurrentUser],
+  'name',
+);
 
 // Only allow 5 list operations per connection per second
 DDPRateLimiter.addRule(

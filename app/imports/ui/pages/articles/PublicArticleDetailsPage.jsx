@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     textAlign: 'justify',
+    width: '100%',
     marginBottom: theme.spacing(3),
     '& p': {
       marginTop: 0,

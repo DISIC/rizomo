@@ -10,7 +10,7 @@ import Spinner from '../components/system/Spinner';
 import MsgHandler from '../components/system/MsgHandler';
 import DynamicStore, { Context } from '../contexts/context';
 import lightTheme from '../themes/light';
-import UploaderNotifier from '../components/system/UploaderNotifier';
+import UploaderNotifier from '../components/uploader/UploaderNotifier';
 
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));

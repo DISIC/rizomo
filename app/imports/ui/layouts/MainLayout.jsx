@@ -22,6 +22,7 @@ import AddressBook from '../pages/groups/AddressBook';
 import ProfilePage from '../pages/system/ProfilePage';
 import ArticlesPage from '../pages/articles/ArticlesPage';
 import EditArticlePage from '../pages/articles/EditArticlePage';
+import MediaStoragePage from '../pages/MediaStoragePage';
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -86,6 +87,7 @@ function MainLayout() {
                 <Route exact path="/admingroups" component={AdminGroupsPage} />
                 <Route exact path="/admingroups/new" component={AdminSingleGroupPage} />
                 <Route exact path="/admingroups/:_id" component={AdminSingleGroupPage} />
+                <Route exact path="/medias" component={MediaStoragePage} />
                 <AdminRoute
                   exact
                   path="/adminservices"

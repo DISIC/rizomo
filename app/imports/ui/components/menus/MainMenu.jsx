@@ -30,6 +30,10 @@ export const adminMenu = [
 
 export const userMenu = [
   {
+    path: '/medias',
+    content: 'menuMedias',
+  },
+  {
     path: '/admingroups',
     content: 'menuAdminGroups',
   },
