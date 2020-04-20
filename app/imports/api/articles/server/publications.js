@@ -35,7 +35,7 @@ FindFromPublication.publish('articles.all', function articlesAll({
     fields: Articles.publicFields,
     skip: itemPerPage * (page - 1),
     limit: itemPerPage,
-    sort: { createdAt: 1 },
+    sort: { createdAt: -1 },
     ...rest,
   });
 });
