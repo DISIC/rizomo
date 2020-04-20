@@ -2,12 +2,22 @@
   "public": {    
     "enableKeycloak": true,
     "minioSSL": false,
-    "minioPort": 9000,
+    "minioPort": null,
     "minioAccess": "Uhjm4KJ8MV",
     "minioEndPoint": "minio.appseducation.fr",
     "minioBucket": "laboite-dev",
     "minioFilesTypes": ["svg", "pdf", "png", "jpg", "gif", "jpeg"],
-    "minioFileSize": 1000000
+    "minioFileSize": 500000,
+    "minioStorageFilesTypes": [
+      "svg",
+      "pdf",
+      "png",
+      "jpg",
+      "gif",
+      "jpeg"
+    ],
+    "minioStorageFilesSize": 3000000,
+    "maxMinioDiskPerUser": 1000000
   },
   "keycloak": {
     "url": "https://auth.apps.education.fr/auth",

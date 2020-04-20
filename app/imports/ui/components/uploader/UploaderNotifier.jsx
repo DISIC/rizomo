@@ -4,19 +4,27 @@ import PropTypes from 'prop-types';
 import { Typography, Slide, CircularProgress } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Context } from '../../contexts/context';
-import { fileUpload } from '../../utils/filesProcess';
+import { fileUpload, storageToSize } from '../../utils/filesProcess';
 
-const { minioFilesTypes, minioFileSize } = Meteor.settings.public;
+const {
+  minioFilesTypes,
+  minioFileSize,
+  minioStorageFilesTypes,
+  minioStorageFilesSize,
+  maxMinioDiskPerUser,
+} = Meteor.settings.public;
 
-const checkFile = (file) => {
+const checkFile = (file, storage) => {
+  const types = storage ? minioStorageFilesTypes : minioFilesTypes;
+  const sizes = storage ? minioStorageFilesSize : minioFileSize;
   let goodFormat = false;
   let goodSize = false;
-  minioFilesTypes.forEach((type) => {
+  types.forEach((type) => {
     if (file.search(type) > -1) {
       goodFormat = true;
     }
   });
-  if (file.length < minioFileSize) {
+  if (file.length < sizes) {
     goodSize = true;
   }
   return {
@@ -48,10 +56,19 @@ const UploaderNotifier = () => {
   );
 };
 
+const testStorageSize = (size) => new Promise((resolve) => Meteor.call('files.user', {}, (err, files) => {
+  const storageSize = files.reduce((sum, file) => sum + file.size, 0) + size;
+  if (storageSize >= maxMinioDiskPerUser) {
+    resolve(true);
+  } else {
+    resolve(false);
+  }
+}));
+
 const SingleNotification = ({ upload }) => {
   const [, dispatch] = useContext(Context);
   const {
-    fileName, path, name, file, onFinish,
+    fileName, path, name, file, onFinish, storage,
   } = upload;
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(true);
@@ -67,13 +84,23 @@ const SingleNotification = ({ upload }) => {
     }, 5000);
   };
 
-  const uploadFile = () => {
-    const { goodFormat, goodSize } = checkFile(file);
-    if (!goodSize) {
-      setError('size');
+  const uploadFile = async () => {
+    const { goodFormat, goodSize } = checkFile(file, storage);
+    let isStorageFull = true;
+    if (storage) {
+      isStorageFull = await testStorageSize(file.length);
+      console.log(isStorageFull);
+    }
+    if (isStorageFull) {
+      setError({
+        title: i18n.__('components.UploaderNotifier.storageFullTitle'),
+        message: `${i18n.__('components.UploaderNotifier.storageFull')} ${storageToSize(maxMinioDiskPerUser)}`,
+      });
+      deleteUploadFromQueue();
+    } else if (!goodSize) {
       setError({
         title: i18n.__('components.UploaderNotifier.fileTooLargeTitle'),
-        message: `${i18n.__('components.UploaderNotifier.fileTooLarge')} ${minioFileSize / 1000000}Mo`,
+        message: `${i18n.__('components.UploaderNotifier.fileTooLarge')} ${storageToSize(minioFileSize)}`,
       });
       deleteUploadFromQueue();
     } else if (!goodFormat) {

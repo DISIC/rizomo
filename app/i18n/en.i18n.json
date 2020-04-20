@@ -154,7 +154,8 @@
       "menuAdminCategories": "Categories Management",
       "menuAdminGroups": "Groups Management",
       "menuProfileLabel": "Profile",
-      "menuLogoutLabel": "Logout"
+      "menuLogoutLabel": "Logout",
+      "menuMedias": "Medias Storage"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
@@ -242,6 +243,8 @@
       "sure": "Are you sure ?"
     },
     "UploaderNotifier": {
+      "storageFullTitle": "Your storage is full",
+      "storageFull": "You cannot upload this file because your are limited at",
       "errorTitle": "An Error has occurred",
       "fileTooLargeTitle": "File too large",
       "fileTooLarge": "This file is too large, please select a file less than",
@@ -499,6 +502,11 @@
       "title": "Authors list",
       "searchText": "Who are you looking for ?",
       "goToPublications": "See this author's publications"
+    },
+    "MediaStoragePage": {
+      "title": "Media Storage",
+      "usage": "Usage",
+      "delete": "Delete"
     }
   },
   "layouts": {

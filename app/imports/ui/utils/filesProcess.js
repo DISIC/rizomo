@@ -35,10 +35,17 @@ export const fileUpload = async ({ name, file, path }, callback) => {
         if (error) {
           callback(null, error);
         } else {
-          callback(minioSrcBuilder(`${path}${name}.${type === 'svg+xml' ? 'svg' : type}`));
+          callback(minioSrcBuilder(`${path}/${name}.${type === 'svg+xml' ? 'svg' : type}`));
         }
       },
     );
   }
   return file;
+};
+
+export const storageToSize = (storage) => {
+  const sizes = ['octets', 'Ko', 'Mo', 'Go', 'To'];
+  if (storage === 0) return '0 octet';
+  const i = parseInt(Math.floor(Math.log(storage) / Math.log(1000)), 10);
+  return `${Math.round(storage / 1000 ** i, 2)} ${sizes[i]}`;
 };
