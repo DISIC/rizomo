@@ -147,7 +147,7 @@ const PersonalZone = ({
   const handleBlurTitle = (zoneIndex) => (event) => {
     let newTitle = event.target.innerText;
     if (newTitle === '') {
-      newTitle = `Zone-${zoneIndex}`;
+      newTitle = `${i18n.__('pages.PersonalPage.newZone')}-${zoneIndex}`;
     }
     setTitle(zoneIndex, newTitle);
   };
