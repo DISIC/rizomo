@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     display: 'flex',
     justifyContent: 'space-between',
-    marginTop: '10px',
+    marginTop: 60,
   },
 }));
 
