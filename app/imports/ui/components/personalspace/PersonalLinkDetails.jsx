@@ -111,7 +111,7 @@ function PersonalLinkDetails({
   const { title = '', url = '', element_id: elementId } = link;
 
   const classes = useStyles();
-  const [localEdit, setLocalEdit] = useState(false);
+  const [localEdit, setLocalEdit] = useState(title === '');
   const [state, setState] = useObjectState({ title, url });
 
   const handleLocalEdit = (event) => {
@@ -144,6 +144,7 @@ function PersonalLinkDetails({
                 value={state.title}
                 name="title"
                 onChange={handleChangeState}
+                autoFocus
               />
               <TextField
                 label={i18n.__('components.PersonalLinkDetails.urlLabel')}
