@@ -125,7 +125,6 @@
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
       "menuServices": "Applications",
-      "menuPublications": "Publications",
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
       "menuAdminServices": "Gestion des Services",
@@ -153,6 +152,7 @@
       "menuAdminCategories": "Gestion des categories",
       "menuAdminGroups": "Gestion des Groupes",
       "menuAdminUsers": "Gestion des utilisateurs",
+      "menuPublications": "Publications",
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
       "menuMedias": "Stockage de Médias"

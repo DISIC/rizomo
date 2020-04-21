@@ -34,6 +34,10 @@ export const userMenu = [
     content: 'menuMedias',
   },
   {
+    path: '/publications',
+    content: 'menuPublications',
+  },
+  {
     path: '/admingroups',
     content: 'menuAdminGroups',
   },

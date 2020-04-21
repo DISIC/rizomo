@@ -86,10 +86,9 @@ const SingleNotification = ({ upload }) => {
 
   const uploadFile = async () => {
     const { goodFormat, goodSize } = checkFile(file, storage);
-    let isStorageFull = true;
+    let isStorageFull = false;
     if (storage) {
       isStorageFull = await testStorageSize(file.length);
-      console.log(isStorageFull);
     }
     if (isStorageFull) {
       setError({
