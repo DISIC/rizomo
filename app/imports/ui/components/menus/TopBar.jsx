@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SMALL_LOGO = 'Logo-A.svg';
-const LONG_LOGO = 'Logo-appseducation.png';
+const LONG_LOGO = 'apps-logo-sansfond.svg';
 
 function TopBar({ publicMenu }) {
   const [{ isMobile, user }] = useContext(Context);

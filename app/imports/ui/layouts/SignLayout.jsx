@@ -51,7 +51,7 @@ export default function SignLayout() {
       </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <img src="/images/Logo-appseducation.png" className={classes.imgLogo} alt="Logo" />
+          <img src="/images/apps-logo-sansfond.svg" className={classes.imgLogo} alt="Logo" />
           <Switch>
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={SignUp} />
