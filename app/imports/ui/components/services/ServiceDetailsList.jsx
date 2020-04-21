@@ -6,8 +6,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button, CardHeader, IconButton } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
-import { Link } from 'react-router-dom';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import { Link } from 'react-router-dom';
+import { isUrlExternal } from '../../utils/utilsFuncs';
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -99,19 +100,21 @@ export default function ServiceDetails({ service }) {
   //     </Tooltip>
   //   </div>
   // );
+  const isExternal = isUrlExternal(service.url);
+  const button = (
+    <Button
+      color="primary"
+      variant="contained"
+      onClick={isExternal ? () => window.open(service.url, '_blank', 'noreferrer,noopener') : null}
+    >
+      <OpenInNewIcon fontSize="large" />
+    </Button>
+  );
   return (
     <Card className={classes.card} elevation={3}>
       <CardHeader
         classes={{ action: classes.action }}
-        avatar={(
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
-          >
-            <OpenInNewIcon fontSize="large" />
-          </Button>
-        )}
+        avatar={isExternal ? button : <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>{button}</Link>}
         action={detailsButton}
         title={service.title}
         titleTypographyProps={{
