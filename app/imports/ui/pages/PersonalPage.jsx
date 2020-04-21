@@ -14,7 +14,6 @@ import Switch from '@material-ui/core/Switch';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import faker from 'faker';
 import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
@@ -216,7 +215,7 @@ function PersonalPage({
     const { sorted } = localPS;
     const newZone = {
       zone_id: Random.id(),
-      name: `Zone-${faker.address.city()}`,
+      name: i18n.__('pages.PersonalPage.newZone'),
       elements: [],
     };
     if (where === 0) {
@@ -304,7 +303,11 @@ function PersonalPage({
                 <PersonalZone
                   key="zone-000000000000"
                   elements={localPS.unsorted}
-                  title={i18n.__('pages.PersonalPage.unsorted')}
+                  title={
+                      localPS.sorted.length === 0
+                        ? i18n.__('pages.PersonalPage.unsortedFav')
+                        : i18n.__('pages.PersonalPage.unsorted')
+                    }
                   setList={setZoneList}
                   customDrag={customDrag}
                 />,

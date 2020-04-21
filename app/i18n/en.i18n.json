@@ -413,6 +413,8 @@
       "welcome": "Welcome on your personal space",
       "noFavYet": "Add here some elements from Applications tab",
       "unsorted": "To be sorted",
+      "unsortedFav": "My Favorites",
+      "newZone": "New Zone",
       "addZoneStartButton": "Add a new zone at start",
       "addZoneEndButton": "Add a new zone at the end",
       "toggleEdition": "Toggle edition mode"
