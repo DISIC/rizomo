@@ -14,6 +14,7 @@ import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
 import { Context } from '../../contexts/context';
 import Categories from '../../../api/categories/categories';
+import { isUrlExternal } from '../../utils/utilsFuncs';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,8 +132,18 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
     </Tooltip>
   );
 
-  const isExternal = service.url.search('http') !== -1 && service.url.search(Meteor.absoluteUrl()) === -1;
-
+  const isExternal = isUrlExternal(service.url);
+  const button = (
+    <Button
+      size="large"
+      color="primary"
+      className={classes.buttonText}
+      variant="contained"
+      onClick={isExternal ? () => window.open(service.url, '_blank', 'noreferrer,noopener') : null}
+    >
+      {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+    </Button>
+  );
   return (
     <Fade in>
       <Container className={classes.root}>
@@ -159,23 +170,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.favoriteButton}>
             {!isMobile && favButton}
-            {isExternal ? (
-              <Button
-                fullWidth={isMobile}
-                variant="outlined"
-                color="primary"
-                className={classes.openButton}
-                onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
-              >
-                {i18n.__('pages.SingleServicePage.open')}
-              </Button>
-            ) : (
-              <Link to={service.url.replace(Meteor.absoluteUrl(), '')}>
-                <Button fullWidth={isMobile} variant="outlined" color="primary" className={classes.openButton}>
-                  {i18n.__('pages.SingleServicePage.open')}
-                </Button>
-              </Link>
-            )}
+            {isExternal ? button : <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>{button}</Link>}
           </Grid>
           <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
             <Typography className={classes.smallTitle} variant="h5">

@@ -16,6 +16,8 @@ import { Button, CardHeader, IconButton } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 
+import { isUrlExternal } from '../../utils/utilsFuncs';
+
 const useStyles = makeStyles((theme) => ({
   cardActions: {
     display: 'flex',
@@ -131,7 +133,18 @@ function ServiceDetails({ service, favAction, isShort }) {
     ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
-  const isExternal = service.url.search('http') !== -1 && service.url.search(Meteor.absoluteUrl()) === -1;
+  const isExternal = isUrlExternal(service.url);
+
+  const button = (
+    <Button
+      size="large"
+      className={classes.buttonText}
+      variant="contained"
+      onClick={isExternal ? () => window.open(service.url, '_blank', 'noreferrer,noopener') : null}
+    >
+      {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+    </Button>
+  );
 
   return (
     <Card className={classes.card} elevation={3}>
@@ -193,22 +206,7 @@ function ServiceDetails({ service, favAction, isShort }) {
         </Paper> */}
         {!isAddressBook && (
           <div className={isShort ? classes.cardActionShort : classes.cardActions}>
-            {isExternal ? (
-              <Button
-                size="large"
-                className={classes.buttonText}
-                variant="contained"
-                onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
-              >
-                {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-              </Button>
-            ) : (
-              <Link to={service.url.replace(Meteor.absoluteUrl(), '')}>
-                <Button size="large" className={classes.buttonText} variant="contained">
-                  {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-                </Button>
-              </Link>
-            )}
+            {isExternal ? button : <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>{button}</Link>}
 
             {!!favAction && (
               <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
