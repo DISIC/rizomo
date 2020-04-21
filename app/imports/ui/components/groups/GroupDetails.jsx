@@ -100,6 +100,10 @@ const useStyles = ({ type }, member, candidate, isShort) => makeStyles((theme) =
     padding: theme.spacing(1),
     backgroundColor: 'transparent',
   },
+  noUnderline: {
+    textDecoration: 'none',
+    outline: 'none',
+  },
   chip: {
     margin: theme.spacing(0.5),
   },
@@ -178,38 +182,38 @@ function GroupDetails({
   return (
     <Card className={classes.card} elevation={3}>
       {loading && <Spinner full />}
-      <CardHeader
-        className={classes.cardHeader}
-        avatar={<Avatar className={classes.avatar}>{iconHeader}</Avatar>}
-        action={(
-          <Tooltip
-            title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
-            aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
-          >
-            <Link to={`/groups/${group.slug}`}>
+      <Link to={`/groups/${group.slug}`} className={classes.noUnderline}>
+        <CardHeader
+          className={classes.cardHeader}
+          avatar={<Avatar className={classes.avatar}>{iconHeader}</Avatar>}
+          action={(
+            <Tooltip
+              title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
+              aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
+            >
               <IconButton color="primary">
                 <ChevronRightIcon />
               </IconButton>
-            </Link>
-          </Tooltip>
-        )}
-        title={group.name}
-        titleTypographyProps={{
-          variant: 'h6',
-          color: 'primary',
-          className: classes.title,
-        }}
-        subheader={groupType}
-        subheaderTypographyProps={{
-          variant: 'body2',
-          color: type === 0 ? 'primary' : 'secondary',
-          style: {
-            color: member || animator ? 'green' : null,
-            display: 'flex',
-            alignItems: 'center',
-          },
-        }}
-      />
+            </Tooltip>
+          )}
+          title={group.name}
+          titleTypographyProps={{
+            variant: 'h6',
+            color: 'primary',
+            className: classes.title,
+          }}
+          subheader={groupType}
+          subheaderTypographyProps={{
+            variant: 'body2',
+            color: type === 0 ? 'primary' : 'secondary',
+            style: {
+              color: member || animator ? 'green' : null,
+              display: 'flex',
+              alignItems: 'center',
+            },
+          }}
+        />
+      </Link>
       <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
         {!isShort && <Typography variant="body1">{group.description}</Typography>}
         <div className={isShort ? classes.cardActionShort : classes.cardActions}>
