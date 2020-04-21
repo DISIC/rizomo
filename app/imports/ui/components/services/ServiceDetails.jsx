@@ -131,6 +131,8 @@ function ServiceDetails({ service, favAction, isShort }) {
     ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
+  const isExternal = service.url.search('http') !== -1 && service.url.search(Meteor.absoluteUrl()) === -1;
+
   return (
     <Card className={classes.card} elevation={3}>
       {/* <CardHeader
@@ -191,14 +193,22 @@ function ServiceDetails({ service, favAction, isShort }) {
         </Paper> */}
         {!isAddressBook && (
           <div className={isShort ? classes.cardActionShort : classes.cardActions}>
-            <Button
-              size="large"
-              className={classes.buttonText}
-              variant="contained"
-              onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
-            >
-              {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-            </Button>
+            {isExternal ? (
+              <Button
+                size="large"
+                className={classes.buttonText}
+                variant="contained"
+                onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
+              >
+                {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+              </Button>
+            ) : (
+              <Link to={service.url.replace(Meteor.absoluteUrl(), '')}>
+                <Button size="large" className={classes.buttonText} variant="contained">
+                  {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+                </Button>
+              </Link>
+            )}
 
             {!!favAction && (
               <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>

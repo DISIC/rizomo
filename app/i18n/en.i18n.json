@@ -125,7 +125,6 @@
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
       "menuServices": "Applications",
-      "menuPublications": "Publications",
       "menuGroupes": "All Groups",
       "menuGroupesMobile": "Groups",
       "menuAdminServices": "Service Management",
@@ -153,6 +152,7 @@
       "menuAdminUserValidation": "User validation",
       "menuAdminCategories": "Categories Management",
       "menuAdminGroups": "Groups Management",
+      "menuPublications": "Publications",
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
       "menuMedias": "Medias Storage"
