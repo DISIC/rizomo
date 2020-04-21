@@ -87,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
   },
+  noUnderline: {
+    textDecoration: 'none',
+    outline: 'none',
+  },
   fab: {
     textTransform: 'none',
     color: theme.palette.primary.main,
@@ -137,36 +141,36 @@ function ServiceDetails({ service, favAction, isShort }) {
           </IconButton>
         )}
       /> */}
-      <CardHeader
-        className={classes.cardHeader}
-        avatar={
-          isAddressBook ? (
-            service.logo
-          ) : (
-            <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
-          )
-        }
-        action={(
-          <Tooltip
-            title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-            aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-          >
-            <Link to={isAddressBook ? service.url : `/services/${service.slug}`}>
+      <Link to={isAddressBook ? service.url : `/services/${service.slug}`} className={classes.noUnderline}>
+        <CardHeader
+          className={classes.cardHeader}
+          avatar={
+            isAddressBook ? (
+              service.logo
+            ) : (
+              <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
+            )
+          }
+          action={(
+            <Tooltip
+              title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+              aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+            >
               <IconButton color="primary">
                 <ChevronRightIcon />
               </IconButton>
-            </Link>
-          </Tooltip>
-        )}
-        title={service.title}
-        titleTypographyProps={{
-          variant: 'h6',
-          color: 'primary',
-          className: classes.title,
-        }}
-        subheader={service.usage}
-        subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
-      />
+            </Tooltip>
+          )}
+          title={service.title}
+          titleTypographyProps={{
+            variant: 'h6',
+            color: 'primary',
+            className: classes.title,
+          }}
+          subheader={service.usage}
+          subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
+        />
+      </Link>
       <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
         {!isShort && <Typography variant="body1">{service.description}</Typography>}
         {/* <Paper variant="elevation" elevation={0} className={classes.paperChip}>
