@@ -10,7 +10,9 @@ import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Fade } from '@material-ui/core';
+import {
+  Fade, FormGroup, Checkbox, FormControlLabel,
+} from '@material-ui/core';
 import Spinner from '../../components/system/Spinner';
 import AppVersion from '../../components/system/AppVersion';
 
@@ -70,6 +72,8 @@ function SignIn({ loggingIn }) {
     errors: {},
   });
 
+  const [rememberMe, setRememberMe] = useState(true);
+
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
@@ -96,9 +100,14 @@ function SignIn({ loggingIn }) {
     }));
   };
 
+  const checkRememberMe = () => {
+    window.localStorage.setItem('rememberMe', rememberMe);
+  };
+
   const handleSignIn = (event) => {
     event.preventDefault();
     if (formState.isValid === true) {
+      checkRememberMe();
       const { email, password } = formState.values;
       Meteor.loginWithPassword(email, password, (err) => {
         if (err) {
@@ -109,11 +118,29 @@ function SignIn({ loggingIn }) {
   };
 
   const handleKeycloakAuth = () => {
+    checkRememberMe();
     Meteor.loginWithKeycloak();
   };
 
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
   const useKeycloak = Meteor.settings.public.enableKeycloak;
+
+  const RememberButton = () => (
+    <FormGroup>
+      <FormControlLabel
+        control={(
+          <Checkbox
+            checked={rememberMe}
+            onChange={() => setRememberMe(!rememberMe)}
+            name="rememberMe"
+            color="primary"
+          />
+        )}
+        label={i18n.__('pages.SignIn.rememberMe')}
+      />
+    </FormGroup>
+  );
+
   return useKeycloak && loggingIn ? (
     <Spinner />
   ) : (
@@ -128,16 +155,19 @@ function SignIn({ loggingIn }) {
         <form onSubmit={handleSignIn} className={classes.form} noValidate>
           {loggingIn && <Spinner full />}
           {useKeycloak ? (
-            <Button
-              disabled={loggingIn}
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={handleKeycloakAuth}
-            >
-              {i18n.__('pages.SignIn.loginKeycloak')}
-            </Button>
+            <>
+              <RememberButton />
+              <Button
+                disabled={loggingIn}
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={handleKeycloakAuth}
+              >
+                {i18n.__('pages.SignIn.loginKeycloak')}
+              </Button>
+            </>
           ) : (
             <>
               <TextField
@@ -173,6 +203,7 @@ function SignIn({ loggingIn }) {
                 value={formState.values.password || ''}
                 disabled={loggingIn}
               />
+              <RememberButton />
               <Button
                 type="submit"
                 fullWidth

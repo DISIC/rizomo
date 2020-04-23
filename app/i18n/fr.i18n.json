@@ -278,7 +278,8 @@
       "loginError": "Erreur: Mauvais compte ou mot de passe",
       "keycloakError": "Erreur de connexion",
       "EmailAlreadyExists": "Erreur: Un compte existant utilise le même email",
-      "loginKeycloak": "Se connecter"
+      "loginKeycloak": "Se connecter",
+      "rememberMe": "Rester connecté(e)"
     },
     "SignUp": {
       "appDescription": "Création de votre compte",

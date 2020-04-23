@@ -278,7 +278,8 @@
       "loginError": "Error: Bad account or password",
       "keycloakError": "Connection error",
       "EmailAlreadyExists": "Error: An account already exists with the same email",
-      "loginKeycloak": "Login"
+      "loginKeycloak": "Login",
+      "rememberMe": "Remember me"
     },
     "SignUp": {
       "appDescription": "Create new account",
