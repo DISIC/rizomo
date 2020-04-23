@@ -14,5 +14,25 @@ Meteor.startup(() => {
   i18n.setLocale(getLang());
   // setup translated validation messages
   registerSchemaMessages();
+  // setup client side login hook
+  Accounts.onLogin(() => {
+    const rememberMe = window.localStorage.getItem('rememberMe') || 'false';
+    if (rememberMe === 'false') {
+      // warns user when he closes window / reloads page
+      window.onbeforeunload = function (event) {
+        // Cancel the event as stated by the standard.
+        event.preventDefault();
+        // Safari
+        return '';
+      };
+      // disconnect user if 'remember me' is disabled
+      window.onunload = function () {
+        Meteor.logout();
+        window.localStorage.clear('Meteor.loginToken');
+        window.localStorage.clear('Meteor.loginTokenExpires');
+        window.localStorage.clear('Meteor.userId');
+      };
+    }
+  });
   render(<App />, document.getElementById('root')); // eslint-disable-line
 });
