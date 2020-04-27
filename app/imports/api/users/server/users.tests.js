@@ -19,6 +19,7 @@ import {
   setName,
   setEmail,
   setLanguage,
+  setLogoutType,
   setActive,
   unsetActive,
   findUsers,
@@ -322,6 +323,22 @@ describe('users', function () {
           },
           Meteor.Error,
           /api.users.setLanguage.notPermitted/,
+        );
+      });
+    });
+    describe('setLogoutType', function () {
+      it('users can set their preferred logout method', function () {
+        setLogoutType._execute({ userId }, { logoutType: 'local' });
+        const user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.logoutType, 'local');
+      });
+      it('only logged in users can set their language', function () {
+        assert.throws(
+          () => {
+            setLogoutType._execute({}, { logoutType: 'local' });
+          },
+          Meteor.Error,
+          /api.users.setLogoutType.notPermitted/,
         );
       });
     });

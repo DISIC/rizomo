@@ -8,6 +8,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import AppVersion from '../system/AppVersion';
+import LogoutDialog from '../system/LogoutDialog';
 
 export const adminMenu = [
   {
@@ -45,6 +46,7 @@ export const userMenu = [
 
 const MainMenu = ({ user = {} }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openLogout, setOpenLogout] = useState(false);
   const history = useHistory();
   const { pathname } = useLocation();
   const isAdmin = Roles.userIsInRole(user._id, 'admin');
@@ -67,6 +69,31 @@ const MainMenu = ({ user = {} }) => {
     }
     return false;
   });
+
+  const keycloakLogout = () => {
+    const { keycloakUrl, keycloakRealm } = Meteor.settings.public;
+    const keycloakLogoutUrl = `${keycloakUrl}/realms/${keycloakRealm}/protocol/openid-connect/logout`;
+    const redirectUri = `${Meteor.absoluteUrl()}/logout`;
+    window.location = `${keycloakLogoutUrl}?post_logout_redirect_uri=${redirectUri}`;
+  };
+
+  const closeLogoutDialog = () => {
+    setOpenLogout(false);
+    setAnchorEl(null);
+  };
+
+  const onLogout = () => {
+    if (Meteor.settings.public.enableKeycloak) {
+      const logoutType = user.logoutType || 'ask';
+      if (logoutType === 'ask') {
+        setOpenLogout(true);
+      } else if (logoutType === 'global') {
+        keycloakLogout();
+      } else Meteor.logout();
+    } else {
+      Meteor.logout();
+    }
+  };
 
   return (
     <>
@@ -99,7 +126,7 @@ const MainMenu = ({ user = {} }) => {
           <T>menuProfileLabel</T>
         </MenuItem>
 
-        <MenuItem onClick={() => Meteor.logout()}>
+        <MenuItem onClick={onLogout}>
           <T>menuLogoutLabel</T>
         </MenuItem>
         <Divider />
@@ -117,6 +144,7 @@ const MainMenu = ({ user = {} }) => {
           <AppVersion />
         </MenuItem>
       </Menu>
+      <LogoutDialog open={openLogout} onClose={closeLogoutDialog} onAccept={keycloakLogout} />
     </>
   );
 };
