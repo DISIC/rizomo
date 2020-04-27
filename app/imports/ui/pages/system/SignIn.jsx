@@ -102,6 +102,9 @@ function SignIn({ loggingIn }) {
 
   const checkRememberMe = () => {
     window.localStorage.setItem('rememberMe', rememberMe);
+    // always reset window.onunload and window.onbeforeunload at login
+    window.onunload = null;
+    window.onbeforeunload = null;
   };
 
   const handleSignIn = (event) => {
