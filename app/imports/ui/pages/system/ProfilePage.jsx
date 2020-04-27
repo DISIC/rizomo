@@ -13,6 +13,8 @@ import {
   Typography,
   InputLabel,
   Fade,
+  Select,
+  MenuItem,
   FormControl,
   FormHelperText,
   Grid,
@@ -55,6 +57,13 @@ const defaultState = {
   email: '',
   username: '',
   structureSelect: '',
+  logoutType: '',
+};
+
+const logoutTypeLabels = {
+  ask: 'api.users.logoutTypes.ask',
+  local: 'api.users.logoutTypes.local',
+  global: 'api.users.logoutTypes.global',
 };
 
 const ProfilePage = () => {
@@ -76,6 +85,11 @@ const ProfilePage = () => {
   useEffect(() => {
     setLabelUsernameWidth(usernameLabel.current.offsetWidth);
   }, []);
+  const logoutTypeLabel = React.useRef(null);
+  const [labelLogoutTypeWidth, setLabelLogoutTypeWidth] = React.useState(0);
+  useEffect(() => {
+    if (keycloakMode) setLabelLogoutTypeWidth(logoutTypeLabel.current.offsetWidth);
+  }, []);
 
   const checkSubmitOk = () => {
     const errSum = Object.keys(errors).reduce((sum, name) => sum + errors[name], '');
@@ -89,6 +103,7 @@ const ProfilePage = () => {
     setUserData({
       username: errors.username === '' || reset ? data.username : userData.username,
       structureSelect: data.structure,
+      logoutType: data.logoutType || 'ask',
       firstName: errors.firstName === '' || reset ? data.firstName || '' : userData.firstName,
       lastName: errors.lastName === '' || reset ? data.lastName || '' : userData.lastName,
       email: errors.email === '' || reset ? data.emails[0].address : userData.email,
@@ -107,6 +122,7 @@ const ProfilePage = () => {
       && userData.email === user.emails[0].address
       && userData.username === user.username
       && userData.structureSelect === user.structure
+      && userData.logoutType === user.logoutType
     ) {
       msg.success(i18n.__('pages.ProfilePage.updateSuccess'));
       setSubmitted(false);
@@ -167,6 +183,14 @@ const ProfilePage = () => {
     if (userData.structureSelect !== user.structure) {
       modifications = true;
       Meteor.call('users.setStructure', { structure: userData.structureSelect }, (error) => {
+        if (error) {
+          msg.error(error.message);
+        }
+      });
+    }
+    if (userData.logoutType !== user.logoutType) {
+      modifications = true;
+      Meteor.call('users.setLogoutType', { logoutType: userData.logoutType }, (error) => {
         if (error) {
           msg.error(error.message);
         }
@@ -322,6 +346,29 @@ const ProfilePage = () => {
                   />
                 </FormControl>
               </Grid>
+              {keycloakMode ? (
+                <Grid item>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel htmlFor="logoutType" id="logoutType-label" ref={logoutTypeLabel}>
+                      {i18n.__('pages.ProfilePage.logoutType')}
+                    </InputLabel>
+                    <Select
+                      labelId="logoutType-label"
+                      id="logoutType"
+                      name="logoutType"
+                      value={userData.logoutType}
+                      onChange={onUpdateField}
+                      labelWidth={labelLogoutTypeWidth}
+                    >
+                      {Object.keys(logoutTypeLabels).map((val) => (
+                        <MenuItem key={val} value={val}>
+                          {i18n.__(logoutTypeLabels[val])}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              ) : null}
               <Grid item>
                 <LanguageSwitcher relative />
               </Grid>

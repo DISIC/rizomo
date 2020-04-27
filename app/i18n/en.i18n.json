@@ -31,7 +31,13 @@
         "favServices": "Favorite Services",
         "structure": "Attachment Structure",
         "primaryEmail": "Primary Email",
-        "language": "Preferred Language"
+        "language": "Preferred Language",
+        "logoutType": "Logout Method"
+      },
+      "logoutTypes": {
+        "ask": "Ask at logout",
+        "local": "Disconnect only this app",
+        "global": "Disconnect from all apps"
       }
     },
     "groups": {
@@ -252,6 +258,13 @@
       "formatNotAccepted": "This file's format is not accepted, please upload one of",
       "uploadInProgress": "Upload in progress",
       "uploadFinished": "Upload finished"
+    },
+    "LogoutDialog": {
+      "dialogTitle": "global logout",
+      "dialogContent": "Do you also want to logout from all applications ?",
+      "dontAskAgain": "Do not ask again",
+      "buttonYes": "Yes",
+      "buttonNo": "No"
     }
   },
   "validatejs": {
@@ -303,7 +316,8 @@
       "valueRequired": "This field can not be empty",
       "updateSuccess": "Profile update success",
       "noModifications": "No changes to apply",
-      "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data."
+      "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data.",
+      "logoutType": "Logout perimeter"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {

@@ -18,8 +18,8 @@ if (Meteor.settings.keycloak) {
       {
         $set: {
           loginStyle: 'redirect',
-          serverUrl: Meteor.settings.keycloak.url,
-          realm: Meteor.settings.keycloak.realm,
+          serverUrl: Meteor.settings.public.keycloakUrl,
+          realm: Meteor.settings.public.keycloakRealm,
           clientId: Meteor.settings.keycloak.client,
           realmPublicKey: Meteor.settings.keycloak.pubkey,
           bearerOnly: false,

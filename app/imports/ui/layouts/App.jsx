@@ -1,4 +1,6 @@
-import React, { useContext, Suspense, lazy } from 'react';
+import React, {
+  useContext, useEffect, Suspense, lazy,
+} from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -18,10 +20,18 @@ const PublicArticlePage = lazy(() => import('../pages/articles/PublicArticlePage
 const PublicArticleDetailsPage = lazy(() => import('../pages/articles/PublicArticleDetailsPage'));
 const PublishersPage = lazy(() => import('../pages/articles/PublishersPage'));
 
+function Logout() {
+  useEffect(() => {
+    Meteor.logout();
+  });
+  return null;
+}
+
 function App() {
   const [state] = useContext(Context);
   const { loading } = state;
   const useKeycloak = Meteor.settings.public.enableKeycloak;
+
   return loading ? (
     <Spinner />
   ) : (
@@ -34,6 +44,7 @@ function App() {
           <Route exact path="/public/" component={PublishersPage} />
           <Route exact path="/public/:userId" component={PublicArticlePage} />
           <Route exact path="/public/:userId/:slug" component={PublicArticleDetailsPage} />
+          <ProtectedRoute exact path="/logout" component={Logout} {...state} />
           <ProtectedRoute path="/" component={MainLayout} {...state} />
         </Switch>
       </Suspense>

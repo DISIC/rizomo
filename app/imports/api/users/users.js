@@ -108,6 +108,12 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
       label: getLabel('api.users.labels.language'),
     },
+    logoutType: {
+      type: String,
+      optional: true,
+      allowedValues: ['ask', 'local', 'global'],
+      label: getLabel('api.users.labels.logoutType'),
+    },
   },
   { tracker: Tracker },
 );
@@ -194,6 +200,12 @@ Meteor.users.helpers({
   },
 });
 
+Meteor.users.logoutTypeLabels = {
+  ask: 'api.users.logoutTypes.ask',
+  local: 'api.users.logoutTypes.local',
+  global: 'api.users.logoutTypes.global',
+};
+
 Meteor.users.selfFields = {
   username: 1,
   firstName: 1,
@@ -207,6 +219,7 @@ Meteor.users.selfFields = {
   structure: 1,
   primaryEmail: 1,
   language: 1,
+  logoutType: 1,
 };
 
 Meteor.users.adminFields = {

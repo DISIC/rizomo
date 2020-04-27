@@ -31,7 +31,13 @@
         "favServices": "Services Favoris",
         "structure": "Structure De Rattachement",
         "primaryEmail": "Adresse Électronique principale",
-        "language": "Langage Préféré"
+        "language": "Langage Préféré",
+        "logoutType": "Méthode De Déconnexion"
+      },
+      "logoutTypes": {
+        "ask": "Demander à la déconnexion",
+        "local": "Déconnecter seulement cette application",
+        "global": "Se Déconnecter de toutes les applications"
       }
     },
     "groups": {
@@ -252,6 +258,13 @@
       "formatNotAccepted": "Le format de ce fichier n'est pas accepté, veuillez choisir un fichier de l'un de ces format",
       "uploadInProgress": "Téléversement en cours",
       "uploadFinished": "Téléversement terminé"
+    },
+    "LogoutDialog": {
+      "dialogTitle": "Déconnexion globale",
+      "dialogContent": "Voulez vous également vous déconnecter de toutes les applications ?",
+      "dontAskAgain": "Ne plus demander",
+      "buttonYes": "Oui",
+      "buttonNo": "Non"
     }
   },
   "validatejs": {
@@ -303,7 +316,8 @@
       "valueRequired": "Ce champ ne peut pas être vide",
       "updateSuccess": "Profil mis à jour avec succès",
       "noModifications": "Aucun changement à appliquer",
-      "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour."
+      "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
+      "logoutType": "Portée de la déconnexion"
     },
     "NotFound": {
       "backButtonLabel": "Retour",
