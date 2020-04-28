@@ -20,12 +20,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     cursor: 'pointer',
     width: '100%',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
     wordBreak: 'break-all',
+    position: 'relative',
+    overflow: 'hidden',
   },
+  image: { position: 'absolute', height: '100%' },
 }));
 
 const SingleStorageFile = ({ file, onSelect }) => {
@@ -44,7 +48,7 @@ const SingleStorageFile = ({ file, onSelect }) => {
           <Typography>{fileName}</Typography>
         </>
       ) : (
-        <img alt={file.name} style={{ maxWidth: '100%', height: '100%' }} src={`${HOST}${file.name}`} />
+        <img alt={file.name} className={classes.image} src={`${HOST}${file.name}`} />
       )}
     </div>
   );
