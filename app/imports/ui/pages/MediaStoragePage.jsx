@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   fileWrapper: {
     display: 'flex',
     alignItems: 'center',
+    minHeight: 200,
   },
   dragWrapper: {
     borderWidth: 2,
