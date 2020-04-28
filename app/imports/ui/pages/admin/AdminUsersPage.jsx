@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -26,6 +28,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
 import debounce from '../../utils/debounce';
+import { Context } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,6 +59,7 @@ const ITEM_PER_PAGE = 10;
 
 const AdminUsersPage = () => {
   const classes = useStyles();
+  const [{ isMobile }] = useContext(Context);
   const [search, setSearch] = useState('');
   const {
     changePage, page, items, total,
@@ -167,6 +171,9 @@ const AdminUsersPage = () => {
           <Spinner />
         ) : (
           <Grid container spacing={4}>
+            <Grid item md={12}>
+              <Typography variant={isMobile ? 'h6' : 'h4'}>{i18n.__('pages.AdminUsersPage.title')}</Typography>
+            </Grid>
             <Grid item xs={12} sm={12} md={6}>
               <TextField
                 margin="normal"

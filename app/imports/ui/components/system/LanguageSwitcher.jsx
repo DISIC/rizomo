@@ -22,9 +22,7 @@ const LanguageSwitcher = ({ topbar, relative }) => {
   const useStyles = makeStyles(() => ({
     switcher: {
       color: 'red',
-      position: topbar || relative ? null : 'absolute',
-      right: topbar || relative ? null : 60,
-      bottom: topbar || relative ? null : 30,
+      marginTop: topbar || relative ? null : 60,
     },
     flag: {
       height: 15,

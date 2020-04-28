@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   imgLogo: {
     maxHeight: '30px',
     height: 30,
+    outline: 'none',
   },
   grow: {
     flexGrow: 1,
@@ -39,14 +40,14 @@ const useStyles = makeStyles((theme) => ({
 const SMALL_LOGO = 'Logo-A.svg';
 const LONG_LOGO = 'apps-logo-sansfond.svg';
 
-function TopBar({ publicMenu }) {
+function TopBar({ publicMenu, root }) {
   const [{ isMobile, user }] = useContext(Context);
   const classes = useStyles();
   const LOGO = `/images/${isMobile ? SMALL_LOGO : LONG_LOGO}`;
 
   return (
     <AppBar position="fixed" className={classes.root}>
-      <Link to={publicMenu ? '/public' : '/'} className={classes.imgLogo}>
+      <Link to={root || (publicMenu ? '/public' : '/')} className={classes.imgLogo}>
         <img src={LOGO} className={classes.imgLogo} alt="Logo" />
       </Link>
 
@@ -60,8 +61,10 @@ export default TopBar;
 
 TopBar.propTypes = {
   publicMenu: PropTypes.bool,
+  root: PropTypes.string,
 };
 
 TopBar.defaultProps = {
   publicMenu: false,
+  root: null,
 };

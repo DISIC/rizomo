@@ -15,3 +15,5 @@ import './db-initialize/Services';
 import './db-initialize/Categories';
 import './db-initialize/Groups';
 import './db-initialize/Articles';
+import './db-initialize/AppSettings';
+// import './db-initialize/PersonalSpaces';

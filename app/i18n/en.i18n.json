@@ -1,5 +1,33 @@
 {
   "api": {
+    "appsettings": {
+      "labels": {
+        "external": "Use an external link",
+        "link": "Link to the page",
+        "content": "Content",
+        "introduction": "Introduction",
+        "content_introduction": "Introduction text",
+        "legal": "Legal notice",
+        "external_legal": "Use an external link for legal notice page",
+        "link_legal": "Legal notice text page link",
+        "content_legal": "Legal notice text",
+        "gcu": "General Conditions of Usage",
+        "external_gcu": "Use an external link for G.C.U page",
+        "link_gcu": "G.C.U text page link",
+        "content_gcu": "G.C.U text",
+        "accessibility": "Accessibility",
+        "external_accessibility": "Use an external link for Accessibility page",
+        "link_accessibility": "Accessibility text page link",
+        "content_accessibility": "Accessibility text",
+        "personalData": "Personal Data",
+        "external_personalData": "Use an external link for Personal Data page",
+        "link_personalData": "Personal Data text page link",
+        "content_personalData": "Personal Data text"
+      },
+      "updateAppsettings": {
+        "notPermitted": "You don't have sufficient rights."
+      }
+    },
     "categories": {
       "labels": {
         "id": "Category Id",
@@ -127,6 +155,44 @@
     }
   },
   "components": {
+    "IntroductionEdition": {
+      "title": "Introduction",
+      "language": "Select the language to edit",
+      "language_fr": "French",
+      "language_en": "English",
+      "content": "Introduction text",
+      "update": "Update",
+      "cancel": "Cancel"
+    },
+    "Footer": {
+      "personalData": "Personal Data",
+      "gcu": "G.C.U",
+      "accessibility": "Accessibility",
+      "legal": "Legal notice"
+    },
+    "LegalComponent": {
+      "title_introduction": "Introduction",
+      "content_introduction": "Introduction text",
+      "title_legal": "Legal notice",
+      "external_legal": "Use an external link for legal notice page",
+      "link_legal": "Legal notice text page link",
+      "content_legal": "Legal notice text",
+      "title_gcu": "G.C.U",
+      "external_gcu": "Use an external link for G.C.U page",
+      "link_gcu": "G.C.U text page link",
+      "content_gcu": "G.C.U text",
+      "title_accessibility": "Accessibility",
+      "external_accessibility": "Use an external link for Accessibility page",
+      "link_accessibility": "Accessibility text page link",
+      "content_accessibility": "Accessibility text",
+      "title_personalData": "Personal Data",
+      "external_personalData": "Use an external link for Personal Data page",
+      "link_personalData": "Personal Data text page link",
+      "content_personalData": "Personal Data text",
+      "changesNotSaved": "Changes not saved",
+      "update": "Update",
+      "cancel": "Cancel"
+    },
     "MenuBar": {
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
@@ -161,7 +227,8 @@
       "menuPublications": "Publications",
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
-      "menuMedias": "Medias Storage"
+      "menuMedias": "Medias Storage",
+      "menuAdminAppSettings": "Admin Settings"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
@@ -280,6 +347,20 @@
     "body_editRow_saveTooltip": "Save changes"
   },
   "pages": {
+    "LegalPage": {
+      "personalData": "Personal Data",
+      "gcu": "General Conditions of Use",
+      "accessibility": "Accessibility",
+      "legal": "Legal notice"
+    },
+    "AdminSettingsPage": {
+      "edition": "Edition of the App's settings",
+      "introduction": "Introduction",
+      "legal": "Legal notice",
+      "gcu": "G.C.U",
+      "accessibility": "Accessibility",
+      "personalData": "Personal Data"
+    },
     "SignIn": {
       "appDescription": "Digital services shared by National Education agents",
       "appVersion": "Test Alpha 0.1 Version",
@@ -390,6 +471,7 @@
       }
     },
     "AdminUsersPage": {
+      "title": "Users Management",
       "searchText": "Which user are you looking for ?",
       "admin": "Administrator",
       "setAdmin": "Give admin rights",
