@@ -35,10 +35,10 @@ export const usePagination = (subName, args = {}, Collection, query = {}, option
 export const useObjectState = (initialState) => {
   const [state, setState] = useState(initialState);
 
-  const updateState = (args) => setState({
-    ...state,
+  const updateState = (args) => setState((previousState) => ({
+    ...previousState,
     ...args,
-  });
+  }));
 
   return [state, updateState];
 };

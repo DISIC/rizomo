@@ -1,5 +1,33 @@
 {
   "api": {
+    "appsettings": {
+      "labels": {
+        "external": "Utiliser un lien externe",
+        "link": "Lien vers la page",
+        "content": "Contenu",
+        "introduction": "Introduction",
+        "content_introduction": "Texte d'introduction",
+        "legal": "Mentions légales",
+        "external_legal": "Utiliser un lien externe pour la page Mentions légales",
+        "link_legal": "Lien vers la page Mentions légales",
+        "content_legal": "Texte des Mentions légales",
+        "gcu": "C.G.U.",
+        "external_gcu": "Utiliser un lien externe pour la page  des C.G.U.",
+        "link_gcu": "Lien vers la page C.G.U.",
+        "content_gcu": "Texte des C.G.U.",
+        "accessibility": "Accessibilité",
+        "external_accessibility": "Utiliser un lien externe pour la page d'Accessibilité",
+        "link_accessibility": "Lien vers la page Accessibilité",
+        "content_accessibility": "Texte de l'Accessibilité",
+        "personalData": "Données Personnelles",
+        "external_personalData": "Utiliser un lien externe pour la page Données Personnelles",
+        "link_personalData": "Données Personnelles",
+        "content_personalData": "Texte des Données Personnelles"
+      },
+      "updateAppsettings": {
+        "notPermitted": "Vous n'avez pas les droits suffisants."
+      }
+    },
     "categories": {
       "labels": {
         "id": "Id de Catégorie",
@@ -127,6 +155,44 @@
     }
   },
   "components": {
+    "IntroductionEdition": {
+      "title": "Introduction",
+      "language": "Selectionnez la langue à éditer",
+      "language_fr": "Français",
+      "language_en": "Anglais",
+      "content": "Texte d'introduction",
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
+    },
+    "Footer": {
+      "personalData": "Données Personnelles",
+      "gcu": "Conditions générales d'utilisation",
+      "accessibility": "Accessibilité",
+      "legal": "Mentions légales"
+    },
+    "LegalComponent": {
+      "title_introduction": "Introduction",
+      "content_introduction": "Texte d'introduction",
+      "title_legal": "Mentions légales",
+      "external_legal": "Utiliser un lien externe pour la page Mentions légales",
+      "link_legal": "Lien vers la page Mentions légales",
+      "content_legal": "Texte des Mentions légales",
+      "title_gcu": "Conditions générales d'utilisation",
+      "external_gcu": "Utiliser un lien externe pour la page  des C.G.U.",
+      "link_gcu": "Lien vers la page C.G.U.",
+      "content_gcu": "Texte des C.G.U.",
+      "title_accessibility": "Accessibilité",
+      "external_accessibility": "Utiliser un lien externe pour la page d'Accessibilité",
+      "link_accessibility": "Lien vers la page Accessibilité",
+      "content_accessibility": "Texte de l'Accessibilité",
+      "title_personalData": "Données Personnelles",
+      "external_personalData": "Utiliser un lien externe pour la page Données Personnelles",
+      "link_personalData": "Données Personnelles",
+      "content_personalData": "Texte des Données Personnelles",
+      "changesNotSaved": "Changements non sauvegardés",
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
+    },
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
@@ -161,7 +227,8 @@
       "menuPublications": "Publications",
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
-      "menuMedias": "Stockage de Médias"
+      "menuMedias": "Stockage de Médias",
+      "menuAdminAppSettings": "Réglages Administrateurs"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
@@ -280,6 +347,20 @@
     "body_editRow_saveTooltip": "Enregistrer les changements"
   },
   "pages": {
+    "LegalPage": {
+      "personalData": "Données Personnelles",
+      "gcu": "Conditions générales d'utilisation",
+      "accessibility": "Accessibilité",
+      "legal": "Mentions légales"
+    },
+    "AdminSettingsPage": {
+      "edition": "Edition des réglages de l'application",
+      "introduction": "Introduction",
+      "legal": "Mentions légales",
+      "gcu": "C.G.U",
+      "accessibility": "Accessibilité",
+      "personalData": "Données Personnelles"
+    },
     "SignIn": {
       "appDescription": "Les services numériques partagés des agents de l&apos;Éducation nationale",
       "appVersion": "Version Test Alpha 0.1",
@@ -393,6 +474,7 @@
       }
     },
     "AdminUsersPage": {
+      "title": "Gestion des utilisateurs",
       "searchText": "Quel utilisateur cherchez-vous ?",
       "admin": "Administrateur",
       "setAdmin": "Donner les droits d'administrateur",

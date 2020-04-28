@@ -23,6 +23,7 @@ import ProfilePage from '../pages/system/ProfilePage';
 import ArticlesPage from '../pages/articles/ArticlesPage';
 import EditArticlePage from '../pages/articles/EditArticlePage';
 import MediaStoragePage from '../pages/MediaStoragePage';
+import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -122,6 +123,7 @@ function MainLayout() {
                   userId={userId}
                   loadingUser={loadingUser}
                 />
+                <AdminRoute path="/settings" component={AdminSettingsPage} userId={userId} loadingUser={loadingUser} />
                 <Route component={NotFound} />
               </Switch>
             ) : (

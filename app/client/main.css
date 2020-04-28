@@ -1,3 +1,10 @@
 * {
   box-sizing: border-box;
 }
+#root {
+  min-height: 100vh;
+}
+
+.ql-editor {
+  max-height: 600px;
+}

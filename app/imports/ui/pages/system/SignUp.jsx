@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Accounts } from 'meteor/accounts-base';
+import { withTracker } from 'meteor/react-meteor-data';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -18,8 +19,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { useHistory } from 'react-router-dom';
 import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
+import PropTypes from 'prop-types';
 import CustomSelect from '../../components/admin/CustomSelect';
 import { structureOptions } from '../../../api/users/structures';
+import AppSettings from '../../../api/appsettings/appsettings';
+import Spinner from '../../components/system/Spinner';
 
 validate.options = {
   fullMessages: false,
@@ -85,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+const SignUp = ({ introduction, ready }) => {
   const history = useHistory();
   const classes = useStyles();
 
@@ -186,6 +190,9 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           {i18n.__('pages.SignUp.appDescription')}
         </Typography>
+
+        {!ready ? <Spinner /> : <div dangerouslySetInnerHTML={{ __html: introduction }} />}
+
         <form onSubmit={handleSignUp} className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -322,4 +329,28 @@ export default function SignUp() {
       </div>
     </Container>
   );
-}
+};
+
+export default withTracker(() => {
+  const subSettings = Meteor.subscribe('appsettings.introduction');
+  const appsettings = AppSettings.findOne() || {};
+  const ready = subSettings.ready();
+  const language = i18n._locale;
+  const { introduction = [] } = appsettings;
+  const currentEntry = introduction.find((entry) => entry.language === language) || {};
+  const defaultContent = introduction.find((entry) => !!entry.content.length);
+
+  return {
+    ready,
+    introduction: currentEntry.content || defaultContent,
+  };
+})(SignUp);
+
+SignUp.defaultProps = {
+  introduction: '',
+};
+
+SignUp.propTypes = {
+  ready: PropTypes.bool.isRequired,
+  introduction: PropTypes.string,
+};
