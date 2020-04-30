@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import i18n from 'meteor/universe:i18n';
 import {
@@ -10,7 +10,7 @@ import Spinner from '../../components/system/Spinner';
 import AppSettings from '../../../api/appsettings/appsettings';
 import LegalComponent from '../../components/admin/LegalComponent';
 import IntroductionEdition from '../../components/admin/IntroductionEdition';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,7 +72,7 @@ const tabs = [
 const AdminSettingsPage = ({ ready, appsettings }) => {
   const [selected, setSelected] = useState(0);
   const classes = useStyles();
-  const [{ isMobile }] = useContext(Context);
+  const [{ isMobile }] = useAppContext();
 
   const onChangeTab = (e, newTab) => {
     setSelected(newTab);

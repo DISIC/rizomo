@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import MenuBar from './MenuBar';
 import MainMenu from './MainMenu';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +41,7 @@ const SMALL_LOGO = 'Logo-A.svg';
 const LONG_LOGO = 'apps-logo-sansfond.svg';
 
 function TopBar({ publicMenu, root }) {
-  const [{ isMobile, user }] = useContext(Context);
+  const [{ isMobile, user }] = useAppContext();
   const classes = useStyles();
   const LOGO = `/images/${isMobile ? SMALL_LOGO : LONG_LOGO}`;
 

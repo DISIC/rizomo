@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import i18n from 'meteor/universe:i18n';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -12,7 +12,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { Modal } from '@material-ui/core';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import PropTypes from 'prop-types';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import { storageToSize } from '../../utils/filesProcess';
 import ValidationButton from '../system/ValidationButton';
 import Spinner from '../system/Spinner';
@@ -53,7 +53,7 @@ const useStyles = (isMobile) => makeStyles(() => ({
 export default function SelectedMediaModal({
   file, onClose, onDelete, loading,
 }) {
-  const [{ isMobile }] = useContext(Context);
+  const [{ isMobile }] = useAppContext();
   const classes = useStyles(isMobile)();
   const fileName = file.name.replace(`users/${Meteor.userId()}/`, '');
   const extension = file.name.split('.').pop();

@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import i18n from 'meteor/universe:i18n';
 import {
   makeStyles, Menu, Button, MenuItem, IconButton,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 
 const LanguageSwitcher = ({ topbar, relative }) => {
   const allLanguages = i18n.getLanguages();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [{ language }, dispatch] = useContext(Context);
+  const [{ language }, dispatch] = useAppContext();
   const T = i18n.createComponent('languages');
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { withTracker } from 'meteor/react-meteor-data';
 import i18n from 'meteor/universe:i18n';
@@ -9,7 +9,7 @@ import {
 import AppSettings from '../../../api/appsettings/appsettings';
 import TopBar from '../../components/menus/TopBar';
 import Footer, { LEGAL_ROUTES } from '../../components/menus/Footer';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import Spinner from '../../components/system/Spinner';
 
 const useStyles = makeStyles(() => ({
@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const LegalPage = ({ data, dataKey, ready }) => {
-  const [{ isMobile }] = useContext(Context);
+  const [{ isMobile }] = useAppContext();
   const classes = useStyles();
 
   useEffect(() => {

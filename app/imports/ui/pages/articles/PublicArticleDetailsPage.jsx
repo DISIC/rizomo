@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import TopBar from '../../components/menus/TopBar';
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +57,7 @@ function PublicArticleDetailsPage({
     params: { userId },
   },
 }) {
-  const [{ isMobile }] = useContext(Context);
+  const [{ isMobile }] = useAppContext();
   const classes = useStyles();
   const [user, setUser] = useState({});
 

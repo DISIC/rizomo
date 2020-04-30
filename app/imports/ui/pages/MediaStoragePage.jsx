@@ -1,5 +1,5 @@
 import React, {
-  useContext, useEffect, useState, useCallback,
+  useEffect, useState, useCallback,
 } from 'react';
 import { Random } from 'meteor/random';
 import PropTypes from 'prop-types';
@@ -10,7 +10,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import AddIcon from '@material-ui/icons/Add';
 import i18n from 'meteor/universe:i18n';
 import { useDropzone } from 'react-dropzone';
-import { Context } from '../contexts/context';
+import { useAppContext } from '../contexts/context';
 import { toBase64, storageToSize } from '../utils/filesProcess';
 import SingleStorageFile from '../components/mediaStorage/SingleStoragefile';
 import SelectedMediaModal from '../components/mediaStorage/SelectedMediaModal';
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 const calcultedUsedDisk = (total, currentValue) => total + currentValue.size;
 
 const MediaStoragePage = ({ selectFile, modal }) => {
-  const [{ isMobile }, dispatch] = useContext(Context);
+  const [{ isMobile }, dispatch] = useAppContext();
   const [files, setFiles] = useState([]);
   const [selected, setSelected] = useState();
   const classes = useStyles();

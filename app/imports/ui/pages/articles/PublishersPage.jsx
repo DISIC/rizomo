@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
 import TopBar from '../../components/menus/TopBar';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,7 +54,7 @@ const ITEM_PER_PAGE = 10;
 
 const PublishersPage = () => {
   const classes = useStyles();
-  const [{ publishersPage }, dispatch] = useContext(Context);
+  const [{ publishersPage }, dispatch] = useAppContext();
   const { search = '' } = publishersPage;
   const {
     changePage, page, items, total, loading,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
@@ -12,7 +12,7 @@ import { Roles } from 'meteor/alanning:roles';
 import setMaterialTableLocalization from '../initMaterialTableLocalization';
 import UserFinder from './UserFinder';
 import Groups from '../../../api/groups/groups';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 
 const useStyles = makeStyles(() => ({
   adduser: {
@@ -60,7 +60,7 @@ const GroupsUsersList = (props) => {
     emptyRowsWhenPaging: false,
   };
 
-  const [{ userId }] = useContext(Context);
+  const [{ userId }] = useAppContext();
   const isAdmin = Roles.userIsInRole(userId, 'admin', groupId);
 
   const unknownUser = {

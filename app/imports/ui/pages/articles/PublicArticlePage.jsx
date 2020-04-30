@@ -1,6 +1,4 @@
-import React, {
-  useContext, useRef, useEffect, useState,
-} from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
@@ -17,7 +15,7 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import ArticleDetails from '../../components/articles/ArticleDetails';
 import { usePagination } from '../../utils/hooks';
 import TopBar from '../../components/menus/TopBar';
@@ -52,7 +50,7 @@ function PublicArticlePage({
     params: { userId },
   },
 }) {
-  const [{ isMobile, articlePage }, dispatch] = useContext(Context);
+  const [{ isMobile, articlePage }, dispatch] = useAppContext();
   const classes = useStyles();
   const { search = '', searchToggle = false } = articlePage;
   const inputRef = useRef(null);

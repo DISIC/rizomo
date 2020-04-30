@@ -1,6 +1,4 @@
-import React, {
-  useContext, useEffect, Suspense, lazy,
-} from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -10,7 +8,7 @@ import ProtectedRoute from '../components/system/ProtectedRoute';
 import PublicRoute from '../components/system/PublicRoute';
 import Spinner from '../components/system/Spinner';
 import MsgHandler from '../components/system/MsgHandler';
-import DynamicStore, { Context } from '../contexts/context';
+import DynamicStore, { useAppContext } from '../contexts/context';
 import lightTheme from '../themes/light';
 import UploaderNotifier from '../components/uploader/UploaderNotifier';
 import LegalPage from '../pages/legal/LegalPage';
@@ -29,7 +27,7 @@ function Logout() {
 }
 
 function App() {
-  const [state] = useContext(Context);
+  const [state] = useAppContext();
   const { loading } = state;
   const useKeycloak = Meteor.settings.public.enableKeycloak;
 

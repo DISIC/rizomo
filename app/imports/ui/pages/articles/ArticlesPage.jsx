@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import ArticleDetails from '../../components/articles/ArticleDetails';
 import { usePagination } from '../../utils/hooks';
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
 const ITEM_PER_PAGE = 5;
 
 function ArticlesPage() {
-  const [{ isMobile, articlePage }, dispatch] = useContext(Context);
+  const [{ isMobile, articlePage }, dispatch] = useAppContext();
   const classes = useStyles();
   const { search = '', searchToggle = false } = articlePage;
   const inputRef = useRef(null);

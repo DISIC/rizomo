@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Random } from 'meteor/random';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import { toBase64 } from '../../utils/filesProcess';
 import Spinner from '../system/Spinner';
 
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 const ImageAdminUploader = ({
   src, alt, onImageChange, className, name, path, width, height,
 }) => {
-  const [{ uploads }, dispatch] = useContext(Context);
+  const [{ uploads }, dispatch] = useAppContext();
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
 

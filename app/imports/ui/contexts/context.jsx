@@ -1,4 +1,6 @@
-import React, { createContext, useReducer, useEffect } from 'react';
+import React, {
+  createContext, useReducer, useEffect, useContext,
+} from 'react';
 import { Accounts } from 'meteor/accounts-base';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
@@ -70,6 +72,7 @@ const Store = ({
 };
 
 export const Context = createContext(initialState);
+export const useAppContext = () => useContext(Context);
 
 const DynamicStore = withTracker(() => {
   const userHandle = Meteor.subscribe('userData');

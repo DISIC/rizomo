@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,7 +22,7 @@ import {
 } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import Spinner from '../system/Spinner';
 
 const useStyles = ({ type }, member, candidate, isShort) => makeStyles((theme) => ({
@@ -122,7 +122,7 @@ function GroupDetails({
   group = {}, isShort, member, candidate, admin, animator,
 }) {
   const { type } = group;
-  const [{ userId }] = useContext(Context);
+  const [{ userId }] = useAppContext();
   const [loading, setLoading] = useState(false);
 
   const classes = useStyles(group, member || animator, candidate, isShort)();
@@ -174,9 +174,10 @@ function GroupDetails({
     return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
   };
 
-  const groupType = type === 0
-    ? i18n.__('components.GroupDetails.publicGroup')
-    : i18n.__('components.GroupDetails.moderateGroup');
+  let groupType = i18n.__('components.GroupDetails.moderateGroup');
+  if (type === 0) {
+    groupType = i18n.__('components.GroupDetails.publicGroup');
+  }
   const iconHeader = type === 0 ? <PeopleIcon /> : <SecurityIcon />;
 
   return (

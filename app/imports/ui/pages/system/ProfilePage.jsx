@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import {
@@ -25,7 +25,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import Spinner from '../../components/system/Spinner';
 import CustomSelect from '../../components/admin/CustomSelect';
 import { structureOptions } from '../../../api/users/structures';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import LanguageSwitcher from '../../components/system/LanguageSwitcher';
 import debounce from '../../utils/debounce';
 import { useObjectState } from '../../utils/hooks';
@@ -73,7 +73,7 @@ const ProfilePage = () => {
   const [submitted, setSubmitted] = useState(false);
   const classes = useStyles();
   const keycloakMode = Meteor.settings.public.enableKeycloak === true;
-  const [{ user, loadingUser, isMobile }] = useContext(Context);
+  const [{ user, loadingUser, isMobile }] = useAppContext();
 
   const structureLabel = React.useRef(null);
   const [labelStructureWidth, setLabelStructureWidth] = React.useState(0);
