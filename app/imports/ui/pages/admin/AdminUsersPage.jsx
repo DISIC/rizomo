@@ -1,6 +1,4 @@
-import React, {
-  useState, useEffect, useRef, useContext,
-} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -28,7 +26,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
 import debounce from '../../utils/debounce';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,7 +57,7 @@ const ITEM_PER_PAGE = 10;
 
 const AdminUsersPage = () => {
   const classes = useStyles();
-  const [{ isMobile }] = useContext(Context);
+  const [{ isMobile }] = useAppContext();
   const [search, setSearch] = useState('');
   const {
     changePage, page, items, total,

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import PropTypes from 'prop-types';
 import { Typography, Slide, CircularProgress } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import { fileUpload, storageToSize } from '../../utils/filesProcess';
 
 const {
@@ -34,7 +34,7 @@ const checkFile = (file, storage) => {
 };
 
 const UploaderNotifier = () => {
-  const [{ uploads }] = useContext(Context);
+  const [{ uploads }] = useAppContext();
 
   if (!uploads.length) {
     return null;
@@ -66,7 +66,7 @@ const testStorageSize = (size) => new Promise((resolve) => Meteor.call('files.us
 }));
 
 const SingleNotification = ({ upload }) => {
-  const [, dispatch] = useContext(Context);
+  const [, dispatch] = useAppContext();
   const {
     fileName, path, name, file, onFinish, storage,
   } = upload;

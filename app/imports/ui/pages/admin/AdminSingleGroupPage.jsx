@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import i18n from 'meteor/universe:i18n';
 import {
@@ -28,7 +28,7 @@ import Spinner from '../../components/system/Spinner';
 import { createGroup, updateGroup } from '../../../api/groups/methods';
 import Groups from '../../../api/groups/groups';
 import GroupsUsersList from '../../components/admin/GroupUsersList';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +86,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const history = useHistory();
   const classes = useStyles();
 
-  const [{ userId }] = useContext(Context);
+  const [{ userId }] = useAppContext();
   const isAdmin = Roles.userIsInRole(userId, 'admin', params._id);
 
   useEffect(() => {

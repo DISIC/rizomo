@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
@@ -12,7 +12,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import {
   Grid, makeStyles, Typography, IconButton, Paper as div, Tooltip,
 } from '@material-ui/core';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
 import Groups from '../../../api/groups/groups';
 import ServiceDetails from '../services/ServiceDetails';
@@ -128,7 +128,7 @@ const PersonalZone = ({
   isSorted,
 }) => {
   const classes = useStyles();
-  const [{ userId }] = useContext(Context);
+  const [{ userId }] = useAppContext();
 
   const memberGroups = useTracker(() => Roles.getScopesForUser(userId, 'member'));
   const animatorGroups = useTracker(() => Roles.getScopesForUser(userId, 'animator'));

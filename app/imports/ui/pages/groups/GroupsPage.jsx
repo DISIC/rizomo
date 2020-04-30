@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Fade, Container, Grid, Typography, IconButton, Collapse, TextField, InputAdornment,
@@ -17,7 +17,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 // components
 import Groups from '../../../api/groups/groups';
 import GroupDetails from '../../components/groups/GroupDetails';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import { usePagination } from '../../utils/hooks';
 import GroupDetailsList from '../../components/groups/GroupDetailsList';
 
@@ -54,7 +54,7 @@ const useStyles = makeStyles(() => ({
 const ITEM_PER_PAGE = 9;
 
 function GroupsPage() {
-  const [{ isMobile, groupPage, userId }, dispatch] = useContext(Context);
+  const [{ isMobile, groupPage, userId }, dispatch] = useAppContext();
   const classes = useStyles();
   const {
     search = '',

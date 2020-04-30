@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -39,7 +39,7 @@ import ServiceDetails from '../../components/services/ServiceDetails';
 import Services from '../../../api/services/services';
 import Categories from '../../../api/categories/categories';
 import Spinner from '../../components/system/Spinner';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import ServiceDetailsList from '../../components/services/ServiceDetailsList';
 
 const useStyles = (isMobile) => makeStyles((theme) => ({
@@ -127,7 +127,7 @@ const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={r
 function ServicesPage({ services, categories, ready }) {
   const [{
     user, loadingUser, isMobile, servicePage,
-  }, dispatch] = useContext(Context);
+  }, dispatch] = useAppContext();
   const classes = useStyles(isMobile)();
   const {
     catList = [],

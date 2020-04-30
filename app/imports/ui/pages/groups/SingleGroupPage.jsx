@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
@@ -21,7 +21,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import Groups from '../../../api/groups/groups';
 import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
@@ -138,7 +138,7 @@ const useStyles = (member, candidate, type) => makeStyles((theme) => ({
 
 const SingleGroupPage = ({ group = {}, ready, services }) => {
   const { type } = group;
-  const [{ userId, user }] = useContext(Context);
+  const [{ userId, user }] = useAppContext();
   const [loading, setLoading] = useState(false);
   const [openedContent, toggleOpenedContent] = useState(false);
   const animator = Roles.userIsInRole(userId, 'animator', group._id);

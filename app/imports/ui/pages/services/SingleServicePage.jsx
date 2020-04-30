@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
@@ -12,7 +12,7 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import Categories from '../../../api/categories/categories';
 import { isUrlExternal } from '../../utils/utilsFuncs';
 
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 const SingleServicePage = ({ service = [], ready, categories = [] }) => {
   const history = useHistory();
   const classes = useStyles();
-  const [{ user = {}, isMobile }] = useContext(Context);
+  const [{ user = {}, isMobile }] = useAppContext();
   const [loading, setLoading] = useState(false);
   const favorite = user.favServices && user.favServices.find((f) => f === service._id);
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import ReactQuill, { Quill } from 'react-quill';
@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
-import { Context } from '../../contexts/context';
+import { useAppContext } from '../../contexts/context';
 import { useObjectState } from '../../utils/hooks';
 import { getExtension } from '../../utils/filesProcess';
 import slugy from '../../utils/slugy';
@@ -117,7 +117,7 @@ function EditArticlePage({
   },
   history,
 }) {
-  const [{ isMobile }, dispatch] = useContext(Context);
+  const [{ isMobile }, dispatch] = useAppContext();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);

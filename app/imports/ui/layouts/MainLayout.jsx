@@ -1,4 +1,4 @@
-import React, { useContext, lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,7 +9,7 @@ import Spinner from '../components/system/Spinner';
 import AdminRoute from '../components/system/AdminRoute';
 import MobileMenu from '../components/menus/MobileMenu';
 import NotValidatedMessage from '../components/system/NotValidatedMessage';
-import { Context } from '../contexts/context';
+import { useAppContext } from '../contexts/context';
 
 // pages
 import ServicesPage from '../pages/services/ServicesPage';
@@ -62,7 +62,7 @@ const useStyles = (isMobile) => makeStyles((theme) => ({
 function MainLayout() {
   const [{
     userId, user, loadingUser, isMobile,
-  }] = useContext(Context);
+  }] = useAppContext();
   const classes = useStyles(isMobile)();
 
   return (
