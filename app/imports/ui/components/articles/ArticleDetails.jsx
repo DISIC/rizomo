@@ -89,7 +89,7 @@ export default function ArticleDetails({ article, publicPage }) {
       <CardHeader
         classes={{ action: classes.action }}
         action={publicPage ? publicButton : actionButtons}
-        title={article.title}
+        title={<Link to={`/public/${article.userId}/${article.slug}`}>{article.title}</Link>}
         titleTypographyProps={{
           variant: 'h6',
           color: 'primary',
