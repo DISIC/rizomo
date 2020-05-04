@@ -113,7 +113,11 @@ const AdminUsersPage = () => {
       else msg.success(i18n.__('pages.AdminUsersPage.successDeleteUser'));
     });
   };
-
+  const loginInfo = (user) => ` - ${
+    user.lastLogin
+      ? `${i18n.__('pages.AdminUsersPage.loginInfo')} : ${user.lastLogin.toLocaleString()}`
+      : i18n.__('pages.AdminUsersPage.neverConnected')
+  }`;
   const UserActions = ({ user }) => {
     const [verifyDelete, setVerifyDelete] = useState(false);
     return verifyDelete ? (
@@ -218,7 +222,7 @@ const AdminUsersPage = () => {
                     <ListItemText
                       primary={`${user.firstName} ${user.lastName}${
                         isAdmin(user) ? ` (${i18n.__('pages.AdminUsersPage.admin')})` : ''
-                      }`}
+                      } ${loginInfo(user)}`}
                       secondary={(
                         <>
                           <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">

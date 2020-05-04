@@ -60,7 +60,8 @@
         "structure": "Structure De Rattachement",
         "primaryEmail": "Adresse Électronique principale",
         "language": "Langage Préféré",
-        "logoutType": "Méthode De Déconnexion"
+        "logoutType": "Méthode De Déconnexion",
+        "lastLogin": "Date de dernière connexion"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -485,7 +486,9 @@
       "cancelDelete": "Annuler la suppression",
       "successSetAdmin": "Droits d'administrateur donnés",
       "successUnsetAdmin": "Droits d'administateur révoqués",
-      "successDeleteUser": "Utilisateur supprimé"
+      "successDeleteUser": "Utilisateur supprimé",
+      "loginInfo": "Dernière connexion",
+      "neverConnected": "Jamais connecté"
     },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",

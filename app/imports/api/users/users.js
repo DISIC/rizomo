@@ -55,6 +55,11 @@ Meteor.users.schema = new SimpleSchema(
       type: Date,
       label: getLabel('api.users.labels.createdAt'),
     },
+    lastLogin: {
+      type: Date,
+      label: getLabel('api.users.labels.lastLogin'),
+      optional: true,
+    },
     profile: {
       type: Object,
       optional: true,
@@ -135,57 +140,59 @@ if (Meteor.isServer) {
     if (options.profile) newUser.profile = options.profile;
     return newUser;
   });
-  if (Meteor.settings.public.enableKeycloak === true) {
-    // server side login hook
-    Accounts.onLogin((details) => {
-      if (details.type === 'keycloak') {
-        // update user informations from keycloak service data
-        const updateInfos = {
-          primaryEmail: details.user.services.keycloak.email,
-        };
-        if (details.user.services.keycloak.given_name) {
-          updateInfos.firstName = details.user.services.keycloak.given_name;
-        }
-        if (details.user.services.keycloak.family_name) {
-          updateInfos.lastName = details.user.services.keycloak.family_name;
-        }
-        if (
-          details.user.username === undefined
-          || (details.user.username === details.user.primaryEmail
-            && details.user.primaryEmail !== details.user.services.keycloak.email)
-        ) {
-          // use email as username if no username yet or if username was
-          // email and email has changed on Keycloak
-          updateInfos.username = details.user.services.keycloak.email;
-        }
-        if (details.user.isActive === false) {
-          // auto activate user based on email address
-          if (checkDomain(details.user.services.keycloak.email)) {
-            updateInfos.isActive = true;
-            updateInfos.isRequest = false;
-          } else {
-            // user email not whitelisted, request activation by admin
-            updateInfos.isRequest = true;
-          }
-        }
-        Meteor.users.update({ _id: details.user._id }, { $set: updateInfos });
-        // Manage primary email change
-        if (details.user.primaryEmail !== details.user.services.keycloak.email) {
-          Accounts.addEmail(details.user._id, details.user.services.keycloak.email, true);
-          if (details.user.primaryEmail !== undefined) {
-            Accounts.removeEmail(details.user._id, details.user.primaryEmail);
-          }
-        }
-        // check if user is defined as admin in settings
-        if (Meteor.settings.keycloak.adminEmails.indexOf(details.user.services.keycloak.email) !== -1) {
-          if (!Roles.userIsInRole(details.user._id, 'admin')) {
-            Roles.addUsersToRoles(details.user._id, 'admin');
-            console.log(i18n.__('api.users.adminGiven'), details.user.services.keycloak.email);
-          }
+  // server side login hook
+  Accounts.onLogin((details) => {
+    const loginDate = new Date();
+    if (details.type === 'keycloak') {
+      // update user informations from keycloak service data
+      const updateInfos = {
+        lastLogin: loginDate,
+        primaryEmail: details.user.services.keycloak.email,
+      };
+      if (details.user.services.keycloak.given_name) {
+        updateInfos.firstName = details.user.services.keycloak.given_name;
+      }
+      if (details.user.services.keycloak.family_name) {
+        updateInfos.lastName = details.user.services.keycloak.family_name;
+      }
+      if (
+        details.user.username === undefined
+        || (details.user.username === details.user.primaryEmail
+          && details.user.primaryEmail !== details.user.services.keycloak.email)
+      ) {
+        // use email as username if no username yet or if username was
+        // email and email has changed on Keycloak
+        updateInfos.username = details.user.services.keycloak.email;
+      }
+      if (details.user.isActive === false) {
+        // auto activate user based on email address
+        if (checkDomain(details.user.services.keycloak.email)) {
+          updateInfos.isActive = true;
+          updateInfos.isRequest = false;
+        } else {
+          // user email not whitelisted, request activation by admin
+          updateInfos.isRequest = true;
         }
       }
-    });
-  }
+      Meteor.users.update({ _id: details.user._id }, { $set: updateInfos });
+      // Manage primary email change
+      if (details.user.primaryEmail !== details.user.services.keycloak.email) {
+        Accounts.addEmail(details.user._id, details.user.services.keycloak.email, true);
+        if (details.user.primaryEmail !== undefined) {
+          Accounts.removeEmail(details.user._id, details.user.primaryEmail);
+        }
+      }
+      // check if user is defined as admin in settings
+      if (Meteor.settings.keycloak.adminEmails.indexOf(details.user.services.keycloak.email) !== -1) {
+        if (!Roles.userIsInRole(details.user._id, 'admin')) {
+          Roles.addUsersToRoles(details.user._id, 'admin');
+          console.log(i18n.__('api.users.adminGiven'), details.user.services.keycloak.email);
+        }
+      }
+    } else {
+      Meteor.users.update({ _id: details.user._id }, { $set: { lastLogin: loginDate } });
+    }
+  });
 }
 
 Meteor.users.helpers({
@@ -220,6 +227,7 @@ Meteor.users.selfFields = {
   primaryEmail: 1,
   language: 1,
   logoutType: 1,
+  lastLogin: 1,
 };
 
 Meteor.users.adminFields = {
@@ -231,6 +239,7 @@ Meteor.users.adminFields = {
   isActive: 1,
   isRequest: 1,
   structure: 1,
+  lastLogin: 1,
 };
 
 Meteor.users.publicFields = {
