@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 import {
@@ -14,6 +15,7 @@ import Switch from '@material-ui/core/Switch';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
@@ -85,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     marginTop: 30,
+  },
+  goIcon: {
+    marginLeft: 8,
+    verticalAlign: 'bottom',
   },
 }));
 
@@ -295,7 +301,12 @@ function PersonalPage({
                 </div>
               </Grid>
               {localPS.unsorted.length === 0 && localPS.sorted.length === 0 ? (
-                <Typography>{i18n.__('pages.PersonalPage.noFavYet')}</Typography>
+                <Typography>
+                  <Link to="/services">
+                    {i18n.__('pages.PersonalPage.noFavYet')}
+                    <NavigateNextIcon className={classes.goIcon} />
+                  </Link>
+                </Typography>
               ) : null}
             </Grid>
             {localPS.unsorted.length !== 0
