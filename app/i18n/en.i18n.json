@@ -60,7 +60,8 @@
         "structure": "Attachment Structure",
         "primaryEmail": "Primary Email",
         "language": "Preferred Language",
-        "logoutType": "Logout Method"
+        "logoutType": "Logout Method",
+        "lastLogin": "Last login date"
       },
       "logoutTypes": {
         "ask": "Ask at logout",
@@ -482,7 +483,9 @@
       "cancelDelete": "Cancel deletion",
       "successSetAdmin": "admin rights have been granted",
       "successUnsetAdmin": "admin rights have been revoked",
-      "successDeleteUser": "User deleted"
+      "successDeleteUser": "User deleted",
+      "loginInfo": "last login",
+      "neverConnected": "Never connected"
     },
     "AdminUserValidationPage": {
       "title": "User validation",
