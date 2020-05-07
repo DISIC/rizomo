@@ -2,7 +2,7 @@
 /* eslint-disable func-names, prefer-arrow-callback */
 
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
-import { chai, assert } from 'meteor/practicalmeteor:chai';
+import { assert } from 'chai';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import '../../../../i18n/en.i18n.json';
@@ -58,7 +58,7 @@ describe('services', function () {
       it('sends all services', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('services.all', (collections) => {
-          chai.assert.equal(collections.services.length, 4);
+          assert.equal(collections.services.length, 4);
           done();
         });
       });

@@ -2,7 +2,7 @@
 /* eslint-disable func-names, prefer-arrow-callback */
 
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
-import { chai, assert } from 'meteor/practicalmeteor:chai';
+import { assert } from 'chai';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { _ } from 'meteor/underscore';
@@ -49,7 +49,7 @@ describe('personalspaces', function () {
       it('sends current user personalspace', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('personalspaces.self', (collections) => {
-          chai.assert.equal(collections.personalspaces.length, 1);
+          assert.equal(collections.personalspaces.length, 1);
           done();
         });
       });
@@ -70,11 +70,11 @@ describe('personalspaces', function () {
         updatePersonalSpace._execute({ userId }, { data: newPS });
         const collector = new PublicationCollector({ userId });
         collector.collect('personalspaces.self', (collections) => {
-          chai.assert.equal(collections.personalspaces.length, 1);
-          chai.assert.equal(collections.services.length, 1);
-          chai.assert.equal(collections.services[0].title, 'myService');
-          chai.assert.equal(collections.groups.length, 1);
-          chai.assert.equal(collections.groups[0].name, 'myGroup');
+          assert.equal(collections.personalspaces.length, 1);
+          assert.equal(collections.services.length, 1);
+          assert.equal(collections.services[0].title, 'myService');
+          assert.equal(collections.groups.length, 1);
+          assert.equal(collections.groups[0].name, 'myGroup');
           done();
         });
       });

@@ -2,7 +2,7 @@
 /* eslint-disable func-names, prefer-arrow-callback */
 
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
-import { chai, assert } from 'meteor/practicalmeteor:chai';
+import { assert } from 'chai';
 import faker from 'faker';
 import { Factory } from 'meteor/dburles:factory';
 import { Meteor } from 'meteor/meteor';
@@ -69,7 +69,7 @@ describe('users', function () {
       it('does not send data to non admin users', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('users.request', (collections) => {
-          chai.assert.equal(collections.users, undefined);
+          assert.equal(collections.users, undefined);
           done();
         });
       });
@@ -77,7 +77,7 @@ describe('users', function () {
         Roles.addUsersToRoles(userId, 'admin');
         const collector = new PublicationCollector({ userId });
         collector.collect('users.request', (collections) => {
-          chai.assert.equal(collections.users.length, 3);
+          assert.equal(collections.users.length, 3);
           done();
         });
         Roles.removeUsersFromRoles(userId, 'admin');
@@ -87,7 +87,7 @@ describe('users', function () {
       it('sends additional fields for current user', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('userData', (collections) => {
-          chai.assert.equal(collections.users.length, 1);
+          assert.equal(collections.users.length, 1);
           const user = collections.users[0];
           assert.property(user, 'favServices');
           done();

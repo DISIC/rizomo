@@ -3,7 +3,7 @@
 
 import { Factory } from 'meteor/dburles:factory';
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
-import { chai, assert } from 'meteor/practicalmeteor:chai';
+import { assert } from 'chai';
 import { Random } from 'meteor/random';
 import faker from 'faker';
 import { Meteor } from 'meteor/meteor';
@@ -70,7 +70,7 @@ describe('groups', function () {
       it('sends all groups', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('groups.all', {}, (collections) => {
-          chai.assert.equal(collections.groups.length, 4);
+          assert.equal(collections.groups.length, 4);
           done();
         });
       });
@@ -79,7 +79,7 @@ describe('groups', function () {
       it('sends all groups', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('groups.one', { slug: 'mongroupe' }, (collections) => {
-          chai.assert.equal(collections.groups.length, 1);
+          assert.equal(collections.groups.length, 1);
           done();
         });
       });
@@ -479,7 +479,7 @@ describe('groups', function () {
             );
           },
           Error,
-          /E11000 duplicate key error collection: meteor.groups index: c2_name dup key: { : "group4" }/,
+          /E11000 duplicate key error collection: meteor.groups index: c2_name dup key: { name: "group4" }/,
         );
       });
       it('does not create a group when not logged in', function () {
@@ -567,7 +567,7 @@ describe('groups', function () {
             updateGroup._execute({ userId }, { groupId, data: { name: 'group4' } });
           },
           Meteor.ClientError,
-          /E11000 duplicate key error collection: meteor.groups index: c2_name dup key: { : "group4" }/,
+          /E11000 duplicate key error collection: meteor.groups index: c2_name dup key: { name: "group4" }/,
         );
       });
     });
