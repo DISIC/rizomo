@@ -101,12 +101,24 @@ export default function ServiceDetails({ service }) {
   //   </div>
   // );
   const isExternal = isUrlExternal(service.url);
-  const button = (
+  const openButton = (
     <Button
       color="primary"
       variant="contained"
-      onClick={isExternal ? () => window.open(service.url, '_blank', 'noreferrer,noopener') : null}
+      onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
     >
+      <OpenInNewIcon fontSize="large" />
+    </Button>
+  );
+  const linkButton = (
+    <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>
+      <Button color="primary" variant="contained">
+        <OpenInNewIcon fontSize="large" />
+      </Button>
+    </Link>
+  );
+  const inactiveButton = (
+    <Button color="primary" variant="contained" disabled>
       <OpenInNewIcon fontSize="large" />
     </Button>
   );
@@ -114,7 +126,7 @@ export default function ServiceDetails({ service }) {
     <Card className={classes.card} elevation={3}>
       <CardHeader
         classes={{ action: classes.action }}
-        avatar={isExternal ? button : <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>{button}</Link>}
+        avatar={service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
         action={detailsButton}
         title={service.title}
         titleTypographyProps={{

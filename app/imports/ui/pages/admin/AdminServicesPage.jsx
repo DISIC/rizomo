@@ -32,13 +32,19 @@ function AdminServicesPage({ services, loading }) {
         </a>
       ),
     },
+    {
+      title: i18n.__('pages.AdminServicesPage.columnState'),
+      field: 'state',
+      initialEditValue: Object.keys(Services.stateLabels)[0],
+      render: (rowData) => i18n.__(Services.stateLabels[rowData.state]),
+    },
   ];
 
   const options = {
     pageSize: 10,
     pageSizeOptions: [10, 20, 50, 100],
     paginationType: 'stepped',
-    actionsColumnIndex: 4,
+    actionsColumnIndex: 5,
     addRowPosition: 'first',
     emptyRowsWhenPaging: false,
   };

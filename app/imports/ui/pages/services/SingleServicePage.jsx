@@ -133,15 +133,27 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
   );
 
   const isExternal = isUrlExternal(service.url);
-  const button = (
+  const openButton = (
     <Button
       size="large"
       color="primary"
       className={classes.buttonText}
       variant="contained"
-      onClick={isExternal ? () => window.open(service.url, '_blank', 'noreferrer,noopener') : null}
+      onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
     >
       {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+    </Button>
+  );
+  const linkButton = (
+    <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>
+      <Button size="large" color="primary" className={classes.buttonText} variant="contained">
+        {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+      </Button>
+    </Link>
+  );
+  const inactiveButton = (
+    <Button size="large" disabled className={classes.buttonText} variant="contained">
+      {i18n.__('pages.SingleServicePage.inactive')}
     </Button>
   );
   return (
@@ -170,7 +182,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.favoriteButton}>
             {!isMobile && favButton}
-            {isExternal ? button : <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>{button}</Link>}
+            {service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
           </Grid>
           <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
             <Typography className={classes.smallTitle} variant="h5">
@@ -224,7 +236,7 @@ export default withTracker(
     },
   }) => {
     const subService = Meteor.subscribe('services.one', { slug });
-    const service = Services.findOne({ slug }) || {};
+    const service = Services.findOne({ slug, state: { $ne: 10 } }) || {};
     const categories = Categories.find({ _id: { $in: service.categories || [] } }).fetch();
     const ready = subService.ready();
     return {

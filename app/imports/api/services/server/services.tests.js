@@ -113,6 +113,7 @@ describe('services', function () {
         usage: 'Discuter en Troubadour',
         screenshots: [],
         content: "<div>c'est un service de fou</div>",
+        state: 0,
       };
     });
     describe('createService', function () {
@@ -175,6 +176,7 @@ describe('services', function () {
         team: 'Dijon',
         screenshots: ['https://rocket.chat/images/default/logo--dark.svg'],
         content: "<div>c'est un service de fou</div>",
+        state: 0,
       };
       it('does update a service with admin user', function () {
         updateService._execute({ userId: adminId }, { serviceId, data: { ...data } });

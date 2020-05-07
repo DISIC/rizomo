@@ -9,6 +9,9 @@ import {
   TextField,
   Typography,
   InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
   Chip,
   IconButton,
   Fade,
@@ -100,6 +103,7 @@ const defaultState = {
   logo: '',
   categories: [],
   screenshots: [],
+  state: Number(Object.keys(Services.stateLabels)[0]),
 };
 
 const PLACEHOLDER = 'https://fakeimg.pl/900x600/';
@@ -152,6 +156,8 @@ const AdminSingleServicePage = ({
         [name]: value,
         slug: slugy(value),
       });
+    } else if (name === 'state') {
+      setServiceData({ ...serviceData, [name]: Number(value) });
     } else {
       setServiceData({ ...serviceData, [name]: value });
     }
@@ -263,6 +269,18 @@ const AdminSingleServicePage = ({
               margin="normal"
               disabled
             />
+            <FormControl>
+              <InputLabel htmlFor="state" id="state-label">
+                {i18n.__('pages.AdminSingleServicePage.state')}
+              </InputLabel>
+              <Select labelId="state-label" id="state" name="state" value={serviceData.state} onChange={onUpdateField}>
+                {Object.keys(Services.stateLabels).map((val) => (
+                  <MenuItem key={val} value={val}>
+                    {i18n.__(Services.stateLabels[val])}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               onChange={onUpdateField}
               value={serviceData.team}
