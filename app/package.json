@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.0.2",
   "scripts": {
-    "start": "meteor --no-release-check --settings ../config/settings.development.json",
-    "test": "meteor test --once --driver-package meteortesting:mocha --allow-superuser",
+    "start": "meteor --no-release-check --exclude-archs 'web.browser.legacy, web.cordova' --settings ../config/settings.development.json",
+    "test": "meteor test --once --exclude-archs 'web.browser.legacy, web.cordova' --driver-package meteortesting:mocha --allow-superuser",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "lint": "eslint . --ext js,jsx",
     "lintfix": "eslint --fix . --ext js,jsx",
