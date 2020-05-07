@@ -162,7 +162,11 @@ function PersonalLinkDetails({
       <CardHeader
         className={classes.cardHeader}
         avatar={(
-          <Avatar className={classes.avatar}>
+          <Avatar
+            className={classes.avatar}
+            style={{ cursor: 'pointer' }}
+            onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
+          >
             <LaunchIcon />
           </Avatar>
         )}
