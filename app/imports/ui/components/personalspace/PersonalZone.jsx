@@ -8,7 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
-import LaunchIcon from '@material-ui/icons/Launch';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {
   Grid, makeStyles, Typography, IconButton, Paper as div, Tooltip,
 } from '@material-ui/core';
@@ -189,7 +189,7 @@ const PersonalZone = ({
               className={classes.zoneButton}
               title={i18n.__('components.PersonalZone.addPersonalLink')}
             >
-              <LaunchIcon />
+              <AddCircleOutlineIcon />
             </IconButton>
           )}
         </div>
