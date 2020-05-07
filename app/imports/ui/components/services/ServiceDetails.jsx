@@ -134,15 +134,26 @@ function ServiceDetails({ service, favAction, isShort }) {
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
 
   const isExternal = isUrlExternal(service.url);
-
-  const button = (
+  const openButton = (
     <Button
       size="large"
       className={classes.buttonText}
       variant="contained"
-      onClick={isExternal ? () => window.open(service.url, '_blank', 'noreferrer,noopener') : null}
+      onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
     >
       {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+    </Button>
+  );
+  const linkButton = (
+    <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>
+      <Button size="large" className={classes.buttonText} variant="contained">
+        {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
+      </Button>
+    </Link>
+  );
+  const inactiveButton = (
+    <Button size="large" disabled className={classes.buttonText} variant="contained">
+      {i18n.__('pages.SingleServicePage.inactive')}
     </Button>
   );
 
@@ -206,7 +217,7 @@ function ServiceDetails({ service, favAction, isShort }) {
         </Paper> */}
         {!isAddressBook && (
           <div className={isShort ? classes.cardActionShort : classes.cardActions}>
-            {isExternal ? button : <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>{button}</Link>}
+            {service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
 
             {!!favAction && (
               <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>

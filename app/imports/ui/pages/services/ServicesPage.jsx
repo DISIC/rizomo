@@ -418,7 +418,7 @@ ServicesPage.propTypes = {
 
 export default withTracker(() => {
   const servicesHandle = Meteor.subscribe('services.all');
-  const services = Services.find({}, { sort: { title: 1 } }).fetch();
+  const services = Services.find({ state: { $ne: 10 } }, { sort: { title: 1 } }).fetch();
   const categoriesHandle = Meteor.subscribe('categories.all');
   const cats = Categories.find({}, { sort: { name: 1 } }).fetch();
   const categories = cats.map((cat) => ({ ...cat, count: Services.find({ categories: { $in: [cat._id] } }).count() }));

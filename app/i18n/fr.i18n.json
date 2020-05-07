@@ -99,12 +99,18 @@
     },
     "services": {
       "unknownService": "Le service n'existe pas.",
+      "states": {
+        "displayed": "affiché",
+        "inactive": "inactif",
+        "invisible": "caché"
+      },
       "labels": {
         "id": "Id de Service",
         "title": "Titre",
         "slug": "Slug",
         "team": "Équipe",
         "usage": "Usage",
+        "state": "État",
         "content": "Description longue",
         "description": "Description",
         "logo": "Logo",
@@ -433,6 +439,7 @@
       "columnTitle": "Nom",
       "columnUsage": "Usage",
       "columnUrl": "Lien",
+      "columnState": "État",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Rechercher un service",
         "pagination_labelRowsSelect": "services par page",
@@ -510,6 +517,7 @@
       "screenshots": "Captures d'écran",
       "categories": "Catégories",
       "open": "Ouvrir",
+      "inactive": "Service inactif",
       "propulsedBy": "Propulsé par"
     },
     "PersonalPage": {
@@ -527,6 +535,7 @@
       "creation": "Création d'un nouveau service",
       "title": "Titre",
       "slug": "Slug",
+      "state": "État",
       "team": "Equipe",
       "usage": "Utilisation de l'application",
       "logo": "Logo du service",

@@ -56,6 +56,11 @@ Services.schema = new SimpleSchema(
       type: String,
       label: getLabel('api.services.labels.logo'),
     },
+    state: {
+      type: SimpleSchema.Integer,
+      allowedValues: [0, 5, 10], // 0 displayed, 5 inactive, 10 invisible
+      label: getLabel('api.services.labels.state'),
+    },
     categories: { type: Array, defaultValue: [], label: getLabel('api.services.labels.categories') },
     'categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
     screenshots: { type: Array, defaultValue: [], label: getLabel('api.services.labels.screenshots') },
@@ -63,6 +68,12 @@ Services.schema = new SimpleSchema(
   },
   { tracker: Tracker },
 );
+
+Services.stateLabels = {
+  0: 'api.services.states.displayed',
+  5: 'api.services.states.inactive',
+  10: 'api.services.states.invisible',
+};
 
 Services.publicFields = {
   title: 1,
@@ -73,6 +84,7 @@ Services.publicFields = {
   usage: 1,
   team: 1,
   slug: 1,
+  state: 1,
 };
 
 Services.allPublicFields = {
@@ -91,6 +103,7 @@ Factory.define('service', Services, {
   screenshots: [],
   content: faker.lorem.sentence(),
   categories: [],
+  state: 0,
 });
 
 Services.attachSchema(Services.schema);

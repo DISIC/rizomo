@@ -99,12 +99,18 @@
     },
     "services": {
       "unknownService": "Service does not exist.",
+      "states": {
+        "displayed": "displayed",
+        "inactive": "inactive",
+        "invisible": "invisible"
+      },
       "labels": {
         "id": "Service Id",
         "title": "Title",
         "slug": "Slug",
         "team": "Team",
         "usage": "Usage",
+        "state": "State",
         "content": "Long description",
         "description": "Description",
         "logo": "Logo",
@@ -430,6 +436,7 @@
       "columnTitle": "Name",
       "columnUsage": "Usage",
       "columnUrl": "Link",
+      "columnState": "State",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a service",
         "pagination_labelRowsSelect": "services per page",
@@ -507,6 +514,7 @@
       "screenshots": "Screenshots",
       "categories": "Categories",
       "open": "Open",
+      "inactive": "Inactive service",
       "propulsedBy": "Propulsed by"
     },
     "PersonalPage": {
@@ -524,6 +532,7 @@
       "creation": "Creation of a new service",
       "title": "Title",
       "slug": "Slug",
+      "state": "State",
       "team": "Team",
       "usage": "App usage",
       "logo": "Logo of the application",
