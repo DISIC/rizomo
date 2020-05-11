@@ -255,7 +255,7 @@ const PersonalZone = ({
             .map((elem) => {
               switch (elem.type) {
                 case 'service': {
-                  const myservice = Services.findOne({ _id: elem.element_id, state: { $ne: 10 } });
+                  const myservice = Services.findOne({ _id: elem.element_id });
                   return myservice === undefined ? null : (
                     <Grid
                       className={classes.gridItem}
