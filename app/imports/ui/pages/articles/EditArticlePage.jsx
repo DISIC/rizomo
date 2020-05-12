@@ -20,6 +20,7 @@ import { updateArticle, createArticle, removeArticle } from '../../../api/articl
 import ValidationButton from '../../components/system/ValidationButton';
 import ImagePicker from '../../components/articles/ImagePicker';
 import '../../utils/QuillImage';
+import { CustomToolbarArticle } from '../../components/system/CustomQuill';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -64,13 +65,7 @@ const emptyArticle = {
 const quillOptionsMaker = (handler) => ({
   modules: {
     toolbar: {
-      container: [
-        [{ header: [1, 2, 3, 4, 5, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        ['link', 'image', 'video'],
-        ['clean'],
-      ],
+      container: '#quill-toolbar',
       handlers: {
         image: handler,
       },
@@ -293,6 +288,7 @@ function EditArticlePage({
         />
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
+          <CustomToolbarArticle withMedia />
           <ReactQuill {...quillOptions} id="content" value={content} onChange={onUpdateRichText} />
         </div>
 

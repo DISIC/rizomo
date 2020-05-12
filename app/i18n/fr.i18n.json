@@ -339,6 +339,22 @@
       "dontAskAgain": "Ne plus demander",
       "buttonYes": "Oui",
       "buttonNo": "Non"
+    },
+    "CustomQuill": {
+      "header": "Style de paragraphe",
+      "bold": "Gras (ctrl+b)",
+      "italic": "Italique (ctrl+i)",
+      "underline": "Souligné (ctrl+u)",
+      "strike": "Barré",
+      "blockquote": "Citation",
+      "ordered": "Liste ordonnée",
+      "bullet": "Liste à puces",
+      "unindent": "Diminuer le retrait",
+      "indent": "Augmenter le retrait",
+      "link": "Associer un lien au texte sélectionné",
+      "image": "Ajouter une image",
+      "video": "Intégrer une vidéo",
+      "clean": "Supprimer la mise en forme de la sélection"
     }
   },
   "validatejs": {

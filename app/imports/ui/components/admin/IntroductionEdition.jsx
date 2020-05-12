@@ -7,6 +7,7 @@ import {
 import i18n from 'meteor/universe:i18n';
 import { updateIntroductionLanguage } from '../../../api/appsettings/methods';
 import Spinner from '../system/Spinner';
+import { CustomToolbarArticle } from '../system/CustomQuill';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,13 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const quillOptions = {
   modules: {
     toolbar: {
-      container: [
-        [{ header: [1, 2, 3, 4, 5, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        ['link'],
-        ['clean'],
-      ],
+      container: '#quill-toolbar',
     },
     clipboard: {
       matchVisual: false,
@@ -119,6 +114,7 @@ const IntroductionEdition = ({ data = [] }) => {
       </FormControl>
       <div className={classes.wysiwyg}>
         <InputLabel htmlFor="content">{i18n.__('components.IntroductionEdition.content')}</InputLabel>
+        <CustomToolbarArticle />
         <ReactQuill id="content" value={content || ''} onChange={onUpdateRichText} {...quillOptions} />
       </div>
       {changes && (

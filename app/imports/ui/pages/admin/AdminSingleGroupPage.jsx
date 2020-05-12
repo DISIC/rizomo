@@ -29,6 +29,7 @@ import { createGroup, updateGroup } from '../../../api/groups/methods';
 import Groups from '../../../api/groups/groups';
 import GroupsUsersList from '../../components/admin/GroupUsersList';
 import { useAppContext } from '../../contexts/context';
+import { CustomToolbar } from '../../components/system/CustomQuill';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -221,6 +222,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
             />
             <div className={classes.wysiwyg}>
               <InputLabel htmlFor="content">{i18n.__('pages.AdminSingleGroupPage.content')}</InputLabel>
+              <CustomToolbar />
               <ReactQuill
                 id="content"
                 value={content}
@@ -228,6 +230,9 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                 modules={{
                   clipboard: {
                     matchVisual: false,
+                  },
+                  toolbar: {
+                    container: '#quill-toolbar',
                   },
                 }}
               />

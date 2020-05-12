@@ -30,6 +30,7 @@ import { createService, updateService } from '../../../api/services/methods';
 import Services from '../../../api/services/services';
 import slugy from '../../utils/slugy';
 import ImageAdminUploader from '../../components/uploader/ImageAdminUploader';
+import { CustomToolbar } from '../../components/system/CustomQuill';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -333,6 +334,7 @@ const AdminSingleServicePage = ({
             />
             <div className={classes.wysiwyg}>
               <InputLabel htmlFor="content">{i18n.__('pages.AdminSingleServicePage.content')}</InputLabel>
+              <CustomToolbar />
               <ReactQuill
                 id="content"
                 value={content}
@@ -340,6 +342,9 @@ const AdminSingleServicePage = ({
                 modules={{
                   clipboard: {
                     matchVisual: false,
+                  },
+                  toolbar: {
+                    container: '#quill-toolbar',
                   },
                 }}
               />

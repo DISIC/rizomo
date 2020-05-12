@@ -8,6 +8,7 @@ import i18n from 'meteor/universe:i18n';
 import { useObjectState } from '../../utils/hooks';
 import { updateAppsettings } from '../../../api/appsettings/methods';
 import Spinner from '../system/Spinner';
+import { CustomToolbarArticle } from '../system/CustomQuill';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,13 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const quillOptions = {
   modules: {
     toolbar: {
-      container: [
-        [{ header: [1, 2, 3, 4, 5, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        ['link'],
-        ['clean'],
-      ],
+      container: '#quill-toolbar',
     },
     clipboard: {
       matchVisual: false,
@@ -125,6 +120,7 @@ const LegalComponent = ({ tabkey, data = {} }) => {
       ) : (
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__(`components.LegalComponent.content_${tabkey}`)}</InputLabel>
+          <CustomToolbarArticle />
           <ReactQuill id="content" value={state.content || ''} onChange={onUpdateRichText} {...quillOptions} />
         </div>
       )}
