@@ -339,6 +339,22 @@
       "dontAskAgain": "Do not ask again",
       "buttonYes": "Yes",
       "buttonNo": "No"
+    },
+    "CustomQuill": {
+      "header": "Paragraph style",
+      "bold": "Bold (ctrl+b)",
+      "italic": "Italic (ctrl+i)",
+      "underline": "Underlined (ctrl+u)",
+      "strike": "Strike",
+      "blockquote": "Quote",
+      "ordered": "Ordered list",
+      "bullet": "Bullet list",
+      "unindent": "Unindent",
+      "indent": "Indent",
+      "link": "Add link to selected text",
+      "image": "Add picture",
+      "video": "Embed video",
+      "clean": "Clean selected text formatting"
     }
   },
   "validatejs": {
