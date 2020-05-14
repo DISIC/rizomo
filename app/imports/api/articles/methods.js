@@ -18,6 +18,7 @@ export const createArticle = new ValidatedMethod({
     if (!isActive(this.userId)) {
       throw new Meteor.Error('api.articles.createArticle.notLoggedIn', i18n.__('api.articles.mustBeLoggedIn'));
     }
+    Meteor.users.update({ _id: this.userId }, { $inc: { articlesCount: 1 }, $set: { lastArticle: new Date() } });
     return Articles.insert({ ...data, userId: this.userId });
   },
 });
@@ -36,6 +37,7 @@ export const removeArticle = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.articles.removeArticle.notPermitted', i18n.__('api.articles.adminArticleNeeded'));
     }
+    Meteor.users.update({ _id: this.userId }, { $inc: { articlesCount: -1 } });
     return Articles.remove(articleId);
   },
 });
@@ -58,6 +60,7 @@ export const updateArticle = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.articles.updateArticle.notPermitted', i18n.__('api.articles.adminArticleNeeded'));
     }
+    Meteor.users.update({ _id: this.userId }, { $set: { lastArticle: new Date() } });
     return Articles.update({ _id: articleId }, { $set: { ...data, userId: this.userId } });
   },
 });

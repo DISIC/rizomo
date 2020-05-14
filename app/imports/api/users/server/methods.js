@@ -719,7 +719,7 @@ export const findUser = new ValidatedMethod({
   }).validator(),
 
   run({ userId }) {
-    return Meteor.users.findOne({ _id: userId }, { fields: { firstName: 1, lastName: 1, primaryEmail: 1 } });
+    return Meteor.users.findOne({ _id: userId }, { fields: { firstName: 1, lastName: 1, _id: 1 } });
   },
 });
 

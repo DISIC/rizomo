@@ -3,7 +3,6 @@ import { Roles } from 'meteor/alanning:roles';
 import { FindFromPublication } from 'meteor/percolate:find-from-publication';
 import { isActive } from '../../utils';
 import Groups from '../../groups/groups';
-import Articles from '../../articles/articles';
 
 // publish additional fields for current user
 Meteor.publish('userData', function publishUserData() {
@@ -104,13 +103,11 @@ FindFromPublication.publish('users.group', function usersFromGroup({
 
 // build query for all users who published articles
 const queryUsersPublishers = ({ search }) => {
-  const allArticles = Articles.find({}, { fields: { userId: 1 } });
-  const ids = allArticles.map(({ userId }) => userId);
   const regex = new RegExp(search, 'i');
   const fieldsToSearch = ['firstName', 'lastName', 'emails.address', 'username'];
   const searchQuery = fieldsToSearch.map((field) => ({ [field]: { $regex: regex } }));
   return {
-    _id: { $in: ids },
+    articlesCount: { $gt: 0 },
     $or: searchQuery,
   };
 };
@@ -119,10 +116,13 @@ const queryUsersPublishers = ({ search }) => {
 FindFromPublication.publish('users.publishers', ({
   page, itemPerPage, search, ...rest
 }) => {
+  const pubFields = { ...Meteor.users.publicFields };
+  // do not leak email adresses on public page
+  delete pubFields.emails;
+  delete pubFields.username;
   const query = queryUsersPublishers({ search });
-
   return Meteor.users.find(query, {
-    fields: Meteor.users.publicFields,
+    fields: pubFields,
     skip: itemPerPage * (page - 1),
     limit: itemPerPage,
     ...rest,
@@ -146,7 +146,7 @@ Meteor.methods({
 
     return Meteor.users
       .find(query, {
-        sort: { firstName: 1, lastName: 1 },
+        sort: { lastname: 1 },
       })
       .count();
   },
@@ -175,7 +175,7 @@ FindFromPublication.publish('users.admin', function usersAdmin({
     fields: Meteor.users.adminFields,
     skip: itemPerPage * (page - 1),
     limit: itemPerPage,
-    sort: { lastName: 1 },
+    sort: { lastName: 1, firstName: 1 },
     ...rest,
   });
 });
