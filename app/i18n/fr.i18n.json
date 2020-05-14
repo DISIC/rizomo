@@ -630,7 +630,10 @@
     "PublishersPage": {
       "title": "Liste des auteurs",
       "searchText": "Qui recherchez-vous ?",
-      "goToPublications": "Voir les publications de cet auteur"
+      "goToPublications": "Voir les publications de cet auteur",
+      "articles": "publications",
+      "updatedAt": "Mis à jour le",
+      "sortByDate": "Trier par date de publication"
     },
     "MediaStoragePage": {
       "title": "Stockage de fichiers",

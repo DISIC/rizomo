@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,7 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import {
-  makeStyles, Divider, Tooltip, TextField, InputAdornment,
+  makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -48,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
+  pubInfos: {
+    textAlign: 'end',
+    marginRight: 8,
+  },
 }));
 
 const ITEM_PER_PAGE = 10;
@@ -56,14 +60,15 @@ const PublishersPage = () => {
   const classes = useStyles();
   const [{ publishersPage }, dispatch] = useAppContext();
   const { search = '' } = publishersPage;
+  const [sortByDate, setSortByDate] = useState(false);
   const {
     changePage, page, items, total, loading,
   } = usePagination(
     'users.publishers',
-    { search },
+    { search, sort: sortByDate ? { lastArticle: -1 } : { lastname: 1, firstName: 1 } },
     Meteor.users,
     {},
-    { sort: { lastName: 1 } },
+    { sort: sortByDate ? { lastArticle: -1 } : { lastname: 1, firstName: 1 } },
     ITEM_PER_PAGE,
   );
 
@@ -123,18 +128,37 @@ const PublishersPage = () => {
                 }}
               />
             </Grid>
-            {total > ITEM_PER_PAGE && (
-              <Grid item xs={12} sm={12} md={6} lg={6} className={classes.pagination}>
-                <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+            <Grid item xs={12} sm={12} md={6} lg={6} className={classes.pagination}>
+              <Grid>
+                <Grid item>
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        checked={sortByDate}
+                        onChange={() => setSortByDate(!sortByDate)}
+                        name="checkSortByDate"
+                        color="primary"
+                      />
+                    )}
+                    label={i18n.__('pages.PublishersPage.sortByDate')}
+                    aria-label={i18n.__('pages.PublishersPage.sortByDate')}
+                  />
+                </Grid>
+                {total > ITEM_PER_PAGE && (
+                  <Grid item>
+                    <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+                  </Grid>
+                )}
               </Grid>
-            )}
+            </Grid>
+            <Grid item xs={12} sm={12} md={12} />
             <Grid item xs={12} sm={12} md={12}>
               {loading ? (
                 <Spinner />
               ) : (
                 <List className={classes.list} disablePadding>
                   {items.map((user, i) => [
-                    <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
+                    <ListItem alignItems="flex-start" key={`user-${user._id}`}>
                       <ListItemAvatar>
                         <Avatar className={classes.avatar} alt={user.firstName} src={user.firstName} />
                       </ListItemAvatar>
@@ -144,6 +168,17 @@ const PublishersPage = () => {
                           <>
                             <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                               {user.structure}
+                            </Typography>
+                          </>
+                        )}
+                      />
+                      <ListItemText
+                        className={classes.pubInfos}
+                        primary={`${user.articlesCount} ${i18n.__('pages.PublishersPage.articles')}`}
+                        secondary={(
+                          <>
+                            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+                              {`${i18n.__('pages.PublishersPage.updatedAt')} ${user.lastArticle.toLocaleString()}`}
                             </Typography>
                           </>
                         )}
@@ -159,7 +194,7 @@ const PublishersPage = () => {
                       </ListItemSecondaryAction>
                     </ListItem>,
                     i < ITEM_PER_PAGE - 1 && i < total - 1 && (
-                      <Divider variant="inset" component="li" key={`divider-${user.emails[0].address}`} />
+                      <Divider variant="inset" component="li" key={`divider-${user._id}`} />
                     ),
                   ])}
                 </List>

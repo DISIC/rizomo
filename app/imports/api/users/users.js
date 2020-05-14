@@ -119,6 +119,14 @@ Meteor.users.schema = new SimpleSchema(
       allowedValues: ['ask', 'local', 'global'],
       label: getLabel('api.users.labels.logoutType'),
     },
+    articlesCount: {
+      type: SimpleSchema.Integer,
+      defaultValue: 0,
+    },
+    lastArticle: {
+      type: Date,
+      optional: true,
+    },
   },
   { tracker: Tracker },
 );
@@ -250,6 +258,8 @@ Meteor.users.publicFields = {
   isRequest: 1,
   structure: 1,
   emails: 1,
+  articlesCount: 1,
+  lastArticle: 1,
 };
 
 Meteor.users.deny({

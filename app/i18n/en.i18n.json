@@ -628,7 +628,10 @@
     "PublishersPage": {
       "title": "Authors list",
       "searchText": "Who are you looking for ?",
-      "goToPublications": "See this author's publications"
+      "goToPublications": "See this author's publications",
+      "articles": "publications",
+      "updatedAt": "last updated",
+      "sortByDate": "Sort by publication date"
     },
     "MediaStoragePage": {
       "title": "Media Storage",
