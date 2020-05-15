@@ -10,28 +10,23 @@ import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
 import TopBar from '../../components/menus/TopBar';
+import Footer from '../../components/menus/Footer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: 60,
-    marginBottom: theme.spacing(4),
+    paddingTop: 60,
+    marginBottom: -64,
+    display: 'flex',
+    minHeight: '100vh',
+    flexDirection: 'column',
   },
   flex: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  gridItem: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  spaceBetween: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  wysiwyg: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
+  space: {
+    height: 64,
   },
   content: {
     textAlign: 'justify',
@@ -41,11 +36,6 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
       marginBottom: 0,
     },
-  },
-  buttonGroup: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '10px',
   },
 }));
 
@@ -104,8 +94,10 @@ function PublicArticleDetailsPage({
               <div className={classes.content} dangerouslySetInnerHTML={{ __html: article.content }} />
             </Grid>
           </Grid>
+          <div className={classes.space} />
         </Container>
       </Fade>
+      <Footer />
     </>
   );
 }

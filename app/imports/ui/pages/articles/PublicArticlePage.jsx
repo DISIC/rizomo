@@ -19,10 +19,15 @@ import { useAppContext } from '../../contexts/context';
 import ArticleDetails from '../../components/articles/ArticleDetails';
 import { usePagination } from '../../utils/hooks';
 import TopBar from '../../components/menus/TopBar';
+import Footer from '../../components/menus/Footer';
 
 const useStyles = makeStyles(() => ({
   root: {
-    marginTop: 60,
+    paddingTop: 60,
+    marginBottom: -64,
+    display: 'flex',
+    minHeight: '100vh',
+    flexDirection: 'column',
   },
   flex: {
     display: 'flex',
@@ -36,6 +41,9 @@ const useStyles = makeStyles(() => ({
   spaceBetween: {
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  space: {
+    height: 64,
   },
   pagination: {
     display: 'flex',
@@ -184,8 +192,10 @@ function PublicArticlePage({
               )}
             </Grid>
           )}
+          <div className={classes.space} />
         </Container>
       </Fade>
+      <Footer />
     </>
   );
 }
