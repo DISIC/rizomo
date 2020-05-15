@@ -24,11 +24,19 @@ import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
 import TopBar from '../../components/menus/TopBar';
 import { useAppContext } from '../../contexts/context';
+import Footer from '../../components/menus/Footer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: 60,
+    paddingTop: 60,
+    marginBottom: -64,
+    display: 'flex',
+    minHeight: '100vh',
+    flexDirection: 'column',
+  },
+  space: {
+    height: 64,
   },
   list: {
     width: '100%',
@@ -206,8 +214,10 @@ const PublishersPage = () => {
               </Grid>
             )}
           </Grid>
+          {/* <div className={classes.space} /> */}
         </Container>
       </Fade>
+      <Footer />
     </>
   );
 };
