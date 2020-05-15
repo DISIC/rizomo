@@ -10,7 +10,7 @@ Migrations.add({
     Services.update({ state: null }, { $set: { state: 0 } }, { multi: true });
   },
   down: () => {
-    Services.update({}, { $unset: { state: true } }, { multi: true });
+    Services.rawCollection().update({}, { $unset: { state: true } }, { multi: true });
   },
 });
 
@@ -31,6 +31,6 @@ Migrations.add({
       });
   },
   down: () => {
-    Meteor.users.update({}, { $unset: { articlesCount: true, lastArticle: true } }, { multi: true });
+    Meteor.users.rawCollection().update({}, { $unset: { articlesCount: true, lastArticle: true } }, { multi: true });
   },
 });
