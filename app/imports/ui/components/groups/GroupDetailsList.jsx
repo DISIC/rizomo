@@ -13,7 +13,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import PeopleIcon from '@material-ui/icons/People';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   action: {
     display: 'flex',
     alignItems: 'center',
@@ -42,33 +42,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const GroupDetailsList = ({
-  group, member, candidate, animator,
-}) => {
+const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
   const { type } = group;
   const classes = useStyles();
 
   const groupType = animator
     ? i18n.__('components.GroupDetails.groupAnimator')
     : member
-      ? i18n.__('components.GroupDetails.groupMember')
-      : candidate
-        ? i18n.__('components.GroupDetails.groupCandidate')
-        : type === 0
-          ? i18n.__('components.GroupDetails.publicGroup')
-          : i18n.__('components.GroupDetails.moderateGroup');
+    ? i18n.__('components.GroupDetails.groupMember')
+    : candidate
+    ? i18n.__('components.GroupDetails.groupCandidate')
+    : type === 0
+    ? i18n.__('components.GroupDetails.publicGroup')
+    : i18n.__('components.GroupDetails.moderateGroup');
 
-  const iconHeader = candidate && type === 5 ? (
-    <WatchLaterIcon fontSize="large" />
-  ) : (animator || member) && type === 0 ? (
-    <CheckIcon fontSize="large" />
-  ) : (animator || member) && type === 5 ? (
-    <VerifiedUserIcon fontSize="large" />
-  ) : type === 0 ? (
-    <PeopleIcon fontSize="large" />
-  ) : (
-    <SecurityIcon fontSize="large" />
-  );
+  const iconHeader =
+    candidate && type === 5 ? (
+      <WatchLaterIcon fontSize="large" />
+    ) : (animator || member) && type === 0 ? (
+      <CheckIcon fontSize="large" />
+    ) : (animator || member) && type === 5 ? (
+      <VerifiedUserIcon fontSize="large" />
+    ) : type === 0 ? (
+      <PeopleIcon fontSize="large" />
+    ) : (
+      <SecurityIcon fontSize="large" />
+    );
 
   const detailsButton = (
     <Tooltip
@@ -86,15 +85,38 @@ const GroupDetailsList = ({
     <Card className={classes.card} elevation={3}>
       <CardHeader
         classes={{ action: classes.action }}
-        avatar={(
-          <Button
-            style={{ color: 'white', backgroundColor: member || animator ? 'green' : null }}
-            color={type === 5 ? 'secondary' : 'primary'}
-            variant="contained"
-          >
-            {iconHeader}
-          </Button>
-        )}
+        avatar={
+          animator || admin ? (
+            <GroupBadge
+              overlap="circle"
+              className={classes.badge}
+              color="error"
+              badgeContent={group.numCandidates}
+            >
+              <Button
+                style={{
+                  color: 'white',
+                  backgroundColor: member || animator ? 'green' : null,
+                }}
+                color={type === 5 ? 'secondary' : 'primary'}
+                variant="contained"
+              >
+                {iconHeader}
+              </Button>
+            </GroupBadge>
+          ) : (
+            <Button
+              style={{
+                color: 'white',
+                backgroundColor: member || animator ? 'green' : null,
+              }}
+              color={type === 5 ? 'secondary' : 'primary'}
+              variant="contained"
+            >
+              {iconHeader}
+            </Button>
+          )
+        }
         action={detailsButton}
         title={group.name}
         titleTypographyProps={{
@@ -117,6 +139,7 @@ GroupDetailsList.propTypes = {
   member: PropTypes.bool.isRequired,
   candidate: PropTypes.bool.isRequired,
   animator: PropTypes.bool.isRequired,
+  admin: PropTypes.bool.isRequired,
 };
 
 export default GroupDetailsList;
