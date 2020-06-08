@@ -9,9 +9,7 @@ import Spinner from './Spinner';
  * Checks for Meteor login before routing to the requested page, otherwise goes to signin page.
  * @param {any} { component: Component, ...rest }
  */
-const AdminRoute = ({
-  component: Component, userId, loadingUser, ...rest
-}) => (
+const AdminRoute = ({ component: Component, userId, loadingUser, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {

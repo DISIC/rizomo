@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill'; // ES6
-import {
-  makeStyles, InputLabel, Button, Typography, FormControl, MenuItem, Select,
-} from '@material-ui/core';
+import { makeStyles, InputLabel, Button, Typography, FormControl, MenuItem, Select } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { updateIntroductionLanguage } from '../../../api/appsettings/methods';
 import Spinner from '../system/Spinner';

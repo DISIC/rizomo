@@ -42,92 +42,91 @@ import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
 import ServiceDetailsList from '../../components/services/ServiceDetailsList';
 
-const useStyles = (isMobile) => makeStyles((theme) => ({
-  flex: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  chip: {
-    margin: theme.spacing(1),
-  },
-  smallGrid: {
-    height: 20,
-  },
-  badge: {
-    height: 20,
-    display: 'flex',
-    padding: '0 6px',
-    flexWrap: 'wrap',
-    fontSize: '0.75rem',
-    backgroundColor: theme.palette.primary.main,
-    color: `${theme.palette.tertiary.main} !important`,
-    minWidth: 20,
-    borderRadius: 10,
-    marginLeft: isMobile ? 10 : 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  invertedBadge: {
-    height: 20,
-    display: 'flex',
-    padding: '0 6px',
-    flexWrap: 'wrap',
-    fontSize: '0.75rem',
-    backgroundColor: theme.palette.tertiary.main,
-    color: `${theme.palette.primary.main} !important`,
-    minWidth: 20,
-    borderRadius: 10,
-    marginLeft: isMobile ? 10 : 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  gridItem: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  small: {
-    padding: '5px !important',
-    transition: 'all 300ms ease-in-out',
-  },
-  spaceBetween: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  mobileButtonContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: '0 !important',
-  },
-  categoryFilterMobile: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    backgroundColor: theme.palette.tertiary.main,
-    zIndex: theme.zIndex.modal,
-  },
-  categoriesList: {
-    marginTop: 60,
-  },
-  appBarBottom: {
-    bottom: 0,
-    top: 'auto',
-    backgroundColor: theme.palette.tertiary.main,
-  },
-  toolbarBottom: {
-    justifyContent: 'space-between',
-  },
-}));
+const useStyles = (isMobile) =>
+  makeStyles((theme) => ({
+    flex: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    chip: {
+      margin: theme.spacing(1),
+    },
+    smallGrid: {
+      height: 20,
+    },
+    badge: {
+      height: 20,
+      display: 'flex',
+      padding: '0 6px',
+      flexWrap: 'wrap',
+      fontSize: '0.75rem',
+      backgroundColor: theme.palette.primary.main,
+      color: `${theme.palette.tertiary.main} !important`,
+      minWidth: 20,
+      borderRadius: 10,
+      marginLeft: isMobile ? 10 : 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    invertedBadge: {
+      height: 20,
+      display: 'flex',
+      padding: '0 6px',
+      flexWrap: 'wrap',
+      fontSize: '0.75rem',
+      backgroundColor: theme.palette.tertiary.main,
+      color: `${theme.palette.primary.main} !important`,
+      minWidth: 20,
+      borderRadius: 10,
+      marginLeft: isMobile ? 10 : 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    gridItem: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    small: {
+      padding: '5px !important',
+      transition: 'all 300ms ease-in-out',
+    },
+    spaceBetween: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    mobileButtonContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: '0 !important',
+    },
+    categoryFilterMobile: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      right: 0,
+      left: 0,
+      backgroundColor: theme.palette.tertiary.main,
+      zIndex: theme.zIndex.modal,
+    },
+    categoriesList: {
+      marginTop: 60,
+    },
+    appBarBottom: {
+      bottom: 0,
+      top: 'auto',
+      backgroundColor: theme.palette.tertiary.main,
+    },
+    toolbarBottom: {
+      justifyContent: 'space-between',
+    },
+  }));
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 function ServicesPage({ services, categories, ready }) {
-  const [{
-    user, loadingUser, isMobile, servicePage,
-  }, dispatch] = useAppContext();
+  const [{ user, loadingUser, isMobile, servicePage }, dispatch] = useAppContext();
   const classes = useStyles(isMobile)();
   const {
     catList = [],
@@ -147,13 +146,14 @@ function ServicesPage({ services, categories, ready }) {
     }
   }, [searchToggle]);
 
-  const updateGlobalState = (key, value) => dispatch({
-    type: 'servicePage',
-    data: {
-      ...servicePage,
-      [key]: value,
-    },
-  });
+  const updateGlobalState = (key, value) =>
+    dispatch({
+      type: 'servicePage',
+      data: {
+        ...servicePage,
+        [key]: value,
+      },
+    });
 
   const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
   const toggleFilter = () => updateGlobalState('filterToggle', !filterToggle);
@@ -229,8 +229,7 @@ function ServicesPage({ services, categories, ready }) {
       onClick={toggleFilter}
       startIcon={<FilterListIcon />}
     >
-      {i18n.__('pages.ServicesPage.filter')}
-      {' '}
+      {i18n.__('pages.ServicesPage.filter')}{' '}
       {!!catList.length && <span className={classes.badge}>{catList.length}</span>}
     </Button>
   );
@@ -312,11 +311,11 @@ function ServicesPage({ services, categories, ready }) {
                         className={classes.chip}
                         key={cat._id}
                         label={cat.name}
-                        deleteIcon={(
+                        deleteIcon={
                           <span className={catList.includes(cat._id) ? classes.invertedBadge : classes.badge}>
                             {cat.count}
                           </span>
-                        )}
+                        }
                         onDelete={() => updateCatList(cat._id)}
                         variant={catList.includes(cat._id) ? 'default' : 'outlined'}
                         color={catList.includes(cat._id) ? 'primary' : 'default'}
@@ -330,23 +329,23 @@ function ServicesPage({ services, categories, ready }) {
             <Grid container spacing={isMobile ? 2 : 4}>
               {viewMode === 'list' && isMobile
                 ? mapList((service) => (
-                  <Grid className={classes.gridItem} item xs={12} md={6} key={service._id}>
-                    <ServiceDetailsList service={service} />
-                    {/* favAction={favAction(service._id)} // PROPS FOR SERVICEDETAILSLIST */}
-                  </Grid>
-                ))
+                    <Grid className={classes.gridItem} item xs={12} md={6} key={service._id}>
+                      <ServiceDetailsList service={service} />
+                      {/* favAction={favAction(service._id)} // PROPS FOR SERVICEDETAILSLIST */}
+                    </Grid>
+                  ))
                 : mapList((service) => (
-                  <Grid className={classes.gridItem} item key={service._id} xs={12} sm={12} md={6} lg={4}>
-                    <ServiceDetails
-                      service={service}
-                      favAction={favAction(service._id)}
-                      updateCategories={updateCatList}
-                      catList={catList}
-                      categories={categories}
-                      isShort={!isMobile && viewMode === 'list'}
-                    />
-                  </Grid>
-                ))}
+                    <Grid className={classes.gridItem} item key={service._id} xs={12} sm={12} md={6} lg={4}>
+                      <ServiceDetails
+                        service={service}
+                        favAction={favAction(service._id)}
+                        updateCategories={updateCatList}
+                        catList={catList}
+                        categories={categories}
+                        isShort={!isMobile && viewMode === 'list'}
+                      />
+                    </Grid>
+                  ))}
             </Grid>
             <Dialog fullScreen open={filterToggle && isMobile} TransitionComponent={Transition}>
               <AppBar className={classes.appBar}>

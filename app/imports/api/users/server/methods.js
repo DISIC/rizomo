@@ -73,9 +73,7 @@ export const findUsers = new ValidatedMethod({
       label: getLabel('api.methods.labels.excludeRole'),
     },
   }).validator({ clean: true }),
-  run({
-    page, pageSize, filter, sortColumn, sortOrder, exclude,
-  }) {
+  run({ page, pageSize, filter, sortColumn, sortOrder, exclude }) {
     const isAdmin = Roles.userIsInRole(this.userId, 'admin');
     // calculate number of entries to skip
     const skip = (page - 1) * pageSize;

@@ -131,9 +131,7 @@ Meteor.methods({
 });
 
 // publish all existing groups
-FindFromPublication.publish('groups.all', function groupsAll({
-  page, search, itemPerPage, ...rest
-}) {
+FindFromPublication.publish('groups.all', function groupsAll({ page, search, itemPerPage, ...rest }) {
   if (!isActive(this.userId)) {
     return this.ready();
   }

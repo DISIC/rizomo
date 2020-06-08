@@ -26,9 +26,7 @@ Meteor.methods({
 });
 
 // publish all existing articles
-FindFromPublication.publish('articles.all', function articlesAll({
-  page, search, itemPerPage, userId, ...rest
-}) {
+FindFromPublication.publish('articles.all', function articlesAll({ page, search, itemPerPage, userId, ...rest }) {
   const query = queryAllArticles({ search, userId: userId || this.userId });
 
   return Articles.find(query, {
@@ -41,11 +39,13 @@ FindFromPublication.publish('articles.all', function articlesAll({
 });
 
 // publish one article based on its slug
-FindFromPublication.publish('articles.one', ({ slug = '' }) => Articles.find(
-  { slug },
-  {
-    fields: Articles.allPublicFields,
-    limit: 1,
-    sort: { name: -1 },
-  },
-));
+FindFromPublication.publish('articles.one', ({ slug = '' }) =>
+  Articles.find(
+    { slug },
+    {
+      fields: Articles.allPublicFields,
+      limit: 1,
+      sort: { name: -1 },
+    },
+  ),
+);

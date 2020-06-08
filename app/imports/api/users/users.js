@@ -164,9 +164,9 @@ if (Meteor.isServer) {
         updateInfos.lastName = details.user.services.keycloak.family_name;
       }
       if (
-        details.user.username === undefined
-        || (details.user.username === details.user.primaryEmail
-          && details.user.primaryEmail !== details.user.services.keycloak.email)
+        details.user.username === undefined ||
+        (details.user.username === details.user.primaryEmail &&
+          details.user.primaryEmail !== details.user.services.keycloak.email)
       ) {
         // use email as username if no username yet or if username was
         // email and email has changed on Keycloak

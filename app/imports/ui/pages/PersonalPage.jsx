@@ -8,9 +8,7 @@ import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
-import {
-  Typography, Fade, IconButton, Button, Divider,
-} from '@material-ui/core';
+import { Typography, Fade, IconButton, Button, Divider } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
@@ -94,9 +92,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PersonalPage({
-  personalspace, isLoading, allServices, allGroups,
-}) {
+function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
   const classes = useStyles();
   const [customDrag, setcustomDrag] = useState(false);
 
@@ -311,19 +307,19 @@ function PersonalPage({
             </Grid>
             {localPS.unsorted.length !== 0
               ? [
-                <PersonalZone
-                  key="zone-000000000000"
-                  elements={localPS.unsorted}
-                  title={
+                  <PersonalZone
+                    key="zone-000000000000"
+                    elements={localPS.unsorted}
+                    title={
                       localPS.sorted.length === 0
                         ? i18n.__('pages.PersonalPage.unsortedFav')
                         : i18n.__('pages.PersonalPage.unsorted')
                     }
-                  setList={setZoneList}
-                  customDrag={customDrag}
-                />,
-                <Divider key="div-000000000000" className={classes.divider} />,
-              ]
+                    setList={setZoneList}
+                    customDrag={customDrag}
+                  />,
+                  <Divider key="div-000000000000" className={classes.divider} />,
+                ]
               : null}
             {localPS.sorted.map(({ zone_id: zoneId, elements, name }, index) => [
               <PersonalZone

@@ -16,9 +16,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import {
-  makeStyles, Divider, Tooltip, TextField, InputAdornment,
-} from '@material-ui/core';
+import { makeStyles, Divider, Tooltip, TextField, InputAdornment } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -59,9 +57,7 @@ const AdminUsersPage = () => {
   const classes = useStyles();
   const [{ isMobile }] = useAppContext();
   const [search, setSearch] = useState('');
-  const {
-    changePage, page, items, total,
-  } = usePagination(
+  const { changePage, page, items, total } = usePagination(
     'users.admin',
     { search },
     Meteor.users,
@@ -113,11 +109,12 @@ const AdminUsersPage = () => {
       else msg.success(i18n.__('pages.AdminUsersPage.successDeleteUser'));
     });
   };
-  const loginInfo = (user) => ` - ${
-    user.lastLogin
-      ? `${i18n.__('pages.AdminUsersPage.loginInfo')} : ${user.lastLogin.toLocaleString()}`
-      : i18n.__('pages.AdminUsersPage.neverConnected')
-  }`;
+  const loginInfo = (user) =>
+    ` - ${
+      user.lastLogin
+        ? `${i18n.__('pages.AdminUsersPage.loginInfo')} : ${user.lastLogin.toLocaleString()}`
+        : i18n.__('pages.AdminUsersPage.neverConnected')
+    }`;
   const UserActions = ({ user }) => {
     const [verifyDelete, setVerifyDelete] = useState(false);
     return verifyDelete ? (
@@ -223,14 +220,14 @@ const AdminUsersPage = () => {
                       primary={`${user.firstName} ${user.lastName}${
                         isAdmin(user) ? ` (${i18n.__('pages.AdminUsersPage.admin')})` : ''
                       } ${loginInfo(user)}`}
-                      secondary={(
+                      secondary={
                         <>
                           <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                             {user.emails[0].address}
                           </Typography>
                           {` - ${user.structure}`}
                         </>
-                      )}
+                      }
                     />
                     <ListItemSecondaryAction>
                       <UserActions user={user} />

@@ -9,9 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
-import {
-  InputAdornment, Typography, Fade, IconButton, Collapse, Button,
-} from '@material-ui/core';
+import { InputAdornment, Typography, Fade, IconButton, Collapse, Button } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
@@ -63,9 +61,7 @@ function PublicArticlePage({
   const { search = '', searchToggle = false } = articlePage;
   const inputRef = useRef(null);
   const [user, setUser] = useState({});
-  const {
-    changePage, page, items, total, loading,
-  } = usePagination(
+  const { changePage, page, items, total, loading } = usePagination(
     'articles.all',
     { search, userId },
     Articles,
@@ -90,13 +86,14 @@ function PublicArticlePage({
     changePage(value);
   };
 
-  const updateGlobalState = (key, value) => dispatch({
-    type: 'articlePage',
-    data: {
-      ...articlePage,
-      [key]: value,
-    },
-  });
+  const updateGlobalState = (key, value) =>
+    dispatch({
+      type: 'articlePage',
+      data: {
+        ...articlePage,
+        [key]: value,
+      },
+    });
   const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
   const updateSearch = (e) => updateGlobalState('search', e.target.value);
   const resetSearch = () => updateGlobalState('search', '');

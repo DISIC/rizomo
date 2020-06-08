@@ -12,8 +12,9 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
 import PeopleIcon from '@material-ui/icons/People';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import GroupBadge from './GroupBadge';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   action: {
     display: 'flex',
     alignItems: 'center',
@@ -87,12 +88,7 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
         classes={{ action: classes.action }}
         avatar={
           animator || admin ? (
-            <GroupBadge
-              overlap="circle"
-              className={classes.badge}
-              color="error"
-              badgeContent={group.numCandidates}
-            >
+            <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
               <Button
                 style={{
                   color: 'white',

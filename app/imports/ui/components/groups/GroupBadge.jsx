@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import { Badge } from '@material-ui/core';
 
-export default GroupBadge = withStyles(theme => ({
+export default withStyles((theme) => ({
   badge: {
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     '&::after': {

@@ -10,9 +10,7 @@ import '../../../../i18n/en.i18n.json';
 import faker from 'faker';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
-import {
-  addService, addGroup, updatePersonalSpace, removeElement,
-} from '../methods';
+import { addService, addGroup, updatePersonalSpace, removeElement } from '../methods';
 import './publications';
 import PersonalSpaces from '../personalspaces';
 import Services from '../../services/services';

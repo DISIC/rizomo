@@ -84,9 +84,7 @@ const queryUsersFromGroup = ({ slug, search }) => {
 };
 
 // publish all users from a group
-FindFromPublication.publish('users.group', function usersFromGroup({
-  page, itemPerPage, slug, search, ...rest
-}) {
+FindFromPublication.publish('users.group', function usersFromGroup({ page, itemPerPage, slug, search, ...rest }) {
   if (!isActive(this.userId)) {
     return this.ready();
   }
@@ -113,9 +111,7 @@ const queryUsersPublishers = ({ search }) => {
 };
 
 // publish all users who published articles
-FindFromPublication.publish('users.publishers', ({
-  page, itemPerPage, search, ...rest
-}) => {
+FindFromPublication.publish('users.publishers', ({ page, itemPerPage, search, ...rest }) => {
   const pubFields = { ...Meteor.users.publicFields };
   // do not leak email adresses on public page
   delete pubFields.emails;
@@ -163,9 +159,7 @@ const queryUsersAdmin = ({ search }) => {
 };
 
 // publish all users from a group
-FindFromPublication.publish('users.admin', function usersAdmin({
-  page, itemPerPage, search, ...rest
-}) {
+FindFromPublication.publish('users.admin', function usersAdmin({ page, itemPerPage, search, ...rest }) {
   if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin')) {
     return this.ready();
   }

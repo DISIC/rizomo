@@ -2,9 +2,7 @@ import Minio from 'minio';
 
 // Instantiate the minio client with the endpoint
 // and access keys as shown below.
-const {
-  minioEndPoint, minioPort, minioSSL, minioAccess,
-} = Meteor.settings.public;
+const { minioEndPoint, minioPort, minioSSL, minioAccess } = Meteor.settings.public;
 const s3Client = new Minio.Client({
   endPoint: minioEndPoint,
   port: minioPort,

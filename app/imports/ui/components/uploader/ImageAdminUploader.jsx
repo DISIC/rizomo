@@ -26,9 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ImageAdminUploader = ({
-  src, alt, onImageChange, className, name, path, width, height,
-}) => {
+const ImageAdminUploader = ({ src, alt, onImageChange, className, name, path, width, height }) => {
   const [{ uploads }, dispatch] = useAppContext();
   const [loading, setLoading] = useState(false);
   const classes = useStyles();

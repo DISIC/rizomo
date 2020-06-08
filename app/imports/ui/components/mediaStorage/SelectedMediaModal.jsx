@@ -17,42 +17,39 @@ import { storageToSize } from '../../utils/filesProcess';
 import ValidationButton from '../system/ValidationButton';
 import Spinner from '../system/Spinner';
 
-const {
-  minioEndPoint, minioPort, minioBucket, minioSSL,
-} = Meteor.settings.public;
+const { minioEndPoint, minioPort, minioBucket, minioSSL } = Meteor.settings.public;
 
 const HOST = `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${minioPort}` : ''}/${minioBucket}/`;
 const PICTURES_TYPES = ['svg', 'png', 'jpg', 'gif', 'jpeg'];
 
-const useStyles = (isMobile) => makeStyles(() => ({
-  root: {
-    width: '100%',
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  paper: {
-    position: 'absolute',
-    width: isMobile ? '95%' : '50%',
-    maxHeight: '100%',
-    top: isMobile ? 0 : '50%',
-    left: isMobile ? '2.5%' : '50%',
-    transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
-  },
-  iconWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-}));
+const useStyles = (isMobile) =>
+  makeStyles(() => ({
+    root: {
+      width: '100%',
+    },
+    media: {
+      height: 0,
+      paddingTop: '56.25%', // 16:9
+    },
+    actions: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    paper: {
+      position: 'absolute',
+      width: isMobile ? '95%' : '50%',
+      maxHeight: '100%',
+      top: isMobile ? 0 : '50%',
+      left: isMobile ? '2.5%' : '50%',
+      transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
+    },
+    iconWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+  }));
 
-export default function SelectedMediaModal({
-  file, onClose, onDelete, loading,
-}) {
+export default function SelectedMediaModal({ file, onClose, onDelete, loading }) {
   const [{ isMobile }] = useAppContext();
   const classes = useStyles(isMobile)();
   const fileName = file.name.replace(`users/${Meteor.userId()}/`, '');

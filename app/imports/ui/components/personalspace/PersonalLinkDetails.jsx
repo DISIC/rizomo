@@ -7,9 +7,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
-import {
-  Button, Avatar, Tooltip, IconButton, CardHeader, TextField,
-} from '@material-ui/core';
+import { Button, Avatar, Tooltip, IconButton, CardHeader, TextField } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { useObjectState } from '../../utils/hooks';
 
@@ -105,9 +103,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PersonalLinkDetails({
-  link, globalEdit, delLink, updateLink,
-}) {
+function PersonalLinkDetails({ link, globalEdit, delLink, updateLink }) {
   const { title = '', url = '', element_id: elementId } = link;
 
   const classes = useStyles();
@@ -161,7 +157,7 @@ function PersonalLinkDetails({
     return (
       <CardHeader
         className={classes.cardHeader}
-        avatar={(
+        avatar={
           <Avatar
             className={classes.avatar}
             style={{ cursor: 'pointer' }}
@@ -169,7 +165,7 @@ function PersonalLinkDetails({
           >
             <LaunchIcon />
           </Avatar>
-        )}
+        }
         title={state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
         titleTypographyProps={{
           variant: 'h6',

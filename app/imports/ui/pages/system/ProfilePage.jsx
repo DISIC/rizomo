@@ -116,13 +116,13 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (
-      submitted
-      && userData.firstName === user.firstName
-      && userData.lastName === user.lastName
-      && userData.email === user.emails[0].address
-      && userData.username === user.username
-      && userData.structureSelect === user.structure
-      && userData.logoutType === user.logoutType
+      submitted &&
+      userData.firstName === user.firstName &&
+      userData.lastName === user.lastName &&
+      userData.email === user.emails[0].address &&
+      userData.username === user.username &&
+      userData.structureSelect === user.structure &&
+      userData.logoutType === user.logoutType
     ) {
       msg.success(i18n.__('pages.ProfilePage.updateSuccess'));
       setSubmitted(false);
@@ -314,7 +314,7 @@ const ProfilePage = () => {
                     error={errors.username !== ''}
                     onChange={onUpdateField}
                     labelWidth={labelUsernameWidth}
-                    endAdornment={(
+                    endAdornment={
                       <InputAdornment position="end">
                         <Tooltip
                           title={i18n.__('pages.ProfilePage.useEmail')}
@@ -325,7 +325,7 @@ const ProfilePage = () => {
                           </IconButton>
                         </Tooltip>
                       </InputAdornment>
-                    )}
+                    }
                   />
                   <FormHelperText id="username-helper-text" error={errors.username !== ''}>
                     {errors.username}

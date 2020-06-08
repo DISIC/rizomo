@@ -27,11 +27,12 @@ function AdminUserValidationPage({ usersrequest, loading }) {
     {
       title: i18n.__('pages.AdminUserValidationPage.columnEmails'),
       field: 'emails',
-      render: (rowData) => rowData.emails.map((m) => (
-        <a key={m.address} href={m.address} style={{ display: 'block' }}>
-          {m.address}
-        </a>
-      )),
+      render: (rowData) =>
+        rowData.emails.map((m) => (
+          <a key={m.address} href={m.address} style={{ display: 'block' }}>
+            {m.address}
+          </a>
+        )),
     },
     {
       title: i18n.__('pages.AdminUserValidationPage.columnStructure'),

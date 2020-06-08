@@ -3,18 +3,19 @@ import { Modal, makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import MediaStoragePage from '../../pages/MediaStoragePage';
 
-const useStyles = (isMobile) => makeStyles((theme) => ({
-  paper: {
-    position: 'absolute',
-    width: isMobile ? '95%' : '80%',
-    maxHeight: '80%',
-    top: isMobile ? 0 : '50%',
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
-    left: isMobile ? '2.5%' : '50%',
-    transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
-  },
-}));
+const useStyles = (isMobile) =>
+  makeStyles((theme) => ({
+    paper: {
+      position: 'absolute',
+      width: isMobile ? '95%' : '80%',
+      maxHeight: '80%',
+      top: isMobile ? 0 : '50%',
+      backgroundColor: theme.palette.background.paper,
+      borderRadius: theme.shape.borderRadius,
+      left: isMobile ? '2.5%' : '50%',
+      transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
+    },
+  }));
 
 const ImagePicker = ({ onClose, selectFile, isMobile }) => {
   const classes = useStyles(isMobile)();

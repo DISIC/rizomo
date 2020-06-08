@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import {
-  Typography, Container, Grid, makeStyles, Button, Fade,
-} from '@material-ui/core';
+import { Typography, Container, Grid, makeStyles, Button, Fade } from '@material-ui/core';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';

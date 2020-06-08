@@ -1,13 +1,14 @@
-export const toBase64 = (image) => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.onload = function onloadResolve() {
-    resolve(reader.result);
-  };
-  reader.onerror = function onerrorReject(error) {
-    reject(error);
-  };
-  reader.readAsDataURL(image);
-});
+export const toBase64 = (image) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function onloadResolve() {
+      resolve(reader.result);
+    };
+    reader.onerror = function onerrorReject(error) {
+      reject(error);
+    };
+    reader.readAsDataURL(image);
+  });
 
 export const getExtension = (type) => {
   const string = type.split('/')[1];
@@ -15,9 +16,7 @@ export const getExtension = (type) => {
 };
 
 export const minioSrcBuilder = (src) => {
-  const {
-    minioSSL, minioEndPoint, minioBucket, minioPort,
-  } = Meteor.settings.public;
+  const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
   return `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${minioPort}` : ''}/${minioBucket}/${src}`;
 };
 

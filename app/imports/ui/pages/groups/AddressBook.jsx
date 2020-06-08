@@ -15,9 +15,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import {
-  makeStyles, Divider, Tooltip, Button, TextField, InputAdornment,
-} from '@material-ui/core';
+import { makeStyles, Divider, Tooltip, Button, TextField, InputAdornment } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 import Pagination from '@material-ui/lab/Pagination';
@@ -55,9 +53,7 @@ const AddressBook = ({
 }) => {
   const classes = useStyles();
   const [search, setSearch] = useState('');
-  const {
-    changePage, page, items, total,
-  } = usePagination(
+  const { changePage, page, items, total } = usePagination(
     'users.group',
     { search, slug },
     Meteor.users,
@@ -130,14 +126,14 @@ const AddressBook = ({
                   </ListItemAvatar>
                   <ListItemText
                     primary={`${user.firstName} ${user.lastName}`}
-                    secondary={(
+                    secondary={
                       <>
                         <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                           {user.emails[0].address}
                         </Typography>
                         {` - ${user.structure}`}
                       </>
-                    )}
+                    }
                   />
 
                   <ListItemSecondaryAction>

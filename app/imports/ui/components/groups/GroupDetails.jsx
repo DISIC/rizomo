@@ -25,13 +25,9 @@ import Spinner from '../system/Spinner';
 import GroupBadge from './GroupBadge';
 
 const useStyles = ({ type }, member, candidate, isShort) =>
-  makeStyles(theme => ({
+  makeStyles((theme) => ({
     avatar: {
-      backgroundColor: member
-        ? 'green'
-        : type === 0
-        ? theme.palette.primary.main
-        : theme.palette.secondary.main,
+      backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
       width: theme.spacing(7),
       height: theme.spacing(7),
     },
@@ -88,26 +84,12 @@ const useStyles = ({ type }, member, candidate, isShort) =>
     buttonText: {
       textTransform: 'none',
       backgroundColor:
-        member || candidate
-          ? null
-          : type === 0
-          ? theme.palette.primary.main
-          : theme.palette.secondary.main,
-      color: member
-        ? 'green'
-        : candidate
-        ? theme.palette.secondary.main
-        : theme.palette.tertiary.main,
+        member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
+      color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
       fontWeight: 'bold',
       '&:hover': {
-        color:
-          member || candidate
-            ? null
-            : type === 0
-            ? theme.palette.primary.main
-            : theme.palette.secondary.main,
-        backgroundColor:
-          member || candidate ? null : theme.palette.tertiary.main,
+        color: member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
+        backgroundColor: member || candidate ? null : theme.palette.tertiary.main,
       },
     },
     paperChip: {
@@ -136,14 +118,7 @@ const useStyles = ({ type }, member, candidate, isShort) =>
     },
   }));
 
-function GroupDetails({
-  group = {},
-  isShort,
-  member,
-  candidate,
-  admin,
-  animator,
-}) {
+function GroupDetails({ group = {}, isShort, member, candidate, admin, animator }) {
   const { type } = group;
   const [{ userId }] = useAppContext();
   const [loading, setLoading] = useState(false);
@@ -151,21 +126,13 @@ function GroupDetails({
   const classes = useStyles(group, member || animator, candidate, isShort)();
 
   const handleJoinGroup = () => {
-    const method = member
-      ? 'unsetMemberOf'
-      : type === 0
-      ? 'setMemberOf'
-      : 'setCandidateOf';
-    const message = member
-      ? 'groupLeft'
-      : type === 0
-      ? 'groupJoined'
-      : 'candidateSent';
+    const method = member ? 'unsetMemberOf' : type === 0 ? 'setMemberOf' : 'setCandidateOf';
+    const message = member ? 'groupLeft' : type === 0 ? 'groupJoined' : 'candidateSent';
     if (candidate) {
       msg.info(i18n.__('components.GroupDetails.alreadyCandidate'));
     } else {
       setLoading(true);
-      Meteor.call(`users.${method}`, { userId, groupId: group._id }, err => {
+      Meteor.call(`users.${method}`, { userId, groupId: group._id }, (err) => {
         setLoading(false);
         if (err) {
           msg.error(err.reason);
@@ -219,12 +186,7 @@ function GroupDetails({
           className={classes.cardHeader}
           avatar={
             animator || admin ? (
-              <GroupBadge
-                overlap="circle"
-                className={classes.badge}
-                color="error"
-                badgeContent={group.numCandidates}
-              >
+              <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
                 <Avatar className={classes.avatar}>{iconHeader}</Avatar>
               </GroupBadge>
             ) : (
@@ -234,9 +196,7 @@ function GroupDetails({
           action={
             <Tooltip
               title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
-              aria-label={i18n.__(
-                'components.GroupDetails.singleGroupButtonLabel'
-              )}
+              aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
             >
               <IconButton color="primary">
                 <ChevronRightIcon />
@@ -261,15 +221,9 @@ function GroupDetails({
           }}
         />
       </Link>
-      <CardContent
-        className={isShort ? classes.cardContentMobile : classes.cardContent}
-      >
-        {!isShort && (
-          <Typography variant="body1">{group.description}</Typography>
-        )}
-        <div
-          className={isShort ? classes.cardActionShort : classes.cardActions}
-        >
+      <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
+        {!isShort && <Typography variant="body1">{group.description}</Typography>}
+        <div className={isShort ? classes.cardActionShort : classes.cardActions}>
           <Button
             startIcon={icon()}
             className={classes.buttonText}
@@ -283,9 +237,7 @@ function GroupDetails({
           {admin && (
             <Tooltip
               title={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
-              aria-label={i18n.__(
-                'components.GroupDetails.manageGroupButtonLabel'
-              )}
+              aria-label={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
             >
               <Link to={`/admingroups/${group._id}`}>
                 <IconButton color="primary">

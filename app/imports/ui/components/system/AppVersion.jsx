@@ -10,9 +10,7 @@ const AppVersion = () => (
       opacity: 0.3,
     }}
   >
-    {i18n.__('components.AppVersion.title')}
-    {' '}
-    {version}
+    {i18n.__('components.AppVersion.title')} {version}
   </span>
 );
 

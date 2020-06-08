@@ -109,9 +109,7 @@ const defaultState = {
 
 const PLACEHOLDER = 'https://fakeimg.pl/900x600/';
 
-const AdminSingleServicePage = ({
-  categories, service, ready, match: { params },
-}) => {
+const AdminSingleServicePage = ({ categories, service, ready, match: { params } }) => {
   const [serviceData, setServiceData] = useState({ ...defaultState });
   const [loading, setLoading] = useState(!!params._id);
   const [content, setContent] = useState('');
@@ -246,9 +244,7 @@ const AdminSingleServicePage = ({
       <Container>
         <Paper className={classes.root}>
           <Typography component="h1">
-            {i18n.__(`pages.AdminSingleServicePage.${params._id ? 'edition' : 'creation'}`)}
-            {' '}
-            <b>{serviceData.title}</b>
+            {i18n.__(`pages.AdminSingleServicePage.${params._id ? 'edition' : 'creation'}`)} <b>{serviceData.title}</b>
           </Typography>
           <form noValidate autoComplete="off">
             <TextField
@@ -369,11 +365,8 @@ const AdminSingleServicePage = ({
             </div>
 
             <InputLabel>
-              {i18n.__('pages.AdminSingleServicePage.screenshots')}
-              {' '}
-              (
-              {(serviceData.screenshots && serviceData.screenshots.length) || 0}
-              )
+              {i18n.__('pages.AdminSingleServicePage.screenshots')} (
+              {(serviceData.screenshots && serviceData.screenshots.length) || 0})
               <IconButton
                 color="primary"
                 aria-label={i18n.__('pages.AdminSingleServicePage.onAddScreenshots')}
@@ -383,8 +376,8 @@ const AdminSingleServicePage = ({
               </IconButton>
             </InputLabel>
             <Grid container spacing={4}>
-              {serviceData.screenshots
-                && serviceData.screenshots.map((screen, i) => (
+              {serviceData.screenshots &&
+                serviceData.screenshots.map((screen, i) => (
                   <Grid lg={4} md={6} xs={12} item key={Math.random()} className={classes.screenshotWrapper}>
                     <ImageAdminUploader
                       onImageChange={(image) => onUpdateScreenshots(image, i)}

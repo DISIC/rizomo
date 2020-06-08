@@ -16,9 +16,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 import Groups from '../groups';
 import PersonalSpaces from '../../personalspaces/personalspaces';
-import {
-  createGroup, removeGroup, updateGroup, findGroups, favGroup, unfavGroup,
-} from '../methods';
+import { createGroup, removeGroup, updateGroup, findGroups, favGroup, unfavGroup } from '../methods';
 import './publications';
 import {
   setAdminOf,

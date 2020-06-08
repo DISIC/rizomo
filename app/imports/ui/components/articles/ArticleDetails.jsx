@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Tooltip from '@material-ui/core/Tooltip';
-import {
-  Button, CardHeader, IconButton, CardContent, Typography,
-} from '@material-ui/core';
+import { Button, CardHeader, IconButton, CardContent, Typography } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';

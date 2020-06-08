@@ -49,9 +49,7 @@ const Footer = () => {
     <AppBar position="relative">
       <Toolbar className={classes.root}>
         <div>
-          {settingsData.map(({
-            key, external, link, text,
-          }) => {
+          {settingsData.map(({ key, external, link, text }) => {
             if (external) {
               return (
                 <a key={key} className={classes.link} href={link} target="_blank" rel="noreferrer noopener">

@@ -122,19 +122,14 @@ Groups.schema = new SimpleSchema(
       label: getLabel('api.groups.labels.numCandidates'),
     },
   },
-  { tracker: Tracker }
+  { tracker: Tracker },
 );
 
-Groups.after.update(function(userId, doc, fieldNames, modifier, options) {
+Groups.after.update(function (_, doc, fieldNames) {
   if (fieldNames.includes('candidates')) {
-    if (
-      !this.previous.candidates ||
-      this.previous.candidates.length !== doc.candidates.length
-    ) {
-      Groups.update(
-        { _id: doc._id },
-        { $set: { numCandidates: doc.candidates.length } }
-      );
+    console.log('----', doc, fieldNames);
+    if (!this.previous.candidates || this.previous.candidates.length !== doc.candidates.length) {
+      Groups.update({ _id: doc._id }, { $set: { numCandidates: doc.candidates.length } });
     }
   }
 });

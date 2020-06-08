@@ -10,9 +10,7 @@ import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {
-  Fade, FormGroup, Checkbox, FormControlLabel,
-} from '@material-ui/core';
+import { Fade, FormGroup, Checkbox, FormControlLabel } from '@material-ui/core';
 import Spinner from '../../components/system/Spinner';
 import AppVersion from '../../components/system/AppVersion';
 import AppSettings from '../../../api/appsettings/appsettings';
@@ -132,14 +130,14 @@ function SignIn({ loggingIn, introduction, ready }) {
   const RememberButton = () => (
     <FormGroup>
       <FormControlLabel
-        control={(
+        control={
           <Checkbox
             checked={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}
             name="rememberMe"
             color="primary"
           />
-        )}
+        }
         label={i18n.__('pages.SignIn.rememberMe')}
       />
     </FormGroup>

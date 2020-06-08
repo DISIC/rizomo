@@ -4,9 +4,7 @@ import { makeStyles, Typography } from '@material-ui/core';
 import DescriptionIcon from '@material-ui/icons/Description';
 import PropTypes from 'prop-types';
 
-const {
-  minioEndPoint, minioPort, minioBucket, minioSSL,
-} = Meteor.settings.public;
+const { minioEndPoint, minioPort, minioBucket, minioSSL } = Meteor.settings.public;
 
 const HOST = `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${minioPort}` : ''}/${minioBucket}/`;
 

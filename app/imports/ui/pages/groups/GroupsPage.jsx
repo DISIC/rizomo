@@ -1,15 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Fade,
-  Container,
-  Grid,
-  Typography,
-  IconButton,
-  Collapse,
-  TextField,
-  InputAdornment,
-} from '@material-ui/core';
+import { Fade, Container, Grid, Typography, IconButton, Collapse, TextField, InputAdornment } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -74,20 +65,12 @@ function GroupsPage() {
     Groups,
     {},
     { sort: { name: 1 } },
-    ITEM_PER_PAGE
+    ITEM_PER_PAGE,
   );
-  const animatorGroups = useTracker(() =>
-    Roles.getScopesForUser(userId, 'animator')
-  );
-  const memberGroups = useTracker(() =>
-    Roles.getScopesForUser(userId, 'member')
-  );
-  const candidateGroups = useTracker(() =>
-    Roles.getScopesForUser(userId, ['candidate'])
-  );
-  const managedGroups = useTracker(() =>
-    Roles.getScopesForUser(userId, ['animator', 'admin'])
-  );
+  const animatorGroups = useTracker(() => Roles.getScopesForUser(userId, 'animator'));
+  const memberGroups = useTracker(() => Roles.getScopesForUser(userId, 'member'));
+  const candidateGroups = useTracker(() => Roles.getScopesForUser(userId, ['candidate']));
+  const managedGroups = useTracker(() => Roles.getScopesForUser(userId, ['animator', 'admin']));
   const isAdmin = Roles.userIsInRole(userId, 'admin');
 
   const inputRef = useRef(null);
@@ -117,24 +100,20 @@ function GroupsPage() {
     });
 
   const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
-  const updateSearch = e => updateGlobalState('search', e.target.value);
+  const updateSearch = (e) => updateGlobalState('search', e.target.value);
   const resetSearch = () => updateGlobalState('search', '');
   const changeViewMode = (_, value) => updateGlobalState('viewMode', value);
 
-  const filterGroups = group => {
+  const filterGroups = (group) => {
     let searchText = group.name + group.description + group.digest || '';
     searchText = searchText.toLowerCase();
     if (!search) return true;
     return searchText.indexOf(search.toLowerCase()) > -1;
   };
-  const mapList = func => items.filter(group => filterGroups(group)).map(func);
+  const mapList = (func) => items.filter((group) => filterGroups(group)).map(func);
 
   const toggleButtons = (
-    <ToggleButtonGroup
-      value={viewMode}
-      exclusive
-      aria-label={i18n.__('pages.GroupsPage.viewMode')}
-    >
+    <ToggleButtonGroup value={viewMode} exclusive aria-label={i18n.__('pages.GroupsPage.viewMode')}>
       <ToggleButton
         value="card"
         onClick={changeViewMode}
@@ -155,13 +134,7 @@ function GroupsPage() {
   );
 
   const searchField = (
-    <Grid
-      item
-      xs={12}
-      sm={12}
-      md={6}
-      className={searchToggle ? null : classes.small}
-    >
+    <Grid item xs={12} sm={12} md={6} className={searchToggle ? null : classes.small}>
       <Collapse in={searchToggle} collapsedHeight={0}>
         <TextField
           margin="normal"
@@ -201,29 +174,19 @@ function GroupsPage() {
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} className={isMobile ? null : classes.flex}>
-            <Typography
-              variant={isMobile ? 'h6' : 'h4'}
-              className={classes.flex}
-            >
-              {i18n.__('pages.GroupsPage.title')} ({total})
+            <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
+              {`${i18n.__('pages.GroupsPage.title')} (${total})`}
               <IconButton onClick={toggleSearch}>
                 <SearchIcon fontSize="large" />
               </IconButton>
             </Typography>
-            <div className={classes.spaceBetween}>
-              {!isMobile && toggleButtons}
-            </div>
+            <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>
           </Grid>
         </Grid>
         <Grid container spacing={4}>
           {searchField}
           {isMobile && (
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              className={classes.mobileButtonContainer}
-            >
+            <Grid item xs={12} sm={12} className={classes.mobileButtonContainer}>
               <div />
               {toggleButtons}
             </Grid>
@@ -231,32 +194,13 @@ function GroupsPage() {
         </Grid>
         <Grid container spacing={isMobile ? 2 : 4}>
           {total > ITEM_PER_PAGE && (
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              className={classes.pagination}
-            >
-              <Pagination
-                count={Math.ceil(total / ITEM_PER_PAGE)}
-                page={page}
-                onChange={handleChangePage}
-              />
+            <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
+              <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
             </Grid>
           )}
           {isMobile && viewMode === 'list'
-            ? mapList(group => (
-                <Grid
-                  className={classes.gridItem}
-                  item
-                  key={group._id}
-                  xs={12}
-                  sm={12}
-                  md={6}
-                  lg={4}
-                >
+            ? mapList((group) => (
+                <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
                   <GroupDetailsList
                     key={group.name}
                     group={group}
@@ -267,16 +211,8 @@ function GroupsPage() {
                   />
                 </Grid>
               ))
-            : mapList(group => (
-                <Grid
-                  className={classes.gridItem}
-                  item
-                  key={group._id}
-                  xs={12}
-                  sm={12}
-                  md={6}
-                  lg={4}
-                >
+            : mapList((group) => (
+                <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
                   <GroupDetails
                     key={group.name}
                     group={group}
@@ -289,19 +225,8 @@ function GroupsPage() {
                 </Grid>
               ))}
           {total > ITEM_PER_PAGE && (
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              className={classes.pagination}
-            >
-              <Pagination
-                count={Math.ceil(total / ITEM_PER_PAGE)}
-                page={page}
-                onChange={handleChangePage}
-              />
+            <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
+              <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
             </Grid>
           )}
         </Grid>

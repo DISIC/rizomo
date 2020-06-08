@@ -7,9 +7,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Random } from 'meteor/random';
 import ImageResize from 'quill-image-resize-module';
-import {
-  TextField, Typography, InputLabel, Container, Grid, makeStyles, Button,
-} from '@material-ui/core';
+import { TextField, Typography, InputLabel, Container, Grid, makeStyles, Button } from '@material-ui/core';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
@@ -24,9 +22,7 @@ import { CustomToolbarArticle } from '../../components/system/CustomQuill';
 
 Quill.register('modules/ImageResize', ImageResize);
 
-const {
-  minioEndPoint, minioPort, minioBucket, minioSSL,
-} = Meteor.settings.public;
+const { minioEndPoint, minioPort, minioBucket, minioSSL } = Meteor.settings.public;
 
 const HOST = `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${minioPort}` : ''}/${minioBucket}/`;
 

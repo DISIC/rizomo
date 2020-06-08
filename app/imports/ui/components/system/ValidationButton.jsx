@@ -3,21 +3,20 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Button, makeStyles } from '@material-ui/core';
 
-const useStyles = (color) => makeStyles((theme) => ({
-  button: {
-    color: theme.palette.tertiary.main,
-    backgroundColor: color,
-    textTransform: 'none',
-    '&:hover': {
-      backgroundColor: theme.palette.tertiary.main,
-      color,
+const useStyles = (color) =>
+  makeStyles((theme) => ({
+    button: {
+      color: theme.palette.tertiary.main,
+      backgroundColor: color,
+      textTransform: 'none',
+      '&:hover': {
+        backgroundColor: theme.palette.tertiary.main,
+        color,
+      },
     },
-  },
-}));
+  }));
 
-const ValidationButton = ({
-  onAction, text, disabled, icon, onCancel, color,
-}) => {
+const ValidationButton = ({ onAction, text, disabled, icon, onCancel, color }) => {
   const [timesPressed, setTimePressed] = useState(0);
   const [timer, setTimer] = useState(-1);
   const classes = useStyles(color)();

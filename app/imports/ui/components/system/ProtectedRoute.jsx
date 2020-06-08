@@ -8,9 +8,7 @@ import Spinner from './Spinner';
  * Checks for Meteor login before routing to the requested page, otherwise goes to signin page.
  * @param {any} { component: Component, ...rest }
  */
-const ProtectedRoute = ({
-  component: Component, authenticated, loggingIn, ...rest
-}) => (
+const ProtectedRoute = ({ component: Component, authenticated, loggingIn, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {
