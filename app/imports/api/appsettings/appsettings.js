@@ -20,23 +20,24 @@ AppSettings.deny({
   },
 });
 
-const SettingsType = (type) => new SimpleSchema({
-  external: {
-    type: Boolean,
-    label: getLabel(`api.appsettings.labels.external_${type}`),
-    optional: true,
-  },
-  link: {
-    type: String,
-    label: getLabel(`api.appsettings.labels.link_${type}`),
-    optional: true,
-  },
-  content: {
-    type: String,
-    label: getLabel(`api.appsettings.labels.content_${type}`),
-    optional: true,
-  },
-});
+const SettingsType = (type) =>
+  new SimpleSchema({
+    external: {
+      type: Boolean,
+      label: getLabel(`api.appsettings.labels.external_${type}`),
+      optional: true,
+    },
+    link: {
+      type: String,
+      label: getLabel(`api.appsettings.labels.link_${type}`),
+      optional: true,
+    },
+    content: {
+      type: String,
+      label: getLabel(`api.appsettings.labels.content_${type}`),
+      optional: true,
+    },
+  });
 
 const IntroductionI18n = new SimpleSchema({
   language: {

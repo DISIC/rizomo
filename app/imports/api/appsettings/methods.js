@@ -32,9 +32,7 @@ export const updateAppsettings = new ValidatedMethod({
     },
   }).validator({ clean: true }),
 
-  run({
-    external, link, content, key,
-  }) {
+  run({ external, link, content, key }) {
     try {
       // check if current user is admin
       const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');

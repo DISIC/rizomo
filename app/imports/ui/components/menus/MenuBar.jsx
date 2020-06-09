@@ -30,27 +30,28 @@ export const links = [
   },
 ];
 
-const useStyles = (mobile) => makeStyles((theme) => ({
-  tabs: {
-    color: theme.palette.text.primary,
-  },
-  mobileTabs: {
-    textTransform: 'none',
-  },
-  flexContainer: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  indicator: {
-    top: mobile ? 0 : null,
-    height: 3,
-    borderTopLeftRadius: mobile ? 0 : theme.shape.borderRadius,
-    borderTopRightRadius: mobile ? 0 : theme.shape.borderRadius,
-    borderBottomLeftRadius: !mobile ? 0 : theme.shape.borderRadius,
-    borderBottomRightRadius: !mobile ? 0 : theme.shape.borderRadius,
-  },
-}));
+const useStyles = (mobile) =>
+  makeStyles((theme) => ({
+    tabs: {
+      color: theme.palette.text.primary,
+    },
+    mobileTabs: {
+      textTransform: 'none',
+    },
+    flexContainer: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+    },
+    indicator: {
+      top: mobile ? 0 : null,
+      height: 3,
+      borderTopLeftRadius: mobile ? 0 : theme.shape.borderRadius,
+      borderTopRightRadius: mobile ? 0 : theme.shape.borderRadius,
+      borderBottomLeftRadius: !mobile ? 0 : theme.shape.borderRadius,
+      borderBottomRightRadius: !mobile ? 0 : theme.shape.borderRadius,
+    },
+  }));
 
 const MenuBar = ({ mobile }) => {
   const { pathname } = useLocation();

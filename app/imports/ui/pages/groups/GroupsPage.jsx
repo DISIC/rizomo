@@ -1,8 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Fade, Container, Grid, Typography, IconButton, Collapse, TextField, InputAdornment,
-} from '@material-ui/core';
+import { Fade, Container, Grid, Typography, IconButton, Collapse, TextField, InputAdornment } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -61,9 +59,7 @@ function GroupsPage() {
     searchToggle = false,
     viewMode = 'card', // Possible values : "card" or "list"
   } = groupPage;
-  const {
-    changePage, page, items, total,
-  } = usePagination(
+  const { changePage, page, items, total } = usePagination(
     'groups.all',
     { search },
     Groups,
@@ -94,13 +90,14 @@ function GroupsPage() {
     }
   }, [search]);
 
-  const updateGlobalState = (key, value) => dispatch({
-    type: 'groupPage',
-    data: {
-      ...groupPage,
-      [key]: value,
-    },
-  });
+  const updateGlobalState = (key, value) =>
+    dispatch({
+      type: 'groupPage',
+      data: {
+        ...groupPage,
+        [key]: value,
+      },
+    });
 
   const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
   const updateSearch = (e) => updateGlobalState('search', e.target.value);
@@ -178,11 +175,7 @@ function GroupsPage() {
         <Grid container spacing={4}>
           <Grid item xs={12} className={isMobile ? null : classes.flex}>
             <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
-              {i18n.__('pages.GroupsPage.title')}
-              {' '}
-              (
-              {total}
-              )
+              {`${i18n.__('pages.GroupsPage.title')} (${total})`}
               <IconButton onClick={toggleSearch}>
                 <SearchIcon fontSize="large" />
               </IconButton>
@@ -207,29 +200,30 @@ function GroupsPage() {
           )}
           {isMobile && viewMode === 'list'
             ? mapList((group) => (
-              <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
-                <GroupDetailsList
-                  key={group.name}
-                  group={group}
-                  candidate={candidateGroups.includes(group._id)}
-                  member={memberGroups.includes(group._id)}
-                  animator={animatorGroups.includes(group._id)}
-                />
-              </Grid>
-            ))
+                <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
+                  <GroupDetailsList
+                    key={group.name}
+                    group={group}
+                    candidate={candidateGroups.includes(group._id)}
+                    member={memberGroups.includes(group._id)}
+                    animator={animatorGroups.includes(group._id)}
+                    admin={isAdmin || managedGroups.includes(group._id)}
+                  />
+                </Grid>
+              ))
             : mapList((group) => (
-              <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
-                <GroupDetails
-                  key={group.name}
-                  group={group}
-                  isShort={!isMobile && viewMode === 'list'}
-                  candidate={candidateGroups.includes(group._id)}
-                  member={memberGroups.includes(group._id)}
-                  animator={animatorGroups.includes(group._id)}
-                  admin={isAdmin || managedGroups.includes(group._id)}
-                />
-              </Grid>
-            ))}
+                <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
+                  <GroupDetails
+                    key={group.name}
+                    group={group}
+                    isShort={!isMobile && viewMode === 'list'}
+                    candidate={candidateGroups.includes(group._id)}
+                    member={memberGroups.includes(group._id)}
+                    animator={animatorGroups.includes(group._id)}
+                    admin={isAdmin || managedGroups.includes(group._id)}
+                  />
+                </Grid>
+              ))}
           {total > ITEM_PER_PAGE && (
             <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
               <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />

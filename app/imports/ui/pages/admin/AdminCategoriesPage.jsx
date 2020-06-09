@@ -20,24 +20,27 @@ const handleResult = (resolve, reject) => (error, result) => {
   }
 };
 
-const onRowAdd = ({ name }) => new Promise((resolve, reject) => {
-  createCategorie.call({ name }, handleResult(resolve, reject));
-});
-const onRowUpdate = (newData, oldData) => new Promise((resolve, reject) => {
-  updateCategorie.call(
-    {
-      categoryId: oldData._id,
-      data: {
-        name: newData.name,
+const onRowAdd = ({ name }) =>
+  new Promise((resolve, reject) => {
+    createCategorie.call({ name }, handleResult(resolve, reject));
+  });
+const onRowUpdate = (newData, oldData) =>
+  new Promise((resolve, reject) => {
+    updateCategorie.call(
+      {
+        categoryId: oldData._id,
+        data: {
+          name: newData.name,
+        },
       },
-    },
-    handleResult(resolve, reject),
-  );
-});
+      handleResult(resolve, reject),
+    );
+  });
 
-const onRowDelete = (oldData) => new Promise((resolve, reject) => {
-  removeCategorie.call({ categoryId: oldData._id }, handleResult(resolve, reject));
-});
+const onRowDelete = (oldData) =>
+  new Promise((resolve, reject) => {
+    removeCategorie.call({ categoryId: oldData._id }, handleResult(resolve, reject));
+  });
 
 const AdminCategoriesPage = ({ categories, loading }) => {
   const columns = [

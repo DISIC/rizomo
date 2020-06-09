@@ -8,9 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
-import {
-  InputAdornment, Typography, Fade, IconButton, Collapse, Tooltip,
-} from '@material-ui/core';
+import { InputAdornment, Typography, Fade, IconButton, Collapse, Tooltip } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import Articles from '../../../api/articles/articles';
@@ -46,9 +44,7 @@ function ArticlesPage() {
   const classes = useStyles();
   const { search = '', searchToggle = false } = articlePage;
   const inputRef = useRef(null);
-  const {
-    changePage, page, items, total, loading,
-  } = usePagination(
+  const { changePage, page, items, total, loading } = usePagination(
     'articles.all',
     { search },
     Articles,
@@ -72,13 +68,14 @@ function ArticlesPage() {
     }
   }, [search]);
 
-  const updateGlobalState = (key, value) => dispatch({
-    type: 'articlePage',
-    data: {
-      ...articlePage,
-      [key]: value,
-    },
-  });
+  const updateGlobalState = (key, value) =>
+    dispatch({
+      type: 'articlePage',
+      data: {
+        ...articlePage,
+        [key]: value,
+      },
+    });
   const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
   const updateSearch = (e) => updateGlobalState('search', e.target.value);
   const resetSearch = () => updateGlobalState('search', '');

@@ -11,9 +11,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-import {
-  createService, removeService, updateService, favService, unfavService,
-} from '../methods';
+import { createService, removeService, updateService, favService, unfavService } from '../methods';
 
 import './publications';
 import Services from '../services';

@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { useHistory, useLocation } from 'react-router-dom';
-import {
-  Button, Menu, MenuItem, Divider,
-} from '@material-ui/core';
+import { Button, Menu, MenuItem, Divider } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import AppVersion from '../system/AppVersion';

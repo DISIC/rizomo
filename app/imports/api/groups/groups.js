@@ -53,11 +53,27 @@ Groups.schema = new SimpleSchema(
         return slug;
       },
     },
-    description: { type: String, optional: true, label: getLabel('api.groups.labels.description') },
-    content: { type: String, optional: true, label: getLabel('api.groups.labels.content') },
+    description: {
+      type: String,
+      optional: true,
+      label: getLabel('api.groups.labels.description'),
+    },
+    content: {
+      type: String,
+      optional: true,
+      label: getLabel('api.groups.labels.content'),
+    },
     active: { type: Boolean, label: getLabel('api.groups.labels.active') },
-    groupPadID: { type: String, optional: true, label: getLabel('api.groups.labels.groupPadID') },
-    digest: { type: String, optional: true, label: getLabel('api.groups.labels.digest') },
+    groupPadID: {
+      type: String,
+      optional: true,
+      label: getLabel('api.groups.labels.groupPadID'),
+    },
+    digest: {
+      type: String,
+      optional: true,
+      label: getLabel('api.groups.labels.digest'),
+    },
     type: {
       type: SimpleSchema.Integer,
       allowedValues: [0, 5, 10], // 0 Ouvert, 5 Modéré, 10 Fermé
@@ -71,18 +87,52 @@ Groups.schema = new SimpleSchema(
       type: String,
       label: getLabel('api.groups.labels.applications'),
     },
-    owner: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.owner') },
-    admins: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.admins') },
+    owner: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id,
+      label: getLabel('api.groups.labels.owner'),
+    },
+    admins: {
+      type: Array,
+      defaultValue: [],
+      label: getLabel('api.groups.labels.admins'),
+    },
     'admins.$': { type: String, regEx: SimpleSchema.RegEx.Id },
-    animators: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.animators') },
+    animators: {
+      type: Array,
+      defaultValue: [],
+      label: getLabel('api.groups.labels.animators'),
+    },
     'animators.$': { type: String, regEx: SimpleSchema.RegEx.Id },
-    members: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.members') },
+    members: {
+      type: Array,
+      defaultValue: [],
+      label: getLabel('api.groups.labels.members'),
+    },
     'members.$': { type: String, regEx: SimpleSchema.RegEx.Id },
-    candidates: { type: Array, defaultValue: [], label: getLabel('api.groups.labels.candidates') },
+    candidates: {
+      type: Array,
+      defaultValue: [],
+      label: getLabel('api.groups.labels.candidates'),
+    },
     'candidates.$': { type: String, regEx: SimpleSchema.RegEx.Id },
+    numCandidates: {
+      type: Number,
+      defaultValue: 0,
+      label: getLabel('api.groups.labels.numCandidates'),
+    },
   },
   { tracker: Tracker },
 );
+
+Groups.after.update(function (_, doc, fieldNames) {
+  if (fieldNames.includes('candidates')) {
+    console.log('----', doc, fieldNames);
+    if (!this.previous.candidates || this.previous.candidates.length !== doc.candidates.length) {
+      Groups.update({ _id: doc._id }, { $set: { numCandidates: doc.candidates.length } });
+    }
+  }
+});
 
 Groups.typeLabels = {
   0: 'api.groups.types.open',
@@ -99,6 +149,7 @@ Groups.publicFields = {
   digest: 1,
   type: 1,
   owner: 1,
+  numCandidates: 1,
 };
 Groups.allPublicFields = {
   content: 1,

@@ -177,7 +177,7 @@ function ServiceDetails({ service, favAction, isShort }) {
               <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
             )
           }
-          action={(
+          action={
             <Tooltip
               title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
               aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
@@ -186,7 +186,7 @@ function ServiceDetails({ service, favAction, isShort }) {
                 <ChevronRightIcon />
               </IconButton>
             </Tooltip>
-          )}
+          }
           title={service.title}
           titleTypographyProps={{
             variant: 'h6',

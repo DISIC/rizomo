@@ -86,22 +86,23 @@ function AdminServicesPage({ services, loading }) {
                 },
               ]}
               editable={{
-                onRowDelete: (oldData) => new Promise((resolve, reject) => {
-                  removeService.call(
-                    {
-                      serviceId: oldData._id,
-                    },
-                    (err, res) => {
-                      if (err) {
-                        msg.error(err.reason);
-                        reject(err);
-                      } else {
-                        msg.success(i18n.__('api.methods.operationSuccessMsg'));
-                        resolve(res);
-                      }
-                    },
-                  );
-                }),
+                onRowDelete: (oldData) =>
+                  new Promise((resolve, reject) => {
+                    removeService.call(
+                      {
+                        serviceId: oldData._id,
+                      },
+                      (err, res) => {
+                        if (err) {
+                          msg.error(err.reason);
+                          reject(err);
+                        } else {
+                          msg.success(i18n.__('api.methods.operationSuccessMsg'));
+                          resolve(res);
+                        }
+                      },
+                    );
+                  }),
               }}
             />
           </Container>

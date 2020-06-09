@@ -2,6 +2,7 @@ import { Migrations } from 'meteor/percolate:migrations';
 import { Meteor } from 'meteor/meteor';
 import Articles from './articles/articles';
 import Services from './services/services';
+import Groups from './groups/groups';
 
 Migrations.add({
   version: 1,
@@ -23,7 +24,9 @@ Migrations.add({
       .find()
       .fetch()
       .forEach((user) => {
-        updateInfos = { articlesCount: Articles.find({ userId: user._id }).count() };
+        updateInfos = {
+          articlesCount: Articles.find({ userId: user._id }).count(),
+        };
         if (updateInfos.articlesCount > 0) {
           updateInfos.lastArticle = Articles.findOne({ userId: user._id }, { $sort: { updateAt: -1 } }).updatedAt;
         }
@@ -32,5 +35,21 @@ Migrations.add({
   },
   down: () => {
     Meteor.users.rawCollection().update({}, { $unset: { articlesCount: true, lastArticle: true } }, { multi: true });
+  },
+});
+
+Migrations.add({
+  version: 3,
+  name: 'Add candidates count to groups',
+  up: () => {
+    Groups.find()
+      .fetch()
+      .forEach((group) => {
+        const numCandidates = group.candidates.length;
+        Groups.update({ _id: group._id }, { $set: { numCandidates } });
+      });
+  },
+  down: () => {
+    Groups.rawCollection().update({}, { $unset: { numCandidates: true } }, { multi: true });
   },
 });

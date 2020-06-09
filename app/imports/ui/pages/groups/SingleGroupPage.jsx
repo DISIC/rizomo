@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  Container, makeStyles, Button, Typography, Grid, Avatar, Fade, Divider,
-} from '@material-ui/core';
+import { Container, makeStyles, Button, Typography, Grid, Avatar, Fade, Divider } from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SecurityIcon from '@material-ui/icons/Security';
@@ -27,114 +25,115 @@ import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
 import ServiceDetails from '../../components/services/ServiceDetails';
 
-const useStyles = (member, candidate, type) => makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    marginTop: theme.spacing(3),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(5),
-    paddingBottom: theme.spacing(5),
-    marginBottom: theme.spacing(3),
-  },
-  flex: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  favoriteButton: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingTop: theme.spacing(5),
-    paddingBottom: theme.spacing(5),
-    marginBottom: theme.spacing(3),
-  },
-  actionButtons: {
-    flexDirection: 'inherit',
-    alignItems: 'flex-end',
-  },
-  titleContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  icon: {
-    height: 60,
-    width: 60,
-  },
-  title: {
-    marginLeft: theme.spacing(3),
-  },
-  smallTitle: {
-    marginBottom: theme.spacing(1),
-  },
-  openedContent: {
-    textAlign: 'justify',
-    marginBottom: theme.spacing(3),
-    '& p': {
-      marginTop: 0,
-      marginBottom: 0,
+const useStyles = (member, candidate, type) =>
+  makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+      marginTop: theme.spacing(3),
     },
-  },
-  content: {
-    textAlign: 'justify',
-    position: 'relative',
-    marginBottom: theme.spacing(3),
-    maxHeight: 150,
-    overflow: 'hidden',
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      height: '20px',
-      left: '0px',
-      right: '0px',
-      background: `linear-gradient(rgba(255,255,255,0), ${theme.palette.background.default})`,
+    cardGrid: {
+      paddingTop: theme.spacing(5),
+      paddingBottom: theme.spacing(5),
+      marginBottom: theme.spacing(3),
     },
-  },
-  screenshot: {
-    width: '100%',
-  },
-  category: {
-    marginLeft: theme.spacing(1),
-  },
-  buttonText: {
-    textTransform: 'none',
-    backgroundColor:
+    flex: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    favoriteButton: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      alignItems: 'flex-end',
+      paddingTop: theme.spacing(5),
+      paddingBottom: theme.spacing(5),
+      marginBottom: theme.spacing(3),
+    },
+    actionButtons: {
+      flexDirection: 'inherit',
+      alignItems: 'flex-end',
+    },
+    titleContainer: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    icon: {
+      height: 60,
+      width: 60,
+    },
+    title: {
+      marginLeft: theme.spacing(3),
+    },
+    smallTitle: {
+      marginBottom: theme.spacing(1),
+    },
+    openedContent: {
+      textAlign: 'justify',
+      marginBottom: theme.spacing(3),
+      '& p': {
+        marginTop: 0,
+        marginBottom: 0,
+      },
+    },
+    content: {
+      textAlign: 'justify',
+      position: 'relative',
+      marginBottom: theme.spacing(3),
+      maxHeight: 150,
+      overflow: 'hidden',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        bottom: 0,
+        height: '20px',
+        left: '0px',
+        right: '0px',
+        background: `linear-gradient(rgba(255,255,255,0), ${theme.palette.background.default})`,
+      },
+    },
+    screenshot: {
+      width: '100%',
+    },
+    category: {
+      marginLeft: theme.spacing(1),
+    },
+    buttonText: {
+      textTransform: 'none',
+      backgroundColor:
         member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-    color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
-    fontWeight: 'bold',
-    '&:hover': {
-      color: member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-      backgroundColor: member || candidate ? null : theme.palette.tertiary.main,
+      color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
+      fontWeight: 'bold',
+      '&:hover': {
+        color: member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
+        backgroundColor: member || candidate ? null : theme.palette.tertiary.main,
+      },
     },
-  },
-  buttonAdmin: {
-    textTransform: 'none',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.tertiary.main,
-    fontWeight: 'bold',
-    '&:hover': {
-      color: theme.palette.primary.main,
-      backgroundColor: theme.palette.tertiary.main,
-    },
-  },
-  buttonFav: {
-    color: theme.palette.primary.main,
-    backgroundColor: theme.palette.tertiary.main,
-    '&:hover': {
+    buttonAdmin: {
+      textTransform: 'none',
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.tertiary.main,
+      fontWeight: 'bold',
+      '&:hover': {
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.tertiary.main,
+      },
     },
-  },
-  fab: {},
-  avatar: {
-    backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-    height: 100,
-    width: 100,
-  },
-}));
+    buttonFav: {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.tertiary.main,
+      '&:hover': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.tertiary.main,
+      },
+    },
+    fab: {},
+    avatar: {
+      backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
+      height: 100,
+      width: 100,
+    },
+  }));
 
 const SingleGroupPage = ({ group = {}, ready, services }) => {
   const { type } = group;
@@ -157,21 +156,21 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     const method = animator
       ? 'unsetAnimatorOf'
       : member
-        ? 'unsetMemberOf'
-        : type === 0
-          ? 'setMemberOf'
-          : candidate
-            ? 'unsetCandidateOf'
-            : 'setCandidateOf';
+      ? 'unsetMemberOf'
+      : type === 0
+      ? 'setMemberOf'
+      : candidate
+      ? 'unsetCandidateOf'
+      : 'setCandidateOf';
     const message = animator
       ? 'animationLeft'
       : member
-        ? 'groupLeft'
-        : type === 0
-          ? 'groupJoined'
-          : candidate
-            ? 'candidateCancel'
-            : 'candidateSent';
+      ? 'groupLeft'
+      : type === 0
+      ? 'groupJoined'
+      : candidate
+      ? 'candidateCancel'
+      : 'candidateSent';
 
     setLoading(true);
     Meteor.call(`users.${method}`, { userId, groupId: group._id }, (err) => {

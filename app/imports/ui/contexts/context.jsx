@@ -1,6 +1,4 @@
-import React, {
-  createContext, useReducer, useEffect, useContext,
-} from 'react';
+import React, { createContext, useReducer, useEffect, useContext } from 'react';
 import { Accounts } from 'meteor/accounts-base';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
@@ -36,9 +34,7 @@ const logger = (state, action) => {
   return newState;
 };
 
-const Store = ({
-  children, loggingIn, user, userId, authenticated, roles, loadingUser,
-}) => {
+const Store = ({ children, loggingIn, user, userId, authenticated, roles, loadingUser }) => {
   const [state, dispatch] = useReducer(logger, initialState);
   const { width } = useWindowSize();
 

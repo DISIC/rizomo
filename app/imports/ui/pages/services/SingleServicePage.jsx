@@ -4,9 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useHistory, Link } from 'react-router-dom';
-import {
-  Container, makeStyles, Button, Typography, Grid, Chip, Tooltip, Fade,
-} from '@material-ui/core';
+import { Container, makeStyles, Button, Typography, Grid, Chip, Tooltip, Fade } from '@material-ui/core';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ArrowBack from '@material-ui/icons/ArrowBack';
@@ -173,9 +171,7 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
                 <Typography variant="h5">{service.title}</Typography>
                 <Typography variant="h6">{service.usage}</Typography>
                 <Typography>
-                  {i18n.__('pages.SingleServicePage.propulsedBy')}
-                  {' '}
-                  {service.team}
+                  {i18n.__('pages.SingleServicePage.propulsedBy')} {service.team}
                 </Typography>
               </div>
             </div>
@@ -208,15 +204,11 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
             <>
               <Grid item xs={12} sm={12} md={12}>
                 <Typography className={classes.smallTitle} variant="h5">
-                  {i18n.__('pages.SingleServicePage.screenshots')}
-                  {' '}
-                  (
-                  {service.screenshots.length}
-                  )
+                  {i18n.__('pages.SingleServicePage.screenshots')} ({service.screenshots.length})
                 </Typography>
               </Grid>
-              {service.screenshots
-                && service.screenshots.map((screen, i) => (
+              {service.screenshots &&
+                service.screenshots.map((screen, i) => (
                   <Grid key={Math.random()} item xs={12} sm={6} md={6}>
                     <img className={classes.screenshot} src={screen} alt={`screenshot ${i} for ${service.title}`} />
                   </Grid>

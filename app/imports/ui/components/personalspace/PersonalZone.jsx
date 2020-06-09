@@ -9,9 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import {
-  Grid, makeStyles, Typography, IconButton, Paper as div, Tooltip,
-} from '@material-ui/core';
+import { Grid, makeStyles, Typography, IconButton, Paper as div, Tooltip } from '@material-ui/core';
 import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
 import Groups from '../../../api/groups/groups';
@@ -252,76 +250,76 @@ const PersonalZone = ({
         {elements.length === 0
           ? null
           : elements
-            .map((elem) => {
-              switch (elem.type) {
-                case 'service': {
-                  const myservice = Services.findOne({ _id: elem.element_id });
-                  return myservice === undefined ? null : (
-                    <Grid
-                      className={classes.gridItem}
-                      item
-                      key={`service_${elem.element_id}`}
-                      xs={12}
-                      sm={6}
-                      md={4}
-                      lg={4}
-                    >
-                      <div className={customDrag ? classes.handle : null} />
-                      <ServiceDetails service={myservice} favAction="unfav" isShort />
-                    </Grid>
-                  );
+              .map((elem) => {
+                switch (elem.type) {
+                  case 'service': {
+                    const myservice = Services.findOne({ _id: elem.element_id });
+                    return myservice === undefined ? null : (
+                      <Grid
+                        className={classes.gridItem}
+                        item
+                        key={`service_${elem.element_id}`}
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={4}
+                      >
+                        <div className={customDrag ? classes.handle : null} />
+                        <ServiceDetails service={myservice} favAction="unfav" isShort />
+                      </Grid>
+                    );
+                  }
+                  case 'group': {
+                    const mygroup = Groups.findOne(elem.element_id);
+                    return mygroup === undefined ? null : (
+                      <Grid
+                        className={classes.gridItem}
+                        item
+                        key={`group_${elem.element_id}`}
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={4}
+                      >
+                        <div className={customDrag ? classes.handle : null} />
+                        <GroupDetails
+                          group={mygroup}
+                          candidate={candidateGroups.includes(elem.element_id)}
+                          member={memberGroups.includes(elem.element_id)}
+                          animator={animatorGroups.includes(elem.element_id)}
+                          admin={isAdmin || managedGroups.includes(elem.element_id)}
+                          isShort
+                        />
+                      </Grid>
+                    );
+                  }
+                  case 'link': {
+                    return (
+                      <Grid
+                        className={classes.gridItem}
+                        item
+                        key={`link_${elem.element_id}`}
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={4}
+                      >
+                        <div className={customDrag ? classes.handle : null} />
+                        <PersonalLinkDetails
+                          link={elem}
+                          globalEdit={customDrag}
+                          updateLink={(linkId) => updatePersonalLink(index, linkId)}
+                          delLink={(newLink) => delPersonalLink(index, newLink)}
+                        />
+                      </Grid>
+                    );
+                  }
+                  default: {
+                    return null;
+                  }
                 }
-                case 'group': {
-                  const mygroup = Groups.findOne(elem.element_id);
-                  return mygroup === undefined ? null : (
-                    <Grid
-                      className={classes.gridItem}
-                      item
-                      key={`group_${elem.element_id}`}
-                      xs={12}
-                      sm={6}
-                      md={4}
-                      lg={4}
-                    >
-                      <div className={customDrag ? classes.handle : null} />
-                      <GroupDetails
-                        group={mygroup}
-                        candidate={candidateGroups.includes(elem.element_id)}
-                        member={memberGroups.includes(elem.element_id)}
-                        animator={animatorGroups.includes(elem.element_id)}
-                        admin={isAdmin || managedGroups.includes(elem.element_id)}
-                        isShort
-                      />
-                    </Grid>
-                  );
-                }
-                case 'link': {
-                  return (
-                    <Grid
-                      className={classes.gridItem}
-                      item
-                      key={`link_${elem.element_id}`}
-                      xs={12}
-                      sm={6}
-                      md={4}
-                      lg={4}
-                    >
-                      <div className={customDrag ? classes.handle : null} />
-                      <PersonalLinkDetails
-                        link={elem}
-                        globalEdit={customDrag}
-                        updateLink={(linkId) => updatePersonalLink(index, linkId)}
-                        delLink={(newLink) => delPersonalLink(index, newLink)}
-                      />
-                    </Grid>
-                  );
-                }
-                default: {
-                  return null;
-                }
-              }
-            })
-            .filter((item) => item !== null)}
+              })
+              .filter((item) => item !== null)}
       </ReactSortable>
     </div>
   );

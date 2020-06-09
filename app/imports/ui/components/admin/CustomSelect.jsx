@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-export default function CustomSelect({
-  value, error, onChange, labelWidth, options,
-}) {
+export default function CustomSelect({ value, error, onChange, labelWidth, options }) {
   return (
     <Select
       labelId="structure-label"

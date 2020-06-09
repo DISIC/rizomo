@@ -48,9 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TabPanel(props) {
-  const {
-    value, index, userRole, groupId,
-  } = props;
+  const { value, index, userRole, groupId } = props;
 
   return (
     <div
@@ -166,9 +164,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
       <Container>
         <Paper className={classes.root}>
           <Typography component="h1">
-            {i18n.__(`pages.AdminSingleGroupPage.${params._id ? 'edition' : 'creation'}`)}
-            {' '}
-            <b>{groupData.name}</b>
+            {i18n.__(`pages.AdminSingleGroupPage.${params._id ? 'edition' : 'creation'}`)} <b>{groupData.name}</b>
           </Typography>
           <form noValidate autoComplete="off">
             <TextField

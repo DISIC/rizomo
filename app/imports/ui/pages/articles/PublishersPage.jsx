@@ -13,9 +13,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import {
-  makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox,
-} from '@material-ui/core';
+import { makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import Pagination from '@material-ui/lab/Pagination';
@@ -69,9 +67,7 @@ const PublishersPage = () => {
   const [{ publishersPage }, dispatch] = useAppContext();
   const { search = '' } = publishersPage;
   const [sortByDate, setSortByDate] = useState(false);
-  const {
-    changePage, page, items, total, loading,
-  } = usePagination(
+  const { changePage, page, items, total, loading } = usePagination(
     'users.publishers',
     { search, sort: sortByDate ? { lastArticle: -1 } : { lastname: 1, firstName: 1 } },
     Meteor.users,
@@ -84,13 +80,14 @@ const PublishersPage = () => {
     changePage(value);
   };
 
-  const updateGlobalState = (key, value) => dispatch({
-    type: 'publishersPage',
-    data: {
-      ...publishersPage,
-      [key]: value,
-    },
-  });
+  const updateGlobalState = (key, value) =>
+    dispatch({
+      type: 'publishersPage',
+      data: {
+        ...publishersPage,
+        [key]: value,
+      },
+    });
   const updateSearch = (e) => updateGlobalState('search', e.target.value);
   const resetSearch = () => updateGlobalState('search', '');
 
@@ -140,14 +137,14 @@ const PublishersPage = () => {
               <Grid>
                 <Grid item>
                   <FormControlLabel
-                    control={(
+                    control={
                       <Checkbox
                         checked={sortByDate}
                         onChange={() => setSortByDate(!sortByDate)}
                         name="checkSortByDate"
                         color="primary"
                       />
-                    )}
+                    }
                     label={i18n.__('pages.PublishersPage.sortByDate')}
                     aria-label={i18n.__('pages.PublishersPage.sortByDate')}
                   />
@@ -172,24 +169,24 @@ const PublishersPage = () => {
                       </ListItemAvatar>
                       <ListItemText
                         primary={`${user.firstName} ${user.lastName}`}
-                        secondary={(
+                        secondary={
                           <>
                             <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                               {user.structure}
                             </Typography>
                           </>
-                        )}
+                        }
                       />
                       <ListItemText
                         className={classes.pubInfos}
                         primary={`${user.articlesCount} ${i18n.__('pages.PublishersPage.articles')}`}
-                        secondary={(
+                        secondary={
                           <>
                             <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                               {`${i18n.__('pages.PublishersPage.updatedAt')} ${user.lastArticle.toLocaleString()}`}
                             </Typography>
                           </>
-                        )}
+                        }
                       />
                       <ListItemSecondaryAction>
                         <Tooltip title={i18n.__('pages.PublishersPage.goToPublications')} aria-label="goToPublications">

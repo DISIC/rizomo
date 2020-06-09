@@ -150,9 +150,7 @@ const SignUp = ({ introduction, ready }) => {
   const handleSignUp = (event) => {
     event.preventDefault();
     if (formState.isValid === true) {
-      const {
-        firstName, lastName, email, userName, password, structureSelect,
-      } = formState.values;
+      const { firstName, lastName, email, userName, password, structureSelect } = formState.values;
       Accounts.createUser(
         {
           firstName,
@@ -275,7 +273,7 @@ const SignUp = ({ introduction, ready }) => {
                   error={hasError('password')}
                   labelWidth={100}
                   onChange={handleChange}
-                  endAdornment={(
+                  endAdornment={
                     <InputAdornment position="end">
                       <IconButton
                         title={i18n.__('pages.SignUp.pwdButtonLabel')}
@@ -286,7 +284,7 @@ const SignUp = ({ introduction, ready }) => {
                         {values.showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
-                  )}
+                  }
                 />
                 <FormHelperText className={hasError('password') ? 'Mui-error' : ''}>
                   {hasError('password') ? i18n.__(formState.errors.password[0]) : null}

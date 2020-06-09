@@ -18,19 +18,20 @@ const addItem = (userId, item) => {
     PersonalSpaces.insert({ userId, unsorted: [], sorted: [] });
   } else {
     // check that item is not already present
-    alreadyExists = PersonalSpaces.findOne({
-      $and: [
-        { userId },
-        {
-          $or: [
-            {
-              unsorted: { $elemMatch: { type: item.type, element_id: item.element_id } },
-            },
-            { 'sorted.elements': { $elemMatch: { type: item.type, element_id: item.element_id } } },
-          ],
-        },
-      ],
-    }) !== undefined;
+    alreadyExists =
+      PersonalSpaces.findOne({
+        $and: [
+          { userId },
+          {
+            $or: [
+              {
+                unsorted: { $elemMatch: { type: item.type, element_id: item.element_id } },
+              },
+              { 'sorted.elements': { $elemMatch: { type: item.type, element_id: item.element_id } } },
+            ],
+          },
+        ],
+      }) !== undefined;
   }
   if (!alreadyExists) PersonalSpaces.update({ userId }, { $push: { unsorted: item } });
 };

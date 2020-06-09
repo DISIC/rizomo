@@ -72,9 +72,7 @@ export const createGroup = new ValidatedMethod({
     content: { type: String, label: getLabel('api.groups.labels.content') },
   }).validator(),
 
-  run({
-    name, type, content, description,
-  }) {
+  run({ name, type, content, description }) {
     if (!isActive(this.userId)) {
       throw new Meteor.Error('api.groups.createGroup.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
@@ -210,9 +208,7 @@ export const findGroups = new ValidatedMethod({
       label: getLabel('api.methods.labels.sortOrder'),
     },
   }).validator({ clean: true }),
-  run({
-    page, pageSize, filter, sortColumn, sortOrder,
-  }) {
+  run({ page, pageSize, filter, sortColumn, sortOrder }) {
     // calculate number of entries to skip
     const skip = (page - 1) * pageSize;
     let query = {};

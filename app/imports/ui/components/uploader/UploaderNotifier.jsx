@@ -56,20 +56,21 @@ const UploaderNotifier = () => {
   );
 };
 
-const testStorageSize = (size) => new Promise((resolve) => Meteor.call('files.user', {}, (err, files) => {
-  const storageSize = files.reduce((sum, file) => sum + file.size, 0) + size;
-  if (storageSize >= maxMinioDiskPerUser) {
-    resolve(true);
-  } else {
-    resolve(false);
-  }
-}));
+const testStorageSize = (size) =>
+  new Promise((resolve) =>
+    Meteor.call('files.user', {}, (err, files) => {
+      const storageSize = files.reduce((sum, file) => sum + file.size, 0) + size;
+      if (storageSize >= maxMinioDiskPerUser) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    }),
+  );
 
 const SingleNotification = ({ upload }) => {
   const [, dispatch] = useAppContext();
-  const {
-    fileName, path, name, file, onFinish, storage,
-  } = upload;
+  const { fileName, path, name, file, onFinish, storage } = upload;
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(true);
   const [error, setError] = useState(null);
@@ -107,9 +108,7 @@ const SingleNotification = ({ upload }) => {
         title: i18n.__('components.UploaderNotifier.formatNotAcceptedTitle'),
         message: `
         ${i18n.__('components.UploaderNotifier.formatNotAccepted')} 
-        ${JSON.stringify(minioFilesTypes)
-    .replace(/"/g, '')
-    .replace(/,/g, ', ')}`,
+        ${JSON.stringify(minioFilesTypes).replace(/"/g, '').replace(/,/g, ', ')}`,
       });
       deleteUploadFromQueue();
     } else {

@@ -64,20 +64,22 @@ const NUMBER_OF_FAKE_USERS = 300;
 if (Meteor.users.find().count() === 0) {
   if (Meteor.settings.private.fillWithFakeData) {
     console.log('Creating the default user(s)');
-    fakeData.defaultAccounts.map(({
-      email, password, role, structure, firstName, lastName,
-    }) => createUser(email, password, role, structure, firstName, lastName));
+    fakeData.defaultAccounts.map(({ email, password, role, structure, firstName, lastName }) =>
+      createUser(email, password, role, structure, firstName, lastName),
+    );
     if (Meteor.isDevelopment) {
       const array = new Array(NUMBER_OF_FAKE_USERS);
       array.fill(0);
-      array.map(() => createUser(
-        faker.internet.email(),
-        faker.internet.password(),
-        null,
-        faker.company.companyName(),
-        faker.name.firstName(),
-        faker.name.lastName(),
-      ));
+      array.map(() =>
+        createUser(
+          faker.internet.email(),
+          faker.internet.password(),
+          null,
+          faker.company.companyName(),
+          faker.name.firstName(),
+          faker.name.lastName(),
+        ),
+      );
     }
   } else {
     console.log('No default users to create !  Please invoke meteor with a settings file.');

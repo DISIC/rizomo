@@ -35,34 +35,33 @@ const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupP
 const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage'));
 
 // CSS
-const useStyles = (isMobile) => makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    position: 'relative',
-  },
-  content: {
-    flexGrow: 1,
-    padding: isMobile ? null : theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginTop: 60,
-    marginBottom: isMobile ? 100 : 50,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-}));
+const useStyles = (isMobile) =>
+  makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+      position: 'relative',
+    },
+    content: {
+      flexGrow: 1,
+      padding: isMobile ? null : theme.spacing(3),
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginTop: 60,
+      marginBottom: isMobile ? 100 : 50,
+    },
+    contentShift: {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    },
+  }));
 
 function MainLayout() {
-  const [{
-    userId, user, loadingUser, isMobile,
-  }] = useAppContext();
+  const [{ userId, user, loadingUser, isMobile }] = useAppContext();
   const classes = useStyles(isMobile)();
 
   return (

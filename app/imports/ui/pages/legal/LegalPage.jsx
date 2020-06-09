@@ -3,9 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withTracker } from 'meteor/react-meteor-data';
 import i18n from 'meteor/universe:i18n';
 import PropTypes from 'prop-types';
-import {
-  Fade, Container, Grid, Typography,
-} from '@material-ui/core';
+import { Fade, Container, Grid, Typography } from '@material-ui/core';
 import AppSettings from '../../../api/appsettings/appsettings';
 import TopBar from '../../components/menus/TopBar';
 import Footer, { LEGAL_ROUTES } from '../../components/menus/Footer';

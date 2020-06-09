@@ -9,9 +9,7 @@ import i18n from 'meteor/universe:i18n';
 import { InputAdornment } from '@material-ui/core';
 import debounce from '../../utils/debounce';
 
-function UserFinder({
-  onSelected, hidden, exclude, opened,
-}) {
+function UserFinder({ onSelected, hidden, exclude, opened }) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [filter, setFilter] = useState('');

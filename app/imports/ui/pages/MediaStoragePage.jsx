@@ -1,11 +1,7 @@
-import React, {
-  useEffect, useState, useCallback,
-} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Random } from 'meteor/random';
 import PropTypes from 'prop-types';
-import {
-  makeStyles, Container, Grid, Fade, Typography, IconButton,
-} from '@material-ui/core';
+import { makeStyles, Container, Grid, Fade, Typography, IconButton } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import AddIcon from '@material-ui/icons/Add';
 import i18n from 'meteor/universe:i18n';
@@ -145,11 +141,7 @@ const MediaStoragePage = ({ selectFile, modal }) => {
                 </div>
               </Typography>
               <Typography className={classes.flex}>
-                {i18n.__('pages.MediaStoragePage.usage')}
-                {' '}
-                {storageToSize(usedDisk)}
-                /
-                {storageToSize(maxMinioDiskPerUser)}
+                {i18n.__('pages.MediaStoragePage.usage')} {storageToSize(usedDisk)}/{storageToSize(maxMinioDiskPerUser)}
               </Typography>
             </Grid>
             {files.map((file) => (

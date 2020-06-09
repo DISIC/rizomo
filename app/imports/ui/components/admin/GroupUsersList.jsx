@@ -5,9 +5,7 @@ import MaterialTable from 'material-table';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import i18n from 'meteor/universe:i18n';
-import {
-  Button, makeStyles, Collapse, IconButton,
-} from '@material-ui/core';
+import { Button, makeStyles, Collapse, IconButton } from '@material-ui/core';
 import { Roles } from 'meteor/alanning:roles';
 import setMaterialTableLocalization from '../initMaterialTableLocalization';
 import UserFinder from './UserFinder';
@@ -23,9 +21,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const GroupsUsersList = (props) => {
-  const {
-    ready, group, groupId, userRole,
-  } = props;
+  const { ready, group, groupId, userRole } = props;
 
   const removeMethods = {
     candidate: 'users.unsetCandidateOf',
@@ -163,24 +159,25 @@ const GroupsUsersList = (props) => {
         actions={actions}
         editable={{
           isDeletable: (rowData) => userDeletable(rowData),
-          onRowDelete: (oldData) => new Promise((resolve, reject) => {
-            Meteor.call(
-              removeMethods[userRole],
-              {
-                userId: oldData._id,
-                groupId,
-              },
-              (err, res) => {
-                if (err) {
-                  msg.error(err.reason);
-                  reject(err);
-                } else {
-                  msg.success(i18n.__('components.GroupUsersList.userRemoved'));
-                  resolve(res);
-                }
-              },
-            );
-          }),
+          onRowDelete: (oldData) =>
+            new Promise((resolve, reject) => {
+              Meteor.call(
+                removeMethods[userRole],
+                {
+                  userId: oldData._id,
+                  groupId,
+                },
+                (err, res) => {
+                  if (err) {
+                    msg.error(err.reason);
+                    reject(err);
+                  } else {
+                    msg.success(i18n.__('components.GroupUsersList.userRemoved'));
+                    resolve(res);
+                  }
+                },
+              );
+            }),
         }}
       />
     </>

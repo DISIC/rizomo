@@ -10,9 +10,7 @@ import Minio from 'minio';
 import s3Client from './config';
 import { isActive } from '../../utils';
 
-const {
-  minioSSL, minioEndPoint, minioBucket, minioPort,
-} = Meteor.settings.public;
+const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
 
 const HOST = `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${minioPort}` : ''}/${minioBucket}/`;
 
