@@ -19,6 +19,7 @@ const initialState = {
   groupPage: {},
   articlePage: {},
   publishersPage: {},
+  notificationPage: {},
   roles: [],
   uploads: [],
 };

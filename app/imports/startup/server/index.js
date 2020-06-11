@@ -11,6 +11,7 @@ import './config/security';
 // as an API to the client.
 import './config/ValidationError';
 import './register-api';
+import '../../api/restApi';
 
 // Set up roles, initial accounts and services
 import './db-initialize/Accounts';

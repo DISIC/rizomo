@@ -37,6 +37,11 @@ const reducer = (state, action) => {
         ...newState,
         publishersPage: { ...data },
       };
+    case 'notificationPage':
+      return {
+        ...newState,
+        notificationPage: { ...data },
+      };
     case 'mobile':
       return {
         ...newState,

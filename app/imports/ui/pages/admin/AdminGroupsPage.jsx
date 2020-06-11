@@ -14,8 +14,14 @@ import setMaterialTableLocalization from '../../components/initMaterialTableLoca
 function AdminGroupsPage({ groups, loading }) {
   const history = useHistory();
   const columns = [
-    { title: i18n.__('pages.AdminGroupsPage.columnName'), field: 'name', defaultSort: 'asc' },
-    { title: i18n.__('pages.AdminGroupsPage.columnInfo'), field: 'description' },
+    {
+      title: i18n.__('pages.AdminGroupsPage.columnName'),
+      field: 'name',
+    },
+    {
+      title: i18n.__('pages.AdminGroupsPage.columnInfo'),
+      field: 'description',
+    },
     {
       title: i18n.__('pages.AdminGroupsPage.columnType'),
       field: 'type',
@@ -26,11 +32,14 @@ function AdminGroupsPage({ groups, loading }) {
       title: i18n.__('pages.AdminGroupsPage.columnMembers'),
       field: '',
       render: (rowData) => (rowData && rowData.members ? rowData.members.length : null),
+      customSort: (a, b) => a.members.length - b.members.length,
     },
     {
       title: i18n.__('pages.AdminGroupsPage.columnCandidates'),
       field: '',
       render: (rowData) => (rowData && rowData.candidates ? rowData.candidates.length : null),
+      customSort: (a, b) => a.candidates.length - b.candidates.length,
+      defaultSort: 'desc',
     },
   ];
 
