@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import { IconButton } from '@material-ui/core';
+import NotificationsBell from '../notifications/NotificationsBell';
 import MenuBar from './MenuBar';
 import MainMenu from './MainMenu';
 import { useAppContext } from '../../contexts/context';
@@ -41,9 +43,20 @@ const SMALL_LOGO = 'Logo-A.svg';
 const LONG_LOGO = 'apps-logo-sansfond.svg';
 
 function TopBar({ publicMenu, root }) {
-  const [{ isMobile, user }] = useAppContext();
+  const [{ isMobile, user, notificationPage }, dispatch] = useAppContext();
   const classes = useStyles();
   const LOGO = `/images/${isMobile ? SMALL_LOGO : LONG_LOGO}`;
+
+  const updateGlobalState = (key, value) =>
+    dispatch({
+      type: 'notificationPage',
+      data: {
+        ...notificationPage,
+        [key]: value,
+      },
+    });
+
+  const handleDrawerOpen = () => updateGlobalState('drawerOpen', true);
 
   return (
     <AppBar position="fixed" className={classes.root}>
@@ -52,7 +65,12 @@ function TopBar({ publicMenu, root }) {
       </Link>
 
       {!isMobile && !publicMenu && <MenuBar />}
-      <div className={classes.rightContainer}>{!publicMenu && <MainMenu user={user} />}</div>
+      <div className={classes.rightContainer}>
+        {!publicMenu && <MainMenu user={user} />}
+        <IconButton onClick={() => handleDrawerOpen()}>
+          <NotificationsBell />
+        </IconButton>
+      </div>
     </AppBar>
   );
 }

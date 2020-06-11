@@ -9,6 +9,7 @@ import Spinner from '../components/system/Spinner';
 import AdminRoute from '../components/system/AdminRoute';
 import MobileMenu from '../components/menus/MobileMenu';
 import NotValidatedMessage from '../components/system/NotValidatedMessage';
+import CustomToast from '../components/system/CustomToast';
 import { useAppContext } from '../contexts/context';
 
 // pages
@@ -24,6 +25,7 @@ import ArticlesPage from '../pages/articles/ArticlesPage';
 import EditArticlePage from '../pages/articles/EditArticlePage';
 import MediaStoragePage from '../pages/MediaStoragePage';
 import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
+import NotificationDrawer from '../components/notifications/NotificationDrawer';
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -135,6 +137,8 @@ function MainLayout() {
           {isMobile && <MobileMenu />}
         </main>
       )}
+      <NotificationDrawer />
+      <CustomToast />
     </div>
   );
 }

@@ -147,6 +147,30 @@
         "updatedAt": "Date de mise à jour"
       }
     },
+    "notifications": {
+      "setRole": "Ajout ou suppression du rôle pour l'utilisateur",
+      "setRoleNotifTitle": "Nouveau rôle",
+      "setRoleNotifContent": "Vous êtes {$role} pour le groupe {$group}.",
+      "unsetRoleNotifTitle": "Suppression de rôle",
+      "unsetRoleNotifContent": "Vous n'êtes plus {$role} pour le groupe {$group}.",
+      "requestNotifTitle": "Demande de candidature",
+      "requestNotifContent": "{$name} est candidat pour le groupe {$group}.",
+      "labels": {
+        "id": "Id de la notification",
+        "userId": "ID du destinataire",
+        "type": "Type",
+        "title": "Titre",
+        "content": "Contenu de la publication",
+        "createdAt": "Date de création",
+        "read": "Notification lue",
+        "roles": {
+          "candidate": "candidat",
+          "member": "membre",
+          "animator": "animateur",
+          "admin": "administrateur"
+        }
+      }
+    },
     "methods": {
       "operationSuccessMsg": "Opération réalisée avec succès.",
       "labels": {
@@ -170,6 +194,16 @@
       "content": "Texte d'introduction",
       "update": "Mettre à jour",
       "cancel": "Annuler"
+    },
+    "Notifications": {
+      "check": "Marquer comme lu",
+      "remove": "Supprimer"
+    },
+    "NotificationsDrawer": {
+      "checkAll": "Marquer toutes les notifications comme lues",
+      "removeAll": "Supprimer toutes les notifications",
+      "confirmRemoveAll": "Êtes vous sûr de vouloir supprimer toutes les notifications ?",
+      "removeAllRead": "Supprimer toutes les notifications lues"
     },
     "Footer": {
       "personalData": "Données Personnelles",

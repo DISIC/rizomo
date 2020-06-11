@@ -14,6 +14,7 @@ import AppRoles from '../users';
 import { structures } from '../structures';
 import { favGroup, unfavGroup } from '../../groups/methods';
 import PersonalSpaces from '../../personalspaces/personalspaces';
+import { createRoleNotification, createRequestNotification } from '../../notifications/server/notifsutils';
 
 // users.findUsers: Returns users using pagination
 //   filter: string to search for in username/firstname/lastname/emails (case insensitive search)
@@ -391,6 +392,8 @@ export const setAdminOf = new ValidatedMethod({
     if (group.admins.indexOf(userId) === -1) {
       Groups.update(groupId, { $push: { admins: userId } });
     }
+    // Notify user
+    createRoleNotification(this.userId, userId, groupId, 'admin', true);
   },
 });
 
@@ -425,6 +428,8 @@ export const unsetAdminOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['animator', 'member', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
+    // Notify user
+    createRoleNotification(this.userId, userId, groupId, 'admin', false);
   },
 });
 
@@ -458,6 +463,8 @@ export const setAnimatorOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
+    // Notify user
+    createRoleNotification(this.userId, userId, groupId, 'animator', true);
   },
 });
 
@@ -492,6 +499,8 @@ export const unsetAnimatorOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['member', 'admin', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
+    // Notify user
+    createRoleNotification(this.userId, userId, groupId, 'animator', false);
   },
 });
 
@@ -538,6 +547,8 @@ export const setMemberOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
+    // Notify user
+    createRoleNotification(this.userId, userId, groupId, 'member', true);
   },
 });
 
@@ -574,6 +585,8 @@ export const unsetMemberOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['animator', 'admin', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
+    // Notify user
+    createRoleNotification(this.userId, userId, groupId, 'member', false);
   },
 });
 
@@ -613,6 +626,10 @@ export const setCandidateOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
+    // Notify user
+    createRoleNotification(this.userId, userId, groupId, 'candidate', true);
+    // Notify admins
+    createRequestNotification(this.userId, userId, groupId);
   },
 });
 
@@ -649,6 +666,8 @@ export const unsetCandidateOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['animator', 'member', 'admin'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
+    // Notify user
+    createRoleNotification(this.userId, userId, groupId, 'candidate', false);
   },
 });
 

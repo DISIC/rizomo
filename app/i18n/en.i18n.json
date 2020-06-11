@@ -147,6 +147,30 @@
         "updatedAt": "Update date"
       }
     },
+    "notifications": {
+      "setRole": "Add or delete role for user",
+      "setRoleNotifTitle": "New role",
+      "setRoleNotifContent": "You are {$role} for {$group} group.",
+      "unsetRoleNotifTitle": "Role suppression",
+      "unsetRoleNotifContent": "You are no longer {$role} for {$group} group.",
+      "requestNotifTitle": "Group request",
+      "requestNotifContent": "{$name} is candidate for group {$group}.",
+      "labels": {
+        "id": "Notification Id",
+        "userId": "Owner ID",
+        "type": "Type",
+        "title": "Title",
+        "content": "Content of the notification",
+        "createdAt": "Creation date",
+        "read": "Notification read",
+        "roles": {
+          "candidate": "candidate",
+          "member": "member",
+          "animator": "animator",
+          "admin": "administrator"
+        }
+      }
+    },
     "methods": {
       "operationSuccessMsg": "Operation succedeed.",
       "labels": {
@@ -170,6 +194,16 @@
       "content": "Introduction text",
       "update": "Update",
       "cancel": "Cancel"
+    },
+    "Notifications": {
+      "check": "Check as read",
+      "remove": "Remove"
+    },
+    "NotificationsDrawer": {
+      "checkAll": "Check all the notifications as read",
+      "removeAll": "Remove all the notifications",
+      "confirmRemoveAll": "Are you sure you want to delete all the notifications ?",
+      "removeAllRead": "Remove all the notifications read"
     },
     "Footer": {
       "personalData": "Personal Data",

@@ -28,6 +28,7 @@
   },
   "private": {
     "fillWithFakeData": true,
-    "minioSecret": "Pr6SvbtBkutUHmdlN2uYWi5g7oo5EZquMq9k2t00"
+    "minioSecret": "Pr6SvbtBkutUHmdlN2uYWi5g7oo5EZquMq9k2t00",
+    "apiKeys": ["849b7648-14b8-4154-9ef2-8d1dc4c2b7e9"]
   }
 }

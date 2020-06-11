@@ -14,4 +14,6 @@ import '../../api/articles/methods';
 import '../../api/articles/server/publications';
 import '../../api/appsettings/methods';
 import '../../api/appsettings/server/publications';
+import '../../api/notifications/methods';
+import '../../api/notifications/server/publications';
 import '../../api/migrations';
