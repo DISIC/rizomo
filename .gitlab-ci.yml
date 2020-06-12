@@ -18,7 +18,7 @@ variables:
 Deps:
   stage: deps
   script:
-    - meteor npm install
+    - meteor npm ci
   artifacts:
     paths:
       - app/node_modules/
