@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import HighlightOff from '@material-ui/icons/HighlightOff';
-import ChromeReaderModeOutlinedIcon from '@material-ui/icons/ChromeReaderModeOutlined';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { Fade, Typography, Tooltip } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import i18n from 'meteor/universe:i18n';
@@ -116,15 +116,8 @@ const NotificationDrawer = ({ notifications, ready }) => {
                   <ChevronRightIcon />
                 </IconButton>
                 <Typography variant="button">Notifications</Typography>
+
                 <div className={classes.space} />
-                <Tooltip
-                  title={i18n.__('components.NotificationsDrawer.removeAllRead')}
-                  aria-label={i18n.__('components.NotificationsDrawer.removeAllRead')}
-                >
-                  <IconButton onClick={handleRemoveAllRead} className={classes.button}>
-                    <ChromeReaderModeOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
 
                 <Tooltip
                   title={i18n.__('components.NotificationsDrawer.checkAll')}
@@ -136,11 +129,20 @@ const NotificationDrawer = ({ notifications, ready }) => {
                 </Tooltip>
 
                 <Tooltip
+                  title={i18n.__('components.NotificationsDrawer.removeAllRead')}
+                  aria-label={i18n.__('components.NotificationsDrawer.removeAllRead')}
+                >
+                  <IconButton onClick={handleRemoveAllRead} className={classes.button}>
+                    <HighlightOff />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip
                   title={i18n.__('components.NotificationsDrawer.removeAll')}
                   aria-label={i18n.__('components.NotificationsDrawer.removeAll')}
                 >
                   <IconButton onClick={handleOpenDialog} className={classes.button}>
-                    <HighlightOff />
+                    <DeleteOutlineIcon />
                   </IconButton>
                 </Tooltip>
 

@@ -26,9 +26,11 @@ const useStyles = makeStyles(() => ({
     margin: 0,
     padding: 0,
   },
-  pushToTheBottom: {
-    margin: '100%',
-    height: 30,
+  buttonMargin: {
+    display: 'block',
+    margin: 0,
+    marginTop: 8,
+    padding: 0,
   },
   rightIcon: {
     marginTop: 8,
@@ -89,12 +91,6 @@ const Notification = ({ notification, toast }) => {
       {toast ? null : (
         <div className={classes.rightIcon}>
           <Tooltip
-            title={i18n.__('components.Notifications.check')}
-            aria-label={i18n.__('components.Notifications.check')}
-          >
-            <Checkbox edge="end" onChange={handleToggle} checked={read} disabled={read} className={classes.button} />
-          </Tooltip>
-          <Tooltip
             title={i18n.__('components.Notifications.remove')}
             aria-label={i18n.__('components.Notifications.remove')}
           >
@@ -102,7 +98,18 @@ const Notification = ({ notification, toast }) => {
               <CloseIcon />
             </IconButton>
           </Tooltip>
-          <div className={classes.pushToTheBottom} />
+          <Tooltip
+            title={i18n.__('components.Notifications.check')}
+            aria-label={i18n.__('components.Notifications.check')}
+          >
+            <Checkbox
+              edge="end"
+              onChange={handleToggle}
+              checked={read}
+              disabled={read}
+              className={classes.buttonMargin}
+            />
+          </Tooltip>
         </div>
       )}
     </ListItem>
