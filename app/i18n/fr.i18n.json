@@ -155,6 +155,7 @@
       "unsetRoleNotifContent": "Vous n'êtes plus {$role} pour le groupe {$group}.",
       "requestNotifTitle": "Demande de candidature",
       "requestNotifContent": "{$name} est candidat pour le groupe {$group}.",
+      "badConfig": "Mauvaise configuration pour les notifications de type {$type} (expiration en jours)",
       "labels": {
         "id": "Id de la notification",
         "userId": "ID du destinataire",
@@ -162,6 +163,7 @@
         "title": "Titre",
         "content": "Contenu de la publication",
         "createdAt": "Date de création",
+        "expireAt": "Date d'expiration",
         "read": "Notification lue",
         "roles": {
           "candidate": "candidat",

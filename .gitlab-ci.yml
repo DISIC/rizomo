@@ -1,4 +1,4 @@
-image: geoffreybooth/meteor-base:1.9
+image: geoffreybooth/meteor-base:1.10.2
 
 stages:
   - deps

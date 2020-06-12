@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import Notifications from '../notifications';
+import { addExpiration } from '../methods';
 
 // export async function getNotifications(req, content) {
 //   let query = {};
@@ -17,7 +18,7 @@ export default async function addNotification(req, content) {
   // userId key can be replaced by email or username key
 
   // find user by _id, username or email
-  const userData = { ...content };
+  const userData = addExpiration(content);
   let user;
   if (content.email) {
     user = Accounts.findUserByEmail(content.email);

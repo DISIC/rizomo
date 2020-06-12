@@ -1,4 +1,5 @@
 import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import { Factory } from 'meteor/dburles:factory';
@@ -43,6 +44,11 @@ Notifications.schema = new SimpleSchema(
         return this.value;
       },
     },
+    expireAt: {
+      type: Date,
+      label: getLabel('api.notifications.labels.createdAt'),
+      optional: true,
+    },
     read: { type: Boolean, defaultValue: false, label: getLabel('api.notifications.labels.read') },
   },
   { tracker: Tracker },
@@ -65,5 +71,12 @@ Factory.define('notification', Notifications, {
 });
 
 Notifications.attachSchema(Notifications.schema);
+
+if (Meteor.isServer) {
+  Notifications.rawCollection().createIndex(
+    { expireAt: 1 },
+    { expireAfterSeconds: 0, partialFilterExpression: { expireAt: { $exists: true } } },
+  );
+}
 
 export default Notifications;
