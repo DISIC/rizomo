@@ -155,6 +155,7 @@
       "unsetRoleNotifContent": "You are no longer {$role} for {$group} group.",
       "requestNotifTitle": "Group request",
       "requestNotifContent": "{$name} is candidate for group {$group}.",
+      "badConfig": "Bad configuration for notifications of type {$type} (expiration delay in days)",
       "labels": {
         "id": "Notification Id",
         "userId": "Owner ID",
@@ -162,6 +163,7 @@
         "title": "Title",
         "content": "Content of the notification",
         "createdAt": "Creation date",
+        "expireAt": "Expiration date",
         "read": "Notification read",
         "roles": {
           "candidate": "candidate",

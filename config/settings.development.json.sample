@@ -1,5 +1,5 @@
 {
-  "public": {    
+  "public": {
     "enableKeycloak": true,
     "keycloakUrl": "https://auth.appseducation.fr/auth",
     "keycloakRealm": "apps",
@@ -8,7 +8,14 @@
     "minioAccess": "Uhjm4KJ8MV",
     "minioEndPoint": "minio.appseducation.fr",
     "minioBucket": "laboite-dev",
-    "minioFilesTypes": ["svg", "pdf", "png", "jpg", "gif", "jpeg"],
+    "minioFilesTypes": [
+      "svg",
+      "pdf",
+      "png",
+      "jpg",
+      "gif",
+      "jpeg"
+    ],
     "minioFileSize": 500000,
     "minioStorageFilesTypes": [
       "svg",
@@ -19,7 +26,13 @@
       "jpeg"
     ],
     "minioStorageFilesSize": 3000000,
-    "maxMinioDiskPerUser": 1000000
+    "maxMinioDiskPerUser": 1000000,
+    "NotificationsExpireDays": {
+      "setRole": null,
+      "unsetRole": null,
+      "request": null,
+      "default": null
+    }
   },
   "keycloak": {
     "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvyVtOgah8FjiXmFcnavID9b0lEhCl5k7jISPkPweOQtB1+hRAajcT7Y4v9babrUAXVL7bAb8nRTJVrks3Jl+o/nfZjfLxx7vIE1mMsRGVAqPg88UgyP79fFBvWdPnrIaIweNqlH5r1WoBOVjsoX0rFNijZqQ5llcC/uUYQW35urjGUJIZlHDSOdp34qnrrnohE3714PUuiKHhqFx15MpzmO/KQuIt0lJXuJ3NgAwt1OndksvP03Kkm0ls7IvveF0GiM2dki2xPRAHvv3jC1hLdHm0kGdrn+EndX0xFwBl9kL5zcjILGwm1gyfeJdfzOQrBUf6WL+FpgNseWq5MD+vwIDAQAB",
@@ -29,6 +42,8 @@
   "private": {
     "fillWithFakeData": true,
     "minioSecret": "Pr6SvbtBkutUHmdlN2uYWi5g7oo5EZquMq9k2t00",
-    "apiKeys": ["849b7648-14b8-4154-9ef2-8d1dc4c2b7e9"]
+    "apiKeys": [
+      "849b7648-14b8-4154-9ef2-8d1dc4c2b7e9"
+    ]
   }
 }

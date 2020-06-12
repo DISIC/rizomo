@@ -127,7 +127,6 @@ Groups.schema = new SimpleSchema(
 
 Groups.after.update(function (_, doc, fieldNames) {
   if (fieldNames.includes('candidates')) {
-    console.log('----', doc, fieldNames);
     if (!this.previous.candidates || this.previous.candidates.length !== doc.candidates.length) {
       Groups.update({ _id: doc._id }, { $set: { numCandidates: doc.candidates.length } });
     }

@@ -7,6 +7,34 @@ import i18n from 'meteor/universe:i18n';
 import { isActive, getLabel } from '../utils';
 import Notifications from './notifications';
 
+export function addExpiration(data) {
+  const finalData = { ...data };
+  function addDays(date, days) {
+    const result = new Date(Number(date));
+    // for tests : add minutes instead of days
+    // result.setTime(date.getTime() + days * 60 * 1000);
+    result.setDate(date.getDate() + days);
+    return result;
+  }
+  // check if an expiration delay has been configured
+  if (Meteor.settings.public.NotificationsExpireDays) {
+    const dataType =
+      typeof Meteor.settings.public.NotificationsExpireDays[data.type] !== 'number' ? 'default' : data.type;
+    const numDays = Meteor.settings.public.NotificationsExpireDays[dataType];
+    if (numDays || numDays === 0) {
+      if (typeof numDays !== 'number') {
+        console.log(i18n.__('api.notifications.badConfig', { type: dataType }));
+      } else if (numDays > 0) {
+        // if delay is set to 0 or negative number,
+        // no expiration is set (allows to ignore default delay)
+        const expireAt = addDays(new Date(), numDays);
+        finalData.expireAt = expireAt;
+      }
+    }
+  }
+  return finalData;
+}
+
 export const createNotification = new ValidatedMethod({
   name: 'notifications.createNotification',
   validate: new SimpleSchema({
@@ -18,7 +46,7 @@ export const createNotification = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.notifications.createNotification.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    Notifications.insert(data);
+    Notifications.insert(addExpiration(data));
   },
 });
 
