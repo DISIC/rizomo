@@ -19,7 +19,7 @@ import { makeStyles, Divider, Tooltip, Button, TextField, InputAdornment } from 
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 import Pagination from '@material-ui/lab/Pagination';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { usePagination } from '../../utils/hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +52,7 @@ const AddressBook = ({
   },
 }) => {
   const classes = useStyles();
+  const history = useHistory();
   const [search, setSearch] = useState('');
   const { changePage, page, items, total } = usePagination(
     'users.group',
@@ -68,6 +69,10 @@ const AddressBook = ({
   const updateSearch = (e) => setSearch(e.target.value);
   const resetSearch = () => setSearch('');
 
+  const goBack = () => {
+    history.goBack();
+  };
+
   useEffect(() => {
     if (page !== 1) {
       changePage(1);
@@ -79,11 +84,9 @@ const AddressBook = ({
       <Container className={classes.root}>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={12} md={12}>
-            <Link to={`/groups/${slug}`}>
-              <Button color="primary" startIcon={<ArrowBack />}>
-                {i18n.__('pages.AddressBook.back')}
-              </Button>
-            </Link>
+            <Button color="primary" startIcon={<ArrowBack />} onClick={goBack}>
+              {i18n.__('pages.AddressBook.back')}
+            </Button>
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
             <TextField
