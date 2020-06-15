@@ -157,7 +157,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
       ? 'unsetAnimatorOf'
       : member
       ? 'unsetMemberOf'
-      : type === 0
+      : type !== 5
       ? 'setMemberOf'
       : candidate
       ? 'unsetCandidateOf'
@@ -166,7 +166,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
       ? 'animationLeft'
       : member
       ? 'groupLeft'
-      : type === 0
+      : type !== 5
       ? 'groupJoined'
       : candidate
       ? 'candidateCancel'
@@ -208,13 +208,16 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     : i18n.__('components.ServiceDetails.favButtonLabelFav');
   const showFavorite = admin && !candidate && !member && !animator;
 
-  const groupType = i18n.__(`components.GroupDetails.${type === 0 ? 'publicGroup' : 'moderateGroup'}`);
+  const groupType = i18n.__(
+    `components.GroupDetails.${type === 0 ? 'publicGroup' : type === 10 ? 'closedGroup' : 'moderateGroup'}`,
+  );
 
-  const IconHeader = (props) => (type === 0 ? <PeopleIcon {...props} /> : <SecurityIcon {...props} />);
+  const IconHeader = (props) =>
+    type === 0 ? <PeopleIcon {...props} /> : type === 10 ? <LockIcon {...props} /> : <SecurityIcon {...props} />;
 
   const icon = () => {
     if (member || animator) {
-      return type === 5 ? <VerifiedUserIcon /> : <CheckIcon />;
+      return type === 0 ? <CheckIcon /> : <VerifiedUserIcon />;
     }
     if (type === 0) {
       return <ExitToAppIcon />;
@@ -232,13 +235,13 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     if (member) {
       return i18n.__('components.GroupDetails.groupMember');
     }
-    if (type === 0) {
-      return i18n.__('components.GroupDetails.joinPublicGroupButtonLabel');
+    if (type === 5) {
+      return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
     }
     if (candidate) {
       return i18n.__('components.GroupDetails.waitingForValidation');
     }
-    return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
+    return i18n.__('components.GroupDetails.joinPublicGroupButtonLabel');
   };
 
   const goBack = () => {
@@ -271,18 +274,20 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.favoriteButton}>
             <Grid container className={classes.actionButtons} spacing={1}>
-              <Grid item>
-                <Button
-                  startIcon={icon()}
-                  className={classes.buttonText}
-                  size="large"
-                  variant={member || animator || candidate ? 'text' : 'contained'}
-                  disableElevation={member || animator || candidate}
-                  onClick={animator || member || candidate ? null : handleJoinGroup}
-                >
-                  {text()}
-                </Button>
-              </Grid>
+              {type !== 10 || admin || member || animator ? (
+                <Grid item>
+                  <Button
+                    startIcon={icon()}
+                    className={classes.buttonText}
+                    size="large"
+                    variant={member || animator || candidate ? 'text' : 'contained'}
+                    disableElevation={member || animator || candidate}
+                    onClick={animator || member || candidate ? null : handleJoinGroup}
+                  >
+                    {text()}
+                  </Button>
+                </Grid>
+              ) : null}
               {admin && (
                 <Grid item>
                   <Link to={`/admingroups/${group._id}`}>
@@ -314,7 +319,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
               <ServiceDetails service={service} isShort />
             </Grid>
           ))}
-          {(member || animator || type === 0) && (
+          {(admin || member || animator || type === 0) && (
             <Grid item xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
               <ServiceDetails
                 service={{

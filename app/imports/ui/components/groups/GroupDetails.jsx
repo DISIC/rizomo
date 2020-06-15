@@ -126,8 +126,8 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
   const classes = useStyles(group, member || animator, candidate, isShort)();
 
   const handleJoinGroup = () => {
-    const method = member ? 'unsetMemberOf' : type === 0 ? 'setMemberOf' : 'setCandidateOf';
-    const message = member ? 'groupLeft' : type === 0 ? 'groupJoined' : 'candidateSent';
+    const method = member ? 'unsetMemberOf' : type === 5 ? 'setCandidateOf' : 'setMemberOf';
+    const message = member ? 'groupLeft' : type === 5 ? 'candidateSent' : 'groupJoined';
     if (candidate) {
       msg.info(i18n.__('components.GroupDetails.alreadyCandidate'));
     } else {
@@ -145,7 +145,7 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
 
   const icon = () => {
     if (member || animator) {
-      return type === 5 ? <VerifiedUserIcon /> : <CheckIcon />;
+      return type === 0 ? <CheckIcon /> : <VerifiedUserIcon />;
     }
     if (type === 0) {
       return <ExitToAppIcon />;
@@ -163,20 +163,22 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
     if (member) {
       return i18n.__('components.GroupDetails.groupMember');
     }
-    if (type === 0) {
-      return i18n.__('components.GroupDetails.joinPublicGroupButtonLabel');
+    if (type === 5) {
+      return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
     }
     if (candidate) {
       return i18n.__('components.GroupDetails.groupCandidate');
     }
-    return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
+    return i18n.__('components.GroupDetails.joinPublicGroupButtonLabel');
   };
 
   let groupType = i18n.__('components.GroupDetails.moderateGroup');
   if (type === 0) {
     groupType = i18n.__('components.GroupDetails.publicGroup');
+  } else if (type === 10) {
+    groupType = i18n.__('components.GroupDetails.closedGroup');
   }
-  const iconHeader = type === 0 ? <PeopleIcon /> : <SecurityIcon />;
+  const iconHeader = type === 0 ? <PeopleIcon /> : type === 10 ? <LockIcon /> : <SecurityIcon />;
 
   return (
     <Card className={classes.card} elevation={3}>
@@ -224,16 +226,18 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
       <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
         {!isShort && <Typography variant="body1">{group.description}</Typography>}
         <div className={isShort ? classes.cardActionShort : classes.cardActions}>
-          <Button
-            startIcon={icon()}
-            className={classes.buttonText}
-            size="large"
-            variant={member || animator || candidate ? 'text' : 'contained'}
-            disableElevation={member || animator || candidate}
-            onClick={member || animator || candidate ? null : handleJoinGroup}
-          >
-            {text()}
-          </Button>
+          {type !== 10 || admin || member || animator ? (
+            <Button
+              startIcon={icon()}
+              className={classes.buttonText}
+              size="large"
+              variant={member || animator || candidate ? 'text' : 'contained'}
+              disableElevation={member || animator || candidate}
+              onClick={member || animator || candidate ? null : handleJoinGroup}
+            >
+              {text()}
+            </Button>
+          ) : null}
           {admin && (
             <Tooltip
               title={i18n.__('components.GroupDetails.manageGroupButtonLabel')}

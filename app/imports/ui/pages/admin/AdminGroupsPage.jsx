@@ -38,7 +38,9 @@ function AdminGroupsPage({ groups, loading }) {
       title: i18n.__('pages.AdminGroupsPage.columnCandidates'),
       field: '',
       render: (rowData) => (rowData && rowData.candidates ? rowData.candidates.length : null),
-      customSort: (a, b) => a.candidates.length - b.candidates.length,
+      // check for candidates field presence, it can be undefined when previous
+      // publication data without candidates information is still in memory
+      customSort: (a, b) => (a.candidates && b.candidates ? a.candidates.length - b.candidates.length : 1),
       defaultSort: 'desc',
     },
   ];

@@ -12,6 +12,7 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
 import PeopleIcon from '@material-ui/icons/People';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import LockIcon from '@material-ui/icons/Lock';
 import GroupBadge from './GroupBadge';
 
 const useStyles = makeStyles((theme) => ({
@@ -55,6 +56,8 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
     ? i18n.__('components.GroupDetails.groupCandidate')
     : type === 0
     ? i18n.__('components.GroupDetails.publicGroup')
+    : type === 10
+    ? i18n.__('components.GroupDetails.closedGroup')
     : i18n.__('components.GroupDetails.moderateGroup');
 
   const iconHeader =
@@ -62,10 +65,12 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
       <WatchLaterIcon fontSize="large" />
     ) : (animator || member) && type === 0 ? (
       <CheckIcon fontSize="large" />
-    ) : (animator || member) && type === 5 ? (
+    ) : animator || member ? (
       <VerifiedUserIcon fontSize="large" />
     ) : type === 0 ? (
       <PeopleIcon fontSize="large" />
+    ) : type === 10 ? (
+      <LockIcon fontSize="large" />
     ) : (
       <SecurityIcon fontSize="large" />
     );
@@ -94,7 +99,7 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
                   color: 'white',
                   backgroundColor: member || animator ? 'green' : null,
                 }}
-                color={type === 5 ? 'secondary' : 'primary'}
+                color={type === 0 ? 'primary' : 'secondary'}
                 variant="contained"
               >
                 {iconHeader}
@@ -106,7 +111,7 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
                 color: 'white',
                 backgroundColor: member || animator ? 'green' : null,
               }}
-              color={type === 5 ? 'secondary' : 'primary'}
+              color={type === 0 ? 'primary' : 'secondary'}
               variant="contained"
             >
               {iconHeader}
@@ -122,7 +127,7 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
         subheader={groupType}
         subheaderTypographyProps={{
           variant: 'body2',
-          color: type === 5 ? 'secondary' : 'primary',
+          color: type === 0 ? 'primary' : 'secondary',
           style: { color: member || animator ? 'green' : null },
         }}
       />
