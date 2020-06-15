@@ -31,6 +31,7 @@
       "setRole": null,
       "unsetRole": null,
       "request": null,
+      "group": null,
       "default": null
     }
   },
