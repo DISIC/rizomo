@@ -5,9 +5,9 @@ import { createNotification } from '../methods';
 
 /**
  * Send a notification for role change of user in a group
- * @param currentUser {string id} User ID who ask to send notification
- * @param userId {string id} User ID to send notification
- * @param groupId {string id} Group ID concerned by the role change
+ * @param currentUser {string} User ID who ask to send notification
+ * @param userId {string} User ID to send notification
+ * @param groupId {string} Group ID concerned by the role change
  * @param role {string} role type // TODO: check if role in AppRoles ?
  * @param setRole {bool} true = set new role for the group, false = unset role
  */
@@ -29,11 +29,12 @@ export function createRoleNotification(currentUser, userId, groupId, role, setRo
     createNotification._execute({ userId: currentUser }, { data: newNotif });
   }
 }
+
 /**
  * Send a request notification to admin or animator about a group
- * @param currentUser {string id} User ID who ask to send notification
- * @param userId {string id} User ID which is candidate for the group
- * @param groupId {string id} Group ID concerned
+ * @param currentUser {string} User ID who ask to send notification
+ * @param userId {string} User ID which is candidate for the group
+ * @param groupId {string} Group ID concerned
  */
 export function createRequestNotification(currentUser, userId, groupId) {
   const user = Meteor.users.findOne(userId);
@@ -52,5 +53,35 @@ export function createRequestNotification(currentUser, userId, groupId) {
     if (currentUser !== uid) {
       createNotification._execute({ userId: currentUser }, { data: newNotif });
     }
+  });
+}
+
+/**
+ * Send a notification to all members/animators/admins of a group
+ * @param currentUser {string} User ID who ask to send notification
+ * @param groupId {string} Group ID concerned
+ * @param title {string} Notification title to be send
+ * @param content {string} Notification content to be send
+ */
+export function createGroupNotification(currentUser, groupId, title, content) {
+  const group = Groups.findOne({ _id: groupId }, { fields: Groups.adminFields });
+  const usersToSend = [...new Set([...group.admins, ...group.animators, ...group.members])]; // Concats arrays and removes duplicate user ids
+  usersToSend.forEach((uid) => {
+    const newNotif = { userId: uid, title, content, type: 'group' };
+    createNotification._execute({ userId: currentUser }, { data: newNotif });
+  });
+}
+
+/**
+ * Send a notification to a pull of users
+ * @param currentUser {string} User ID who ask to send notification
+ * @param users {array} Users ID to send notification
+ * @param title {string} Notification title to be send
+ * @param content {string} Notification content to be send
+ */
+export function createMultiUsersNotification(currentUser, users, title, content) {
+  users.forEach((uid) => {
+    const newNotif = { userId: uid, title, content, type: 'group' };
+    createNotification._execute({ userId: currentUser }, { data: newNotif });
   });
 }

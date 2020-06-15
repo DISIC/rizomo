@@ -4,6 +4,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import HelpIcon from '@material-ui/icons/Help';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
+import GroupIcon from '@material-ui/icons/Group';
 import CloseIcon from '@material-ui/icons/Close';
 import {
   ListItem,
@@ -68,6 +69,8 @@ const Notification = ({ notification, toast }) => {
         return <PersonAddDisabledIcon />;
       case 'request':
         return <HelpIcon />;
+      case 'group':
+        return <GroupIcon />;
       default:
         return <InfoIcon />;
     }
