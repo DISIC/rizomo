@@ -163,11 +163,11 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
     if (member) {
       return i18n.__('components.GroupDetails.groupMember');
     }
-    if (type === 5) {
-      return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
-    }
     if (candidate) {
       return i18n.__('components.GroupDetails.groupCandidate');
+    }
+    if (type === 5) {
+      return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
     }
     return i18n.__('components.GroupDetails.joinPublicGroupButtonLabel');
   };
