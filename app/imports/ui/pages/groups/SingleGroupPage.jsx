@@ -235,11 +235,11 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     if (member) {
       return i18n.__('components.GroupDetails.groupMember');
     }
+    if (candidate) {
+      return i18n.__('components.GroupDetails.groupCandidate');
+    }
     if (type === 5) {
       return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
-    }
-    if (candidate) {
-      return i18n.__('components.GroupDetails.waitingForValidation');
     }
     return i18n.__('components.GroupDetails.joinPublicGroupButtonLabel');
   };
