@@ -66,10 +66,14 @@ function TopBar({ publicMenu, root }) {
 
       {!isMobile && !publicMenu && <MenuBar />}
       <div className={classes.rightContainer}>
-        {!publicMenu && <MainMenu user={user} />}
-        <IconButton onClick={() => handleDrawerOpen()}>
-          <NotificationsBell />
-        </IconButton>
+        {publicMenu ? null : (
+          <>
+            <MainMenu user={user} />
+            <IconButton onClick={() => handleDrawerOpen()}>
+              <NotificationsBell />
+            </IconButton>
+          </>
+        )}
       </div>
     </AppBar>
   );
