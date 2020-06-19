@@ -13,13 +13,13 @@ import { Grid, makeStyles, Typography, IconButton, Paper as div, Tooltip } from 
 import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
 import Groups from '../../../api/groups/groups';
-import ServiceDetails from '../services/ServiceDetails';
-import GroupDetails from '../groups/GroupDetails';
+import ServiceDetailsPersSpace from '../services/ServiceDetailsPersSpace';
+import GroupDetailsPersSpace from '../groups/GroupDetailsPersSpace';
 import PersonalLinkDetails from './PersonalLinkDetails';
 
 const useStyles = makeStyles((theme) => ({
   zone: {
-    marginTop: 20,
+    marginTop: 0,
     marginBottom: 0,
     minHeight: 48,
     display: 'flex',
@@ -161,7 +161,7 @@ const PersonalZone = ({
 
   return (
     <div>
-      <Typography variant="h5" color="primary" className={classes.zone}>
+      <Typography variant="h6" color="primary" className={classes.zone}>
         <div>
           <span
             id={`title-${index}`}
@@ -262,10 +262,10 @@ const PersonalZone = ({
                         xs={12}
                         sm={6}
                         md={4}
-                        lg={4}
+                        lg={3}
                       >
                         <div className={customDrag ? classes.handle : null} />
-                        <ServiceDetails service={myservice} favAction="unfav" isShort />
+                        <ServiceDetailsPersSpace service={myservice} />
                       </Grid>
                     );
                   }
@@ -279,16 +279,15 @@ const PersonalZone = ({
                         xs={12}
                         sm={6}
                         md={4}
-                        lg={4}
+                        lg={3}
                       >
                         <div className={customDrag ? classes.handle : null} />
-                        <GroupDetails
+                        <GroupDetailsPersSpace
                           group={mygroup}
                           candidate={candidateGroups.includes(elem.element_id)}
                           member={memberGroups.includes(elem.element_id)}
                           animator={animatorGroups.includes(elem.element_id)}
                           admin={isAdmin || managedGroups.includes(elem.element_id)}
-                          isShort
                         />
                       </Grid>
                     );
@@ -302,7 +301,7 @@ const PersonalZone = ({
                         xs={12}
                         sm={6}
                         md={4}
-                        lg={4}
+                        lg={3}
                       >
                         <div className={customDrag ? classes.handle : null} />
                         <PersonalLinkDetails

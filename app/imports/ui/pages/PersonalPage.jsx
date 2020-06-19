@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   cardGrid: {
-    paddingTop: theme.spacing(5),
-    paddingBottom: theme.spacing(5),
+    paddingTop: theme.spacing(0),
+    paddingBottom: theme.spacing(2),
   },
   chip: {
     margin: theme.spacing(1),
@@ -85,6 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     marginTop: 30,
+    marginBottom: 10,
   },
   goIcon: {
     marginLeft: 8,

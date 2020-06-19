@@ -329,6 +329,9 @@
       "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe",
       "candidateCancel": "Votre requête a été annulée"
     },
+    "GroupDetailsPersSpace": {
+      "groupCandidate": "Candidat"
+    },
     "AppVersion": {
       "title": "Version"
     },
