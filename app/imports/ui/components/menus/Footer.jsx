@@ -4,6 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { Link } from 'react-router-dom';
 import { AppBar } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
+import { useAppContext } from '../../contexts/context';
 import { getAppSettingsLinks } from '../../../api/appsettings/methods';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,17 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 25,
     fontFamily: 'WorkSansBold',
   },
+  mobileLink: {
+    flexDirection: 'column',
+    color: theme.palette.tertiary.main,
+    textDecoration: 'none',
+    outline: 'none',
+    marginRight: 25,
+    fontFamily: 'WorkSansBold',
+  },
+  li: {
+    listStyle: 'none',
+  },
 }));
 
 export const LEGAL_ROUTES = {
@@ -30,6 +42,39 @@ export const LEGAL_ROUTES = {
 const Footer = () => {
   const classes = useStyles();
   const [settingsData, setSettingsData] = useState([]);
+  const [{ isMobile }] = useAppContext();
+
+  const toolbarContent = () => {
+    return (
+      <>
+        {settingsData.map(({ key, external, link, text }) => {
+          if (external) {
+            return (
+              <a key={key} href={link} target="_blank" rel="noreferrer noopener">
+                {i18n.__(`components.Footer.${text}`)}
+              </a>
+            );
+          }
+          return (
+            <>
+              {isMobile ? (
+                <li className={classes.li}>
+                  <Link key={key} className={classes.mobileLink} to={`/legal/${link}`}>
+                    {i18n.__(`components.Footer.${text}`)}
+                  </Link>
+                </li>
+              ) : (
+                <Link key={key} className={classes.link} to={`/legal/${link}`}>
+                  {i18n.__(`components.Footer.${text}`)}
+                </Link>
+              )}
+            </>
+          );
+        })}
+      </>
+    );
+  };
+
   useEffect(() => {
     getAppSettingsLinks.call(null, (error, result) => {
       const newData = { ...result };
@@ -47,27 +92,21 @@ const Footer = () => {
 
   return (
     <AppBar position="relative">
-      <Toolbar className={classes.root}>
-        <div>
-          {settingsData.map(({ key, external, link, text }) => {
-            if (external) {
-              return (
-                <a key={key} className={classes.link} href={link} target="_blank" rel="noreferrer noopener">
-                  {i18n.__(`components.Footer.${text}`)}
-                </a>
-              );
-            }
-            return (
-              <Link key={key} className={classes.link} to={`/legal/${link}`}>
-                {i18n.__(`components.Footer.${text}`)}
-              </Link>
-            );
-          })}
-        </div>
-        <Link className={classes.link} to="/public">
-          Publications
-        </Link>
-      </Toolbar>
+      {isMobile ? (
+        <Toolbar className={classes.root}>
+          <ul>{toolbarContent()}</ul>
+          <Link className={classes.link} to="/public">
+            Publications
+          </Link>
+        </Toolbar>
+      ) : (
+        <Toolbar className={classes.root}>
+          <div>{toolbarContent()}</div>
+          <Link className={classes.link} to="/public">
+            Publications
+          </Link>
+        </Toolbar>
+      )}
     </AppBar>
   );
 };

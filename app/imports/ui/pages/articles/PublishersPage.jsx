@@ -33,8 +33,12 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
     flexDirection: 'column',
   },
-  space: {
-    height: 64,
+  rootMobile: {
+    paddingTop: 60,
+    marginBottom: -108,
+    display: 'flex',
+    minHeight: '100vh',
+    flexDirection: 'column',
   },
   list: {
     width: '100%',
@@ -64,7 +68,7 @@ const ITEM_PER_PAGE = 10;
 
 const PublishersPage = () => {
   const classes = useStyles();
-  const [{ publishersPage }, dispatch] = useAppContext();
+  const [{ isMobile, publishersPage }, dispatch] = useAppContext();
   const { search = '' } = publishersPage;
   const [sortByDate, setSortByDate] = useState(false);
   const { changePage, page, items, total, loading } = usePagination(
@@ -101,7 +105,7 @@ const PublishersPage = () => {
     <>
       <TopBar publicMenu />
       <Fade in>
-        <Container className={classes.root}>
+        <Container className={isMobile ? classes.rootMobile : classes.root}>
           <Grid container spacing={4}>
             <Grid item xs={12}>
               <Typography variant="h4">{i18n.__('pages.PublishersPage.title')}</Typography>
@@ -156,62 +160,61 @@ const PublishersPage = () => {
                 )}
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={12} md={12} />
-            <Grid item xs={12} sm={12} md={12}>
-              {loading ? (
-                <Spinner />
-              ) : (
-                <List className={classes.list} disablePadding>
-                  {items.map((user, i) => [
-                    <ListItem alignItems="flex-start" key={`user-${user._id}`}>
-                      <ListItemAvatar>
-                        <Avatar className={classes.avatar} alt={user.firstName} src={user.firstName} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={`${user.firstName} ${user.lastName}`}
-                        secondary={
-                          <>
-                            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
-                              {user.structure}
-                            </Typography>
-                          </>
-                        }
-                      />
-                      <ListItemText
-                        className={classes.pubInfos}
-                        primary={`${user.articlesCount} ${i18n.__('pages.PublishersPage.articles')}`}
-                        secondary={
-                          <>
-                            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
-                              {`${i18n.__('pages.PublishersPage.updatedAt')} ${user.lastArticle.toLocaleString()}`}
-                            </Typography>
-                          </>
-                        }
-                      />
-                      <ListItemSecondaryAction>
-                        <Tooltip title={i18n.__('pages.PublishersPage.goToPublications')} aria-label="goToPublications">
-                          <Link to={`/public/${user._id}`}>
-                            <IconButton edge="end" aria-label="goToPublications">
-                              <ListAltIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
-                      </ListItemSecondaryAction>
-                    </ListItem>,
-                    i < ITEM_PER_PAGE - 1 && i < total - 1 && (
-                      <Divider variant="inset" component="li" key={`divider-${user._id}`} />
-                    ),
-                  ])}
-                </List>
-              )}
-            </Grid>
-            {total > ITEM_PER_PAGE && (
-              <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
-                <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
-              </Grid>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} />
+          <Grid item xs={12} sm={12} md={12}>
+            {loading ? (
+              <Spinner />
+            ) : (
+              <List className={classes.list} disablePadding>
+                {items.map((user, i) => [
+                  <ListItem alignItems="flex-start" key={`user-${user._id}`}>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} alt={user.firstName} src={user.firstName} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={`${user.firstName} ${user.lastName}`}
+                      secondary={
+                        <>
+                          <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+                            {user.structure}
+                          </Typography>
+                        </>
+                      }
+                    />
+                    <ListItemText
+                      className={classes.pubInfos}
+                      primary={`${user.articlesCount} ${i18n.__('pages.PublishersPage.articles')}`}
+                      secondary={
+                        <>
+                          <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+                            {`${i18n.__('pages.PublishersPage.updatedAt')} ${user.lastArticle.toLocaleString()}`}
+                          </Typography>
+                        </>
+                      }
+                    />
+                    <ListItemSecondaryAction>
+                      <Tooltip title={i18n.__('pages.PublishersPage.goToPublications')} aria-label="goToPublications">
+                        <Link to={`/public/${user._id}`}>
+                          <IconButton edge="end" aria-label="goToPublications">
+                            <ListAltIcon />
+                          </IconButton>
+                        </Link>
+                      </Tooltip>
+                    </ListItemSecondaryAction>
+                  </ListItem>,
+                  i < ITEM_PER_PAGE - 1 && i < total - 1 && (
+                    <Divider variant="inset" component="li" key={`divider-${user._id}`} />
+                  ),
+                ])}
+              </List>
             )}
           </Grid>
-          {/* <div className={classes.space} /> */}
+          {total > ITEM_PER_PAGE && (
+            <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
+              <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+            </Grid>
+          )}
         </Container>
       </Fade>
       <Footer />

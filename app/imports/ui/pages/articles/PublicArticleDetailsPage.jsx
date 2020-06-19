@@ -18,6 +18,13 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
     flexDirection: 'column',
   },
+  rootMobile: {
+    paddingTop: 60,
+    marginBottom: -108,
+    display: 'flex',
+    minHeight: '100vh',
+    flexDirection: 'column',
+  },
   flex: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -71,7 +78,7 @@ function PublicArticleDetailsPage({
     <>
       <TopBar publicMenu />
       <Fade in>
-        <Container className={classes.root}>
+        <Container className={isMobile ? classes.rootMobile : classes.root}>
           <Grid container spacing={4}>
             <Grid item xs={12} sm={12} md={12} className={classes.flex}>
               <Button color="primary" startIcon={<ArrowBack />} onClick={handleGoList}>

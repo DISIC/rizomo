@@ -22,6 +22,9 @@ const useStyles = makeStyles(() => ({
   inline: {
     display: 'inline',
   },
+  isRead: {
+    backgroundColor: 'lightGrey',
+  },
   button: {
     display: 'block',
     margin: 0,
@@ -77,7 +80,7 @@ const Notification = ({ notification, toast }) => {
   };
 
   return (
-    <ListItem alignItems="flex-start">
+    <ListItem alignItems="flex-start" className={read ? classes.isRead : null}>
       <ListItemIcon className={classes.leftIcon}>{notifIcon()}</ListItemIcon>
       <ListItemText
         primary={
@@ -89,7 +92,7 @@ const Notification = ({ notification, toast }) => {
             </Typography>
           </>
         }
-        secondary={content}
+        secondary={<div>{content}</div>}
       />
       {toast ? null : (
         <div className={classes.rightIcon}>

@@ -189,7 +189,7 @@ NotificationDrawer.propTypes = {
 
 export default withTracker(() => {
   const subscription = Meteor.subscribe('notifications.self');
-  const notifications = Notifications.find().fetch() || [];
+  const notifications = Notifications.find({}, { sort: { createdAt: -1 } }).fetch() || [];
   return {
     notifications,
     ready: subscription.ready(),
