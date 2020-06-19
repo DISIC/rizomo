@@ -7,7 +7,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
-import { Button, Avatar, Tooltip, IconButton, CardHeader, TextField } from '@material-ui/core';
+import { Avatar, Tooltip, IconButton, TextField, CardActionArea, CardActions, Typography } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { useObjectState } from '../../utils/hooks';
 
@@ -15,27 +15,14 @@ const linkColor = 'brown';
 const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: linkColor,
-    width: theme.spacing(7),
-    height: theme.spacing(7),
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    margin: 'auto',
   },
   cardActions: {
-    display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 24,
-  },
-  cardActionShort: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'end',
-    width: '100%',
-  },
-  cardHeader: {
-    paddingLeft: 32,
-    paddingRight: 32,
-    paddingBottom: 32,
-    paddingTop: 24,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   card: {
     height: '100%',
@@ -44,50 +31,28 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     position: 'relative',
   },
-  cardMedia: {
-    maxWidth: '50px',
-    objectFit: 'contain',
-    borderRadius: theme.shape.borderRadius,
-  },
   cardContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    flexGrow: 1,
-    backgroundColor: theme.palette.primary.light,
-    paddingLeft: 32,
-    paddingRight: 32,
-    paddingBottom: 32,
-    paddingTop: 24,
+    padding: 10,
   },
-  cardContentMobile: {
-    flexGrow: 1,
-    paddingLeft: 32,
-    paddingRight: 32,
-    paddingBottom: 32,
-    paddingTop: 0,
-    display: 'flex',
+  cardContentEdit: {
+    padding: 10,
+    paddingBottom: 0,
   },
-  buttonText: {
-    textTransform: 'none',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.tertiary.main,
-    fontWeight: 'bold',
-    '&:hover': {
-      color: theme.palette.primary.main,
-      backgroundColor: theme.palette.tertiary.main,
-    },
+  cardContentForm: {
+    padding: 10,
+    paddingBottom: 0,
+    textAlign: 'center',
+    marginTop: 20,
   },
-  paperChip: {
-    display: 'flex',
-    justifyContent: 'left',
-    flexWrap: 'wrap',
-    marginTop: theme.spacing(2),
-    padding: theme.spacing(1),
-    backgroundColor: 'transparent',
+  actionarea: {
+    textAlign: 'center',
+    marginTop: 20,
   },
-  chip: {
-    margin: theme.spacing(0.5),
+  linkName: {
+    color: theme.palette.primary.main,
+  },
+  linkUrl: {
+    color: linkColor,
   },
   zoneButton: {
     color: theme.palette.primary.main,
@@ -99,7 +64,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   form: {
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom: 10,
   },
 }));
 
@@ -127,97 +93,72 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink }) {
   const showData = () => {
     if (globalEdit && localEdit) {
       return (
-        <div className="MuiCardHeader-root">
-          <div className="MuiCardHeader-avatar">
-            <Avatar className={classes.avatar}>
-              <LaunchIcon />
-            </Avatar>
-          </div>
-          <div className={`MuiCardHeader-content ${classes.form}`}>
-            <form onSubmit={handleLocalEdit}>
-              <TextField
-                label={i18n.__('components.PersonalLinkDetails.titleLabel')}
-                value={state.title}
-                name="title"
-                onChange={handleChangeState}
-                autoFocus
-              />
-              <TextField
-                label={i18n.__('components.PersonalLinkDetails.urlLabel')}
-                value={state.url}
-                name="url"
-                onChange={handleChangeState}
-              />
-              <button type="submit" aria-label="masked" style={{ display: 'none' }} />
-            </form>
-          </div>
-        </div>
+        <CardContent className={classes.cardContentForm}>
+          <form onSubmit={handleLocalEdit} className={classes.form}>
+            <TextField
+              label={i18n.__('components.PersonalLinkDetails.titleLabel')}
+              value={state.title}
+              name="title"
+              onChange={handleChangeState}
+              autoFocus
+            />
+            <TextField
+              label={i18n.__('components.PersonalLinkDetails.urlLabel')}
+              value={state.url}
+              name="url"
+              onChange={handleChangeState}
+            />
+            <button type="submit" aria-label="masked" style={{ display: 'none' }} />
+          </form>{' '}
+        </CardContent>
       );
     }
     return (
-      <CardHeader
-        className={classes.cardHeader}
-        avatar={
-          <Avatar
-            className={classes.avatar}
-            style={{ cursor: 'pointer' }}
-            onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
-          >
+      <CardActionArea
+        className={classes.actionarea}
+        onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
+        disabled={globalEdit}
+      >
+        {globalEdit && localEdit ? null : (
+          <Avatar className={classes.avatar}>
             <LaunchIcon />
           </Avatar>
-        }
-        title={state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
-        titleTypographyProps={{
-          variant: 'h6',
-          color: 'primary',
-          className: classes.title,
-        }}
-        subheader={state.url || i18n.__('components.PersonalLinkDetails.urlLabel')}
-        subheaderTypographyProps={{
-          variant: 'body2',
-          style: {
-            color: linkColor,
-          },
-        }}
-      />
+        )}
+        <CardContent className={globalEdit ? classes.cardContentEdit : classes.cardContent}>
+          <Typography className={classes.linkName} gutterBottom noWrap variant="h6" component="h2">
+            {state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
+          </Typography>
+          <Typography variant="body2" className={classes.linkUrl} noWrap component="p">
+            {state.url || i18n.__('components.PersonalLinkDetails.urlLabel')}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
     );
   };
 
   return (
     <Card className={classes.card} elevation={3}>
       {showData()}
-      <CardContent className={classes.cardContentMobile}>
-        <div className={classes.cardActionShort}>
-          <Button
-            size="large"
-            className={classes.buttonText}
-            variant="contained"
-            onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
+      {globalEdit ? (
+        <CardActions className={classes.cardActions}>
+          <Tooltip
+            title={i18n.__(`components.PersonalLinkDetails.${localEdit ? 'saveLink' : 'modifyLink'}`)}
+            aria-label={i18n.__(`components.PersonalLinkDetails.${localEdit ? 'saveLink' : 'modifyLink'}`)}
           >
-            {i18n.__('components.PersonalLinkDetails.visitLink')}
-          </Button>
-          {globalEdit && (
-            <div className={classes.buttonWrapper}>
-              <Tooltip
-                title={i18n.__(`components.PersonalLinkDetails.${localEdit ? 'saveLink' : 'modifyLink'}`)}
-                aria-label={i18n.__(`components.PersonalLinkDetails.${localEdit ? 'saveLink' : 'modifyLink'}`)}
-              >
-                <IconButton className={classes.zoneButton} color="primary" onClick={handleLocalEdit}>
-                  {localEdit ? <SaveIcon /> : <EditIcon />}
-                </IconButton>
-              </Tooltip>
-              <Tooltip
-                title={i18n.__('components.PersonalLinkDetails.delLink')}
-                aria-label={i18n.__('components.PersonalLinkDetails.delLink')}
-              >
-                <IconButton className={classes.zoneButton} color="primary" onClick={delLink(elementId)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-          )}
-        </div>
-      </CardContent>
+            <IconButton className={classes.zoneButton} color="primary" onClick={handleLocalEdit}>
+              {localEdit ? <SaveIcon /> : <EditIcon />}
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            title={i18n.__('components.PersonalLinkDetails.delLink')}
+            aria-label={i18n.__('components.PersonalLinkDetails.delLink')}
+          >
+            <IconButton className={classes.zoneButton} color="primary" onClick={delLink(elementId)}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </CardActions>
+      ) : null}
     </Card>
   );
 }
