@@ -174,7 +174,7 @@
       }
     },
     "methods": {
-      "operationSuccessMsg": "Operation succedeed.",
+      "operationSuccessMsg": "Operation succeeded.",
       "labels": {
         "page": "Page",
         "pageSize": "Page Size",

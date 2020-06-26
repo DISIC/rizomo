@@ -16,8 +16,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
 import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useAppContext } from '../../contexts/context';
 import Groups from '../../../api/groups/groups';
@@ -301,7 +301,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                 <Grid item>
                   <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
                     <Button className={classes.buttonFav} size="large" variant="outlined" onClick={handleFavorite}>
-                      {favorite ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                      {favorite ? <RemoveIcon /> : <AddIcon />}
                     </Button>
                   </Tooltip>
                 </Grid>

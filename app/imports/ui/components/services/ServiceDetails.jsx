@@ -7,8 +7,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 // import OpenWithIcon from '@material-ui/icons/OpenWith';
 
 import Tooltip from '@material-ui/core/Tooltip';
@@ -229,7 +229,7 @@ function ServiceDetails({ service, favAction, isShort }) {
                   className={classes.fab}
                   onClick={handleFavorite}
                 >
-                  {favorite ? <BookmarkBorderIcon /> : <BookmarkIcon />}
+                  {favorite ? <AddIcon /> : <RemoveIcon />}
                   {/* {i18n.__(`components.ServiceDetails.${favorite ? '' : 'un'}pin`)} */}
                 </Button>
               </Tooltip>

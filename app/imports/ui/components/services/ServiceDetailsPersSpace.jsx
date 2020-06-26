@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
+import RemoveIcon from '@material-ui/icons/Remove';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button, CardActionArea, CardActions } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
@@ -110,7 +110,7 @@ function ServiceDetailsPersSpace({ service }) {
       <CardActions className={classes.cardActions}>
         <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
           <Button variant="outlined" size="small" className={classes.fab} onClick={handleFavorite}>
-            <BookmarkIcon />
+            <RemoveIcon />
           </Button>
         </Tooltip>
       </CardActions>
