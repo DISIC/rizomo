@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, makeStyles, Button, Typography, Grid, Chip, Tooltip, Fade } from '@material-ui/core';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
@@ -124,8 +124,8 @@ const SingleServicePage = ({ service = [], ready, categories = [] }) => {
 
   const favButton = (
     <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-      <Button variant="text" color="primary" disabled={loading} className={classes.fab} onClick={handleFavorite}>
-        {favorite ? <BookmarkIcon fontSize="large" /> : <BookmarkBorderIcon fontSize="large" />}
+      <Button variant="outlined" color="primary" disabled={loading} className={classes.fab} onClick={handleFavorite}>
+        {favorite ? <RemoveIcon fontSize="large" /> : <AddIcon fontSize="large" />}
       </Button>
     </Tooltip>
   );
