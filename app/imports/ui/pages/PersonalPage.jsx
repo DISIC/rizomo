@@ -94,58 +94,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
+  const AUTOSAVE_INTERVAL = 3000;
   const classes = useStyles();
   const [customDrag, setcustomDrag] = useState(false);
 
-  const checkElementExists = (elem) => {
-    switch (elem.type) {
-      case 'service': {
-        return Services.findOne(elem.element_id) !== undefined;
-      }
-      case 'group': {
-        return Groups.findOne(elem.element_id) !== undefined;
-      }
-      default: {
-        return true;
-      }
-    }
-  };
-
-  const checkPersonalSpace = (ps) => {
-    let didDelete = false;
-
-    for (let i = ps.unsorted.length - 1; i >= 0; i -= 1) {
-      if (!checkElementExists(ps.unsorted[i])) {
-        ps.unsorted.splice(i, 1);
-        didDelete = true;
-      }
-    }
-
-    ps.sorted.map((zone, zi) => {
-      for (let i = zone.elements.length - 1; i >= 0; i -= 1) {
-        if (!checkElementExists(zone.elements[i])) {
-          ps.sorted[zi].elements.splice(i, 1);
-          didDelete = true;
-        }
-      }
-      return true;
-    });
-
-    if (didDelete) {
-      Meteor.call('personalspaces.updatePersonalSpace', { data: ps }, (err) => {
-        if (err) {
-          msg.error(err.reason);
-        }
-      });
-    }
-
-    return ps;
+  const handleCustomDrag = (event) => {
+    setcustomDrag(event.target.checked);
   };
 
   const [localPS, setLocalPS] = useState({});
   useEffect(() => {
     if (personalspace && allServices && allGroups) {
-      setLocalPS(checkPersonalSpace(personalspace));
+      setLocalPS(personalspace);
     }
   }, [personalspace]);
 
@@ -157,10 +117,23 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     });
   };
 
-  const handleCustomDrag = (event) => {
-    setcustomDrag(event.target.checked);
-    if (!event.target.checked) {
-      updatePersonalSpace();
+  const [psNeedUpdate, setPsNeedUpdate] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (psNeedUpdate) {
+        updatePersonalSpace();
+        setPsNeedUpdate(false);
+      }
+    }, AUTOSAVE_INTERVAL);
+    return () => clearTimeout(timer);
+  }, [psNeedUpdate]);
+
+  const setExpanded = (index) => {
+    if (typeof index === 'number') {
+      const { sorted } = localPS;
+      sorted[index].isExpanded = !sorted[index].isExpanded;
+      setLocalPS({ ...localPS, sorted });
+      setPsNeedUpdate(true);
     }
   };
 
@@ -170,6 +143,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
       if (sorted[index].name !== title) {
         sorted[index].name = title.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
         setLocalPS({ ...localPS, sorted });
+        setPsNeedUpdate(true);
       }
     }
   };
@@ -186,10 +160,16 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     }
   };
 
+  const updateList = () => {
+    // Called on onEnd event of reactsortable zone
+    setPsNeedUpdate(true);
+  };
+
   const delZone = (index) => {
     const { sorted } = localPS;
     sorted.splice(index, 1);
     setLocalPS({ ...localPS, sorted });
+    setPsNeedUpdate(true);
   };
 
   const upZone = (zoneIndex) => {
@@ -201,6 +181,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
       ...localPS,
       sorted: [...remainingItems.slice(0, zoneIndex - 1), movedItem, ...remainingItems.slice(zoneIndex - 1)],
     });
+    setPsNeedUpdate(true);
   };
 
   const downZone = (zoneIndex) => {
@@ -212,6 +193,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
       ...localPS,
       sorted: [...remainingItems.slice(0, zoneIndex + 1), movedItem, ...remainingItems.slice(zoneIndex + 1)],
     });
+    setPsNeedUpdate(true);
   };
 
   const addZone = (where) => {
@@ -219,6 +201,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     const newZone = {
       zone_id: Random.id(),
       name: i18n.__('pages.PersonalPage.newZone'),
+      isExpanded: true,
       elements: [],
     };
     if (where === 0) {
@@ -227,6 +210,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
       sorted.push(newZone);
     }
     setLocalPS({ ...localPS, sorted });
+    setPsNeedUpdate(true);
   };
 
   const addLink = (zoneIndex) => {
@@ -237,8 +221,13 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
       title: '',
       url: '',
     };
+    if (sorted[zoneIndex].isExpanded !== true) {
+      // Expand zone to add the new link
+      sorted[zoneIndex].isExpanded = true;
+    }
     sorted[zoneIndex].elements.unshift(newLink);
     setLocalPS({ ...localPS, sorted });
+    setPsNeedUpdate(true);
   };
 
   const updateLink = (zoneIndex, link) => {
@@ -247,7 +236,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     sorted[zoneIndex].elements[linkIndex].title = link.title;
     sorted[zoneIndex].elements[linkIndex].url = link.url;
     setLocalPS({ ...localPS, sorted });
-    updatePersonalSpace();
+    setPsNeedUpdate(true);
   };
 
   const delLink = (zoneIndex, linkId) => () => {
@@ -255,7 +244,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     const removeIndex = sorted[zoneIndex].elements.map((item) => item.element_id).indexOf(linkId);
     sorted[zoneIndex].elements.splice(removeIndex, 1);
     setLocalPS({ ...localPS, sorted });
-    updatePersonalSpace();
+    setPsNeedUpdate(true);
   };
 
   return (
@@ -317,12 +306,13 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                         : i18n.__('pages.PersonalPage.unsorted')
                     }
                     setList={setZoneList}
+                    updateList={updateList}
                     customDrag={customDrag}
                   />,
                   <Divider key="div-000000000000" className={classes.divider} />,
                 ]
               : null}
-            {localPS.sorted.map(({ zone_id: zoneId, elements, name }, index) => [
+            {localPS.sorted.map(({ zone_id: zoneId, elements, name, isExpanded }, index) => [
               <PersonalZone
                 key={`zone-${zoneId}`}
                 elements={elements}
@@ -330,6 +320,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                 title={name}
                 setTitle={setZoneTitle}
                 setList={setZoneList}
+                updateList={updateList}
                 delZone={delZone}
                 lastZone={localPS.sorted.length === index + 1}
                 moveDownZone={downZone}
@@ -339,10 +330,12 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                 delPersonalLink={delLink}
                 customDrag={customDrag}
                 isSorted
+                isExpanded={isExpanded}
+                setExpanded={setExpanded}
               />,
-              localPS.sorted.length !== index + 1 ? (
-                <Divider className={classes.divider} key={`div-${zoneId}`} />
-              ) : null,
+              // localPS.sorted.length !== index + 1 ? (
+              //   <Divider className={classes.divider} key={`div-${zoneId}`} />
+              // ) : null,
             ])}
             {customDrag ? (
               <>

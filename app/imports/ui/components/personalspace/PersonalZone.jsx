@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { useTracker } from 'meteor/react-meteor-data';
 import { ReactSortable } from 'react-sortablejs';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Grid, makeStyles, Typography, IconButton, Paper as div, Tooltip } from '@material-ui/core';
 import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
@@ -18,6 +22,20 @@ import GroupDetailsPersSpace from '../groups/GroupDetailsPersSpace';
 import PersonalLinkDetails from './PersonalLinkDetails';
 
 const useStyles = makeStyles((theme) => ({
+  expansionpanel: {
+    borderRadius: theme.shape.borderRadius,
+    marginTop: 30,
+    marginBottom: 10,
+    '&::before': {
+      content: 'none',
+    },
+  },
+  cursorPointer: {
+    cursor: 'pointer',
+  },
+  cursorDefault: {
+    cursor: 'default !important',
+  },
   zone: {
     marginTop: 0,
     marginBottom: 0,
@@ -115,6 +133,7 @@ const PersonalZone = ({
   title,
   setTitle,
   setList,
+  updateList,
   delZone,
   lastZone,
   moveDownZone,
@@ -124,9 +143,12 @@ const PersonalZone = ({
   delPersonalLink,
   customDrag,
   isSorted,
+  isExpanded,
+  setExpanded,
 }) => {
   const classes = useStyles();
   const [{ userId }] = useAppContext();
+  const [localIsExpanded, setIsExpanded] = useState(isExpanded || true);
 
   const memberGroups = useTracker(() => Roles.getScopesForUser(userId, 'member'));
   const animatorGroups = useTracker(() => Roles.getScopesForUser(userId, 'animator'));
@@ -159,168 +181,192 @@ const PersonalZone = ({
     sel.addRange(range);
   };
 
+  const handleClickExpansion = (zoneIndex) => () => {
+    if (isSorted) {
+      setExpanded(zoneIndex);
+    } else {
+      setIsExpanded(!localIsExpanded);
+    }
+  };
+
   return (
-    <div>
-      <Typography variant="h6" color="primary" className={classes.zone}>
-        <div>
-          <span
-            id={`title-${index}`}
-            className={customDrag && isSorted ? classes.title : null}
-            contentEditable={isSorted && customDrag}
-            onKeyDown={handleKeyDownTitle(index)}
-            onBlur={handleBlurTitle(index)}
-            role="presentation"
-            dangerouslySetInnerHTML={{ __html: title }}
+    <ExpansionPanel className={classes.expansionpanel} expanded={isSorted ? isExpanded : localIsExpanded}>
+      <ExpansionPanelSummary
+        expandIcon={
+          <ExpandMoreIcon
+            className={classes.cursorPointer}
+            onClick={customDrag && isSorted ? handleClickExpansion(index) : null}
           />
-          {customDrag && isSorted && (
-            <IconButton
-              onClick={handleSelectTitle(index)}
-              className={classes.zoneButton}
-              title={i18n.__('components.PersonalZone.modifyTitle')}
-            >
-              <EditIcon className={classes.zoneButton} fontSize="small" />
-            </IconButton>
-          )}
-          {customDrag && isSorted && (
-            <IconButton
-              onClick={() => addPersonalLink(index)}
-              className={classes.zoneButton}
-              title={i18n.__('components.PersonalZone.addPersonalLink')}
-            >
-              <AddCircleOutlineIcon />
-            </IconButton>
-          )}
-        </div>
-        {customDrag && isSorted ? (
-          <div className={classes.buttonZone}>
-            <IconButton
-              onClick={() => moveUpZone(index)}
-              className={classes.zoneButton}
-              title={i18n.__('components.PersonalZone.upZoneLabel')}
-              disabled={index === 0}
-            >
-              <VerticalAlignTopIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => moveDownZone(index)}
-              className={classes.zoneButton}
-              title={i18n.__('components.PersonalZone.downZoneLabel')}
-              disabled={lastZone}
-            >
-              <VerticalAlignBottomIcon />
-            </IconButton>
-            <Tooltip
-              title={
-                elements.length === 0
-                  ? i18n.__('components.PersonalZone.delZoneLabel')
-                  : i18n.__('components.PersonalZone.forbiddenDelZoneLabel')
-              }
-              aria-label={
-                elements.length === 0
-                  ? i18n.__('components.PersonalZone.delZoneLabel')
-                  : i18n.__('components.PersonalZone.forbiddenDelZoneLabel')
-              }
-            >
-              <span>
-                <IconButton
-                  onClick={() => delZone(index)}
-                  className={classes.zoneButton}
-                  disabled={elements.length !== 0}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-          </div>
-        ) : null}
-      </Typography>
-      <ReactSortable
-        className={`MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 ${
-          elements.length === 0 ? `${classes.emptyZone} ${customDrag ? classes.emptyDragZone : ''}` : ''
-        }`}
-        list={elements}
-        setList={setList(index)}
-        animation={150}
-        forceFallback
-        fallbackClass={classes.ghost}
-        group={{ name: 'zone', put: isSorted }}
-        handle={`.${classes.handle}`}
-        sort={isSorted}
+        }
+        aria-controls={`zone-${title}-${index}`}
+        id={`expand-${index}`}
+        onClick={!(customDrag && isSorted) ? handleClickExpansion(index) : null}
+        className={customDrag && isSorted ? classes.cursorDefault : null}
       >
-        {elements.length === 0
-          ? null
-          : elements
-              .map((elem) => {
-                switch (elem.type) {
-                  case 'service': {
-                    const myservice = Services.findOne({ _id: elem.element_id });
-                    return myservice === undefined ? null : (
-                      <Grid
-                        className={classes.gridItem}
-                        item
-                        key={`service_${elem.element_id}`}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                      >
-                        <div className={customDrag ? classes.handle : null} />
-                        <ServiceDetailsPersSpace service={myservice} />
-                      </Grid>
-                    );
-                  }
-                  case 'group': {
-                    const mygroup = Groups.findOne(elem.element_id);
-                    return mygroup === undefined ? null : (
-                      <Grid
-                        className={classes.gridItem}
-                        item
-                        key={`group_${elem.element_id}`}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                      >
-                        <div className={customDrag ? classes.handle : null} />
-                        <GroupDetailsPersSpace
-                          group={mygroup}
-                          candidate={candidateGroups.includes(elem.element_id)}
-                          member={memberGroups.includes(elem.element_id)}
-                          animator={animatorGroups.includes(elem.element_id)}
-                          admin={isAdmin || managedGroups.includes(elem.element_id)}
-                        />
-                      </Grid>
-                    );
-                  }
-                  case 'link': {
-                    return (
-                      <Grid
-                        className={classes.gridItem}
-                        item
-                        key={`link_${elem.element_id}`}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                      >
-                        <div className={customDrag ? classes.handle : null} />
-                        <PersonalLinkDetails
-                          link={elem}
-                          globalEdit={customDrag}
-                          updateLink={(linkId) => updatePersonalLink(index, linkId)}
-                          delLink={(newLink) => delPersonalLink(index, newLink)}
-                        />
-                      </Grid>
-                    );
-                  }
-                  default: {
-                    return null;
-                  }
+        <Typography variant="h6" color="primary" className={classes.zone}>
+          <div>
+            <span
+              id={`title-${index}`}
+              className={customDrag && isSorted ? classes.title : null}
+              contentEditable={isSorted && customDrag}
+              onKeyDown={handleKeyDownTitle(index)}
+              onBlur={handleBlurTitle(index)}
+              role="presentation"
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
+            {customDrag && isSorted && (
+              <IconButton
+                onClick={handleSelectTitle(index)}
+                className={classes.zoneButton}
+                title={i18n.__('components.PersonalZone.modifyTitle')}
+              >
+                <EditIcon className={classes.zoneButton} fontSize="small" />
+              </IconButton>
+            )}
+            {customDrag && isSorted && (
+              <IconButton
+                onClick={() => addPersonalLink(index)}
+                className={classes.zoneButton}
+                title={i18n.__('components.PersonalZone.addPersonalLink')}
+              >
+                <AddCircleOutlineIcon />
+              </IconButton>
+            )}
+          </div>
+          {customDrag && isSorted ? (
+            <div className={classes.buttonZone}>
+              <IconButton
+                onClick={() => moveUpZone(index)}
+                className={classes.zoneButton}
+                title={i18n.__('components.PersonalZone.upZoneLabel')}
+                disabled={index === 0}
+              >
+                <VerticalAlignTopIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => moveDownZone(index)}
+                className={classes.zoneButton}
+                title={i18n.__('components.PersonalZone.downZoneLabel')}
+                disabled={lastZone}
+              >
+                <VerticalAlignBottomIcon />
+              </IconButton>
+              <Tooltip
+                title={
+                  elements.length === 0
+                    ? i18n.__('components.PersonalZone.delZoneLabel')
+                    : i18n.__('components.PersonalZone.forbiddenDelZoneLabel')
                 }
-              })
-              .filter((item) => item !== null)}
-      </ReactSortable>
-    </div>
+                aria-label={
+                  elements.length === 0
+                    ? i18n.__('components.PersonalZone.delZoneLabel')
+                    : i18n.__('components.PersonalZone.forbiddenDelZoneLabel')
+                }
+              >
+                <span>
+                  <IconButton
+                    onClick={() => delZone(index)}
+                    className={classes.zoneButton}
+                    disabled={elements.length !== 0}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </span>
+              </Tooltip>
+            </div>
+          ) : null}
+        </Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        <ReactSortable
+          className={`MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 ${
+            elements.length === 0 ? `${classes.emptyZone} ${customDrag ? classes.emptyDragZone : ''}` : ''
+          }`}
+          list={elements}
+          setList={setList(index)}
+          onEnd={updateList}
+          animation={150}
+          forceFallback
+          fallbackClass={classes.ghost}
+          group={{ name: 'zone', put: isSorted }}
+          handle={`.${classes.handle}`}
+          sort={isSorted}
+        >
+          {elements.length === 0
+            ? null
+            : elements
+                .map((elem) => {
+                  switch (elem.type) {
+                    case 'service': {
+                      const myservice = Services.findOne({ _id: elem.element_id });
+                      return myservice === undefined ? null : (
+                        <Grid
+                          className={classes.gridItem}
+                          item
+                          key={`service_${elem.element_id}`}
+                          xs={12}
+                          sm={6}
+                          md={4}
+                          lg={3}
+                        >
+                          <div className={customDrag ? classes.handle : null} />
+                          <ServiceDetailsPersSpace service={myservice} />
+                        </Grid>
+                      );
+                    }
+                    case 'group': {
+                      const mygroup = Groups.findOne(elem.element_id);
+                      return mygroup === undefined ? null : (
+                        <Grid
+                          className={classes.gridItem}
+                          item
+                          key={`group_${elem.element_id}`}
+                          xs={12}
+                          sm={6}
+                          md={4}
+                          lg={3}
+                        >
+                          <div className={customDrag ? classes.handle : null} />
+                          <GroupDetailsPersSpace
+                            group={mygroup}
+                            candidate={candidateGroups.includes(elem.element_id)}
+                            member={memberGroups.includes(elem.element_id)}
+                            animator={animatorGroups.includes(elem.element_id)}
+                            admin={isAdmin || managedGroups.includes(elem.element_id)}
+                          />
+                        </Grid>
+                      );
+                    }
+                    case 'link': {
+                      return (
+                        <Grid
+                          className={classes.gridItem}
+                          item
+                          key={`link_${elem.element_id}`}
+                          xs={12}
+                          sm={6}
+                          md={4}
+                          lg={3}
+                        >
+                          <div className={customDrag ? classes.handle : null} />
+                          <PersonalLinkDetails
+                            link={elem}
+                            globalEdit={customDrag}
+                            updateLink={(linkId) => updatePersonalLink(index, linkId)}
+                            delLink={(newLink) => delPersonalLink(index, newLink)}
+                          />
+                        </Grid>
+                      );
+                    }
+                    default: {
+                      return null;
+                    }
+                  }
+                })
+                .filter((item) => item !== null)}
+        </ReactSortable>
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
   );
 };
 
@@ -330,6 +376,7 @@ PersonalZone.propTypes = {
   title: PropTypes.string.isRequired,
   setTitle: PropTypes.func,
   setList: PropTypes.func.isRequired,
+  updateList: PropTypes.func.isRequired,
   delZone: PropTypes.func,
   lastZone: PropTypes.bool,
   moveDownZone: PropTypes.func,
@@ -339,10 +386,14 @@ PersonalZone.propTypes = {
   delPersonalLink: PropTypes.func,
   customDrag: PropTypes.bool.isRequired,
   isSorted: PropTypes.bool,
+  isExpanded: PropTypes.bool,
+  setExpanded: PropTypes.func,
 };
 
 PersonalZone.defaultProps = {
   isSorted: false,
+  isExpanded: true,
+  setExpanded: null,
   index: null,
   setTitle: null,
   delZone: null,

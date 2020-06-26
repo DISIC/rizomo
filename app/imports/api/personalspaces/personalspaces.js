@@ -61,6 +61,10 @@ PersonalSpaces.schema = new SimpleSchema(
     'sorted.$.name': {
       type: String,
     },
+    'sorted.$.isExpanded': {
+      type: Boolean,
+      defaultValue: true,
+    },
     'sorted.$.elements': {
       type: Array,
       defaultValue: [],
