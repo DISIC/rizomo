@@ -58,7 +58,7 @@ const MsgHandler = () => {
   }
   return (
     <Snackbar
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={openError}
       autoHideDuration={options.hideOnClick ? null : options.duration}
       onClose={handleMsgClose}
