@@ -74,6 +74,7 @@
       "adminGroupNeeded": "You don't have admin rights on this group.",
       "moderatedGroupOnly": "This action is available for moderated group only.",
       "userNotFound": "User not found",
+      "groupAlreadyExist": "A group with the same name already exists",
       "types": {
         "open": "open",
         "moderated": "moderated",

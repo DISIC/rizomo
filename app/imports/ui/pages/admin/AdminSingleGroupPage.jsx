@@ -147,7 +147,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
     method.call(args, (error) => {
       setLoading(false);
       if (error) {
-        msg.error(error.message);
+        msg.error(error.reason ? error.reason : error.message);
       } else {
         msg.success(i18n.__('api.methods.operationSuccessMsg'));
         history.goBack();

@@ -476,8 +476,8 @@ describe('groups', function () {
               },
             );
           },
-          Error,
-          /E11000 duplicate key error collection: meteor.groups index: c2_name dup key: { name: "group4" }/,
+          Meteor.Error,
+          /api.groups.createGroup.duplicateName/,
         );
       });
       it('does not create a group when not logged in', function () {
@@ -564,8 +564,8 @@ describe('groups', function () {
           () => {
             updateGroup._execute({ userId }, { groupId, data: { name: 'group4' } });
           },
-          Meteor.ClientError,
-          /E11000 duplicate key error collection: meteor.groups index: c2_name dup key: { name: "group4" }/,
+          Meteor.Error,
+          /api.groups.updateGroup.duplicateName/,
         );
       });
     });

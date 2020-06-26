@@ -76,17 +76,25 @@ export const createGroup = new ValidatedMethod({
     if (!isActive(this.userId)) {
       throw new Meteor.Error('api.groups.createGroup.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
-    const groupId = Groups.insert({
-      name,
-      type,
-      content,
-      description,
-      owner: this.userId,
-      admins: [this.userId],
-      active: true,
-    });
-    Roles.addUsersToRoles(this.userId, 'admin', groupId);
-    favGroup._execute({ userId: this.userId }, { groupId });
+    try {
+      const groupId = Groups.insert({
+        name,
+        type,
+        content,
+        description,
+        owner: this.userId,
+        admins: [this.userId],
+        active: true,
+      });
+      Roles.addUsersToRoles(this.userId, 'admin', groupId);
+      favGroup._execute({ userId: this.userId }, { groupId });
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new Meteor.Error('api.groups.createGroup.duplicateName', i18n.__('api.groups.groupAlreadyExist'));
+      } else {
+        throw error;
+      }
+    }
   },
 });
 
@@ -161,7 +169,15 @@ export const updateGroup = new ValidatedMethod({
     } else {
       groupData = { ...data };
     }
-    Groups.update({ _id: groupId }, { $set: groupData });
+    try {
+      Groups.update({ _id: groupId }, { $set: groupData });
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new Meteor.Error('api.groups.updateGroup.duplicateName', i18n.__('api.groups.groupAlreadyExist'));
+      } else {
+        throw error;
+      }
+    }
   },
 });
 
