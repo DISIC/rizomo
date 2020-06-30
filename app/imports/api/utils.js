@@ -6,10 +6,12 @@ import SimpleSchema from 'simpl-schema';
 export function checkDomain(email) {
   let res = false;
   const domainMail = email.split('@')[1];
-  // Put  whiteDomain in config ?
-  const whiteDomains = [/^ac-[a-z-]*\.fr/, /^[a-z-]*\.gouv\.fr/];
+  const whiteDomains = Meteor.settings.private.whiteDomains || [];
   whiteDomains.forEach((whiteDomain) => {
-    if (whiteDomain.test(domainMail)) res = true;
+    if (new RegExp(whiteDomain).test(domainMail)) {
+      console.log(`  Email domain matches ${whiteDomain}: user activated`);
+      res = true;
+    }
   });
   return res;
 }
