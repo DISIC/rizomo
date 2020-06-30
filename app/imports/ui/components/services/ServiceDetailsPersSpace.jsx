@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ServiceDetailsPersSpace({ service }) {
+function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
   const classes = useStyles();
   const history = useHistory();
   const favButtonLabel = i18n.__('components.ServiceDetails.favButtonLabelNoFav');
@@ -92,7 +92,7 @@ function ServiceDetailsPersSpace({ service }) {
           <Typography
             className={service.state === 5 ? classes.serviceNameDiasbled : classes.serviceName}
             gutterBottom
-            noWrap
+            noWrap={!isMobile}
             variant="h6"
             component="h2"
           >
@@ -108,11 +108,13 @@ function ServiceDetailsPersSpace({ service }) {
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.cardActions}>
-        <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-          <Button variant="outlined" size="small" className={classes.fab} onClick={handleFavorite}>
-            <RemoveIcon />
-          </Button>
-        </Tooltip>
+        {customDrag ? (
+          <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+            <Button variant="outlined" size="small" className={classes.fab} onClick={handleFavorite}>
+              <RemoveIcon />
+            </Button>
+          </Tooltip>
+        ) : null}
       </CardActions>
     </Card>
   );
@@ -120,6 +122,8 @@ function ServiceDetailsPersSpace({ service }) {
 
 ServiceDetailsPersSpace.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
+  customDrag: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 export default ServiceDetailsPersSpace;

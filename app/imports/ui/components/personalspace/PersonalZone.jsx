@@ -13,7 +13,7 @@ import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Grid, makeStyles, Typography, IconButton, Paper as div, Tooltip } from '@material-ui/core';
+import { Grid, makeStyles, Typography, IconButton, Tooltip } from '@material-ui/core';
 import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
 import Groups from '../../../api/groups/groups';
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     '&::before': {
       content: 'none',
     },
+    backgroundColor: '#f9f9fd',
   },
   cursorPointer: {
     cursor: 'pointer',
@@ -50,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
   gridItem: {
     position: 'relative',
     '&.sortable-ghost': { opacity: 0.3 },
+    minHeight: 201,
   },
   handle: {
     zIndex: 10,
@@ -147,7 +149,7 @@ const PersonalZone = ({
   setExpanded,
 }) => {
   const classes = useStyles();
-  const [{ userId }] = useAppContext();
+  const [{ userId, isMobile }] = useAppContext();
   const [localIsExpanded, setIsExpanded] = useState(isExpanded || true);
 
   const memberGroups = useTracker(() => Roles.getScopesForUser(userId, 'member'));
@@ -310,7 +312,7 @@ const PersonalZone = ({
                           lg={3}
                         >
                           <div className={customDrag ? classes.handle : null} />
-                          <ServiceDetailsPersSpace service={myservice} />
+                          <ServiceDetailsPersSpace service={myservice} customDrag={customDrag} isMobile={isMobile} />
                         </Grid>
                       );
                     }
@@ -329,6 +331,7 @@ const PersonalZone = ({
                           <div className={customDrag ? classes.handle : null} />
                           <GroupDetailsPersSpace
                             group={mygroup}
+                            isMobile={isMobile}
                             candidate={candidateGroups.includes(elem.element_id)}
                             member={memberGroups.includes(elem.element_id)}
                             animator={animatorGroups.includes(elem.element_id)}
@@ -351,6 +354,7 @@ const PersonalZone = ({
                           <div className={customDrag ? classes.handle : null} />
                           <PersonalLinkDetails
                             link={elem}
+                            isMobile={isMobile}
                             globalEdit={customDrag}
                             updateLink={(linkId) => updatePersonalLink(index, linkId)}
                             delLink={(newLink) => delPersonalLink(index, newLink)}
