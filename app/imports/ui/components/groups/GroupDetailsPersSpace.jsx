@@ -74,7 +74,7 @@ const useStyles = ({ type }, member, candidate) =>
     },
   }));
 
-function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator }) {
+function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator, isMobile }) {
   const { type } = group;
   const classes = useStyles(group, member || animator, candidate)();
 
@@ -120,7 +120,7 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator 
             <Avatar className={classes.avatar}>{iconHeader}</Avatar>
           )}
           <CardContent className={classes.cardContent}>
-            <Typography className={classes.serviceName} gutterBottom noWrap variant="h6" component="h2">
+            <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
               {group.name}
             </Typography>
           </CardContent>
@@ -162,6 +162,7 @@ GroupDetailsPersSpace.propTypes = {
   candidate: PropTypes.bool.isRequired,
   admin: PropTypes.bool.isRequired,
   animator: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 export default GroupDetailsPersSpace;

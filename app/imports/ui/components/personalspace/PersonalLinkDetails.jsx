@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PersonalLinkDetails({ link, globalEdit, delLink, updateLink }) {
+function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }) {
   const { title = '', url = '', element_id: elementId } = link;
 
   const classes = useStyles();
@@ -125,10 +125,10 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink }) {
           </Avatar>
         )}
         <CardContent className={globalEdit ? classes.cardContentEdit : classes.cardContent}>
-          <Typography className={classes.linkName} gutterBottom noWrap variant="h6" component="h2">
+          <Typography className={classes.linkName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
             {state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
           </Typography>
-          <Typography variant="body2" className={classes.linkUrl} noWrap component="p">
+          <Typography variant="body2" className={classes.linkUrl} noWrap={!isMobile} component="p">
             {state.url || i18n.__('components.PersonalLinkDetails.urlLabel')}
           </Typography>
         </CardContent>
@@ -168,6 +168,7 @@ PersonalLinkDetails.propTypes = {
   globalEdit: PropTypes.bool.isRequired,
   updateLink: PropTypes.func.isRequired,
   delLink: PropTypes.func.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 export default PersonalLinkDetails;

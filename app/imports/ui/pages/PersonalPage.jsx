@@ -19,84 +19,88 @@ import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import PersonalZone from '../components/personalspace/PersonalZone';
+import { useAppContext } from '../contexts/context';
 
-const useStyles = makeStyles((theme) => ({
-  flex: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(0),
-    paddingBottom: theme.spacing(2),
-  },
-  chip: {
-    margin: theme.spacing(1),
-  },
-  badge: { position: 'inherit' },
-  gridItem: {
-    position: 'relative',
-    '&.sortable-ghost': { opacity: 0.3 },
-  },
-  ghost: {
-    opacity: '1 !important',
-  },
-  spaceBetween: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  handle: {
-    cursor: 'grab',
-    position: 'absolute',
-    textAlign: 'center',
-    width: 'calc(100% - 32px)',
-    backgroundColor: theme.palette.primary.main,
-    opacity: 0.2,
-    height: 20,
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderTopRightRadius: theme.shape.borderRadius,
-    '&::after': {
-      content: '""',
-      width: '80%',
-      height: '3px',
-      backgroundColor: 'white',
-      display: 'inline-block',
-      marginBottom: '3px',
-      borderRadius: theme.shape.borderRadius,
+const useStyles = (isMobile) =>
+  makeStyles((theme) => ({
+    flex: {
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      justifyContent: 'space-between',
+      alignItems: isMobile ? 'flex-start' : 'center',
     },
-  },
-  zoneButton: {
-    color: theme.palette.primary.main,
-    opacity: 0.5,
-    cursor: 'pointer',
-    '&:hover': {
-      opacity: 1,
-      color: theme.palette.error.main,
+    cardGrid: {
+      paddingTop: theme.spacing(0),
+      paddingBottom: theme.spacing(2),
     },
-  },
-  zoneButtonEnd: {
-    marginTop: 30,
-    opacity: 0.5,
-    cursor: 'pointer',
-    '&:hover': {
-      opacity: 1,
-      color: theme.palette.error.main,
+    chip: {
+      margin: theme.spacing(1),
     },
-  },
-  divider: {
-    marginTop: 30,
-    marginBottom: 10,
-  },
-  goIcon: {
-    marginLeft: 8,
-    verticalAlign: 'bottom',
-  },
-}));
+    badge: { position: 'inherit' },
+    gridItem: {
+      position: 'relative',
+      '&.sortable-ghost': { opacity: 0.3 },
+    },
+    ghost: {
+      opacity: '1 !important',
+    },
+    spaceBetween: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    handle: {
+      cursor: 'grab',
+      position: 'absolute',
+      textAlign: 'center',
+      width: 'calc(100% - 32px)',
+      backgroundColor: theme.palette.primary.main,
+      opacity: 0.2,
+      height: 20,
+      borderTopLeftRadius: theme.shape.borderRadius,
+      borderTopRightRadius: theme.shape.borderRadius,
+      '&::after': {
+        content: '""',
+        width: '80%',
+        height: '3px',
+        backgroundColor: 'white',
+        display: 'inline-block',
+        marginBottom: '3px',
+        borderRadius: theme.shape.borderRadius,
+      },
+    },
+    zoneButton: {
+      color: theme.palette.primary.main,
+      opacity: 0.5,
+      cursor: 'pointer',
+      '&:hover': {
+        opacity: 1,
+        color: theme.palette.error.main,
+      },
+    },
+    zoneButtonEnd: {
+      marginTop: 30,
+      opacity: 0.5,
+      cursor: 'pointer',
+      '&:hover': {
+        opacity: 1,
+        color: theme.palette.error.main,
+      },
+    },
+    divider: {
+      marginTop: 30,
+      marginBottom: 10,
+    },
+    goIcon: {
+      marginLeft: 8,
+      verticalAlign: 'bottom',
+    },
+  }));
 
 function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
   const AUTOSAVE_INTERVAL = 3000;
-  const classes = useStyles();
+  const [{ isMobile }] = useAppContext();
   const [customDrag, setcustomDrag] = useState(false);
+  const classes = useStyles(isMobile)();
 
   const handleCustomDrag = (event) => {
     setcustomDrag(event.target.checked);
