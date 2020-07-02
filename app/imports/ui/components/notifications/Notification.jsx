@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 import HelpIcon from '@material-ui/icons/Help';
@@ -48,6 +49,7 @@ const useStyles = makeStyles(() => ({
 const Notification = ({ notification, toast }) => {
   const { _id, type, title, content, createdAt, read } = notification;
   const classes = useStyles();
+  const history = useHistory();
 
   const handleRemove = () => {
     Meteor.call('notifications.removeNotification', { notificationId: _id }, (err) => {
@@ -55,6 +57,10 @@ const Notification = ({ notification, toast }) => {
         msg.error(err.reason);
       }
     });
+  };
+
+  const handleLink = () => {
+    if (notification.link) history.push(notification.link);
   };
 
   const notifIcon = () => {
@@ -73,7 +79,7 @@ const Notification = ({ notification, toast }) => {
   };
 
   return (
-    <ListItem alignItems="flex-start" className={read ? classes.isRead : null}>
+    <ListItem alignItems="flex-start" className={read ? classes.isRead : null} button onClick={handleLink}>
       <ListItemIcon className={classes.leftIcon}>
         <Badge
           invisible={read}
