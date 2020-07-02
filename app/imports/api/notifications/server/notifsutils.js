@@ -24,6 +24,7 @@ export function createRoleNotification(currentUser, userId, groupId, role, setRo
         role: roleLabel,
         group: group.name,
       }),
+      link: `/groups/${group.slug}`,
       type,
     };
     createNotification._execute({ userId: currentUser }, { data: newNotif });
@@ -48,6 +49,7 @@ export function createRequestNotification(currentUser, userId, groupId) {
         name: user.username,
         group: group.name,
       }),
+      link: `/admingroups/${groupId}`,
       type: 'request',
     };
     if (currentUser !== uid) {
@@ -67,7 +69,7 @@ export function createGroupNotification(currentUser, groupId, title, content) {
   const group = Groups.findOne({ _id: groupId }, { fields: Groups.adminFields });
   const usersToSend = [...new Set([...group.admins, ...group.animators, ...group.members])]; // Concats arrays and removes duplicate user ids
   usersToSend.forEach((uid) => {
-    const newNotif = { userId: uid, title, content, type: 'group' };
+    const newNotif = { userId: uid, title, content, link: `/groups/${group.slug}`, type: 'group' };
     createNotification._execute({ userId: currentUser }, { data: newNotif });
   });
 }

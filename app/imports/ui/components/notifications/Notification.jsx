@@ -10,11 +10,11 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Checkbox,
   Typography,
   makeStyles,
   IconButton,
   Tooltip,
+  Badge,
 } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     display: 'inline',
   },
   isRead: {
-    backgroundColor: 'lightGrey',
+    backgroundColor: '#F9F9FD',
   },
   button: {
     display: 'block',
@@ -48,13 +48,6 @@ const useStyles = makeStyles(() => ({
 const Notification = ({ notification, toast }) => {
   const { _id, type, title, content, createdAt, read } = notification;
   const classes = useStyles();
-  const handleToggle = () => {
-    Meteor.call('notifications.markNotificationAsRead', { notificationId: _id }, (err) => {
-      if (err) {
-        msg.error(err.reason);
-      }
-    });
-  };
 
   const handleRemove = () => {
     Meteor.call('notifications.removeNotification', { notificationId: _id }, (err) => {
@@ -81,18 +74,32 @@ const Notification = ({ notification, toast }) => {
 
   return (
     <ListItem alignItems="flex-start" className={read ? classes.isRead : null}>
-      <ListItemIcon className={classes.leftIcon}>{notifIcon()}</ListItemIcon>
+      <ListItemIcon className={classes.leftIcon}>
+        <Badge
+          invisible={read}
+          variant="dot"
+          badgeContent=" "
+          overlap="circle"
+          color="primary"
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+        >
+          {notifIcon()}
+        </Badge>
+      </ListItemIcon>
       <ListItemText
         primary={
           <>
             {title}
             &nbsp;
-            <Typography component="span" variant="caption" className={classes.inline} color="textSecondary">
+            <Typography variant="caption" className={classes.inline} color="textSecondary">
               {createdAt.toLocaleDateString()}
             </Typography>
           </>
         }
-        secondary={<div>{content}</div>}
+        secondary={<span>{content}</span>}
       />
       {toast ? null : (
         <div className={classes.rightIcon}>
@@ -103,18 +110,6 @@ const Notification = ({ notification, toast }) => {
             <IconButton onClick={handleRemove} className={classes.button}>
               <CloseIcon />
             </IconButton>
-          </Tooltip>
-          <Tooltip
-            title={i18n.__('components.Notifications.check')}
-            aria-label={i18n.__('components.Notifications.check')}
-          >
-            <Checkbox
-              edge="end"
-              onChange={handleToggle}
-              checked={read}
-              disabled={read}
-              className={classes.buttonMargin}
-            />
           </Tooltip>
         </div>
       )}

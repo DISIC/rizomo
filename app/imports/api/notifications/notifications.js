@@ -34,6 +34,7 @@ Notifications.schema = new SimpleSchema(
       type: String,
       label: getLabel('api.notifications.labels.type'),
     },
+    link: { type: String, optional: true, label: getLabel('api.notifications.labels.link') },
     createdAt: {
       type: Date,
       label: getLabel('api.notifications.labels.createdAt'),
@@ -58,6 +59,7 @@ Notifications.publicFields = {
   userId: 1,
   title: 1,
   content: 1,
+  link: 1,
   type: 1,
   createdAt: 1,
   read: 1,

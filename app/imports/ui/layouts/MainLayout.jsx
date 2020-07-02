@@ -25,7 +25,7 @@ import ArticlesPage from '../pages/articles/ArticlesPage';
 import EditArticlePage from '../pages/articles/EditArticlePage';
 import MediaStoragePage from '../pages/MediaStoragePage';
 import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
-import NotificationDrawer from '../components/notifications/NotificationDrawer';
+import NotificationsDisplay from '../components/notifications/NotificationsDisplay';
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -137,7 +137,7 @@ function MainLayout() {
           {isMobile && <MobileMenu />}
         </main>
       )}
-      <NotificationDrawer />
+      <NotificationsDisplay />
       <CustomToast />
     </div>
   );
