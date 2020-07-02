@@ -199,14 +199,12 @@
       "cancel": "Annuler"
     },
     "Notifications": {
-      "check": "Marquer comme lu",
       "remove": "Supprimer"
     },
-    "NotificationsDrawer": {
-      "checkAll": "Marquer toutes les notifications comme lues",
+    "NotificationsDisplay": {
+      "empty": "Vous n'avez aucune notification.",
       "removeAll": "Supprimer toutes les notifications",
-      "confirmRemoveAll": "Êtes vous sûr de vouloir supprimer toutes les notifications ?",
-      "removeAllRead": "Supprimer toutes les notifications lues"
+      "confirmRemoveAll": "Êtes vous sûr de vouloir supprimer toutes les notifications ?"
     },
     "Footer": {
       "personalData": "Données Personnelles",

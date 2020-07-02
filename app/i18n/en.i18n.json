@@ -199,14 +199,12 @@
       "cancel": "Cancel"
     },
     "Notifications": {
-      "check": "Check as read",
       "remove": "Remove"
     },
-    "NotificationsDrawer": {
-      "checkAll": "Check all the notifications as read",
+    "NotificationsDisplay": {
+      "empty": "You have no notifications",
       "removeAll": "Remove all the notifications",
-      "confirmRemoveAll": "Are you sure you want to delete all the notifications ?",
-      "removeAllRead": "Remove all the notifications read"
+      "confirmRemoveAll": "Are you sure you want to delete all the notifications ?"
     },
     "Footer": {
       "personalData": "Personal Data",

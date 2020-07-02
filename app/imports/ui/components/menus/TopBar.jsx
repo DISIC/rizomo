@@ -56,7 +56,18 @@ function TopBar({ publicMenu, root }) {
       },
     });
 
-  const handleDrawerOpen = () => updateGlobalState('drawerOpen', true);
+  const handleNotifsOpen = () => {
+    const notifState = notificationPage.notifsOpen || false;
+    if (notifState) {
+      // On notifs close : mark all as read
+      Meteor.call('notifications.markAllNotificationAsRead', {}, (err) => {
+        if (err) {
+          msg.error(err.reason);
+        }
+      });
+    }
+    updateGlobalState('notifsOpen', !notifState);
+  };
 
   return (
     <AppBar position="fixed" className={classes.root}>
@@ -69,7 +80,7 @@ function TopBar({ publicMenu, root }) {
         {publicMenu ? null : (
           <>
             <MainMenu user={user} />
-            <IconButton onClick={() => handleDrawerOpen()}>
+            <IconButton onClick={() => handleNotifsOpen()}>
               <NotificationsBell />
             </IconButton>
           </>

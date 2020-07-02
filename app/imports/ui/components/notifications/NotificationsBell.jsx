@@ -40,7 +40,7 @@ const NotificationsBell = ({ nonReadNotifsCount }) => {
   const classes = useStyles();
 
   return (
-    <>
+    <div id="NotificationsBell">
       {nonReadNotifsCount > 0 ? (
         <Badge className={classes.badge} badgeContent={nonReadNotifsCount} color="primary">
           <NotificationsIcon />
@@ -48,7 +48,7 @@ const NotificationsBell = ({ nonReadNotifsCount }) => {
       ) : (
         <NotificationsNoneIcon />
       )}
-    </>
+    </div>
   );
 };
 
