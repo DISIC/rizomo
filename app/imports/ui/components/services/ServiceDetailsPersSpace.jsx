@@ -5,11 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Button, CardActionArea, CardActions } from '@material-ui/core';
+import { Button, CardActionArea, CardActions, CardHeader, Avatar } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 
 import { isUrlExternal } from '../../utils/utilsFuncs';
@@ -21,15 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  cardContent: {
-    padding: 10,
-  },
-  cardMedia: {
-    maxWidth: '40px',
-    objectFit: 'contain',
-    borderRadius: theme.shape.borderRadius,
-    margin: 'auto',
-  },
+  cardHeaderContent: { display: 'grid' },
   cardActions: {
     paddingTop: 0,
     justifyContent: 'end',
@@ -40,10 +30,7 @@ const useStyles = makeStyles((theme) => ({
   serviceNameDiasbled: {
     color: theme.palette.text.disabled,
   },
-  actionarea: {
-    textAlign: 'center',
-    marginTop: 20,
-  },
+  actionarea: {},
   fab: {
     textTransform: 'none',
     color: theme.palette.primary.main,
@@ -87,25 +74,30 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
         title={service.usage}
         onClick={handleClick}
       >
-        <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
-        <CardContent className={classes.cardContent}>
-          <Typography
-            className={service.state === 5 ? classes.serviceNameDiasbled : classes.serviceName}
-            gutterBottom
-            noWrap={!isMobile}
-            variant="h6"
-            component="h2"
-          >
-            {service.title}
-          </Typography>
-          {/* {service.state === 5 ? (
-            <Typography variant="body2" color="textSecondary" component="p">
-              {i18n.__('pages.SingleServicePage.inactive')}
+        <CardHeader
+          classes={{ content: classes.cardHeaderContent }}
+          avatar={<Avatar aria-label="recipe" className={classes.avatar} alt={service.title} src={service.logo} />}
+          title={
+            <Typography
+              className={service.state === 5 ? classes.serviceNameDiasbled : classes.serviceName}
+              gutterBottom
+              noWrap={!isMobile}
+              variant="h6"
+              component="h2"
+            >
+              {service.title}
             </Typography>
-          ) : (
-            ''
-          )} */}
-        </CardContent>
+          }
+          subheader={
+            service.state === 5 ? (
+              <Typography variant="body2" color="textSecondary" component="p">
+                {i18n.__('pages.SingleServicePage.inactive')}
+              </Typography>
+            ) : (
+              ''
+            )
+          }
+        />
       </CardActionArea>
       <CardActions className={classes.cardActions}>
         {customDrag ? (

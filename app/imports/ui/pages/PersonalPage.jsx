@@ -78,7 +78,6 @@ const useStyles = (isMobile) =>
       },
     },
     zoneButtonEnd: {
-      marginTop: 30,
       opacity: 0.5,
       cursor: 'pointer',
       '&:hover': {
@@ -87,8 +86,9 @@ const useStyles = (isMobile) =>
       },
     },
     divider: {
-      marginTop: 30,
-      marginBottom: 10,
+      marginTop: 20,
+      marginBottom: 20,
+      backgroundColor: '#cbd0ed',
     },
     goIcon: {
       marginLeft: 8,

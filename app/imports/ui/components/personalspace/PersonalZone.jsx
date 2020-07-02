@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
     },
     backgroundColor: '#f9f9fd',
   },
+  expansionpanelsummary: {
+    margin: 0,
+    minHeight: 0,
+  },
   cursorPointer: {
     cursor: 'pointer',
   },
@@ -40,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
   zone: {
     marginTop: 0,
     marginBottom: 0,
-    minHeight: 48,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -49,9 +52,9 @@ const useStyles = makeStyles((theme) => ({
     opacity: '1 !important',
   },
   gridItem: {
+    mawWidth: 200,
     position: 'relative',
     '&.sortable-ghost': { opacity: 0.3 },
-    minHeight: 201,
   },
   handle: {
     zIndex: 10,

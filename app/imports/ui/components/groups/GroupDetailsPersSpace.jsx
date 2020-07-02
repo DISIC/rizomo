@@ -3,18 +3,17 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SecurityIcon from '@material-ui/icons/Security';
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import CheckIcon from '@material-ui/icons/Check';
-import WatchLaterIcon from '@material-ui/icons/WatchLater';
+// import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+// import CheckIcon from '@material-ui/icons/Check';
+// import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
 import EditIcon from '@material-ui/icons/Edit';
-import { Button, Avatar, CardActionArea, CardActions } from '@material-ui/core';
+import { Button, Avatar, CardActionArea, CardActions, CardHeader } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import GroupBadge from './GroupBadge';
 
@@ -33,9 +32,6 @@ const useStyles = ({ type }, member, candidate) =>
       flexDirection: 'column',
       position: 'relative',
     },
-    cardContent: {
-      padding: 10,
-    },
     buttonText: {
       textTransform: 'none',
       backgroundColor:
@@ -50,10 +46,7 @@ const useStyles = ({ type }, member, candidate) =>
     serviceName: {
       color: theme.palette.primary.main,
     },
-    actionarea: {
-      textAlign: 'center',
-      marginTop: 20,
-    },
+    cardHeaderContent: { display: 'grid' },
     cardActions: {
       justifyContent: 'space-between',
       paddingTop: 0,
@@ -78,18 +71,18 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
   const { type } = group;
   const classes = useStyles(group, member || animator, candidate)();
 
-  const icon = () => {
-    if (member || animator) {
-      return type === 0 ? <CheckIcon /> : <VerifiedUserIcon />;
-    }
-    if (type === 0) {
-      return <ExitToAppIcon />;
-    }
-    if (candidate) {
-      return <WatchLaterIcon />;
-    }
-    return <LockIcon />;
-  };
+  // const icon = () => {
+  //   if (member || animator) {
+  //     return type === 0 ? <CheckIcon /> : <VerifiedUserIcon />;
+  //   }
+  //   if (type === 0) {
+  //     return <ExitToAppIcon />;
+  //   }
+  //   if (candidate) {
+  //     return <WatchLaterIcon />;
+  //   }
+  //   return <LockIcon />;
+  // };
 
   const text = () => {
     if (animator) {
@@ -112,33 +105,33 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
     <Card className={classes.card} elevation={3}>
       <Link to={`/groups/${group.slug}`} className={classes.noUnderline} title={group.description}>
         <CardActionArea className={classes.actionarea}>
-          {animator || admin ? (
-            <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
-              <Avatar className={classes.avatar}>{iconHeader}</Avatar>
-            </GroupBadge>
-          ) : (
-            <Avatar className={classes.avatar}>{iconHeader}</Avatar>
-          )}
-          <CardContent className={classes.cardContent}>
-            <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
-              {group.name}
-            </Typography>
-          </CardContent>
+          <CardHeader
+            classes={{ content: classes.cardHeaderContent }}
+            avatar={
+              animator || admin ? (
+                <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
+                  <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+                </GroupBadge>
+              ) : (
+                <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+              )
+            }
+            title={
+              <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
+                {group.name}
+              </Typography>
+            }
+            subheader={
+              member || animator || candidate ? (
+                <Typography className={classes.buttonText} variant="body2" component="p">
+                  {text()}
+                </Typography>
+              ) : null
+            }
+          />
         </CardActionArea>
       </Link>
-      <CardActions className={!(member || animator || candidate) ? classes.cardActionsUnique : classes.cardActions}>
-        {member || animator || candidate ? (
-          <Button
-            startIcon={icon()}
-            className={classes.buttonText}
-            size="large"
-            variant="text"
-            disableElevation
-            disableRipple
-          >
-            {text()}
-          </Button>
-        ) : null}
+      <CardActions className={classes.cardActionsUnique}>
         {admin && (
           <Tooltip
             title={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
