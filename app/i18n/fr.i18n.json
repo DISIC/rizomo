@@ -202,6 +202,9 @@
       "remove": "Supprimer"
     },
     "NotificationsDisplay": {
+      "title": "Notifications",
+      "confirm": "Oui",
+      "cancel": "Non",
       "empty": "Vous n'avez aucune notification.",
       "removeAll": "Supprimer toutes les notifications",
       "confirmRemoveAll": "Êtes vous sûr de vouloir supprimer toutes les notifications ?"

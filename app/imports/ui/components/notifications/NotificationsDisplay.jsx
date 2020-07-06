@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import CancelIcon from '@material-ui/icons/Cancel';
-import { Fade, Typography, Paper, Popper } from '@material-ui/core';
+import { Fade, Typography, Paper, Popper, ClickAwayListener } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -21,11 +19,21 @@ const useStyles = makeStyles((theme) => ({
   popper: {
     zIndex: 1300,
     marginTop: 20,
+    '&[x-placement*="bottom"] $arrow': {
+      top: 0,
+      left: 0,
+      marginTop: '-0.9em',
+      width: '3em',
+      height: '1em',
+      '&::before': {
+        borderWidth: '0 1em 1em 1em',
+        borderColor: `transparent transparent ${theme.palette.background.paper} transparent`,
+      },
+    },
   },
   paper: {
     width: 400,
     outline: 'none',
-    border: `2px solid ${theme.palette.primary.main}`,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(1),
   },
@@ -36,11 +44,7 @@ const useStyles = makeStyles((theme) => ({
   notifsListEmpty: {},
   divflex: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  title: {
-    marginLeft: theme.spacing(7),
+    justifyContent: 'center',
   },
   footer: {
     textAlign: 'center',
@@ -55,13 +59,27 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.tertiary.main,
     },
   },
+  arrow: {
+    position: 'absolute',
+    fontSize: 7,
+    width: '3em',
+    height: '3em',
+    '&::before': {
+      content: '""',
+      margin: 'auto',
+      display: 'block',
+      width: 0,
+      height: 0,
+      borderStyle: 'solid',
+    },
+  },
 }));
 
 const NotificationsDisplay = ({ notifications, ready }) => {
   const classes = useStyles();
   const [{ notificationPage }, dispatch] = useAppContext();
   const [open, setOpen] = useState(false);
-
+  const [arrowRef, setArrowRef] = React.useState(null);
   const updateGlobalState = (key, value) =>
     dispatch({
       type: 'notificationPage',
@@ -112,59 +130,61 @@ const NotificationsDisplay = ({ notifications, ready }) => {
           onClose={handleNotifsClose}
           anchorEl={document.getElementById('NotificationsBell')}
           placement="bottom-end"
+          modifiers={{ arrow: { enabled: true, element: arrowRef } }}
         >
           <Fade in={notificationPage.notifsOpen}>
-            <Paper className={classes.paper}>
-              <div className={classes.divflex}>
-                <Typography variant="h6" className={classes.title}>
-                  Notifications
-                </Typography>
-                <IconButton onClick={handleNotifsClose}>
-                  <CancelIcon />
-                </IconButton>
-              </div>
-
-              <Dialog
-                open={open}
-                onClose={handleCloseDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    {i18n.__('components.NotificationsDisplay.confirmRemoveAll')}
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCloseDialog} color="primary">
-                    Non
-                  </Button>
-                  <Button onClick={handleRemoveAll} color="primary" autoFocus>
-                    Oui
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              <Divider />
-              <div className={notifications.length < 4 ? classes.notifsListEmpty : classes.notifsList}>
-                {notifications.map((notif, index) => [
-                  <Notification key={notif._id} notification={notif} />,
-                  notifications.length !== index + 1 ? (
-                    <Divider className={classes.divider} key={`div-${notif._id}`} />
-                  ) : null,
-                ])}
-              </div>
-              {notifications.length === 0 ? (
-                <Typography className={classes.footer} variant="body2">
-                  {i18n.__('components.NotificationsDisplay.empty')}
-                </Typography>
-              ) : (
-                <div className={classes.footer}>
-                  <Button className={classes.button} variant="body2" onClick={handleOpenDialog}>
-                    {i18n.__('components.NotificationsDisplay.removeAll')}
-                  </Button>
-                </div>
-              )}
-            </Paper>
+            <>
+              <span className={classes.arrow} ref={setArrowRef} />
+              <Paper className={classes.paper}>
+                <ClickAwayListener onClickAway={handleNotifsClose}>
+                  <div>
+                    <div className={classes.divflex}>
+                      <Typography variant="h6">{i18n.__('components.NotificationsDisplay.title')}</Typography>
+                    </div>
+                    <Dialog
+                      open={open}
+                      onClose={handleCloseDialog}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                          {i18n.__('components.NotificationsDisplay.confirmRemoveAll')}
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleCloseDialog} color="primary">
+                          {i18n.__('components.NotificationsDisplay.cancel')}
+                        </Button>
+                        <Button onClick={handleRemoveAll} color="primary" autoFocus>
+                          {i18n.__('components.NotificationsDisplay.confirm')}
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                    <Divider />
+                    <div className={notifications.length < 4 ? classes.notifsListEmpty : classes.notifsList}>
+                      {notifications.map((notif, index) => [
+                        <Notification key={notif._id} notification={notif} />,
+                        notifications.length !== index + 1 ? (
+                          <Divider className={classes.divider} key={`div-${notif._id}`} />
+                        ) : null,
+                      ])}
+                    </div>
+                    {notifications.length === 0 ? (
+                      <Typography className={classes.footer} variant="body2">
+                        {i18n.__('components.NotificationsDisplay.empty')}
+                      </Typography>
+                    ) : (
+                      <div className={classes.footer}>
+                        <Button className={classes.button} onClick={handleOpenDialog}>
+                          {i18n.__('components.NotificationsDisplay.removeAll')}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </ClickAwayListener>
+              </Paper>
+            </>
           </Fade>
         </Popper>
       )}
