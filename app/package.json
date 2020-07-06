@@ -35,6 +35,7 @@
     "react-sortablejs": "^2.0.11",
     "react-swipeable-views": "^0.13.9",
     "react-toastify": "^6.0.5",
+    "react-webcam": "^5.2.0",
     "simpl-schema": "^1.7.3",
     "slugify": "^1.4.0",
     "validate.js": "^0.13.1"

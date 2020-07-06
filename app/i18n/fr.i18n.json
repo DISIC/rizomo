@@ -393,7 +393,24 @@
       "link": "Associer un lien au texte sélectionné",
       "image": "Ajouter une image",
       "video": "Intégrer une vidéo",
+      "webcam": "Enregistrer une vidéo",
       "clean": "Supprimer la mise en forme de la sélection"
+    },
+    "WebcamModal": {
+      "header": "Enregistrer une nouvelle vidéo",
+      "start": "Démarrer l'enregistrement",
+      "stop": "Arrêter l'enregistrement",
+      "upload": "Téléverser la vidéo",
+      "tooLongVideo": "Vous avez atteint votre limite de stockage",
+      "refresh": "Recommencer",
+      "validate": "Valider la vidéo",
+      "cancel": "Annuler",
+      "fileName": "Nom de la vidéo",
+      "quality": "Résolution",
+      "low": "Basse",
+      "medium": "Moyenne",
+      "high": "Haute",
+      "nowebcam": "Aucune caméra disponible"
     }
   },
   "validatejs": {
