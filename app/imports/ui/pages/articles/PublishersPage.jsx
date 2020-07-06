@@ -17,7 +17,7 @@ import { makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLab
 import IconButton from '@material-ui/core/IconButton';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import Pagination from '@material-ui/lab/Pagination';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
 import TopBar from '../../components/menus/TopBar';
@@ -68,6 +68,7 @@ const ITEM_PER_PAGE = 10;
 
 const PublishersPage = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [{ isMobile, publishersPage }, dispatch] = useAppContext();
   const { search = '' } = publishersPage;
   const [sortByDate, setSortByDate] = useState(false);
@@ -82,6 +83,10 @@ const PublishersPage = () => {
 
   const handleChangePage = (event, value) => {
     changePage(value);
+  };
+
+  const handlePublisher = (user) => {
+    history.push(`/public/${user._id}`);
   };
 
   const updateGlobalState = (key, value) =>
@@ -168,7 +173,14 @@ const PublishersPage = () => {
             ) : (
               <List className={classes.list} disablePadding>
                 {items.map((user, i) => [
-                  <ListItem alignItems="flex-start" key={`user-${user._id}`}>
+                  <ListItem
+                    button
+                    title={i18n.__('pages.PublishersPage.goToPublications')}
+                    aria-label={i18n.__('pages.PublishersPage.goToPublications')}
+                    onClick={() => handlePublisher(user)}
+                    alignItems="flex-start"
+                    key={`user-${user._id}`}
+                  >
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} alt={user.firstName} src={user.firstName} />
                     </ListItemAvatar>
@@ -195,11 +207,9 @@ const PublishersPage = () => {
                     />
                     <ListItemSecondaryAction>
                       <Tooltip title={i18n.__('pages.PublishersPage.goToPublications')} aria-label="goToPublications">
-                        <Link to={`/public/${user._id}`}>
-                          <IconButton edge="end" aria-label="goToPublications">
-                            <ListAltIcon />
-                          </IconButton>
-                        </Link>
+                        <IconButton edge="end" aria-label="goToPublications" onClick={() => handlePublisher(user)}>
+                          <ListAltIcon />
+                        </IconButton>
                       </Tooltip>
                     </ListItemSecondaryAction>
                   </ListItem>,
