@@ -17,7 +17,10 @@ import slugy from '../../utils/slugy';
 import { updateArticle, createArticle, removeArticle } from '../../../api/articles/methods';
 import ValidationButton from '../../components/system/ValidationButton';
 import ImagePicker from '../../components/articles/ImagePicker';
+import WebcamModal from '../../components/system/WebcamModal';
+
 import '../../utils/QuillImage';
+import '../../utils/QuillWebcam';
 import { CustomToolbarArticle } from '../../components/system/CustomQuill';
 
 Quill.register('modules/ImageResize', ImageResize);
@@ -58,12 +61,13 @@ const emptyArticle = {
   description: '',
 };
 
-const quillOptionsMaker = (handler) => ({
+const quillOptionsMaker = ({ imageHandler, webcamHandler }) => ({
   modules: {
     toolbar: {
       container: '#quill-toolbar',
       handlers: {
-        image: handler,
+        image: imageHandler,
+        webcam: webcamHandler,
       },
     },
     clipboard: {
@@ -94,11 +98,13 @@ const quillOptionsMaker = (handler) => ({
     'video',
     'width',
     'style',
+    'webcam',
   ],
 });
 
 let quillOptions;
 const IMAGE_TYPES = ['svg', 'png', 'jpg', 'gif', 'jpeg'];
+const VIDEO_TYPES = ['mp4', 'webm', 'avi', 'wmv'];
 
 function EditArticlePage({
   article = {},
@@ -114,6 +120,7 @@ function EditArticlePage({
   const [mounted, setMounted] = useState(false);
   const [quill, setQuill] = useState(null);
   const [picker, togglePicker] = useState(false);
+  const [webcam, toggleWebcam] = useState(false);
   const [data, setData] = useObjectState(emptyArticle);
   const [content, setContent] = useState('');
 
@@ -122,10 +129,24 @@ function EditArticlePage({
     // eslint-disable-next-line react/no-this-in-sfc
     setQuill(this.quill);
   }
+  function webcamHandler() {
+    toggleWebcam(true);
+    // eslint-disable-next-line react/no-this-in-sfc
+    setQuill(this.quill);
+  }
 
   useEffect(() => {
-    quillOptions = quillOptionsMaker(imageHandler);
+    quillOptions = quillOptionsMaker({
+      imageHandler,
+      webcamHandler,
+    });
   }, []);
+
+  const insertVideo = (videoUrl) => {
+    const range = quill.getSelection(true);
+    quill.insertEmbed(range.index, 'webcam', videoUrl);
+    toggleWebcam(false);
+  };
 
   const selectFile = (file) => {
     const range = quill.getSelection(true);
@@ -135,9 +156,17 @@ function EditArticlePage({
         format = 'image';
       }
     });
+    VIDEO_TYPES.forEach((extension) => {
+      if (file.name.search(extension) > -1) {
+        format = 'video';
+      }
+    });
     const url = `${HOST}${file.name}`;
+
     if (format === 'image') {
       quill.insertEmbed(range.index, format, url);
+    } else if (format === 'video') {
+      quill.insertEmbed(range.index, 'webcam', url);
     } else {
       quill.pasteHTML(range.index, `<a target="_blank" href="${url}">${url}</a>`);
     }
@@ -284,7 +313,7 @@ function EditArticlePage({
         />
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
-          <CustomToolbarArticle withMedia />
+          <CustomToolbarArticle withMedia withWebcam />
           <ReactQuill {...quillOptions} id="content" value={content} onChange={onUpdateRichText} />
         </div>
 
@@ -307,6 +336,7 @@ function EditArticlePage({
         </div>
       </form>
       {picker && <ImagePicker selectFile={selectFile} onClose={() => togglePicker(false)} isMobile={isMobile} />}
+      {webcam && <WebcamModal selectFile={insertVideo} onClose={() => toggleWebcam(false)} />}
     </Container>
   );
 }

@@ -393,7 +393,24 @@
       "link": "Add link to selected text",
       "image": "Add picture",
       "video": "Embed video",
+      "webcam": "Record video",
       "clean": "Clean selected text formatting"
+    },
+    "WebcamModal": {
+      "header": "Record a new video",
+      "start": "Start the recording",
+      "stop": "Stop the recording",
+      "upload": "Upload the video",
+      "tooLongVideo": "You reached your storage limit",
+      "refresh": "Reset the video",
+      "validate": "Validate the video",
+      "cancel": "Cancel",
+      "fileName": "Name of the video",
+      "quality": "Quality",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "nowebcam": "No webcam available"
     }
   },
   "validatejs": {
