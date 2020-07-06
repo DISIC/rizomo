@@ -15,6 +15,7 @@ import { structures } from '../structures';
 import { favGroup, unfavGroup } from '../../groups/methods';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 import { createRoleNotification, createRequestNotification } from '../../notifications/server/notifsutils';
+import kcClient from '../../kcClient';
 
 // users.findUsers: Returns users using pagination
 //   filter: string to search for in username/firstname/lastname/emails (case insensitive search)
@@ -290,6 +291,10 @@ export const setAdmin = new ValidatedMethod({
     if (user === undefined) {
       throw new Meteor.Error('api.users.setAdmin.unknownUser', i18n.__('api.users.unknownUser'));
     }
+    if (Meteor.settings.public.enableKeycloak) {
+      // update user's groups in Keycloak
+      kcClient.setAdmin(userId);
+    }
     // add role to user collection
     Roles.addUsersToRoles(userId, 'admin');
   },
@@ -359,6 +364,10 @@ export const unsetAdmin = new ValidatedMethod({
     if (user === undefined) {
       throw new Meteor.Error('api.users.setAdmin.unknownUser', i18n.__('api.users.unknownUser'));
     }
+    if (Meteor.settings.public.enableKeycloak) {
+      // update user's groups in Keycloak
+      kcClient.unsetAdmin(userId);
+    }
     // remove role from user collection
     Roles.removeUsersFromRoles(userId, 'admin');
   },
@@ -391,6 +400,10 @@ export const setAdminOf = new ValidatedMethod({
     // store info in group collection
     if (group.admins.indexOf(userId) === -1) {
       Groups.update(groupId, { $push: { admins: userId } });
+    }
+    if (Meteor.settings.public.enableKeycloak) {
+      // update user's groups in Keycloak
+      kcClient.setRole(userId, group, 'admin');
     }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'admin', true);
@@ -428,6 +441,10 @@ export const unsetAdminOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['animator', 'member', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
+    if (Meteor.settings.public.enableKeycloak) {
+      // update user's groups in Keycloak
+      kcClient.unsetRole(userId, group, 'admin');
+    }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'admin', false);
   },
@@ -463,6 +480,10 @@ export const setAnimatorOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
+    if (Meteor.settings.public.enableKeycloak) {
+      // update user's groups in Keycloak
+      kcClient.setRole(userId, group, 'animator');
+    }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'animator', true);
   },
@@ -498,6 +519,10 @@ export const unsetAnimatorOf = new ValidatedMethod({
     // if user has no longer roles, remove group from personalspace
     if (!Roles.userIsInRole(userId, ['member', 'admin', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
+    }
+    if (Meteor.settings.public.enableKeycloak) {
+      // update user's groups in Keycloak
+      kcClient.unsetRole(userId, group, 'animator');
     }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'animator', false);
@@ -547,6 +572,10 @@ export const setMemberOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
+    if (Meteor.settings.public.enableKeycloak) {
+      // update user's groups in Keycloak
+      kcClient.setRole(userId, group, 'member');
+    }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'member', true);
   },
@@ -584,6 +613,10 @@ export const unsetMemberOf = new ValidatedMethod({
     // if user has no longer roles, remove group from personalspace
     if (!Roles.userIsInRole(userId, ['animator', 'admin', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
+    }
+    if (Meteor.settings.public.enableKeycloak) {
+      // update user's groups in Keycloak
+      kcClient.unsetRole(userId, group, 'member');
     }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'member', false);

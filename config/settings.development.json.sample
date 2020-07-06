@@ -38,7 +38,9 @@
   "keycloak": {
     "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvyVtOgah8FjiXmFcnavID9b0lEhCl5k7jISPkPweOQtB1+hRAajcT7Y4v9babrUAXVL7bAb8nRTJVrks3Jl+o/nfZjfLxx7vIE1mMsRGVAqPg88UgyP79fFBvWdPnrIaIweNqlH5r1WoBOVjsoX0rFNijZqQ5llcC/uUYQW35urjGUJIZlHDSOdp34qnrrnohE3714PUuiKHhqFx15MpzmO/KQuIt0lJXuJ3NgAwt1OndksvP03Kkm0ls7IvveF0GiM2dki2xPRAHvv3jC1hLdHm0kGdrn+EndX0xFwBl9kL5zcjILGwm1gyfeJdfzOQrBUf6WL+FpgNseWq5MD+vwIDAQAB",
     "client": "sso",
-    "adminEmails": []
+    "adminEmails": [],
+    "adminUser": "",
+    "adminPassword": ""
   },
   "private": {
     "fillWithFakeData": true,
