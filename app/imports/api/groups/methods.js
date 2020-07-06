@@ -96,7 +96,7 @@ export const createGroup = new ValidatedMethod({
         throw error;
       }
     }
-    if (Meteor.isServer && Meteor.settings.public.enableKeycloak) {
+    if (kcClient) {
       // create associated groups and roles in keycloak
       kcClient.addGroup({ name });
     }
@@ -122,7 +122,7 @@ export const removeGroup = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.groups.removeGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
-    if (Meteor.isServer && Meteor.settings.public.enableKeycloak) {
+    if (kcClient) {
       // delete associated groups and roles in keycloak
       kcClient.removeGroup(group);
     }
