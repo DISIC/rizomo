@@ -224,7 +224,7 @@ class KeyCloakClient {
     });
   }
 
-  addGroup(group) {
+  addGroupWithRoles(group) {
     AppRoles.filter((role) => role !== 'candidate').forEach((role) => {
       const groupName = `${role}_${group.name}`;
       this._getToken().then((token) => {
@@ -232,6 +232,15 @@ class KeyCloakClient {
           console.log(`Keycloak : ERROR adding group ${groupName}`);
           console.log(error.response && error.response.data ? error.response.data : error);
         });
+      });
+    });
+  }
+
+  addGroup(group) {
+    this._getToken().then((token) => {
+      this._addGroup(group.name, token).catch((error) => {
+        console.log(`Keycloak : ERROR adding group ${group.name}`);
+        console.log(error.response && error.response.data ? error.response.data : error);
       });
     });
   }
@@ -245,38 +254,46 @@ class KeyCloakClient {
     });
   }
 
-  removeGroup(group) {
+  _removeGroup(groupName) {
+    this._getToken()
+      .then((token) => {
+        // search group id
+        return this._getGroupId(groupName, token).then((groupId) => {
+          if (groupId === undefined) {
+            console.log(`Keycloak: could not find group ${groupName}`);
+            return null;
+          }
+          // delete associated role
+          return this._removeRole(groupName, token).then(() => {
+            // delete group
+            return axios
+              .delete(`${this.kcURL}/admin/realms/${this.kcRealm}/groups/${groupId}`, {
+                headers: {
+                  Accept: 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then(() => console.log(`Keycloak: group ${groupName} removed`));
+          });
+        });
+      })
+      .catch((error) =>
+        console.log(
+          `Keycloak: Error removing group ${groupName}`,
+          error.response && error.response.data ? error.response.data : error,
+        ),
+      );
+  }
+
+  removeGroupWithRoles(group) {
     AppRoles.filter((role) => role !== 'candidate').forEach((role) => {
       const groupName = `${role}_${group.name}`;
-      this._getToken()
-        .then((token) => {
-          // search group id
-          return this._getGroupId(groupName, token).then((groupId) => {
-            if (groupId === undefined) {
-              console.log(`Keycloak: could not find group ${groupName}`);
-              return null;
-            }
-            // delete associated role
-            return this._removeRole(groupName, token).then(() => {
-              // delete group
-              return axios
-                .delete(`${this.kcURL}/admin/realms/${this.kcRealm}/groups/${groupId}`, {
-                  headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                .then(() => console.log(`Keycloak: group ${groupName} removed`));
-            });
-          });
-        })
-        .catch((error) =>
-          console.log(
-            `Keycloak: Error removing group ${groupName}`,
-            error.response && error.response.data ? error.response.data : error,
-          ),
-        );
+      this._removeGroup(groupName);
     });
+  }
+
+  removeGroup(group) {
+    this._removeGroup(group.name);
   }
 
   setAdmin(userId) {
@@ -337,14 +354,13 @@ class KeyCloakClient {
     }
   }
 
-  setRole(userId, group, role) {
-    const groupName = `${role}_${group.name}`;
+  setRole(userId, roleName) {
     const user = Meteor.users.findOne(userId);
     const keycloakId = user.services && user.services.keycloak ? user.services.keycloak.id : null;
     if (keycloakId) {
       this._getToken()
         .then((token) =>
-          this._getGroupId(groupName, token).then((groupId) =>
+          this._getGroupId(roleName, token).then((groupId) =>
             axios
               .put(`${this.kcURL}/admin/realms/${this.kcRealm}/users/${keycloakId}/groups/${groupId}`, '', {
                 headers: {
@@ -353,12 +369,12 @@ class KeyCloakClient {
                 },
               })
               .then(() => {
-                console.log(`Keycloak: group ${groupName} added to user ${userId}`);
+                console.log(`Keycloak: group ${roleName} added to user ${userId}`);
               }),
           ),
         )
         .catch((error) => {
-          console.log(`Keycloak : ERROR adding group ${groupName} to user ${userId}`);
+          console.log(`Keycloak : ERROR adding group ${roleName} to user ${userId}`);
           console.log(error.response && error.response.data ? error.response.data : error);
         });
     } else {
@@ -366,14 +382,13 @@ class KeyCloakClient {
     }
   }
 
-  unsetRole(userId, group, role) {
-    const groupName = `${role}_${group.name}`;
+  unsetRole(userId, roleName) {
     const user = Meteor.users.findOne(userId);
     const keycloakId = user.services && user.services.keycloak ? user.services.keycloak.id : null;
     if (keycloakId) {
       this._getToken()
         .then((token) =>
-          this._getGroupId(groupName, token).then((groupId) =>
+          this._getGroupId(roleName, token).then((groupId) =>
             axios
               .delete(`${this.kcURL}/admin/realms/${this.kcRealm}/users/${keycloakId}/groups/${groupId}`, {
                 headers: {
@@ -382,12 +397,12 @@ class KeyCloakClient {
                 },
               })
               .then(() => {
-                console.log(`Keycloak: group ${groupName} removed from user ${userId}`);
+                console.log(`Keycloak: group ${roleName} removed from user ${userId}`);
               }),
           ),
         )
         .catch((error) => {
-          console.log(`Keycloak : ERROR removing group ${groupName} from user ${userId}`);
+          console.log(`Keycloak : ERROR removing group ${roleName} from user ${userId}`);
           console.log(error.response && error.response.data ? error.response.data : error);
         });
     } else {

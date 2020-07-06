@@ -401,10 +401,11 @@ export const setAdminOf = new ValidatedMethod({
     if (group.admins.indexOf(userId) === -1) {
       Groups.update(groupId, { $push: { admins: userId } });
     }
-    if (Meteor.settings.public.enableKeycloak) {
-      // update user's groups in Keycloak
-      kcClient.setRole(userId, group, 'admin');
-    }
+    // Not used in current implementation
+    // if (kcClient) {
+    //   // update user's groups in Keycloak
+    //   kcClient.setRole(userId, `admin_${group.name}`);
+    // }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'admin', true);
   },
@@ -441,10 +442,11 @@ export const unsetAdminOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['animator', 'member', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
-    if (Meteor.settings.public.enableKeycloak) {
-      // update user's groups in Keycloak
-      kcClient.unsetRole(userId, group, 'admin');
-    }
+    // Not used in current implementation
+    //  if (kcClient) {
+    //    // update user's groups in Keycloak
+    //    kcClient.unsetRole(userId, `admin_${group.name}`);
+    //  }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'admin', false);
   },
@@ -480,9 +482,10 @@ export const setAnimatorOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
-    if (Meteor.settings.public.enableKeycloak) {
+    if (kcClient && !Roles.userIsInRole(userId, 'member', groupId)) {
       // update user's groups in Keycloak
-      kcClient.setRole(userId, group, 'animator');
+      kcClient.setRole(userId, group.name);
+      // kcClient.setRole(userId, `animator_${group.name}`);
     }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'animator', true);
@@ -520,9 +523,10 @@ export const unsetAnimatorOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['member', 'admin', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
-    if (Meteor.settings.public.enableKeycloak) {
+    if (kcClient && !Roles.userIsInRole(userId, 'member', groupId)) {
       // update user's groups in Keycloak
-      kcClient.unsetRole(userId, group, 'animator');
+      kcClient.unsetRole(userId, group.name);
+      // kcClient.unsetRole(userId, `animator_${group.name}`);
     }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'animator', false);
@@ -572,9 +576,10 @@ export const setMemberOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
-    if (Meteor.settings.public.enableKeycloak) {
+    if (kcClient && !Roles.userIsInRole(userId, 'animator', groupId)) {
       // update user's groups in Keycloak
-      kcClient.setRole(userId, group, 'member');
+      kcClient.setRole(userId, group.name);
+      // kcClient.setRole(userId, `member_${group.name}`);
     }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'member', true);
@@ -614,9 +619,10 @@ export const unsetMemberOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['animator', 'admin', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
-    if (Meteor.settings.public.enableKeycloak) {
+    if (kcClient && !Roles.userIsInRole(userId, 'animator', groupId)) {
       // update user's groups in Keycloak
-      kcClient.unsetRole(userId, group, 'member');
+      kcClient.unsetRole(userId, group.name);
+      // kcClient.unsetRole(userId, `member_${group.name}`);
     }
     // Notify user
     createRoleNotification(this.userId, userId, groupId, 'member', false);
