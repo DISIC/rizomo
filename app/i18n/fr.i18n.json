@@ -397,7 +397,8 @@
       "image": "Ajouter une image",
       "video": "Intégrer une vidéo",
       "webcam": "Enregistrer une vidéo",
-      "clean": "Supprimer la mise en forme de la sélection"
+      "clean": "Supprimer la mise en forme de la sélection",
+      "enterUrl": "Entrez l'URL de la video"
     },
     "WebcamModal": {
       "header": "Enregistrer une nouvelle vidéo",

@@ -397,7 +397,8 @@
       "image": "Add picture",
       "video": "Embed video",
       "webcam": "Record video",
-      "clean": "Clean selected text formatting"
+      "clean": "Clean selected text formatting",
+      "enterUrl": "Enter the video URL"
     },
     "WebcamModal": {
       "header": "Record a new video",

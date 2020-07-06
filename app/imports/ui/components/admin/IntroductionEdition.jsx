@@ -30,6 +30,16 @@ const quillOptions = {
   modules: {
     toolbar: {
       container: '#quill-toolbar',
+      handlers: {
+        video(value) {
+          if (value) {
+            const href = prompt(i18n.__('components.CustomQuill.enterUrl'));
+            this.quill.format('video', href.replace('/videos/watch/', '/videos/embed/'));
+          } else {
+            this.quill.format('video', false);
+          }
+        },
+      },
     },
     clipboard: {
       matchVisual: false,
