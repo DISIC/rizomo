@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Button, CardActionArea, CardActions, CardHeader, Avatar } from '@material-ui/core';
+import { Button, CardActionArea, CardActions, CardHeader, Avatar, Zoom } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 
 import { isUrlExternal } from '../../utils/utilsFuncs';
@@ -68,46 +68,53 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
 
   return (
     <Card className={classes.card} elevation={3}>
-      <CardActionArea
-        className={classes.actionarea}
-        disabled={service.state === 5}
-        title={service.usage}
-        onClick={handleClick}
+      <Tooltip
+        TransitionComponent={Zoom}
+        enterDelay={2000}
+        title={
+          <>
+            <Typography>{service.title}</Typography>
+            {i18n.__('pages.PersonalPage.typeApplication')}
+          </>
+        }
+        aria-label={service.title}
       >
-        <CardHeader
-          classes={{ content: classes.cardHeaderContent }}
-          avatar={<Avatar aria-label="recipe" className={classes.avatar} alt={service.title} src={service.logo} />}
-          title={
-            <Typography
-              className={service.state === 5 ? classes.serviceNameDiasbled : classes.serviceName}
-              gutterBottom
-              noWrap={!isMobile}
-              variant="h6"
-              component="h2"
-            >
-              {service.title}
-            </Typography>
-          }
-          subheader={
-            service.state === 5 ? (
-              <Typography variant="body2" color="textSecondary" component="p">
-                {i18n.__('pages.SingleServicePage.inactive')}
+        <CardActionArea className={classes.actionarea} disabled={service.state === 5} onClick={handleClick}>
+          <CardHeader
+            classes={{ content: classes.cardHeaderContent }}
+            avatar={<Avatar aria-label="recipe" className={classes.avatar} alt={service.title} src={service.logo} />}
+            title={
+              <Typography
+                className={service.state === 5 ? classes.serviceNameDiasbled : classes.serviceName}
+                gutterBottom
+                noWrap={!isMobile}
+                variant="h6"
+                component="h2"
+              >
+                {service.title}
               </Typography>
-            ) : (
-              ''
-            )
-          }
-        />
-      </CardActionArea>
-      <CardActions className={classes.cardActions}>
-        {customDrag ? (
+            }
+            subheader={
+              service.state === 5 ? (
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {i18n.__('pages.SingleServicePage.inactive')}
+                </Typography>
+              ) : (
+                ''
+              )
+            }
+          />
+        </CardActionArea>
+      </Tooltip>
+      {customDrag ? (
+        <CardActions className={classes.cardActions}>
           <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
             <Button variant="outlined" size="small" className={classes.fab} onClick={handleFavorite}>
               <RemoveIcon />
             </Button>
           </Tooltip>
-        ) : null}
-      </CardActions>
+        </CardActions>
+      ) : null}
     </Card>
   );
 }

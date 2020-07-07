@@ -10,10 +10,11 @@ import SecurityIcon from '@material-ui/icons/Security';
 // import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 // import CheckIcon from '@material-ui/icons/Check';
 // import WatchLaterIcon from '@material-ui/icons/WatchLater';
+// import EditIcon from '@material-ui/icons/Edit';
+// import { Button, CardActions } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
-import EditIcon from '@material-ui/icons/Edit';
-import { Button, Avatar, CardActionArea, CardActions, CardHeader } from '@material-ui/core';
+import { Avatar, CardActionArea, CardHeader, Zoom } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import GroupBadge from './GroupBadge';
 
@@ -103,35 +104,52 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
 
   return (
     <Card className={classes.card} elevation={3}>
-      <Link to={`/groups/${group.slug}`} className={classes.noUnderline} title={group.description}>
-        <CardActionArea className={classes.actionarea}>
-          <CardHeader
-            classes={{ content: classes.cardHeaderContent }}
-            avatar={
-              animator || admin ? (
-                <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
+      <Tooltip
+        TransitionComponent={Zoom}
+        enterDelay={2000}
+        title={
+          <>
+            <Typography>{group.name}</Typography>
+            {i18n.__('pages.PersonalPage.typeGroup')}
+          </>
+        }
+        aria-label={group.name}
+      >
+        <Link to={`/groups/${group.slug}`} className={classes.noUnderline}>
+          <CardActionArea className={classes.actionarea}>
+            <CardHeader
+              classes={{ content: classes.cardHeaderContent }}
+              avatar={
+                animator || admin ? (
+                  <GroupBadge
+                    overlap="circle"
+                    className={classes.badge}
+                    color="error"
+                    badgeContent={group.numCandidates}
+                  >
+                    <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+                  </GroupBadge>
+                ) : (
                   <Avatar className={classes.avatar}>{iconHeader}</Avatar>
-                </GroupBadge>
-              ) : (
-                <Avatar className={classes.avatar}>{iconHeader}</Avatar>
-              )
-            }
-            title={
-              <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
-                {group.name}
-              </Typography>
-            }
-            subheader={
-              member || animator || candidate ? (
-                <Typography className={classes.buttonText} variant="body2" component="p">
-                  {text()}
+                )
+              }
+              title={
+                <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
+                  {group.name}
                 </Typography>
-              ) : null
-            }
-          />
-        </CardActionArea>
-      </Link>
-      <CardActions className={classes.cardActionsUnique}>
+              }
+              subheader={
+                member || animator || candidate ? (
+                  <Typography className={classes.buttonText} variant="body2" component="p">
+                    {text()}
+                  </Typography>
+                ) : null
+              }
+            />
+          </CardActionArea>
+        </Link>
+      </Tooltip>
+      {/* <CardActions className={classes.cardActionsUnique}>
         {admin && (
           <Tooltip
             title={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
@@ -144,7 +162,7 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
             </Link>
           </Tooltip>
         )}
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 }
