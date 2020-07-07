@@ -16,6 +16,7 @@ import {
   CardActions,
   Typography,
   CardHeader,
+  Zoom,
 } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { useObjectState } from '../../utils/hooks';
@@ -116,37 +117,49 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }
               onChange={handleChangeState}
             />
             <button type="submit" aria-label="masked" style={{ display: 'none' }} />
-          </form>{' '}
+          </form>
         </CardContent>
       );
     }
     return (
-      <CardActionArea
-        className={classes.actionarea}
-        onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
-        disabled={globalEdit}
+      <Tooltip
+        TransitionComponent={Zoom}
+        enterDelay={2000}
+        title={
+          <>
+            <Typography>{state.title}</Typography>
+            {i18n.__('pages.PersonalPage.typeLink')}
+          </>
+        }
+        aria-label={state.title}
       >
-        <CardHeader
-          classes={{ content: classes.cardHeaderContent }}
-          avatar={
-            globalEdit && localEdit ? null : (
-              <Avatar className={classes.avatar}>
-                <LaunchIcon />
-              </Avatar>
-            )
-          }
-          title={
-            <Typography className={classes.linkName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
-              {state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
-            </Typography>
-          }
-          subheader={
-            <Typography variant="body2" className={classes.linkUrl} noWrap={!isMobile} component="p">
-              {state.url || i18n.__('components.PersonalLinkDetails.urlLabel')}
-            </Typography>
-          }
-        />
-      </CardActionArea>
+        <CardActionArea
+          className={classes.actionarea}
+          onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
+          disabled={globalEdit}
+        >
+          <CardHeader
+            classes={{ content: classes.cardHeaderContent }}
+            avatar={
+              globalEdit && localEdit ? null : (
+                <Avatar className={classes.avatar}>
+                  <LaunchIcon />
+                </Avatar>
+              )
+            }
+            title={
+              <Typography className={classes.linkName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
+                {state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
+              </Typography>
+            }
+            subheader={
+              <Typography variant="body2" className={classes.linkUrl} noWrap={!isMobile} component="p">
+                {state.url || i18n.__('components.PersonalLinkDetails.urlLabel')}
+              </Typography>
+            }
+          />
+        </CardActionArea>
+      </Tooltip>
     );
   };
 

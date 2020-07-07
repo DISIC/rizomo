@@ -31,9 +31,13 @@ const useStyles = makeStyles((theme) => ({
     },
     backgroundColor: '#f9f9fd',
   },
-  expansionpanelsummary: {
-    margin: 0,
-    minHeight: 0,
+  expansionpanelsummaryexpanded: {
+    margin: '0 !important',
+    minHeight: '0 !important',
+  },
+  expansionpanelsummarycontent: {
+    margin: '0 !important',
+    minHeight: '0 !important',
   },
   cursorPointer: {
     cursor: 'pointer',
@@ -207,6 +211,7 @@ const PersonalZone = ({
         id={`expand-${index}`}
         onClick={!(customDrag && isSorted) ? handleClickExpansion(index) : null}
         className={customDrag && isSorted ? classes.cursorDefault : null}
+        classes={{ expanded: classes.expansionpanelsummaryexpanded, content: classes.expansionpanelsummarycontent }}
       >
         <Typography variant="h6" color="primary" className={classes.zone}>
           <div>

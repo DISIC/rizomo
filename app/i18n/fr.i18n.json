@@ -602,6 +602,9 @@
       "unsorted": "À trier",
       "unsortedFav": "Mes Favoris",
       "newZone": "Nouvelle Zone",
+      "typeApplication": "Application",
+      "typeGroup": "Groupe",
+      "typeLink": "Lien",
       "addZoneStartButton": "Ajouter une nouvelle zone au début",
       "addZoneEndButton": "Ajouter une nouvelle zone à la fin",
       "toggleEdition": "Activer/Désactiver le mode édition"
