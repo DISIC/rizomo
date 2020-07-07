@@ -674,7 +674,9 @@
       "update": "Update",
       "save": "Create",
       "cancel": "Cancel",
-      "delete": "Delete"
+      "delete": "Delete",
+      "copyPublicURL": "copy public URL",
+      "successCopyURL": "Public URL has been sent to clipboard"
     },
     "PublicArticlePage": {
       "title": "Publications by",

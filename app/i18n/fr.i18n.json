@@ -670,13 +670,15 @@
       "successCreate": "Publication créée avec succès",
       "successDelete": "Publication supprimée avec succès",
       "titleLabel": "Titre",
-      "slugLabel": "URL public de la publication",
+      "slugLabel": "URL publique de la publication",
       "descriptionLabel": "Courte description de cette publication",
       "contentLabel": "Contenu de cette publication",
       "update": "Mettre à jour",
       "save": "Créer",
       "cancel": "Annuler",
-      "delete": "Supprimer"
+      "delete": "Supprimer",
+      "copyPublicURL": "Copier l'URL publique",
+      "successCopyURL": "URL publique copiée dans le presse-papier"
     },
     "PublicArticlePage": {
       "title": "Publications de",
