@@ -32,6 +32,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
   actions: {
     display: 'flex',
@@ -253,8 +254,7 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
   };
 
   return (
-    <Dialog open keepMounted onClose={loading ? null : onClose}>
-      {loading && <Spinner full />}
+    <Dialog open keepMounted onClose={onClose}>
       <DialogTitle className={classes.title}>
         <div>{i18n.__('components.WebcamModal.header')}</div>
         <IconButton onClick={onClose}>
@@ -262,6 +262,7 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.content}>
+        {loading && <Spinner full />}
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         {videoBlob && <video controls src={videoBlob} className={classes.video} />}
         {!videoBlob && (
@@ -274,13 +275,14 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
             <TextField
               onChange={changeFileName}
               value={fileName}
+              disabled={loading}
               label={i18n.__('components.WebcamModal.fileName')}
               variant="outlined"
             />
             <Tooltip title={i18n.__('components.WebcamModal.validate')}>
               <span>
                 <IconButton
-                  disabled={!fileName}
+                  disabled={!fileName || loading}
                   aria-label={i18n.__('components.WebcamModal.validate')}
                   onClick={handleUpload}
                 >
@@ -290,7 +292,11 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
             </Tooltip>
             <Tooltip title={i18n.__('components.WebcamModal.cancel')}>
               <span>
-                <IconButton aria-label={i18n.__('components.WebcamModal.cancel')} onClick={toggleSend}>
+                <IconButton
+                  aria-label={i18n.__('components.WebcamModal.cancel')}
+                  onClick={toggleSend}
+                  disabled={loading}
+                >
                   <CloseIcon />
                 </IconButton>
               </span>
@@ -302,7 +308,7 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
               <span>
                 <IconButton
                   aria-label={i18n.__('components.WebcamModal.stop')}
-                  disabled={!tested || !capturing}
+                  disabled={!tested || !capturing || loading}
                   onClick={handleStopCaptureClick}
                 >
                   <StopIcon />
@@ -313,7 +319,7 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
               <span>
                 <IconButton
                   aria-label={i18n.__('components.WebcamModal.start')}
-                  disabled={!tested || capturing || (!capturing && size > 0)}
+                  disabled={!tested || capturing || (!capturing && size > 0) || loading}
                   onClick={handleStartCaptureClick}
                 >
                   <FiberManualRecordIcon style={{ color: capturing ? null : 'red' }} />
@@ -324,7 +330,7 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
               <span>
                 <IconButton
                   aria-label={i18n.__('components.WebcamModal.refresh')}
-                  disabled={!tested || recordedChunks.length === 0}
+                  disabled={!tested || recordedChunks.length === 0 || loading}
                   onClick={refreshVideo}
                 >
                   <RefreshIcon />
@@ -335,7 +341,7 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
               <span>
                 <IconButton
                   aria-label={i18n.__('components.WebcamModal.upload')}
-                  disabled={!tested || recordedChunks.length === 0}
+                  disabled={!tested || recordedChunks.length === 0 || loading}
                   onClick={toggleSend}
                 >
                   <CloudUploadIcon />
@@ -344,7 +350,7 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
             </Tooltip>
             <FormControl>
               <InputLabel>{i18n.__('components.WebcamModal.quality')}</InputLabel>
-              <Select value={quality} onChange={changeQuality}>
+              <Select value={quality} onChange={changeQuality} disabled={loading}>
                 <option value={70000}>{i18n.__('components.WebcamModal.low')}</option>
                 <option value={300000}>{i18n.__('components.WebcamModal.medium')}</option>
                 <option value={600000}>{i18n.__('components.WebcamModal.high')}</option>

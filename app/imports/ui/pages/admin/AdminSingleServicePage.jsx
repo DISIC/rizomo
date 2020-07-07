@@ -110,6 +110,25 @@ const defaultState = {
 
 const PLACEHOLDER = 'https://fakeimg.pl/900x600/';
 
+const quillOptions = {
+  clipboard: {
+    matchVisual: false,
+  },
+  toolbar: {
+    container: '#quill-toolbar',
+    handlers: {
+      video(value) {
+        if (value) {
+          const href = prompt(i18n.__('components.CustomQuill.enterUrl'));
+          this.quill.format('video', href.replace('/videos/watch/', '/videos/embed/'));
+        } else {
+          this.quill.format('video', false);
+        }
+      },
+    },
+  },
+};
+
 const AdminSingleServicePage = ({ categories, service, ready, match: { params } }) => {
   const [serviceData, setServiceData] = useState({ ...defaultState });
   const [loading, setLoading] = useState(!!params._id);
@@ -332,29 +351,7 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { params } 
             <div className={classes.wysiwyg}>
               <InputLabel htmlFor="content">{i18n.__('pages.AdminSingleServicePage.content')}</InputLabel>
               <CustomToolbar />
-              <ReactQuill
-                id="content"
-                value={content}
-                onChange={onUpdateRichText}
-                modules={{
-                  clipboard: {
-                    matchVisual: false,
-                  },
-                  toolbar: {
-                    container: '#quill-toolbar',
-                    handlers: {
-                      video(value) {
-                        if (value) {
-                          const href = prompt(i18n.__('components.CustomQuill.enterUrl'));
-                          this.quill.format('video', href.replace('/videos/watch/', '/videos/embed/'));
-                        } else {
-                          this.quill.format('video', false);
-                        }
-                      },
-                    },
-                  },
-                }}
-              />
+              <ReactQuill id="content" value={content} onChange={onUpdateRichText} modules={quillOptions} />
             </div>
 
             <InputLabel id="categories-label">{i18n.__('pages.AdminSingleServicePage.categories')}</InputLabel>
