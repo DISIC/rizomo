@@ -5,9 +5,20 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { withTracker } from 'meteor/react-meteor-data';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Random } from 'meteor/random';
 import ImageResize from 'quill-image-resize-module';
-import { TextField, Typography, InputLabel, Container, Grid, makeStyles, Button } from '@material-ui/core';
+import {
+  TextField,
+  Typography,
+  InputLabel,
+  Container,
+  Grid,
+  makeStyles,
+  Button,
+  InputAdornment,
+  IconButton,
+} from '@material-ui/core';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
@@ -131,6 +142,7 @@ function EditArticlePage({
   const [webcam, toggleWebcam] = useState(false);
   const [data, setData] = useObjectState(emptyArticle);
   const [content, setContent] = useState('');
+  const publicURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}/${data.slug}`;
 
   function imageHandler() {
     togglePicker(true);
@@ -189,6 +201,10 @@ function EditArticlePage({
       setContent(article.content);
     }
   }, [article]);
+
+  const handleCopyURL = () => {
+    navigator.clipboard.writeText(publicURL).then(msg.success(i18n.__('pages.EditArticlePage.successCopyURL')));
+  };
 
   const onUpdateField = (event) => {
     const { name, value } = event.target;
@@ -301,12 +317,25 @@ function EditArticlePage({
           margin="normal"
         />
         <TextField
-          value={`${Meteor.absoluteUrl()}public/${Meteor.userId()}/${data.slug}`}
+          value={publicURL}
           label={i18n.__('pages.EditArticlePage.slugLabel')}
           variant="outlined"
           fullWidth
           margin="normal"
           disabled
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconButton
+                  title={i18n.__('pages.EditArticlePage.copyPublicURL')}
+                  aria-label={i18n.__('pages.EditArticlePage.copyPublicURL')}
+                  onClick={handleCopyURL}
+                >
+                  <AssignmentIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           onChange={onUpdateField}
