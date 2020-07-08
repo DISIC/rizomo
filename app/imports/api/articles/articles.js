@@ -70,6 +70,10 @@ Articles.schema = new SimpleSchema(
         return new Date();
       },
     },
+    visits: {
+      type: SimpleSchema.Integer,
+      defaultValue: 0,
+    },
   },
   { tracker: Tracker },
 );
@@ -82,6 +86,7 @@ Articles.publicFields = {
   createdAt: 1,
   updatedAt: 1,
   description: 1,
+  visits: 1,
 };
 
 Factory.define('article', Articles, {
