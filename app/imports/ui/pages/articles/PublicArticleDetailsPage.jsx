@@ -4,6 +4,7 @@ import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { Typography, Container, Grid, makeStyles, Button, Fade } from '@material-ui/core';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
@@ -42,6 +43,11 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 0,
     },
   },
+  visitCounter: {
+    cursor: 'default !important',
+    backgroundColor: '#F9F9FD',
+    '&:hover': { backgroundColor: '#F9F9FD' },
+  },
 }));
 
 function PublicArticleDetailsPage({
@@ -55,6 +61,7 @@ function PublicArticleDetailsPage({
   const [{ isMobile }] = useAppContext();
   const classes = useStyles();
   const [user, setUser] = useState({});
+  const [counted, setCounted] = useState(false);
 
   const isFirstRender = history.action === 'POP';
 
@@ -63,6 +70,13 @@ function PublicArticleDetailsPage({
       setUser(result);
     });
   }, []);
+
+  useEffect(() => {
+    if (ready && article && article._id && !counted) {
+      setCounted(true);
+      Meteor.call('articles.visitArticle', { articleId: article._id });
+    }
+  }, [article]);
 
   const handleGoList = () => {
     if (isFirstRender) {
@@ -93,6 +107,17 @@ function PublicArticleDetailsPage({
                 {`${user.firstName} ${user.lastName}`}
                 <br />
                 {article.createdAt.toLocaleString()}
+                <br />
+                <Button
+                  startIcon={<VisibilityIcon />}
+                  className={classes.visitCounter}
+                  disableElevation
+                  disableRipple
+                  disableFocusRipple
+                  title={i18n.__('pages.PublicArticleDetailsPage.views')}
+                >
+                  {article.visits}
+                </Button>
               </Typography>
             </Grid>
             <Grid item xs={12} className={isMobile ? null : classes.flex}>

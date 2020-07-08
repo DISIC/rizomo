@@ -53,3 +53,14 @@ Migrations.add({
     Groups.rawCollection().update({}, { $unset: { numCandidates: true } }, { multi: true });
   },
 });
+
+Migrations.add({
+  version: 4,
+  name: 'Add visit count to articles',
+  up: () => {
+    Articles.update({}, { $set: { visits: 0 } }, { multi: true });
+  },
+  down: () => {
+    Articles.rawCollection().update({}, { $unset: { visits: true } }, { multi: true });
+  },
+});

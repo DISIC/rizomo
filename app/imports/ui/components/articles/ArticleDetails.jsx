@@ -9,6 +9,7 @@ import { Link, useHistory } from 'react-router-dom';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -30,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
   buttonText: {
     color: theme.palette.tertiary.main,
     marginRight: theme.spacing(2),
+  },
+  visitCounter: {
+    cursor: 'default !important',
+    backgroundColor: '#F9F9FD',
+    '&:hover': { backgroundColor: '#F9F9FD' },
   },
   cardMedia: {
     maxWidth: '50px',
@@ -94,7 +100,22 @@ export default function ArticleDetails({ article, publicPage }) {
         variant: 'h6',
         color: 'primary',
       }}
-      subheader={`${i18n.__('components.ArticleDetails.publishedOn')} ${article.createdAt.toLocaleString()} `}
+      subheader={
+        <>
+          {i18n.__('components.ArticleDetails.publishedOn')} {article.createdAt.toLocaleString()}{' '}
+          <Button
+            color="primary"
+            className={classes.visitCounter}
+            startIcon={<VisibilityIcon />}
+            disableElevation
+            disableRipple
+            disableFocusRipple
+            title={i18n.__('pages.PublicArticleDetailsPage.views')}
+          >
+            {article.visits}
+          </Button>
+        </>
+      }
       subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
     />
   );

@@ -359,7 +359,8 @@
       "open": "Ouvrir cette publication",
       "publicButton": "Ouvrir la page publique de cette publication",
       "publishedOn": "Publiée le",
-      "noDescription": "Il n'y a pas de description pour cette publication"
+      "noDescription": "Il n'y a pas de description pour cette publication",
+      "visitsCount": "Consultations"
     },
     "ValidationButton": {
       "sure": "Êtes-vous sûr(e) ?"
@@ -690,7 +691,8 @@
     },
     "PublicArticleDetailsPage": {
       "backToList": "Retour à la liste",
-      "goToList": "Aller à la liste"
+      "goToList": "Aller à la liste",
+      "views": "consultations"
     },
     "PublishersPage": {
       "title": "Liste des auteurs",

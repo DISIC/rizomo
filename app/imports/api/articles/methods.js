@@ -65,8 +65,24 @@ export const updateArticle = new ValidatedMethod({
   },
 });
 
+export const visitArticle = new ValidatedMethod({
+  name: 'articles.visitArticle',
+  validate: new SimpleSchema({
+    articleId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.articles.labels.id') },
+  }).validator(),
+
+  run({ articleId }) {
+    // check article existence
+    const article = Articles.findOne({ _id: articleId });
+    if (article === undefined) {
+      throw new Meteor.Error('api.articles.visitArticle.unknownArticle', i18n.__('api.articles.unknownArticle'));
+    }
+    return Articles.update({ _id: articleId }, { $inc: { visits: 1 } });
+  },
+});
+
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([createArticle, removeArticle, updateArticle], 'name');
+const LISTS_METHODS = _.pluck([createArticle, removeArticle, updateArticle, visitArticle], 'name');
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second
