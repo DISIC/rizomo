@@ -692,7 +692,10 @@
     "PublicArticleDetailsPage": {
       "backToList": "Retour à la liste",
       "goToList": "Aller à la liste",
-      "views": "consultations"
+      "views": "consultations",
+      "exportPDF": "Export PDF",
+      "exportLandscape": "Paysage",
+      "exportPortrait": "Portrait"
     },
     "PublishersPage": {
       "title": "Liste des auteurs",
