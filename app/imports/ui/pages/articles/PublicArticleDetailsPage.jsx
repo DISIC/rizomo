@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { Typography, Container, Grid, makeStyles, Button, Fade } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import { Typography, Container, Grid, makeStyles, Button, Fade, FormControlLabel, Switch } from '@material-ui/core';
+import html2pdf from 'html2pdf.js';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
@@ -48,6 +50,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#F9F9FD',
     '&:hover': { backgroundColor: '#F9F9FD' },
   },
+  buttonText: {
+    textTransform: 'none',
+    marginRight: 5,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.tertiary.main,
+    fontWeight: 'bold',
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.tertiary.main,
+    },
+  },
 }));
 
 function PublicArticleDetailsPage({
@@ -62,6 +75,7 @@ function PublicArticleDetailsPage({
   const classes = useStyles();
   const [user, setUser] = useState({});
   const [counted, setCounted] = useState(false);
+  const [landscape, setLandscape] = useState(false);
 
   const isFirstRender = history.action === 'POP';
 
@@ -77,6 +91,24 @@ function PublicArticleDetailsPage({
       Meteor.call('articles.visitArticle', { articleId: article._id });
     }
   }, [article]);
+
+  const handleExport = () => {
+    // Export to PDF. Currently exported as images
+    // try to use jsPDF directly ?
+    // https://stackoverflow.com/questions/18191893/generate-pdf-from-html-in-div-using-javascript
+    const divContents = article.content;
+    const opt = {
+      filename: `article_${article.slug}.pdf`,
+      enableLinks: true,
+      margin: 4,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        useCORS: true,
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: landscape ? 'landscape' : 'portrait' },
+    };
+    html2pdf().set(opt).from(divContents).output('dataurlnewwindow');
+  };
 
   const handleGoList = () => {
     if (isFirstRender) {
@@ -103,6 +135,34 @@ function PublicArticleDetailsPage({
               <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
                 {article.title}
               </Typography>
+              <div name="export">
+                <Button
+                  startIcon={<PictureAsPdfIcon />}
+                  className={classes.buttonText}
+                  color="primary"
+                  variant="contained"
+                  onClick={handleExport}
+                >
+                  {i18n.__('pages.PublicArticleDetailsPage.exportPDF')}
+                </Button>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      color="primary"
+                      name="checkLandscape"
+                      inputProps={{ 'aria-label': 'export to landscape' }}
+                      checked={landscape}
+                      onChange={() => setLandscape(!landscape)}
+                      value="lanscape"
+                    />
+                  }
+                  label={
+                    landscape
+                      ? i18n.__('pages.PublicArticleDetailsPage.exportLandscape')
+                      : i18n.__('pages.PublicArticleDetailsPage.exportPortrait')
+                  }
+                />
+              </div>
               <Typography variant="subtitle2" align="right">
                 {`${user.firstName} ${user.lastName}`}
                 <br />

@@ -690,7 +690,10 @@
     "PublicArticleDetailsPage": {
       "backToList": "Back to the list",
       "goToList": "Go to the list",
-      "views": "views"
+      "views": "views",
+      "exportPDF": "Export to PDF",
+      "exportLandscape": "Landscape",
+      "exportPortrait": "Portrait"
     },
     "PublishersPage": {
       "title": "Authors list",
