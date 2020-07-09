@@ -107,7 +107,7 @@ function PublicArticleDetailsPage({
       },
       jsPDF: { unit: 'mm', format: 'a4', orientation: landscape ? 'landscape' : 'portrait' },
     };
-    html2pdf().set(opt).from(divContents).output('dataurlnewwindow');
+    html2pdf().set(opt).from(divContents).save();
   };
 
   const handleGoList = () => {
