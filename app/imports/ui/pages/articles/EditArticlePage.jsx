@@ -32,6 +32,7 @@ import WebcamModal from '../../components/system/WebcamModal';
 
 import '../../utils/QuillImage';
 import '../../utils/QuillWebcam';
+import '../../utils/QuillVideo';
 import { CustomToolbarArticle } from '../../components/system/CustomQuill';
 
 Quill.register('modules/ImageResize', ImageResize);
@@ -79,14 +80,6 @@ const quillOptionsMaker = ({ imageHandler, webcamHandler }) => ({
       handlers: {
         image: imageHandler,
         webcam: webcamHandler,
-        video(value) {
-          if (value) {
-            const href = prompt(i18n.__('components.CustomQuill.enterUrl'));
-            this.quill.format('video', href.replace('/videos/watch/', '/videos/embed/'));
-          } else {
-            this.quill.format('video', false);
-          }
-        },
       },
     },
     clipboard: {
