@@ -31,6 +31,7 @@ import Groups from '../../../api/groups/groups';
 import GroupsUsersList from '../../components/admin/GroupUsersList';
 import { useAppContext } from '../../contexts/context';
 import { CustomToolbar } from '../../components/system/CustomQuill';
+import '../../utils/QuillVideo';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,16 +85,6 @@ const quillOptions = {
   },
   toolbar: {
     container: '#quill-toolbar',
-    handlers: {
-      video(value) {
-        if (value) {
-          const href = prompt(i18n.__('components.CustomQuill.enterUrl'));
-          this.quill.format('video', href.replace('/videos/watch/', '/videos/embed/'));
-        } else {
-          this.quill.format('video', false);
-        }
-      },
-    },
   },
 };
 
