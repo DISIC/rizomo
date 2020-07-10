@@ -332,7 +332,8 @@
       "candidateCancel": "Votre requête a été annulée"
     },
     "GroupDetailsPersSpace": {
-      "groupCandidate": "Candidat"
+      "groupCandidate": "Candidat",
+      "groupNone": "Aucun rôle"
     },
     "AppVersion": {
       "title": "Version"
@@ -599,6 +600,7 @@
     },
     "PersonalPage": {
       "welcome": "Bienvenue sur votre espace personnel",
+      "searchText": "Besoin de retrouver un service, groupe ou lien personnel ?",
       "noFavYet": "Ajoutez ici des éléments depuis l'onglet Applications",
       "unsorted": "À trier",
       "unsortedFav": "Mes Favoris",

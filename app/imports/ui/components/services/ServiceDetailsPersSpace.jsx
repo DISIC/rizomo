@@ -79,32 +79,36 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
         }
         aria-label={service.title}
       >
-        <CardActionArea className={classes.actionarea} disabled={service.state === 5} onClick={handleClick}>
-          <CardHeader
-            classes={{ content: classes.cardHeaderContent }}
-            avatar={<Avatar aria-label="recipe" className={classes.avatar} alt={service.title} src={service.logo} />}
-            title={
-              <Typography
-                className={service.state === 5 ? classes.serviceNameDiasbled : classes.serviceName}
-                gutterBottom
-                noWrap={!isMobile}
-                variant="h6"
-                component="h2"
-              >
-                {service.title}
-              </Typography>
-            }
-            subheader={
-              service.state === 5 ? (
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {i18n.__('pages.SingleServicePage.inactive')}
+        {/* this span is to allow display of tooltip when CardActionArea is disabled 
+        (occur when a service is disabled) */}
+        <span>
+          <CardActionArea className={classes.actionarea} disabled={service.state === 5} onClick={handleClick}>
+            <CardHeader
+              classes={{ content: classes.cardHeaderContent }}
+              avatar={<Avatar aria-label="recipe" className={classes.avatar} alt={service.title} src={service.logo} />}
+              title={
+                <Typography
+                  className={service.state === 5 ? classes.serviceNameDiasbled : classes.serviceName}
+                  gutterBottom
+                  noWrap={!isMobile}
+                  variant="h6"
+                  component="h2"
+                >
+                  {service.title}
                 </Typography>
-              ) : (
-                ''
-              )
-            }
-          />
-        </CardActionArea>
+              }
+              subheader={
+                service.state === 5 ? (
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {i18n.__('pages.SingleServicePage.inactive')}
+                  </Typography>
+                ) : (
+                  ''
+                )
+              }
+            />
+          </CardActionArea>
+        </span>
       </Tooltip>
       {customDrag ? (
         <CardActions className={classes.cardActions}>

@@ -35,14 +35,8 @@ const useStyles = ({ type }, member, candidate) =>
     },
     buttonText: {
       textTransform: 'none',
-      backgroundColor:
-        member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-      color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
+      color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.text.disabled,
       fontWeight: 'bold',
-      '&:hover': {
-        color: member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-        backgroundColor: member || candidate ? null : theme.palette.tertiary.main,
-      },
     },
     serviceName: {
       color: theme.palette.primary.main,
@@ -55,16 +49,6 @@ const useStyles = ({ type }, member, candidate) =>
     cardActionsUnique: {
       justifyContent: 'end',
       paddingTop: 0,
-    },
-    button: {
-      textTransform: 'none',
-      color: theme.palette.primary.main,
-      borderColor: theme.palette.primary.main,
-      backgroundColor: theme.palette.tertiary.main,
-      '&:hover': {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.tertiary.main,
-      },
     },
   }));
 
@@ -98,7 +82,7 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
     if (type === 5) {
       return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
     }
-    return '';
+    return i18n.__('components.GroupDetailsPersSpace.groupNone');
   };
   const iconHeader = type === 0 ? <PeopleIcon /> : type === 10 ? <LockIcon /> : <SecurityIcon />;
 
@@ -139,11 +123,9 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
                 </Typography>
               }
               subheader={
-                member || animator || candidate ? (
-                  <Typography className={classes.buttonText} variant="body2" component="p">
-                    {text()}
-                  </Typography>
-                ) : null
+                <Typography className={classes.buttonText} variant="body2" component="p">
+                  {text()}
+                </Typography>
               }
             />
           </CardActionArea>
