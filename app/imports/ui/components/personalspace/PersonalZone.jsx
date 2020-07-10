@@ -13,7 +13,7 @@ import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Grid, makeStyles, Typography, IconButton, Tooltip } from '@material-ui/core';
+import { Grid, makeStyles, Typography, IconButton, Tooltip, Badge } from '@material-ui/core';
 import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
 import Groups from '../../../api/groups/groups';
@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
   expansionpanelsummarycontent: {
     margin: '0 !important',
     minHeight: '0 !important',
+  },
+  badge: {
+    right: -15,
+    top: 15,
+    fontWeight: 'bold',
   },
   cursorPointer: {
     cursor: 'pointer',
@@ -215,15 +220,23 @@ const PersonalZone = ({
       >
         <Typography variant="h6" color="primary" className={classes.zone}>
           <div>
-            <span
-              id={`title-${index}`}
-              className={customDrag && isSorted ? classes.title : null}
-              contentEditable={isSorted && customDrag}
-              onKeyDown={handleKeyDownTitle(index)}
-              onBlur={handleBlurTitle(index)}
-              role="presentation"
-              dangerouslySetInnerHTML={{ __html: title }}
-            />
+            <Badge
+              classes={{ badge: classes.badge }}
+              color="secondary"
+              badgeContent={elements.length}
+              invisible={(isSorted ? isExpanded : localIsExpanded) || customDrag}
+              showZero
+            >
+              <span
+                id={`title-${index}`}
+                className={customDrag && isSorted ? classes.title : null}
+                contentEditable={isSorted && customDrag}
+                onKeyDown={handleKeyDownTitle(index)}
+                onBlur={handleBlurTitle(index)}
+                role="presentation"
+                dangerouslySetInnerHTML={{ __html: title }}
+              />
+            </Badge>
             {customDrag && isSorted && (
               <IconButton
                 onClick={handleSelectTitle(index)}

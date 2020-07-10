@@ -332,7 +332,8 @@
       "candidateCancel": "Your request has been canceled"
     },
     "GroupDetailsPersSpace": {
-      "groupCandidate": "Candidate"
+      "groupCandidate": "Candidate",
+      "groupNone": "No role"
     },
     "AppVersion": {
       "title": "Version"
@@ -596,6 +597,7 @@
     },
     "PersonalPage": {
       "welcome": "Welcome on your personal space",
+      "searchText": "Need to find a service, group or personal link ?",
       "noFavYet": "Add here some elements from Applications tab",
       "unsorted": "To be sorted",
       "unsortedFav": "My Favorites",

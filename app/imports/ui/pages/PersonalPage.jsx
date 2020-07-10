@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import PropTypes from 'prop-types';
@@ -8,12 +8,14 @@ import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
-import { Typography, Fade, IconButton, Button, Divider } from '@material-ui/core';
+import { Typography, Fade, IconButton, Button, Divider, Collapse, TextField, InputAdornment } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@material-ui/icons/Clear';
 import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
@@ -23,6 +25,21 @@ import { useAppContext } from '../contexts/context';
 
 const useStyles = (isMobile) =>
   makeStyles((theme) => ({
+    small: {
+      padding: '5px !important',
+      transition: 'all 300ms ease-in-out',
+    },
+    search: {
+      marginBottom: 20,
+      marginLeft: 16,
+    },
+
+    mobileButtonContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: '0 !important',
+    },
     flex: {
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
@@ -37,6 +54,7 @@ const useStyles = (isMobile) =>
       margin: theme.spacing(1),
     },
     badge: { position: 'inherit' },
+    modeEdition: { width: 'max-content' },
     gridItem: {
       position: 'relative',
       '&.sortable-ghost': { opacity: 0.3 },
@@ -100,9 +118,61 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
   const AUTOSAVE_INTERVAL = 3000;
   const [{ isMobile }] = useAppContext();
   const [customDrag, setcustomDrag] = useState(false);
+  const [search, setSearch] = useState('');
+  const [searchToggle, setSearchToggle] = useState(false);
   const classes = useStyles(isMobile)();
+  const inputRef = useRef(null);
+
+  const updateSearch = (e) => {
+    setSearch(e.target.value);
+  };
+  const checkEscape = (e) => {
+    if (e.keyCode === 27) {
+      // ESCAPE key
+      setSearchToggle(false);
+      setSearch('');
+    }
+  };
+  const resetSearch = () => setSearch('');
+  const toggleSearch = () => setSearchToggle(!searchToggle);
+
+  const filterSearch = (element) => {
+    if (!search) return true;
+    let searchText = '';
+    switch (element.type) {
+      case 'service': {
+        const service = Services.findOne({ _id: element.element_id });
+        searchText = service.title || '';
+        break;
+      }
+      case 'group': {
+        const group = Groups.findOne(element.element_id);
+        searchText = group.name || '';
+        break;
+      }
+      case 'link': {
+        searchText = element.title || '';
+        break;
+      }
+      default:
+        break;
+    }
+    searchText = searchText.toLowerCase();
+    return searchText.indexOf(search.toLowerCase()) > -1;
+  };
+
+  // focus on search input when it appears
+  useEffect(() => {
+    if (inputRef.current && searchToggle) {
+      inputRef.current.focus();
+    }
+  }, [searchToggle]);
 
   const handleCustomDrag = (event) => {
+    if (event.target.checked) {
+      setSearchToggle(false);
+      setSearch('');
+    }
     setcustomDrag(event.target.checked);
   };
 
@@ -260,7 +330,16 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
           <Container className={classes.cardGrid}>
             <Grid container spacing={4}>
               <Grid item xs={12} sm={12} md={12} className={classes.flex}>
-                <Typography variant="h4">{i18n.__('pages.PersonalPage.welcome')}</Typography>
+                <Grid container alignItems="center" spacing={1}>
+                  <Grid item>
+                    <Typography variant="h4">{i18n.__('pages.PersonalPage.welcome')}</Typography>
+                  </Grid>
+                  <Grid item>
+                    <IconButton onClick={toggleSearch} disabled={customDrag}>
+                      <SearchIcon fontSize="large" />
+                    </IconButton>
+                  </Grid>
+                </Grid>
                 <div className={classes.spaceBetween}>
                   {customDrag ? (
                     <IconButton
@@ -272,6 +351,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                     </IconButton>
                   ) : null}
                   <Grid
+                    className={classes.modeEdition}
                     component="label"
                     container
                     alignItems="center"
@@ -290,6 +370,42 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                   </Grid>
                 </div>
               </Grid>
+              <Grid container spacing={4}>
+                <Grid item xs={12} sm={12} md={6} className={searchToggle ? classes.search : classes.small}>
+                  <Collapse in={searchToggle} collapsedHeight={0}>
+                    <TextField
+                      margin="normal"
+                      id="search"
+                      label={i18n.__('pages.PersonalPage.searchText')}
+                      name="search"
+                      fullWidth
+                      onChange={updateSearch}
+                      onKeyDown={checkEscape}
+                      type="text"
+                      value={search}
+                      variant="outlined"
+                      inputProps={{
+                        ref: inputRef,
+                      }}
+                      // eslint-disable-next-line react/jsx-no-duplicate-props
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon />
+                          </InputAdornment>
+                        ),
+                        endAdornment: search ? (
+                          <InputAdornment position="end">
+                            <IconButton onClick={resetSearch}>
+                              <ClearIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ) : null,
+                      }}
+                    />
+                  </Collapse>
+                </Grid>
+              </Grid>
               {localPS.unsorted.length === 0 && localPS.sorted.length === 0 ? (
                 <Typography>
                   <Link to="/services">
@@ -303,7 +419,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
               ? [
                   <PersonalZone
                     key="zone-000000000000"
-                    elements={localPS.unsorted}
+                    elements={localPS.unsorted.filter(filterSearch)}
                     title={
                       localPS.sorted.length === 0
                         ? i18n.__('pages.PersonalPage.unsortedFav')
@@ -319,7 +435,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
             {localPS.sorted.map(({ zone_id: zoneId, elements, name, isExpanded }, index) => [
               <PersonalZone
                 key={`zone-${zoneId}`}
-                elements={elements}
+                elements={elements.filter(filterSearch)}
                 index={index}
                 title={name}
                 setTitle={setZoneTitle}
