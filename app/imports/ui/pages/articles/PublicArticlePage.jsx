@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   },
   rootMobile: {
     paddingTop: 60,
-    marginBottom: -108,
+    marginBottom: -128,
     display: 'flex',
     minHeight: '100vh',
     flexDirection: 'column',
@@ -48,7 +48,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
   },
   space: {
-    height: 64,
+    height: 150,
   },
   pagination: {
     display: 'flex',
