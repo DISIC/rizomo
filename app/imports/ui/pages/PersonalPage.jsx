@@ -142,12 +142,12 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     switch (element.type) {
       case 'service': {
         const service = Services.findOne({ _id: element.element_id });
-        searchText = service.title || '';
+        searchText = service !== undefined ? service.title : '';
         break;
       }
       case 'group': {
         const group = Groups.findOne(element.element_id);
-        searchText = group.name || '';
+        searchText = group !== undefined ? group.name : '';
         break;
       }
       case 'link': {
@@ -155,6 +155,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
         break;
       }
       default:
+        searchText = '';
         break;
     }
     searchText = searchText.toLowerCase();
@@ -177,6 +178,17 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
   };
 
   const [localPS, setLocalPS] = useState({});
+  useEffect(() => {
+    if (personalspace && allServices && allGroups) {
+      // Called once
+      Meteor.call('personalspaces.checkPersonalSpace', {}, (err) => {
+        if (err) {
+          msg.error(err.reason);
+        }
+      });
+    }
+  }, []);
+
   useEffect(() => {
     if (personalspace && allServices && allGroups) {
       setLocalPS(personalspace);
