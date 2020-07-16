@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItem: 'center',
+    height: 48,
   },
 }));
 
