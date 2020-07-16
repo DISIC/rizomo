@@ -120,8 +120,93 @@ export const updatePersonalSpace = new ValidatedMethod({
   },
 });
 
+export const checkPersonalSpace = new ValidatedMethod({
+  name: 'personalspaces.checkPersonalSpace',
+  validate: null,
+
+  run() {
+    // check integrity of personal space datas (no duplicate card and check if groups still exists)
+
+    if (!isActive(this.userId)) {
+      throw new Meteor.Error('api.personalspaces.updatePersonalSpace.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    const currentPersonalSpace = PersonalSpaces.findOne({ userId: this.userId });
+    if (currentPersonalSpace === undefined) {
+      const u = Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1, favServices: 1, favGroups: 1 } });
+      console.log(`Regen personalspaces for ${u.username}...`);
+      const unsorted = [];
+      u.favServices.forEach((s) => {
+        unsorted.push({
+          element_id: s,
+          type: 'service',
+        });
+      });
+      u.favGroups.forEach((g) => {
+        unsorted.push({
+          element_id: g,
+          type: 'group',
+        });
+      });
+      updatePersonalSpace._execute({ userId: this.userId }, { data: { userId: this.userId, unsorted, sorted: [] } });
+      return; // No need to go further
+    }
+    let changeMade = false;
+    const elementIds = [];
+
+    const checkZone = (zone) => {
+      // Loop zone elements backward so we can delete items by index
+      for (let index = zone.length - 1; index >= 0; index -= 1) {
+        const elem = zone[index];
+        if (elementIds.indexOf(elem.element_id) !== -1) {
+          // We have a duplicate card to delete
+          console.log(
+            `Remove personalspace duplicate ${elem.type} for ${
+              Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1 } }).username
+            }...`,
+          );
+          zone.splice(index, 1);
+          changeMade = true;
+          // eslint-disable-next-line
+          continue; // continue to next element
+        }
+        if (elem.type === 'group') {
+          // Check if group still exists
+          const group = Groups.findOne(elem.element_id);
+          if (group === undefined) {
+            // group no more exists so delete element
+            console.log(
+              `Remove personalspace no more existing group for ${
+                Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1 } }).username
+              }...`,
+            );
+            zone.splice(index, 1);
+            changeMade = true;
+            // eslint-disable-next-line
+            continue; // continue to next element
+          }
+        }
+        elementIds.push(elem.element_id);
+      }
+    };
+
+    currentPersonalSpace.sorted.forEach((zone) => {
+      checkZone(zone.elements);
+    });
+    checkZone(currentPersonalSpace.unsorted);
+
+    // Save modified PS if necessary
+    if (changeMade) {
+      Meteor.call('personalspaces.updatePersonalSpace', { data: currentPersonalSpace }, (err) => {
+        if (err) {
+          msg.error(err.reason);
+        }
+      });
+    }
+  },
+});
+
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([updatePersonalSpace, removeElement, addService, addGroup], 'name');
+const LISTS_METHODS = _.pluck([updatePersonalSpace, removeElement, addService, addGroup, checkPersonalSpace], 'name');
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second
