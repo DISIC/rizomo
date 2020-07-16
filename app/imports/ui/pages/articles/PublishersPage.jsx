@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rootMobile: {
     paddingTop: 60,
-    marginBottom: -108,
+    marginBottom: -128,
     display: 'flex',
     minHeight: '100vh',
     flexDirection: 'column',
@@ -62,6 +62,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'end',
     marginRight: 8,
   },
+  space: {
+    height: 150,
+  },
 }));
 
 const ITEM_PER_PAGE = 10;
@@ -81,7 +84,7 @@ const PublishersPage = () => {
     ITEM_PER_PAGE,
   );
 
-  const handleChangePage = (event, value) => {
+  const handleChangePage = (value) => {
     changePage(value);
   };
 
@@ -225,6 +228,7 @@ const PublishersPage = () => {
               <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
             </Grid>
           )}
+          <div className={classes.space} />
         </Container>
       </Fade>
       <Footer />

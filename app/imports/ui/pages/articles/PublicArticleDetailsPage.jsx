@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rootMobile: {
     paddingTop: 60,
-    marginBottom: -108,
+    marginBottom: -128,
     display: 'flex',
     minHeight: '100vh',
     flexDirection: 'column',
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   space: {
-    height: 64,
+    height: 150,
   },
   content: {
     textAlign: 'justify',

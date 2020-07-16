@@ -94,10 +94,14 @@ const Footer = () => {
     <AppBar position="relative">
       {isMobile ? (
         <Toolbar className={classes.root}>
-          <ul>{toolbarContent()}</ul>
-          <Link className={classes.link} to="/public">
-            Publications
-          </Link>
+          <ul>
+            {toolbarContent()}
+            <li className={classes.li}>
+              <Link className={classes.link} to="/public">
+                Publications
+              </Link>
+            </li>
+          </ul>
         </Toolbar>
       ) : (
         <Toolbar className={classes.root}>
