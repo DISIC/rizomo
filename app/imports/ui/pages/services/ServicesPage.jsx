@@ -174,6 +174,16 @@ function ServicesPage({ services, categories, ready }) {
       updateGlobalState('catList', [...catList, catId]);
     }
   };
+  const checkEscape = (e) => {
+    if (e.keyCode === 27) {
+      // ESCAPE key
+      servicePage.search = '';
+      servicePage.searchToggle = false;
+      servicePage.filterToggle = false;
+      servicePage.catList = [];
+      updateGlobalState('searchToggle', false); // all servicePage values will be saved with this call
+    }
+  };
 
   const filterServices = (service) => {
     let filterSearch = true;
@@ -244,6 +254,7 @@ function ServicesPage({ services, categories, ready }) {
           name="search"
           fullWidth
           onChange={updateSearch}
+          onKeyDown={checkEscape}
           type="text"
           value={search}
           variant="outlined"
