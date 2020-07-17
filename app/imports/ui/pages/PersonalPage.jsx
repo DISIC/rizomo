@@ -246,6 +246,11 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     }
   };
 
+  const suspendUpdate = () => {
+    // Called on onStart event of reactsortable zone
+    setPsNeedUpdate(false); // will be true again on end drag event (updateList)
+  };
+
   const updateList = () => {
     // Called on onEnd event of reactsortable zone
     setPsNeedUpdate(true);
@@ -438,6 +443,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                         : i18n.__('pages.PersonalPage.unsorted')
                     }
                     setList={setZoneList}
+                    suspendUpdate={suspendUpdate}
                     updateList={updateList}
                     customDrag={customDrag}
                   />,
@@ -452,6 +458,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                 title={name}
                 setTitle={setZoneTitle}
                 setList={setZoneList}
+                suspendUpdate={suspendUpdate}
                 updateList={updateList}
                 delZone={delZone}
                 lastZone={localPS.sorted.length === index + 1}
