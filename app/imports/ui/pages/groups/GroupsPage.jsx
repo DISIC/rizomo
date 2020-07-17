@@ -103,6 +103,14 @@ function GroupsPage() {
   const updateSearch = (e) => updateGlobalState('search', e.target.value);
   const resetSearch = () => updateGlobalState('search', '');
   const changeViewMode = (_, value) => updateGlobalState('viewMode', value);
+  const checkEscape = (e) => {
+    if (e.keyCode === 27) {
+      // ESCAPE key
+      groupPage.search = '';
+      groupPage.searchToggle = false;
+      updateGlobalState('searchToggle', false); // all groupPage values will be saved with this call
+    }
+  };
 
   const filterGroups = (group) => {
     let searchText = group.name + group.description + group.digest || '';
@@ -143,6 +151,7 @@ function GroupsPage() {
           name="search"
           fullWidth
           onChange={updateSearch}
+          onKeyDown={checkEscape}
           type="text"
           value={search}
           variant="outlined"
