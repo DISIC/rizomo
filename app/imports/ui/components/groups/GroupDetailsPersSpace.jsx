@@ -79,9 +79,6 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
     if (candidate) {
       return i18n.__('components.GroupDetailsPersSpace.groupCandidate');
     }
-    if (type === 5) {
-      return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
-    }
     return i18n.__('components.GroupDetailsPersSpace.groupNone');
   };
   const iconHeader = type === 0 ? <PeopleIcon /> : type === 10 ? <LockIcon /> : <SecurityIcon />;

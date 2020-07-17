@@ -147,6 +147,7 @@ const PersonalZone = ({
   title,
   setTitle,
   setList,
+  suspendUpdate,
   updateList,
   delZone,
   lastZone,
@@ -307,6 +308,7 @@ const PersonalZone = ({
           }`}
           list={elements}
           setList={setList(index)}
+          onStart={suspendUpdate}
           onEnd={updateList}
           animation={150}
           forceFallback
@@ -401,6 +403,7 @@ PersonalZone.propTypes = {
   title: PropTypes.string.isRequired,
   setTitle: PropTypes.func,
   setList: PropTypes.func.isRequired,
+  suspendUpdate: PropTypes.func.isRequired,
   updateList: PropTypes.func.isRequired,
   delZone: PropTypes.func,
   lastZone: PropTypes.bool,
