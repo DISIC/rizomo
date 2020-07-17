@@ -8,6 +8,7 @@ import Badge from '@material-ui/core/Badge';
 import { toast } from 'react-toastify';
 import Notifications from '../../../api/notifications/notifications';
 import Notification from './Notification';
+import notificationSystem from './NotificationSystem';
 
 const useStyles = makeStyles((theme) => ({
   badge: {
@@ -38,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 const NotificationsBell = ({ nonReadNotifsCount }) => {
   const classes = useStyles();
-
   return (
     <div id="NotificationsBell">
       {nonReadNotifsCount > 0 ? (
@@ -58,13 +58,19 @@ export default withTracker(() => {
 
   notifs.observe({
     added(notif) {
-      toast(<Notification notification={notif} toast />);
+      if (document.hasFocus()) {
+        toast(<Notification notification={notif} toast />);
+      } else {
+        notificationSystem(notif.title, { body: notif.content });
+      }
     },
   });
 
+  const notifications = Notifications.find({}, { sort: { createdAt: -1 } }).fetch() || [];
   const nonReadNotifsCount = Notifications.find({ userId: Meteor.userId(), read: false }).count();
   return {
     nonReadNotifsCount,
+    notifications,
   };
 })(NotificationsBell);
 
