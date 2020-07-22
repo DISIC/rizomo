@@ -3,6 +3,8 @@
     "enableKeycloak": true,
     "keycloakUrl": "https://auth.appseducation.fr/auth",
     "keycloakRealm": "apps",
+    "enableNextcloud": false,
+    "nextcloudURL": "",
     "minioSSL": false,
     "minioPort": null,
     "minioAccess": "Uhjm4KJ8MV",
@@ -41,6 +43,11 @@
     "adminEmails": [],
     "adminUser": "",
     "adminPassword": ""
+  },
+  "nextcloud": {
+    "nextcloudUser": "",
+    "nextcloudPassword": "",
+    "nextcloudQuota": "1073741824"
   },
   "private": {
     "fillWithFakeData": true,

@@ -121,6 +121,11 @@ Groups.schema = new SimpleSchema(
       defaultValue: 0,
       label: getLabel('api.groups.labels.numCandidates'),
     },
+    nextcloud: {
+      type: Boolean,
+      defaultValue: false,
+      label: getLabel('api.groups.labels.nextcloud'),
+    },
   },
   { tracker: Tracker },
 );
@@ -149,6 +154,7 @@ Groups.publicFields = {
   type: 1,
   owner: 1,
   numCandidates: 1,
+  nextcloud: 1,
 };
 Groups.allPublicFields = {
   content: 1,

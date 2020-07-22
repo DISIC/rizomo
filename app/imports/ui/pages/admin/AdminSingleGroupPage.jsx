@@ -1,5 +1,6 @@
 /* eslint-disable react/no-this-in-sfc */
 import React, { useState, useEffect } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import i18n from 'meteor/universe:i18n';
 import {
@@ -16,6 +17,9 @@ import {
   FormControl,
   Tabs,
   Tab,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 
 import PropTypes from 'prop-types';
@@ -93,6 +97,8 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const [loading, setLoading] = useState(!!params._id);
   const [tabId, setTabId] = React.useState(0);
   const [content, setContent] = useState('');
+  const [nextcloud, setNextcloud] = useState(false);
+  const nextEnabled = Meteor.settings.public.enableNextcloud === true;
   const history = useHistory();
   const classes = useStyles();
 
@@ -104,6 +110,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
       setLoading(false);
       setGroupData(group);
       setContent(group.content || '');
+      setNextcloud(group.nextcloud);
     }
   }, [group]);
 
@@ -146,12 +153,14 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
         data: {
           ...rest,
           content,
+          nextcloud,
         },
       };
     } else {
       args = {
         ...rest,
         content,
+        nextcloud,
       };
     }
 
@@ -186,7 +195,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               variant="outlined"
               fullWidth
               margin="normal"
-              disabled={!isAdmin && !!params._id}
+              disabled={(!isAdmin || (nextEnabled && group.nextcloud)) && !!params._id}
             />
             <TextField
               onChange={onUpdateField}
@@ -198,6 +207,22 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               margin="normal"
               disabled
             />
+            {nextEnabled ? (
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={nextcloud}
+                      onChange={() => setNextcloud(!nextcloud)}
+                      name="nextcloud"
+                      color="primary"
+                      disabled={!isAdmin && !!params._id}
+                    />
+                  }
+                  label={i18n.__('pages.AdminSingleGroupPage.nextcloud')}
+                />
+              </FormGroup>
+            ) : null}
             <FormControl>
               <InputLabel htmlFor="type" id="type-label">
                 {i18n.__('pages.AdminSingleGroupPage.type')}
