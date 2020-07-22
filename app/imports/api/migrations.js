@@ -64,3 +64,14 @@ Migrations.add({
     Articles.rawCollection().update({}, { $unset: { visits: true } }, { multi: true });
   },
 });
+
+Migrations.add({
+  version: 5,
+  name: 'Add nextcloud setting to groups',
+  up: () => {
+    Groups.update({}, { $set: { nextcloud: false } }, { multi: true });
+  },
+  down: () => {
+    Groups.rawCollection().update({}, { $unset: { nextcloud: true } }, { multi: true });
+  },
+});

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Meteor } from 'meteor/meteor';
-import AppRoles from './users/users';
+import AppRoles from '../users/users';
 
 class KeyCloakClient {
   constructor() {
@@ -29,7 +29,9 @@ class KeyCloakClient {
     const { adminPassword } = Meteor.settings.keycloak;
     return axios.post(
       `${this.kcURL}/realms/master/protocol/openid-connect/token`,
-      `username=${adminUser}&password=${adminPassword}&grant_type=password&client_id=admin-cli`,
+      `username=${encodeURIComponent(adminUser)}&password=${encodeURIComponent(
+        adminPassword,
+      )}&grant_type=password&client_id=admin-cli`,
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -188,6 +190,22 @@ class KeyCloakClient {
     );
   }
 
+  _addRoleToGroup(groupId, groupName, token) {
+    return this._getRoleId(groupName, token).then((roleId) =>
+      axios.post(
+        `${this.kcURL}/admin/realms/${this.kcRealm}/groups/${groupId}/role-mappings/clients/${this.clientId}`,
+        [{ name: groupName, id: roleId }],
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      ),
+    );
+  }
+
   _addGroup(groupName, token) {
     return this._addRole(groupName, token).then(() => {
       return axios
@@ -207,19 +225,7 @@ class KeyCloakClient {
         .then(() => this._getGroupId(groupName, token))
         .then((groupId) => {
           console.log(`Keycloak: group ${groupName} added (id ${groupId})`);
-          return this._getRoleId(groupName, token).then((roleId) => {
-            return axios.post(
-              `${this.kcURL}/admin/realms/${this.kcRealm}/groups/${groupId}/role-mappings/clients/${this.clientId}`,
-              [{ name: groupName, id: roleId }],
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                  Authorization: `Bearer ${token}`,
-                },
-              },
-            );
-          });
+          return this._addRoleToGroup(groupId, groupName, token);
         });
     });
   }
@@ -252,6 +258,59 @@ class KeyCloakClient {
         Authorization: `Bearer ${token}`,
       },
     });
+  }
+
+  _updateGroup(oldName, groupName) {
+    this._getToken()
+      .then((token) => {
+        // search group id
+        return this._getGroupId(oldName, token).then((groupId) => {
+          if (groupId === undefined) {
+            console.log(`Keycloak: could not find group ${oldName}`);
+            return null;
+          }
+          // delete associated role
+          return this._removeRole(oldName, token).then(() => {
+            // update group
+            return axios
+              .put(
+                `${this.kcURL}/admin/realms/${this.kcRealm}/groups/${groupId}`,
+                { name: groupName },
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
+                  },
+                },
+              )
+              .then(() => this._addRole(groupName, token))
+              .then(() =>
+                this._addRoleToGroup(groupId, groupName, token).then(() =>
+                  console.log(`Keycloak: changed group name from ${oldName} to ${groupName}`),
+                ),
+              );
+          });
+        });
+      })
+      .catch((error) =>
+        console.log(
+          `Keycloak: Error updating group ${oldName}`,
+          error.response && error.response.data ? error.response.data : error,
+        ),
+      );
+  }
+
+  updateGroupWithRoles(oldName, groupName) {
+    AppRoles.filter((role) => role !== 'candidate').forEach((role) => {
+      const oldRole = `${role}_${oldName}`;
+      const newRole = `${role}_${groupName}`;
+      this._updateGroup(oldRole, newRole);
+    });
+  }
+
+  updateGroup(oldName, groupName) {
+    this._updateGroup(oldName, groupName);
   }
 
   _removeGroup(groupName) {

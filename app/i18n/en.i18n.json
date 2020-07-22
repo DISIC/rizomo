@@ -95,7 +95,8 @@
         "members": "Members",
         "animators": "Animators",
         "admins": "Admins",
-        "applications": "Applications ID"
+        "applications": "Applications ID",
+        "nextcloud": "Create groupe in Nextcloud"
       }
     },
     "services": {
@@ -186,6 +187,13 @@
         "excludeRole": "Excluded Role",
         "keycloakId": "Keycloak Id"
       }
+    },
+    "nextcloud": {
+      "groupExists": "Group already exists in Nextcloud",
+      "addGroupError": "Error, could not create group in Nextcloud",
+      "addGroupFolderError": "Error, could not create group folder in Nextcloud",
+      "removeGroupError": "Warning, could not delete group in Nextcloud",
+      "removeGroupFolderError": "Warning, could not delete group folder in Nextcloud"
     }
   },
   "components": {
@@ -638,7 +646,8 @@
       "content": "Long description of the group",
       "save": "Save",
       "update": "Update",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "nextcloud": "Create group in Nextcloud"
     },
     "SingleGroupPage": {
       "backToList": "Back to the list",

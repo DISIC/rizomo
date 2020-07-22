@@ -95,7 +95,8 @@
         "members": "Membres",
         "animators": "Animateurs",
         "admins": "Administrateurs",
-        "applications": "ID de l'application"
+        "applications": "ID de l'application",
+        "nextcloud": "Créer le groupe dans Nextcloud"
       }
     },
     "services": {
@@ -186,6 +187,13 @@
         "excludeRole": "Rôle Exclus",
         "keycloakId": "Identifiant Keycloak"
       }
+    },
+    "nextcloud": {
+      "groupExists": "Ce groupe existe déjà dans Nextcloud",
+      "addGroupError": "Erreur lors de la création du groupe dans Nextcloud",
+      "addGroupFolderError": "Erreur lors de la création du partage dans Nextcloud",
+      "removeGroupError": "Attention, le groupe n'a pas pu être supprimé dans Nextcloud",
+      "removeGroupFolderError": "Attention, le dossier n'a pas pu être supprimé dans Nextcloud"
     }
   },
   "components": {
@@ -641,7 +649,8 @@
       "content": "Longue description du groupe",
       "save": "Sauvegarder",
       "update": "Mettre à jour",
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "nextcloud": "Créer le groupe dans Nextcloud"
     },
     "SingleGroupPage": {
       "backToList": "Retour à la liste",

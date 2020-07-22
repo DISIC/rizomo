@@ -19,14 +19,14 @@ Meteor.startup(() => {
     const rememberMe = window.localStorage.getItem('rememberMe') || 'false';
     if (rememberMe === 'false') {
       // warns user when he closes window / reloads page
-      window.onbeforeunload = function (event) {
+      window.onbeforeunload = function onBeforeUnload(event) {
         // Cancel the event as stated by the standard.
         event.preventDefault();
         // Safari
         return '';
       };
       // disconnect user if 'remember me' is disabled
-      window.onunload = function () {
+      window.onunload = function onUnload() {
         Meteor.logout();
         window.localStorage.clear('Meteor.loginToken');
         window.localStorage.clear('Meteor.loginTokenExpires');
