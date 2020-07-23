@@ -666,7 +666,10 @@
       "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe",
       "candidateCancel": "Votre requête a été annulée",
       "stopAnimating": "Arrêter d'animer ce groupe",
-      "animationLeft": "Vous n'êtes plus animateur de ce groupe"
+      "animationLeft": "Vous n'êtes plus animateur de ce groupe",
+      "apps": "Applications",
+      "resources": "Ressources du groupe",
+      "shareGroupButtonLabel": "Accès aux documents partagés"
     },
     "AddressBook": {
       "sendEmail": "Envoyer un email à",

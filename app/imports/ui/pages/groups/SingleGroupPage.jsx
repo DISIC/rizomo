@@ -18,6 +18,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import FolderIcon from '@material-ui/icons/Folder';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useAppContext } from '../../contexts/context';
 import Groups from '../../../api/groups/groups';
@@ -32,9 +33,7 @@ const useStyles = (member, candidate, type) =>
       marginTop: theme.spacing(3),
     },
     cardGrid: {
-      paddingTop: theme.spacing(5),
-      paddingBottom: theme.spacing(5),
-      marginBottom: theme.spacing(3),
+      marginBottom: theme.spacing(1),
     },
     flex: {
       display: 'flex',
@@ -147,6 +146,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
   const favorite = user.favGroups.includes(group._id);
   const classes = useStyles(member || animator, candidate, type)();
   const history = useHistory();
+  const nextcloudEnabled = Meteor.settings.public.enableNextcloud === true;
 
   const handleOpenedContent = () => {
     toggleOpenedContent(!openedContent);
@@ -248,6 +248,10 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     history.goBack();
   };
 
+  const openGroupFolder = () => {
+    window.open(`${Meteor.settings.public.nextcloudURL}/apps/files/?dir=/${encodeURIComponent(group.name)}`, '_blank');
+  };
+
   return (
     <Fade in>
       <Container className={classes.root}>
@@ -308,10 +312,30 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
               )}
             </Grid>
           </Grid>
+          {group.nextcloud && nextcloudEnabled && (member || animator) ? (
+            <>
+              <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
+                <Typography className={classes.smallTitle} variant="h5">
+                  {i18n.__('pages.SingleGroupPage.resources')}
+                </Typography>
+              </Grid>
+              <Grid item key={`share_${group._id}`} xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
+                <Button
+                  startIcon={<FolderIcon />}
+                  className={classes.buttonAdmin}
+                  size="large"
+                  variant="contained"
+                  onClick={openGroupFolder}
+                >
+                  {i18n.__('pages.SingleGroupPage.shareGroupButtonLabel')}
+                </Button>
+              </Grid>
+            </>
+          ) : null}
 
           <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
             <Typography className={classes.smallTitle} variant="h5">
-              Applications
+              {i18n.__('pages.SingleGroupPage.apps')}
             </Typography>
           </Grid>
           {services.map((service) => (
