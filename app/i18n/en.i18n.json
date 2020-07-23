@@ -664,7 +664,10 @@
       "alreadyCandidate": "You already sent a requet to the group",
       "candidateCancel": "Your request has been canceled",
       "stopAnimating": "Stop animating this group",
-      "animationLeft": "You are no longer animator of this group"
+      "animationLeft": "You are no longer animator of this group",
+      "apps": "Applications",
+      "resources": "Group resources",
+      "shareGroupButtonLabel": "Access shared files"
     },
     "AddressBook": {
       "sendEmail": "Send an email to",
