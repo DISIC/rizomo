@@ -3,7 +3,7 @@ export default function notificationSystem(title, options) {
     // eslint-disable-next-line
     const notification = new Notification(title, options);
   } else if (Notification.permission !== 'denied') {
-    Notification.requestPermission(function (permission) {
+    Notification.requestPermission(function notifySystem(permission) {
       if (!('permission' in Notification)) {
         Notification.permission = permission;
       }

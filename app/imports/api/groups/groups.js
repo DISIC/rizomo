@@ -130,7 +130,7 @@ Groups.schema = new SimpleSchema(
   { tracker: Tracker },
 );
 
-Groups.after.update(function (_, doc, fieldNames) {
+Groups.after.update(function countCandidates(_, doc, fieldNames) {
   if (fieldNames.includes('candidates')) {
     if (!this.previous.candidates || this.previous.candidates.length !== doc.candidates.length) {
       Groups.update({ _id: doc._id }, { $set: { numCandidates: doc.candidates.length } });

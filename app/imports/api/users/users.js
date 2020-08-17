@@ -3,7 +3,9 @@ import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
-import { getLabel, checkDomain } from '../utils';
+import { getLabel } from '../utils';
+import checkDomain from '../domains';
+import logServer from '../logging';
 
 const AppRoles = ['candidate', 'member', 'animator', 'admin'];
 
@@ -137,9 +139,9 @@ if (Meteor.isServer) {
     const newUser = { ...user };
     if (user.services && user.services.keycloak) {
       /* eslint no-console:off */
-      console.log('Creating new user after Keycloak authentication :');
-      console.log(`  Keycloak id: ${user.services.keycloak.id}`);
-      console.log(`  email: ${user.services.keycloak.email}`);
+      logServer('Creating new user after Keycloak authentication :');
+      logServer(`  Keycloak id: ${user.services.keycloak.id}`);
+      logServer(`  email: ${user.services.keycloak.email}`);
       newUser.emails = [{ address: user.services.keycloak.email, verified: true }];
     }
     if (options.firstName) newUser.firstName = options.firstName;
@@ -194,7 +196,7 @@ if (Meteor.isServer) {
       if (Meteor.settings.keycloak.adminEmails.indexOf(details.user.services.keycloak.email) !== -1) {
         if (!Roles.userIsInRole(details.user._id, 'admin')) {
           Roles.addUsersToRoles(details.user._id, 'admin');
-          console.log(i18n.__('api.users.adminGiven'), details.user.services.keycloak.email);
+          logServer(i18n.__('api.users.adminGiven'), details.user.services.keycloak.email);
         }
       }
     } else {

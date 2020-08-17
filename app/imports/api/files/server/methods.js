@@ -9,6 +9,7 @@ import Minio from 'minio';
 
 import s3Client from './config';
 import { isActive } from '../../utils';
+import logServer from '../../logging';
 
 const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
 
@@ -160,10 +161,11 @@ export const moveFiles = new ValidatedMethod({
         (err) => {
           s3Client.removeObject(minioBucket, `${sourcePath}/${newFile}`);
           if (err) {
-            console.log(
+            logServer(
               `Error copying ${newFile} from ${minioBucket}/${sourcePath}/${newFile} to ${destinationPath}/${newFile}`,
+              'error',
             );
-            console.log(err);
+            logServer(err, 'error');
           }
         },
       );
