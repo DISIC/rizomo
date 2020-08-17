@@ -407,7 +407,7 @@ export const setAdminOf = new ValidatedMethod({
     //   kcClient.setRole(userId, `admin_${group.name}`);
     // }
     // Notify user
-    createRoleNotification(this.userId, userId, groupId, 'admin', true);
+    if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'admin', true);
   },
 });
 
@@ -448,7 +448,7 @@ export const unsetAdminOf = new ValidatedMethod({
     //    kcClient.unsetRole(userId, `admin_${group.name}`);
     //  }
     // Notify user
-    createRoleNotification(this.userId, userId, groupId, 'admin', false);
+    if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'admin', false);
   },
 });
 
@@ -488,7 +488,7 @@ export const setAnimatorOf = new ValidatedMethod({
       // kcClient.setRole(userId, `animator_${group.name}`);
     }
     // Notify user
-    createRoleNotification(this.userId, userId, groupId, 'animator', true);
+    if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'animator', true);
   },
 });
 
@@ -529,7 +529,7 @@ export const unsetAnimatorOf = new ValidatedMethod({
       // kcClient.unsetRole(userId, `animator_${group.name}`);
     }
     // Notify user
-    createRoleNotification(this.userId, userId, groupId, 'animator', false);
+    if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'animator', false);
   },
 });
 
@@ -582,7 +582,7 @@ export const setMemberOf = new ValidatedMethod({
       // kcClient.setRole(userId, `member_${group.name}`);
     }
     // Notify user
-    createRoleNotification(this.userId, userId, groupId, 'member', true);
+    if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'member', true);
   },
 });
 
@@ -625,7 +625,7 @@ export const unsetMemberOf = new ValidatedMethod({
       // kcClient.unsetRole(userId, `member_${group.name}`);
     }
     // Notify user
-    createRoleNotification(this.userId, userId, groupId, 'member', false);
+    if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'member', false);
   },
 });
 
@@ -666,9 +666,9 @@ export const setCandidateOf = new ValidatedMethod({
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
     // Notify user
-    createRoleNotification(this.userId, userId, groupId, 'candidate', true);
+    if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'candidate', true);
     // Notify admins
-    createRequestNotification(this.userId, userId, groupId);
+    if (this.userId !== userId) createRequestNotification(this.userId, userId, groupId);
   },
 });
 
@@ -706,7 +706,7 @@ export const unsetCandidateOf = new ValidatedMethod({
       unfavGroup._execute({ userId }, { groupId });
     }
     // Notify user
-    createRoleNotification(this.userId, userId, groupId, 'candidate', false);
+    if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'candidate', false);
   },
 });
 
