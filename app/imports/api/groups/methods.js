@@ -104,7 +104,7 @@ export const createGroup = new ValidatedMethod({
     }
     if (kcClient) {
       // create associated groups and roles in keycloak
-      kcClient.addGroup({ name });
+      kcClient.addGroup({ name }, this.userId);
     }
     if (nextcloud && nextClient) {
       // create associated group in Nextcloud
@@ -149,7 +149,7 @@ export const removeGroup = new ValidatedMethod({
     }
     if (kcClient) {
       // delete associated groups and roles in keycloak
-      kcClient.removeGroup(group);
+      kcClient.removeGroup(group, this.userId);
     }
     // remove all roles set on this group
     Roles.removeScope(groupId);
@@ -241,7 +241,7 @@ export const updateGroup = new ValidatedMethod({
     }
     // update group in keycloak if name has changed
     if (kcClient && groupData.name && groupData.name !== group.name) {
-      kcClient.updateGroup(group.name, groupData.name);
+      kcClient.updateGroup(group.name, groupData.name, this.userId);
     }
     // create nextcloud group if needed
     const nextRequired = data.nextcloud === true || (data.nextcloud === undefined && group.nextcloud === true);

@@ -9,6 +9,7 @@ import { isActive } from '../utils';
 import PersonalSpaces from './personalspaces';
 import Groups from '../groups/groups';
 import Services from '../services/services';
+import logServer from '../logging';
 
 const addItem = (userId, item) => {
   const currentPersonalSpace = PersonalSpaces.findOne({ userId });
@@ -133,7 +134,7 @@ export const checkPersonalSpace = new ValidatedMethod({
     const currentPersonalSpace = PersonalSpaces.findOne({ userId: this.userId });
     if (currentPersonalSpace === undefined) {
       const u = Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1, favServices: 1, favGroups: 1 } });
-      console.log(`Regen personalspaces for ${u.username}...`);
+      logServer(`Regen personalspaces for ${u.username}...`);
       const unsorted = [];
       u.favServices.forEach((s) => {
         unsorted.push({
@@ -159,7 +160,7 @@ export const checkPersonalSpace = new ValidatedMethod({
         const elem = zone[index];
         if (elementIds.indexOf(elem.element_id) !== -1) {
           // We have a duplicate card to delete
-          console.log(
+          logServer(
             `Remove personalspace duplicate ${elem.type} for ${
               Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1 } }).username
             }...`,
@@ -174,7 +175,7 @@ export const checkPersonalSpace = new ValidatedMethod({
           const group = Groups.findOne(elem.element_id);
           if (group === undefined) {
             // group no more exists so delete element
-            console.log(
+            logServer(
               `Remove personalspace no more existing group for ${
                 Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1 } }).username
               }...`,

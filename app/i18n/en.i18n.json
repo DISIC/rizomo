@@ -194,6 +194,12 @@
       "addGroupFolderError": "Error, could not create group folder in Nextcloud",
       "removeGroupError": "Warning, could not delete group in Nextcloud",
       "removeGroupFolderError": "Warning, could not delete group folder in Nextcloud"
+    },
+    "logging": {
+      "unknownLogLevel": "Specified log level does not exist",
+      "info": "Server information",
+      "warning": "Server warning",
+      "error": "Server error"
     }
   },
   "components": {

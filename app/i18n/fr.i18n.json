@@ -194,6 +194,12 @@
       "addGroupFolderError": "Erreur lors de la création du partage dans Nextcloud",
       "removeGroupError": "Attention, le groupe n'a pas pu être supprimé dans Nextcloud",
       "removeGroupFolderError": "Attention, le dossier n'a pas pu être supprimé dans Nextcloud"
+    },
+    "logging": {
+      "unknownLogLevel": "Le niveau de log spécifié n'existe pas",
+      "info": "Information serveur",
+      "warning": "Avertissement serveur",
+      "error": "Erreur serveur"
     }
   },
   "components": {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Meteor } from 'meteor/meteor';
 import AppRoles from '../users/users';
+import logServer from '../logging';
 
 class KeyCloakClient {
   constructor() {
@@ -19,7 +20,7 @@ class KeyCloakClient {
     // initialize client id and check that we can get tokens
     this._getToken().then((initToken) => {
       if (initToken) {
-        console.log('Keycloak: API client initialized');
+        logServer('Keycloak: API client initialized');
       }
     });
   }
@@ -82,7 +83,7 @@ class KeyCloakClient {
         return newToken;
       });
     return this._authenticate().then((response) => {
-      console.log('Keycloak : new access token received');
+      logServer('Keycloak : new access token received');
       const newToken = response.data.access_token;
       this._setToken(newToken, response.data.expires_in);
       this._setRefreshToken(response.data.refresh_token, response.data.refresh_expires_in);
@@ -99,8 +100,8 @@ class KeyCloakClient {
           .then(() => Promise.resolve(newToken));
       })
       .catch((error) => {
-        console.log('** Keycloak: could not get token, please check settings **');
-        console.log(error.response && error.response.data ? error.response.data : error);
+        logServer('** Keycloak: could not get token, please check settings **', 'error');
+        logServer(error.response && error.response.data ? error.response.data : error, 'error');
         return null;
       });
   }
@@ -116,12 +117,12 @@ class KeyCloakClient {
         })
         .then((response) => {
           this.clientId = response.data.find((client) => client.clientId === Meteor.settings.keycloak.client).id;
-          console.log(`Keycloak: client ID found (${this.clientId})`);
+          logServer(`Keycloak: client ID found (${this.clientId})`);
           return this.clientId;
         })
         .catch((error) => {
-          console.log('** Keycloak: could not find client Id, please check settings **');
-          console.log(error.response && error.response.data ? error.response.data : error);
+          logServer('** Keycloak: could not find client Id, please check settings **', 'error');
+          logServer(error.response && error.response.data ? error.response.data : error, 'error');
           return null;
         });
     }
@@ -224,29 +225,29 @@ class KeyCloakClient {
         )
         .then(() => this._getGroupId(groupName, token))
         .then((groupId) => {
-          console.log(`Keycloak: group ${groupName} added (id ${groupId})`);
+          logServer(`Keycloak: group ${groupName} added (id ${groupId})`);
           return this._addRoleToGroup(groupId, groupName, token);
         });
     });
   }
 
-  addGroupWithRoles(group) {
+  addGroupWithRoles(group, callerId) {
     AppRoles.filter((role) => role !== 'candidate').forEach((role) => {
       const groupName = `${role}_${group.name}`;
       this._getToken().then((token) => {
         this._addGroup(groupName, token).catch((error) => {
-          console.log(`Keycloak : ERROR adding group ${groupName}`);
-          console.log(error.response && error.response.data ? error.response.data : error);
+          logServer(`Keycloak : ERROR adding group ${groupName}`, 'error', callerId);
+          logServer(error.response && error.response.data ? error.response.data : error, 'error');
         });
       });
     });
   }
 
-  addGroup(group) {
+  addGroup(group, callerId) {
     this._getToken().then((token) => {
       this._addGroup(group.name, token).catch((error) => {
-        console.log(`Keycloak : ERROR adding group ${group.name}`);
-        console.log(error.response && error.response.data ? error.response.data : error);
+        logServer(`Keycloak : ERROR adding group ${group.name}`, 'error', callerId);
+        logServer(error.response && error.response.data ? error.response.data : error, 'error');
       });
     });
   }
@@ -260,13 +261,13 @@ class KeyCloakClient {
     });
   }
 
-  _updateGroup(oldName, groupName) {
+  _updateGroup(oldName, groupName, callerId) {
     this._getToken()
       .then((token) => {
         // search group id
         return this._getGroupId(oldName, token).then((groupId) => {
           if (groupId === undefined) {
-            console.log(`Keycloak: could not find group ${oldName}`);
+            logServer(`Keycloak: could not find group ${oldName}`, 'error', callerId);
             return null;
           }
           // delete associated role
@@ -287,39 +288,37 @@ class KeyCloakClient {
               .then(() => this._addRole(groupName, token))
               .then(() =>
                 this._addRoleToGroup(groupId, groupName, token).then(() =>
-                  console.log(`Keycloak: changed group name from ${oldName} to ${groupName}`),
+                  logServer(`Keycloak: changed group name from ${oldName} to ${groupName}`),
                 ),
               );
           });
         });
       })
-      .catch((error) =>
-        console.log(
-          `Keycloak: Error updating group ${oldName}`,
-          error.response && error.response.data ? error.response.data : error,
-        ),
-      );
+      .catch((error) => {
+        logServer(`Keycloak: Error updating group ${oldName}`, 'error', callerId);
+        logServer(error.response && error.response.data ? error.response.data : error, 'error');
+      });
   }
 
-  updateGroupWithRoles(oldName, groupName) {
+  updateGroupWithRoles(oldName, groupName, callerId) {
     AppRoles.filter((role) => role !== 'candidate').forEach((role) => {
       const oldRole = `${role}_${oldName}`;
       const newRole = `${role}_${groupName}`;
-      this._updateGroup(oldRole, newRole);
+      this._updateGroup(oldRole, newRole, callerId);
     });
   }
 
-  updateGroup(oldName, groupName) {
-    this._updateGroup(oldName, groupName);
+  updateGroup(oldName, groupName, callerId) {
+    this._updateGroup(oldName, groupName, callerId);
   }
 
-  _removeGroup(groupName) {
+  _removeGroup(groupName, callerId) {
     this._getToken()
       .then((token) => {
         // search group id
         return this._getGroupId(groupName, token).then((groupId) => {
           if (groupId === undefined) {
-            console.log(`Keycloak: could not find group ${groupName}`);
+            logServer(`Keycloak: could not find group ${groupName}`, 'error', callerId);
             return null;
           }
           // delete associated role
@@ -332,30 +331,28 @@ class KeyCloakClient {
                   Authorization: `Bearer ${token}`,
                 },
               })
-              .then(() => console.log(`Keycloak: group ${groupName} removed`));
+              .then(() => logServer(`Keycloak: group ${groupName} removed`));
           });
         });
       })
-      .catch((error) =>
-        console.log(
-          `Keycloak: Error removing group ${groupName}`,
-          error.response && error.response.data ? error.response.data : error,
-        ),
-      );
+      .catch((error) => {
+        logServer(`Keycloak: Error removing group ${groupName}`, 'error', callerId);
+        logServer(error.response && error.response.data ? error.response.data : error, 'error');
+      });
   }
 
-  removeGroupWithRoles(group) {
+  removeGroupWithRoles(group, callerId) {
     AppRoles.filter((role) => role !== 'candidate').forEach((role) => {
       const groupName = `${role}_${group.name}`;
-      this._removeGroup(groupName);
+      this._removeGroup(groupName, callerId);
     });
   }
 
-  removeGroup(group) {
-    this._removeGroup(group.name);
+  removeGroup(group, callerId) {
+    this._removeGroup(group.name, callerId);
   }
 
-  setAdmin(userId) {
+  setAdmin(userId, callerId) {
     const groupName = `admins`;
     const user = Meteor.users.findOne(userId);
     const keycloakId = user.services && user.services.keycloak ? user.services.keycloak.id : null;
@@ -371,20 +368,20 @@ class KeyCloakClient {
                 },
               })
               .then(() => {
-                console.log(`Keycloak: user ${userId} added to admins`);
+                logServer(`Keycloak: user ${userId} added to admins`);
               });
           }),
         )
         .catch((error) => {
-          console.log(`Keycloak : ERROR adding user ${userId} to admins`);
-          console.log(error.response && error.response.data ? error.response.data : error);
+          logServer(`Keycloak : ERROR adding user ${userId} to admins`, 'error', callerId);
+          logServer(error.response && error.response.data ? error.response.data : error, 'error');
         });
     } else {
-      console.log(`Keycloak: could not find Keycloak ID for user ${userId}`);
+      logServer(`Keycloak: could not find Keycloak ID for user ${userId}`, 'error', callerId);
     }
   }
 
-  unsetAdmin(userId) {
+  unsetAdmin(userId, callerId) {
     const groupName = `admins`;
     const user = Meteor.users.findOne(userId);
     const keycloakId = user.services && user.services.keycloak ? user.services.keycloak.id : null;
@@ -400,20 +397,20 @@ class KeyCloakClient {
                 },
               })
               .then(() => {
-                console.log(`Keycloak: user ${userId} removed from admins`);
+                logServer(`Keycloak: user ${userId} removed from admins`);
               }),
           ),
         )
         .catch((error) => {
-          console.log(`Keycloak : ERROR removing user ${userId} from admins`);
-          console.log(error.response && error.response.data ? error.response.data : error);
+          logServer(`Keycloak : ERROR removing user ${userId} from admins`, 'error', callerId);
+          logServer(error.response && error.response.data ? error.response.data : error, 'error');
         });
     } else {
-      console.log(`Keycloak: could not find Keycloak ID for user ${userId}`);
+      logServer(`Keycloak: could not find Keycloak ID for user ${userId}`, 'error', callerId);
     }
   }
 
-  setRole(userId, roleName) {
+  setRole(userId, roleName, callerId) {
     const user = Meteor.users.findOne(userId);
     const keycloakId = user.services && user.services.keycloak ? user.services.keycloak.id : null;
     if (keycloakId) {
@@ -428,20 +425,20 @@ class KeyCloakClient {
                 },
               })
               .then(() => {
-                console.log(`Keycloak: group ${roleName} added to user ${userId}`);
+                logServer(`Keycloak: group ${roleName} added to user ${userId}`);
               }),
           ),
         )
         .catch((error) => {
-          console.log(`Keycloak : ERROR adding group ${roleName} to user ${userId}`);
-          console.log(error.response && error.response.data ? error.response.data : error);
+          logServer(`Keycloak : ERROR adding group ${roleName} to user ${userId}`, 'error', callerId);
+          logServer(error.response && error.response.data ? error.response.data : error, 'error');
         });
     } else {
-      console.log(`Keycloak: could not find Keycloak ID for user ${userId}`);
+      logServer(`Keycloak: could not find Keycloak ID for user ${userId}`, 'error', callerId);
     }
   }
 
-  unsetRole(userId, roleName) {
+  unsetRole(userId, roleName, callerId) {
     const user = Meteor.users.findOne(userId);
     const keycloakId = user.services && user.services.keycloak ? user.services.keycloak.id : null;
     if (keycloakId) {
@@ -456,16 +453,16 @@ class KeyCloakClient {
                 },
               })
               .then(() => {
-                console.log(`Keycloak: group ${roleName} removed from user ${userId}`);
+                logServer(`Keycloak: group ${roleName} removed from user ${userId}`);
               }),
           ),
         )
         .catch((error) => {
-          console.log(`Keycloak : ERROR removing group ${roleName} from user ${userId}`);
-          console.log(error.response && error.response.data ? error.response.data : error);
+          logServer(`Keycloak : ERROR removing group ${roleName} from user ${userId}`, 'error', callerId);
+          logServer(error.response && error.response.data ? error.response.data : error, 'error');
         });
     } else {
-      console.log(`Keycloak: could not find Keycloak ID for user ${userId}`);
+      logServer(`Keycloak: could not find Keycloak ID for user ${userId}`, 'error', callerId);
     }
   }
 }

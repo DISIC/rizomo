@@ -5,6 +5,7 @@ import { ServiceConfiguration } from 'meteor/service-configuration';
 
 // required: loads accounts customization before initial users creation
 import faker from 'faker';
+import logServer from '../../../api/logging';
 import AppRoles from '../../../api/users/users';
 import fakeData from './fakeData.json';
 
@@ -28,13 +29,13 @@ if (Meteor.settings.keycloak) {
     );
   }
 } else {
-  console.log('No Keycloak configuration. Please invoke meteor with a settings file.');
+  logServer('No Keycloak configuration. Please invoke meteor with a settings file.');
 }
 
 /* eslint-disable no-console */
 
 function createUser(email, password, role, structure, firstName, lastName) {
-  console.log(`  Creating user ${email}.`);
+  logServer(`  Creating user ${email}.`);
   const userID = Accounts.createUser({
     username: email,
     email,
@@ -63,7 +64,7 @@ AppRoles.forEach((role) => {
 const NUMBER_OF_FAKE_USERS = 300;
 if (Meteor.users.find().count() === 0) {
   if (Meteor.settings.private.fillWithFakeData) {
-    console.log('Creating the default user(s)');
+    logServer('Creating the default user(s)');
     fakeData.defaultAccounts.map(({ email, password, role, structure, firstName, lastName }) =>
       createUser(email, password, role, structure, firstName, lastName),
     );
@@ -82,6 +83,6 @@ if (Meteor.users.find().count() === 0) {
       );
     }
   } else {
-    console.log('No default users to create !  Please invoke meteor with a settings file.');
+    logServer('No default users to create !  Please invoke meteor with a settings file.');
   }
 }

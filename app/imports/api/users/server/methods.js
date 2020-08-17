@@ -293,7 +293,7 @@ export const setAdmin = new ValidatedMethod({
     }
     if (Meteor.settings.public.enableKeycloak) {
       // update user's groups in Keycloak
-      kcClient.setAdmin(userId);
+      kcClient.setAdmin(userId, this.userId);
     }
     // add role to user collection
     Roles.addUsersToRoles(userId, 'admin');
@@ -366,7 +366,7 @@ export const unsetAdmin = new ValidatedMethod({
     }
     if (Meteor.settings.public.enableKeycloak) {
       // update user's groups in Keycloak
-      kcClient.unsetAdmin(userId);
+      kcClient.unsetAdmin(userId, this.userId);
     }
     // remove role from user collection
     Roles.removeUsersFromRoles(userId, 'admin');
@@ -484,7 +484,7 @@ export const setAnimatorOf = new ValidatedMethod({
     favGroup._execute({ userId }, { groupId });
     if (kcClient && !Roles.userIsInRole(userId, 'member', groupId)) {
       // update user's groups in Keycloak
-      kcClient.setRole(userId, group.name);
+      kcClient.setRole(userId, group.name, this.userId);
       // kcClient.setRole(userId, `animator_${group.name}`);
     }
     // Notify user
@@ -525,7 +525,7 @@ export const unsetAnimatorOf = new ValidatedMethod({
     }
     if (kcClient && !Roles.userIsInRole(userId, 'member', groupId)) {
       // update user's groups in Keycloak
-      kcClient.unsetRole(userId, group.name);
+      kcClient.unsetRole(userId, group.name, this.userId);
       // kcClient.unsetRole(userId, `animator_${group.name}`);
     }
     // Notify user
@@ -578,7 +578,7 @@ export const setMemberOf = new ValidatedMethod({
     favGroup._execute({ userId }, { groupId });
     if (kcClient && !Roles.userIsInRole(userId, 'animator', groupId)) {
       // update user's groups in Keycloak
-      kcClient.setRole(userId, group.name);
+      kcClient.setRole(userId, group.name, this.userId);
       // kcClient.setRole(userId, `member_${group.name}`);
     }
     // Notify user
@@ -621,7 +621,7 @@ export const unsetMemberOf = new ValidatedMethod({
     }
     if (kcClient && !Roles.userIsInRole(userId, 'animator', groupId)) {
       // update user's groups in Keycloak
-      kcClient.unsetRole(userId, group.name);
+      kcClient.unsetRole(userId, group.name, this.userId);
       // kcClient.unsetRole(userId, `member_${group.name}`);
     }
     // Notify user

@@ -2,20 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import SimpleSchema from 'simpl-schema';
 
-// checks if the domain part of an email address matches whitelisted domains
-export function checkDomain(email) {
-  let res = false;
-  const domainMail = email.split('@')[1];
-  const whiteDomains = Meteor.settings.private.whiteDomains || [];
-  whiteDomains.forEach((whiteDomain) => {
-    if (new RegExp(whiteDomain).test(domainMail)) {
-      console.log(`  Email domain matches ${whiteDomain}: user activated`);
-      res = true;
-    }
-  });
-  return res;
-}
-
 export function isActive(userId) {
   if (!userId) return false;
   const user = Meteor.users.findOne(userId, { fields: { isActive: 1 } });
