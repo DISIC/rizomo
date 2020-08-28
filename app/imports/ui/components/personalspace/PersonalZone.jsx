@@ -358,7 +358,8 @@ const PersonalZone = ({
                             candidate={candidateGroups.includes(elem.element_id)}
                             member={memberGroups.includes(elem.element_id)}
                             animator={animatorGroups.includes(elem.element_id)}
-                            admin={isAdmin || managedGroups.includes(elem.element_id)}
+                            admin={managedGroups.includes(elem.element_id)}
+                            globalAdmin={isAdmin}
                           />
                         </Grid>
                       );

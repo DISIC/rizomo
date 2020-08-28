@@ -347,6 +347,7 @@
     },
     "GroupDetailsPersSpace": {
       "groupCandidate": "Candidate",
+      "groupAdmin": "Administrator",
       "groupNone": "No role"
     },
     "AppVersion": {
