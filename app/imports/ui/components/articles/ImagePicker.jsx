@@ -14,6 +14,7 @@ const useStyles = (isMobile) =>
       borderRadius: theme.shape.borderRadius,
       left: isMobile ? '2.5%' : '50%',
       transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
+      overflow: 'auto',
     },
   }));
 

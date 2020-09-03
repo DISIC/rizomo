@@ -52,6 +52,7 @@ const ImageAdminUploader = ({ src, alt, onImageChange, className, name, path, wi
           name,
           fileName: `${name}_${Random.id()}`,
           file: image,
+          type: file.name.split('.')[file.name.split('.').length - 1],
           path,
           onFinish: onTransmitImage,
         },

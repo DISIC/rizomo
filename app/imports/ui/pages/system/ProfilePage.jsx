@@ -29,6 +29,7 @@ import { useAppContext } from '../../contexts/context';
 import LanguageSwitcher from '../../components/system/LanguageSwitcher';
 import debounce from '../../utils/debounce';
 import { useObjectState } from '../../utils/hooks';
+import { downloadBackupPublications, uploadBackupPublications } from '../../../api/articles/methods';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,11 +44,26 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonGroup: {
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: '10px',
   },
   keycloakMessage: {
     padding: theme.spacing(1),
+  },
+  inputFile: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    opacity: 0,
+  },
+  fileWrap: {
+    position: 'relative',
+  },
+  buttonWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
   },
 }));
 
@@ -235,6 +251,38 @@ const ProfilePage = () => {
     setUserData({ ...userData, username: userData.email });
     setErrors({ username: '' });
   };
+  const downloadBackup = () => {
+    downloadBackupPublications.call((error, results) => {
+      if (error) {
+        msg.error(error.reason);
+      } else {
+        const file = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(results))}`;
+
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = file;
+        // the filename you want
+        a.download = `backup_${new Date().getTime()}.json`;
+        a.click();
+      }
+    });
+  };
+  const uploadData = ({ target: { files = [] } }) => {
+    const reader = new FileReader();
+
+    reader.onload = function (theFile) {
+      const articles = JSON.parse(theFile.target.result);
+      uploadBackupPublications.call({ articles }, (error) => {
+        if (error) {
+          msg.error(error.reason);
+        } else {
+          msg.success(i18n.__('pages.ProfilePage.uploadSuccess'));
+        }
+      });
+    };
+    reader.readAsText(files[0]);
+  };
+
   if (loadingUser) {
     return <Spinner />;
   }
@@ -382,6 +430,26 @@ const ProfilePage = () => {
               </Button>
             </div>
           </form>
+        </Paper>
+        <Paper className={classes.root}>
+          <Typography variant={isMobile ? 'h4' : 'h5'}>{i18n.__('pages.ProfilePage.backupTitle')}</Typography>
+          <p>{i18n.__('pages.ProfilePage.backupMessage')}</p>
+
+          <Grid container>
+            <Grid item xs={12} sm={6} md={6} className={classes.buttonWrapper}>
+              <Button variant="contained" onClick={downloadBackup}>
+                {i18n.__('pages.ProfilePage.downloadPublicationBackup')}
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} className={classes.buttonWrapper}>
+              <div className={classes.fileWrap}>
+                <Button variant="contained" htmlFor="upload">
+                  {i18n.__('pages.ProfilePage.UploadPublicationBackup')}
+                  <input className={classes.inputFile} type="file" id="upload" onChange={uploadData} />
+                </Button>
+              </div>
+            </Grid>
+          </Grid>
         </Paper>
       </Container>
     </Fade>

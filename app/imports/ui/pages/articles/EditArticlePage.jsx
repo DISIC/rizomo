@@ -32,8 +32,11 @@ import WebcamModal from '../../components/system/WebcamModal';
 
 import '../../utils/QuillImage';
 import '../../utils/QuillWebcam';
+import '../../utils/QuillAudio';
 import '../../utils/QuillVideo';
 import { CustomToolbarArticle } from '../../components/system/CustomQuill';
+import AudioModal from '../../components/system/AudioModal';
+import { PICTURES_TYPES, VIDEO_TYPES, SOUND_TYPES } from '../../components/mediaStorage/SingleStoragefile';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -73,13 +76,14 @@ const emptyArticle = {
   description: '',
 };
 
-const quillOptionsMaker = ({ imageHandler, webcamHandler }) => ({
+const quillOptionsMaker = ({ imageHandler, webcamHandler, audioHandler }) => ({
   modules: {
     toolbar: {
       container: '#quill-toolbar',
       handlers: {
         image: imageHandler,
         webcam: webcamHandler,
+        audio: audioHandler,
       },
     },
     clipboard: {
@@ -111,12 +115,11 @@ const quillOptionsMaker = ({ imageHandler, webcamHandler }) => ({
     'width',
     'style',
     'webcam',
+    'audio',
   ],
 });
 
 let quillOptions;
-const IMAGE_TYPES = ['svg', 'png', 'jpg', 'gif', 'jpeg'];
-const VIDEO_TYPES = ['mp4', 'webm', 'avi', 'wmv'];
 
 function EditArticlePage({
   article = {},
@@ -133,6 +136,7 @@ function EditArticlePage({
   const [quill, setQuill] = useState(null);
   const [picker, togglePicker] = useState(false);
   const [webcam, toggleWebcam] = useState(false);
+  const [audio, toggleAudio] = useState(false);
   const [data, setData] = useObjectState(emptyArticle);
   const [content, setContent] = useState('');
   const publicURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}/${data.slug}`;
@@ -147,11 +151,17 @@ function EditArticlePage({
     // eslint-disable-next-line react/no-this-in-sfc
     setQuill(this.quill);
   }
+  function audioHandler() {
+    toggleAudio(true);
+    // eslint-disable-next-line react/no-this-in-sfc
+    setQuill(this.quill);
+  }
 
   useEffect(() => {
     quillOptions = quillOptionsMaker({
       imageHandler,
       webcamHandler,
+      audioHandler,
     });
   }, []);
 
@@ -160,11 +170,16 @@ function EditArticlePage({
     quill.insertEmbed(range.index, 'webcam', videoUrl);
     toggleWebcam(false);
   };
+  const insertAudio = (audioUrl) => {
+    const range = quill.getSelection(true);
+    quill.insertEmbed(range.index, 'audio', audioUrl);
+    toggleAudio(false);
+  };
 
   const selectFile = (file) => {
     const range = quill.getSelection(true);
     let format = 'attachment';
-    IMAGE_TYPES.forEach((extension) => {
+    PICTURES_TYPES.forEach((extension) => {
       if (file.name.search(extension) > -1) {
         format = 'image';
       }
@@ -174,12 +189,19 @@ function EditArticlePage({
         format = 'video';
       }
     });
+    SOUND_TYPES.forEach((extension) => {
+      if (file.name.search(extension) > -1) {
+        format = 'audio';
+      }
+    });
     const url = `${HOST}${file.name}`;
 
     if (format === 'image') {
       quill.insertEmbed(range.index, format, url);
     } else if (format === 'video') {
       quill.insertEmbed(range.index, 'webcam', url);
+    } else if (format === 'audio') {
+      quill.insertEmbed(range.index, 'audio', url);
     } else {
       quill.pasteHTML(range.index, `<a target="_blank" href="${url}">${url}</a>`);
     }
@@ -235,7 +257,7 @@ function EditArticlePage({
             let newHTML;
             let isImage = false;
             const format = getExtension(imgData);
-            IMAGE_TYPES.forEach((extension) => {
+            PICTURES_TYPES.forEach((extension) => {
               if (format.search(extension) > -1) {
                 isImage = true;
               }
@@ -367,6 +389,7 @@ function EditArticlePage({
       </form>
       {picker && <ImagePicker selectFile={selectFile} onClose={() => togglePicker(false)} isMobile={isMobile} />}
       {webcam && <WebcamModal selectFile={insertVideo} onClose={() => toggleWebcam(false)} />}
+      {audio && <AudioModal selectFile={insertAudio} onClose={() => toggleAudio(false)} />}
     </Container>
   );
 }

@@ -135,7 +135,6 @@
       }
     },
     "articles": {
-      "mustBeLoggedIn": "You must be logged in.",
       "adminArticleNeeded": "You don't have admin rights on this publication",
       "unknownArticle": "This publication does not exists",
       "labels": {
@@ -410,9 +409,10 @@
       "unindent": "Unindent",
       "indent": "Indent",
       "link": "Add link to selected text",
-      "image": "Add picture",
+      "image": "Add media",
       "video": "Embed video",
       "webcam": "Record video",
+      "audio": "Record audio",
       "clean": "Clean selected text formatting",
       "enterUrl": "Enter the video URL"
     },
@@ -431,6 +431,17 @@
       "medium": "Medium",
       "high": "High",
       "nowebcam": "No webcam available"
+    },
+    "AudioModal": {
+      "header": "Record a new audio file",
+      "start": "Start the recording",
+      "stop": "Stop the recording",
+      "upload": "Upload the audio file",
+      "tooLongVideo": "You reached your storage limit",
+      "refresh": "Reset the recording",
+      "validate": "Validate the audio file",
+      "cancel": "Cancel",
+      "fileName": "Name of the audio file"
     }
   },
   "validatejs": {
@@ -497,7 +508,12 @@
       "updateSuccess": "Profile update success",
       "noModifications": "No changes to apply",
       "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data.",
-      "logoutType": "Logout perimeter"
+      "logoutType": "Logout perimeter",
+      "backupTitle": "Backup your publications",
+      "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance",
+      "downloadPublicationBackup": "Download data",
+      "UploadPublicationBackup": "Upload datas",
+      "uploadSuccess": "Datas uploaded with success"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
@@ -726,7 +742,9 @@
     "MediaStoragePage": {
       "title": "Media Storage",
       "usage": "Usage",
-      "delete": "Delete"
+      "delete": "Delete",
+      "confirmDelete": "Confirm delete",
+      "objectUsedText": "This file is used in a publication (title under this text), if you delete it, it will result as an empty link in your article. If you click again on delete, be aware that it will not be possible to restore it."
     }
   },
   "layouts": {

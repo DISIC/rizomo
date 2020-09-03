@@ -70,7 +70,7 @@ const testStorageSize = (size) =>
 
 const SingleNotification = ({ upload }) => {
   const [, dispatch] = useAppContext();
-  const { fileName, path, name, file, onFinish, storage } = upload;
+  const { fileName, path, name, file, onFinish, storage, type } = upload;
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(true);
   const [error, setError] = useState(null);
@@ -112,7 +112,7 @@ const SingleNotification = ({ upload }) => {
       });
       deleteUploadFromQueue();
     } else {
-      fileUpload({ name: fileName, path, file }, (url, err) => {
+      fileUpload({ name: fileName, path, file, type }, (url, err) => {
         if (url) {
           setLoading(false);
           onFinish(url);
