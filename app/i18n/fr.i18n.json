@@ -135,7 +135,6 @@
       }
     },
     "articles": {
-      "mustBeLoggedIn": "Vous devez être connecté.",
       "adminArticleNeeded": "Vous n'avez pas les droits d'administration sur cette publication.",
       "unknownArticle": "Cette publication n'existe pas",
       "labels": {
@@ -410,8 +409,9 @@
       "unindent": "Diminuer le retrait",
       "indent": "Augmenter le retrait",
       "link": "Associer un lien au texte sélectionné",
-      "image": "Ajouter une image",
+      "image": "Ajouter un média",
       "video": "Intégrer une vidéo",
+      "audio": "Enregistrer un fichier audio",
       "webcam": "Enregistrer une vidéo",
       "clean": "Supprimer la mise en forme de la sélection",
       "enterUrl": "Entrez l'URL de la video"
@@ -431,6 +431,17 @@
       "medium": "Moyenne",
       "high": "Haute",
       "nowebcam": "Aucune caméra disponible"
+    },
+    "AudioModal": {
+      "header": "Enregistrer un nouveau fichier audio",
+      "start": "Démarrer l'enregistrement",
+      "stop": "Arrêter l'enregistrement",
+      "upload": "Téléverser le fichier audio",
+      "tooLongVideo": "Vous avez atteint votre limite de stockage",
+      "refresh": "Recommencer",
+      "validate": "Valider le fichier audio",
+      "cancel": "Annuler",
+      "fileName": "Nom du fichier audio"
     }
   },
   "validatejs": {
@@ -497,7 +508,12 @@
       "updateSuccess": "Profil mis à jour avec succès",
       "noModifications": "Aucun changement à appliquer",
       "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
-      "logoutType": "Portée de la déconnexion"
+      "logoutType": "Portée de la déconnexion",
+      "backupTitle": "Téléchargez vos données de publication",
+      "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous également possible de charger des données que vous auriez téléchargé d'une autre instance de la boite",
+      "downloadPublicationBackup": "Télécharger les données",
+      "UploadPublicationBackup": "Charger des données",
+      "uploadSuccess": "Chargement des données réussi"
     },
     "NotFound": {
       "backButtonLabel": "Retour",
@@ -728,7 +744,9 @@
     "MediaStoragePage": {
       "title": "Stockage de fichiers",
       "usage": "Utilisation",
-      "delete": "Supprimer"
+      "delete": "Supprimer",
+      "confirmDelete": "Confirmer la suppression",
+      "objectUsedText": "Ce fichier est utilisé dans un article (titre ci dessous), si vous le supprimer, vos lecteurs tomberont sur un lien vide dans cet article. Si vous confirmez la suppression en cliquant une fois de plus sur le bouton, prenez note que cela ne sera pas réversible."
     }
   },
   "layouts": {

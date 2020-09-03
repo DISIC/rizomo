@@ -10,9 +10,9 @@ export const toBase64 = (image) =>
     reader.readAsDataURL(image);
   });
 
-export const getExtension = (type) => {
-  const string = type.split('/')[1];
-  return string.split(';base64')[0];
+export const getExtension = (name, file) => {
+  const string = file.split('/')[1];
+  return name.split('.')[name.split('.').length - 1] || string.split(';base64')[0];
 };
 
 export const minioSrcBuilder = (src) => {
@@ -20,14 +20,14 @@ export const minioSrcBuilder = (src) => {
   return `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${minioPort}` : ''}/${minioBucket}/${src}`;
 };
 
-export const fileUpload = async ({ name, file, path }, callback) => {
+export const fileUpload = async ({ name, file, path, type }, callback) => {
   if (file.slice(0, 5) === 'data:') {
-    const type = getExtension(file);
+    const filetype = type || getExtension(name, file);
     Meteor.call(
       'files.upload',
       {
-        file: file.replace(`data:image/${type};base64,`, ''),
-        name: `${name}.${type === 'svg+xml' ? 'svg' : type}`,
+        file: file.replace(file.substring(0, file.indexOf(';base64,') + 8, ''), ''),
+        name: `${name}.${filetype === 'svg+xml' ? 'svg' : filetype}`,
         path,
       },
       (error) => {

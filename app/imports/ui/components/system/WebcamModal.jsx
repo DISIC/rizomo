@@ -137,10 +137,13 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
     // creating the media recorder with the selected quality
     if (webcamRef.current.stream) {
       setCapturing(true);
-      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+      const options = {
         mimeType: 'video/webm;codecs=opus,vp8',
-        bitsPerSecond: quality,
-      });
+      };
+      if (quality !== 'infinity') {
+        options.bitsPerSecond = quality;
+      }
+      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, options);
       // event listener for the data colleciton a the end of the recording
       mediaRecorderRef.current.addEventListener('dataavailable', ({ data }) =>
         handleDataAvailable({ data, test: true }),
@@ -168,14 +171,20 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
       testBitRate();
     }, 300);
   };
+  useEffect(() => {
+    refreshVideo();
+  }, [quality]);
 
   const handleStartCaptureClick = () => {
     // creating the media recorder with the selected quality
     setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+    const options = {
       mimeType: 'video/webm;codecs=opus,vp8',
-      bitsPerSecond: quality,
-    });
+    };
+    if (quality !== 'infinity') {
+      options.bitsPerSecond = quality;
+    }
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, options);
     // event listener for the data colleciton a the end of the recording
     mediaRecorderRef.current.addEventListener('dataavailable', handleDataAvailable);
     mediaRecorderRef.current.start();
@@ -227,6 +236,7 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
       data: {
         name: `${name}.webm`,
         fileName: name,
+        type: 'webm',
         file: video,
         path: admin ? 'services/videos' : `users/${Meteor.userId()}`,
         storage: !admin,
@@ -246,7 +256,6 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
   };
   const changeQuality = (e) => {
     setQuality(e.target.value);
-    refreshVideo();
   };
 
   const errorMessage = () => {
@@ -351,9 +360,9 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
             <FormControl>
               <InputLabel>{i18n.__('components.WebcamModal.quality')}</InputLabel>
               <Select value={quality} onChange={changeQuality} disabled={loading}>
-                <option value={70000}>{i18n.__('components.WebcamModal.low')}</option>
-                <option value={300000}>{i18n.__('components.WebcamModal.medium')}</option>
-                <option value={600000}>{i18n.__('components.WebcamModal.high')}</option>
+                <option value={100000}>{i18n.__('components.WebcamModal.low')}</option>
+                <option value={500000}>{i18n.__('components.WebcamModal.medium')}</option>
+                <option value="infinity">{i18n.__('components.WebcamModal.high')}</option>
               </Select>
             </FormControl>
           </div>

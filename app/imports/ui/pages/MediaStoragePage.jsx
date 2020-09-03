@@ -46,6 +46,7 @@ const MediaStoragePage = ({ selectFile, modal }) => {
   const [selected, setSelected] = useState();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const [objectUsed, setObjectUsed] = useState(null);
 
   const updateFilesList = () => {
     // get current user files from minio
@@ -70,14 +71,14 @@ const MediaStoragePage = ({ selectFile, modal }) => {
   const sendFiles = (selectedFiles) => {
     [...selectedFiles].forEach(async (file) => {
       const image = await toBase64(file);
-      const fileName = file.name.split('.');
-      fileName.splice(fileName.length - 1, 1);
+      const fileName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
       dispatch({
         type: 'uploads.add',
         data: {
           name: file.name,
           fileName,
           file: image,
+          type: file.name.split('.')[file.name.split('.').length - 1],
           path: `users/${Meteor.userId()}`,
           storage: true,
           onFinish: updateFilesList,
@@ -97,10 +98,13 @@ const MediaStoragePage = ({ selectFile, modal }) => {
     input.click();
   };
 
-  const onClose = () => setSelected(null);
+  const onClose = () => {
+    setSelected(null);
+    setObjectUsed(null);
+  };
 
-  const onDelete = () => {
-    setLoading(true);
+  const deleteFile = () => {
+    setObjectUsed(null);
     Meteor.call(
       'files.selectedRemove',
       {
@@ -114,6 +118,34 @@ const MediaStoragePage = ({ selectFile, modal }) => {
         setTimeout(updateFilesList, 1000);
       },
     );
+  };
+  const onDelete = () => {
+    setLoading(true);
+    if (objectUsed) {
+      // if article with the used object has already been found, so it is a confirmation, delete the file
+      deleteFile();
+    } else {
+      // check if the file is used in a publication
+      Meteor.call(
+        'articles.checkSelectedInPublications',
+        {
+          path: selected.name,
+        },
+        (err, result) => {
+          if (err) {
+            msg.error(err.reason);
+            setLoading(false);
+          } else if (result) {
+            // Object used, ask for confirmation
+            setObjectUsed(result);
+            setLoading(false);
+          } else {
+            // not used, delete the file
+            deleteFile();
+          }
+        },
+      );
+    }
   };
 
   useEffect(() => {
@@ -152,7 +184,13 @@ const MediaStoragePage = ({ selectFile, modal }) => {
           </Grid>
 
           {!!selected && !modal && (
-            <SelectedMediaModal file={selected} onClose={onClose} onDelete={onDelete} loading={loading} />
+            <SelectedMediaModal
+              objectUsed={objectUsed}
+              file={selected}
+              onClose={onClose}
+              onDelete={onDelete}
+              loading={loading}
+            />
           )}
         </Container>
       </Fade>

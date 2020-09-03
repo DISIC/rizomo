@@ -2,27 +2,25 @@ import { Quill } from 'react-quill';
 
 const BlockEmbed = Quill.import('blots/block/embed');
 
-class QuillWebcam extends BlockEmbed {
+class QuillAudio extends BlockEmbed {
   src = '';
 
-  static blotName = 'webcam';
+  static blotName = 'audio';
 
   static tagName = 'div';
 
-  static className = 'embed-responsive';
+  static className = 'embed-audio';
 
   static create(value) {
     this.src = value;
     const node = super.create(value);
-    node.classList.add('webcam-video-wrapper');
+    node.classList.add('audio-wrapper');
 
-    const child = document.createElement('video');
+    const child = document.createElement('audio');
     child.setAttribute('preload', true);
     child.setAttribute('controls', true);
-    child.setAttribute('width', 300);
-    // child.setAttribute('height', 360);
     child.setAttribute('src', this.sanitize(value));
-    child.classList.add('embed-responsive-item');
+    child.classList.add('embed-responsive-audio-item');
     node.appendChild(child);
 
     return node;
@@ -33,7 +31,7 @@ class QuillWebcam extends BlockEmbed {
   }
 
   static value(domNode) {
-    const video = domNode.querySelector('video');
+    const video = domNode.querySelector('audio');
     if (video) {
       return video.getAttribute('src');
     }
@@ -41,4 +39,4 @@ class QuillWebcam extends BlockEmbed {
   }
 }
 
-Quill.register(QuillWebcam);
+Quill.register(QuillAudio);

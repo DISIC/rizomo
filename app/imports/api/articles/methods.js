@@ -16,7 +16,7 @@ export const createArticle = new ValidatedMethod({
 
   run({ data }) {
     if (!isActive(this.userId)) {
-      throw new Meteor.Error('api.articles.createArticle.notLoggedIn', i18n.__('api.articles.mustBeLoggedIn'));
+      throw new Meteor.Error('api.articles.createArticle.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
     Meteor.users.update({ _id: this.userId }, { $inc: { articlesCount: 1 }, $set: { lastArticle: new Date() } });
     return Articles.insert({ ...data, userId: this.userId });
@@ -30,7 +30,7 @@ export const removeArticle = new ValidatedMethod({
 
   run({ articleId }) {
     if (!isActive(this.userId)) {
-      throw new Meteor.Error('api.articles.removeArticle.notLoggedIn', i18n.__('api.articles.mustBeLoggedIn'));
+      throw new Meteor.Error('api.articles.removeArticle.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
     const article = Articles.findOne({ _id: articleId });
     const authorized = this.userId === article.userId;
@@ -81,8 +81,72 @@ export const visitArticle = new ValidatedMethod({
   },
 });
 
+export const downloadBackupPublications = new ValidatedMethod({
+  name: 'articles.downloadBackupPublications',
+  validate: null,
+  run() {
+    const authorized = isActive(this.userId);
+    if (!authorized) {
+      throw new Meteor.Error(
+        'api.articles.downloadBackupPublications.notLoggedIn',
+        i18n.__('api.users.mustBeLoggedIn'),
+      );
+    }
+    return Articles.find(
+      { userId: this.userId },
+      { fields: { userId: 0, visits: 0, _id: 0, createdAt: 0, updatedAt: 0, slug: 0 } },
+    ).fetch();
+  },
+});
+
+export const uploadBackupPublications = new ValidatedMethod({
+  name: 'articles.uploadBackupPublications',
+  validate: new SimpleSchema({
+    articles: { type: Array },
+    'articles.$': Articles.schema.omit('userId', 'visits', '_id', 'createdAt', 'updatedAt', 'slug'),
+  }).validator(),
+
+  run({ articles }) {
+    try {
+      const authorized = isActive(this.userId);
+      if (!authorized) {
+        throw new Meteor.Error(
+          'api.articles.uploadBackupPublications.notLoggedIn',
+          i18n.__('api.users.mustBeLoggedIn'),
+        );
+      }
+      return articles.map((article) => Articles.insert({ ...article, userId: this.userId }));
+    } catch (error) {
+      throw new Meteor.Error(error, error);
+    }
+  },
+});
+
+export const checkSelectedInPublications = new ValidatedMethod({
+  name: 'articles.checkSelectedInPublications',
+  validate: new SimpleSchema({
+    path: { type: String },
+  }).validator({ clean: true }),
+
+  run({ path }) {
+    const regex = { $regex: new RegExp(path, 'i') };
+    return Articles.findOne({ userId: this.userId, content: regex });
+  },
+});
+
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([createArticle, removeArticle, updateArticle, visitArticle], 'name');
+const LISTS_METHODS = _.pluck(
+  [
+    createArticle,
+    removeArticle,
+    updateArticle,
+    visitArticle,
+    uploadBackupPublications,
+    downloadBackupPublications,
+    checkSelectedInPublications,
+  ],
+  'name',
+);
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second

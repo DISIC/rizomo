@@ -28,6 +28,7 @@
     "jspdf": "^1.5.3",
     "material-table": "^1.60.0",
     "meteor-node-stubs": "^0.4.1",
+    "mic-recorder-to-mp3": "^2.2.2",
     "minio": "^7.0.16",
     "prop-types": "^15.7.2",
     "quill-image-resize-module": "^3.0.0",
