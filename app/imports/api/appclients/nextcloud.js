@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { Meteor } from 'meteor/meteor';
+import i18n from 'meteor/universe:i18n';
 import logServer from '../logging';
 
 function checkFolderActive(response) {
   // checks that 'Group Folder' API is responding
   if (response.data === undefined || response.data.ocs === undefined) {
-    logServer(`Nexcloud: ERROR, make sure 'Group Folders' application is active`, 'error');
+    logServer(i18n.__('api.nextcloud.groupFoldersInactive'), 'error');
     return false;
   }
   return true;
@@ -37,7 +38,7 @@ class NextcloudClient {
         return response.data.ocs.data.groups.includes(groupName);
       })
       .catch((error) => {
-        logServer(`Nextcloud: ERROR getting group ${groupName}`, 'error');
+        logServer(i18n.__('api.nextcloud.groupNotFound', { groupName }), 'error');
         logServer(error.response && error.response.data ? error.response.data : error, 'error');
         return false;
       });
@@ -61,16 +62,19 @@ class NextcloudClient {
       .then((response) => {
         const infos = response.data.ocs.meta;
         if (infos.status === 'ok') {
-          logServer(`Nextcloud: group ${groupName} added`);
+          logServer(i18n.__('api.nextcloud.groupAdded', { groupName }));
         } else {
-          logServer(`Nextcloud: ERROR adding group ${groupName} (${infos.statuscode} - ${infos.message})`, 'error');
+          logServer(
+            `${i18n.__('api.nextcloud.groupAddError', { groupName })} (${infos.statuscode} - ${infos.message})`,
+            'error',
+          );
         }
         return infos.status === 'ok' ? infos.status : infos.message;
       })
       .catch((error) => {
-        logServer(`Nextcloud: ERROR adding group ${groupName}`, 'error');
+        logServer(i18n.__('api.nextcloud.groupAddError', { groupName }), 'error');
         logServer(error.response && error.response.data ? error.response.data : error, 'error');
-        return `Nextcloud: ERROR adding group ${groupName}`;
+        return i18n.__('api.nextcloud.groupAddError', { groupName });
       });
   }
 
@@ -110,7 +114,7 @@ class NextcloudClient {
             )
             .then((resp) => resp.data.ocs.meta.status === 'ok');
         }
-        logServer(`Nextcloud: could not assign group ${groupName} to folder ${folderName}`, 'error');
+        logServer(i18n.__('api.nextcloud.groupFolderAssignError', { groupName, folderName }), 'error');
         return false;
       });
   }
@@ -162,28 +166,28 @@ class NextcloudClient {
       .then((response) => {
         const infos = response.data.ocs.meta;
         if (checkFolderActive(response) && infos.status === 'ok') {
-          logServer(`Nextcloud: group folder ${folderName} added`);
+          logServer(i18n.__('api.nextcloud.groupFolderAdded', { folderName }));
           return this._addGroupToFolder(groupName, folderName, response.data.ocs.data.id).then((resp) => {
             if (resp === true) {
-              logServer(`Nextcloud: access and permissions set for group folder ${folderName}`);
+              logServer(i18n.__('api.nextcloud.permissionsSet', { folderName }));
               return this._addQuotaToFolder(response.data.ocs.data.id).then((respQuota) => {
                 if (respQuota) {
-                  logServer(`Nextcloud: quota set for group folder ${folderName}`);
+                  logServer(i18n.__('api.nextcloud.quotaSet', { folderName }));
                 } else {
-                  logServer(`Nextcloud: ERROR setting quota on group folder ${folderName}`, 'error');
+                  logServer(i18n.__('api.nextcloud.quotaSetError', { folderName }), 'error');
                 }
                 return respQuota;
               });
             }
-            logServer(`Nextcloud: ERROR settings group permissions for group folder ${folderName}`, 'error');
+            logServer(i18n.__('api.nextcloud.permissionSetError', { folderName }), 'error');
             return resp;
           });
         }
-        logServer(`Nextcloud: ERROR adding group folder ${folderName}`, 'error');
+        logServer(i18n.__('api.nextcloud.folderAddError', { folderName }), 'error');
         return false;
       })
       .catch((error) => {
-        logServer(`Nextcloud: ERROR adding group folder ${folderName}`, 'error');
+        logServer(i18n.__('api.nextcloud.folderAddError', { folderName }), 'error');
         logServer(error.response && error.response.data ? error.response.data : error, 'error');
         return false;
       });
@@ -220,10 +224,15 @@ class NextcloudClient {
                 .then((resp) => {
                   const infos = resp.data.ocs.meta;
                   if (infos.status === 'ok') {
-                    logServer(`Nextcloud: removed group folder ${folder.id} (${folder.mount_point})`);
+                    logServer(
+                      i18n.__('api.nextcloud.folderRemoved', { id: folder.id, mount_point: folder.mount_point }),
+                    );
                     return true;
                   }
-                  logServer(`Nextcloud: ERROR deleting group folder ${folder.id} (${infos.message})`, 'error');
+                  logServer(
+                    i18n.__('api.nextcloud.folderRemoveError', { id: folder.id, message: infos.message }),
+                    'error',
+                  );
                   return false;
                 });
             }),
@@ -244,14 +253,14 @@ class NextcloudClient {
       .then((response) => {
         const infos = response.data.ocs.meta;
         if (infos.status === 'ok') {
-          logServer(`Nextcloud: group ${groupName} removed`);
+          logServer(i18n.__('api.nextcloud.groupRemoved', { groupName }));
         } else {
-          logServer(`Nextcloud: Error removing group ${groupName} (${infos.message})`, 'error');
+          logServer(`${i18n.__('api.nextcloud.groupRemoveError', { groupName })} (${infos.message})`, 'error');
         }
         return infos.status === 'ok';
       })
       .catch((error) => {
-        logServer(`Nextcloud: ERROR removing group ${groupName}`, 'error');
+        logServer(i18n.__('api.nextcloud.groupRemoveError', { groupName }), 'error');
         logServer(error.response && error.response.data ? error.response.data : error, 'error');
         return false;
       });
