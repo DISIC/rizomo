@@ -187,12 +187,47 @@
         "keycloakId": "Keycloak Id"
       }
     },
+    "keycloak": {
+      "initClient": "Keycloak: API client initialized",
+      "tokenError": "** Keycloak: could not get token, please check settings **",
+      "clientIdFound": "Keycloak: client ID found ({$clientId})",
+      "clientIdError": "** Keycloak: could not find client Id, please check settings **",
+      "groupAdded": "Keycloak: group {$groupName} added (id {$groupId})",
+      "groupAddError": "Keycloak : ERROR adding group {$groupName}",
+      "groupNotFound": "Keycloak: could not find group {$groupName}",
+      "groupNameChanged": "Keycloak: changed group name from {$oldName} to {$newName}",
+      "groupUpdateError": "Keycloak: Error updating group {$groupName}",
+      "groupRemoved": "Keycloak: group {$groupName} removed",
+      "groupRemoveError": "Keycloak: Error removing group {$groupName}",
+      "adminAdded": "Keycloak: user {$userId} added to admins",
+      "addAdminError": "Keycloak : ERROR adding user {$userId} to admins`",
+      "userNotFound": "Keycloak: could not find Keycloak ID for user {$userId}",
+      "userGroupAdded": "Keycloak: group {$groupName} added to user {$userId}",
+      "userGroupAddError": "Keycloak : ERROR adding group {$groupName} to user {$userId}",
+      "userGroupRemoved": "Keycloak: group {$groupName} removed from user {$userId}",
+      "userGroupeRemoveError": "Keycloak : ERROR removing group {$groupName} from user {$userId}"
+    },
     "nextcloud": {
       "groupExists": "Group already exists in Nextcloud",
       "addGroupError": "Error, could not create group in Nextcloud",
       "addGroupFolderError": "Error, could not create group folder in Nextcloud",
       "removeGroupError": "Warning, could not delete group in Nextcloud",
-      "removeGroupFolderError": "Warning, could not delete group folder in Nextcloud"
+      "removeGroupFolderError": "Warning, could not delete group folder in Nextcloud",
+      "groupFoldersInactive": "Nextcloud: ERROR, make sure 'Group Folders' application is active",
+      "groupNotFound": "Nextcloud: ERROR getting group {$groupName}",
+      "groupAdded": "Nextcloud: group {$groupName} added",
+      "groupAddError": "Nextcloud: ERROR adding group {$groupName}",
+      "groupFolderAssignError": "Nextcloud: could not assign group {$groupName} to folder {$folderName}",
+      "groupFolderAdded": "Nextcloud: group folder {$folderName} added",
+      "permissionsSet": "Nextcloud: access and permissions set for group folder {$folderName}",
+      "quotaSet": "Nextcloud: quota set for group folder {$folderName}",
+      "quotaSetError": "Nextcloud: ERROR setting quota on group folder {$folderName}",
+      "permissionSetError": "Nextcloud: ERROR settings group permissions for group folder {$folderName}",
+      "folderAddError": "Nextcloud: ERROR adding group folder {$folderName}",
+      "folderRemoved": "Nextcloud: removed group folder {$id} ({$mount_point})",
+      "folderRemoveError": "Nextcloud: ERROR deleting group folder {$id} ({$message})",
+      "groupRemoved": "Nextcloud: group {$groupName} removed",
+      "groupRemoveError": "Nextcloud: Error removing group {$groupName}"
     },
     "logging": {
       "unknownLogLevel": "Specified log level does not exist",

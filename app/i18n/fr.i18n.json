@@ -187,12 +187,47 @@
         "keycloakId": "Identifiant Keycloak"
       }
     },
+    "keycloak": {
+      "initClient": "Keycloak: client API initialisé",
+      "tokenError": "** Keycloak: échec de récupération de jeton, veuillez vérifier la configuration **",
+      "clientIdFound": "Keycloak: Id du client trouvé ({$clientId})",
+      "clientIdError": "** Keycloak: échec de récupération de l'Id du client, veuillez vérifier la configuration **",
+      "groupAdded": "Keycloak: groupe {$groupName} ajouté (Id {$groupId})",
+      "groupAddError": "Keycloak : ERREUR lors de l'ajout du groupe {$groupName}",
+      "groupNotFound": "Keycloak: groupe {$groupName} introuvable",
+      "groupNameChanged": "Keycloak: nom du groupe changé de {$oldName} à {$newName}",
+      "groupUpdateError": "Keycloak: ERREUR lors de la mise à jour du groupe {$groupName}",
+      "groupRemoved": "Keycloak: groupe {$groupName} supprimé",
+      "groupRemoveError": "Keycloak: ERREUR lors de la suppression du groupe {$groupName}",
+      "adminAdded": "Keycloak: utilisateur {$userId} ajouté comme administrateur",
+      "addAdminError": "Keycloak : ERREUR lors de l'ajout de l'utilisateur {$userId} aux administrateurs",
+      "userNotFound": "Keycloak: Id de l'utilisateur {$userId} introuvable",
+      "userGroupAdded": "Keycloak: groupe {$groupName} ajouté à l'utilisateur {$userId}",
+      "userGroupAddError": "Keycloak : ERREUR lors de l'ajout du groupe {$groupName} à l'utilisateur {$userId}",
+      "userGroupRemoved": "Keycloak: groupe {$groupName} supprimé pour l'utilisateur {$userId}",
+      "userGroupeRemoveError": "Keycloak : ERREUR lors de la suppression du groupe {$groupName} pour l'utilisateur {$userId}"
+    },
     "nextcloud": {
       "groupExists": "Ce groupe existe déjà dans Nextcloud",
       "addGroupError": "Erreur lors de la création du groupe dans Nextcloud",
       "addGroupFolderError": "Erreur lors de la création du partage dans Nextcloud",
       "removeGroupError": "Attention, le groupe n'a pas pu être supprimé dans Nextcloud",
-      "removeGroupFolderError": "Attention, le dossier n'a pas pu être supprimé dans Nextcloud"
+      "removeGroupFolderError": "Attention, le dossier n'a pas pu être supprimé dans Nextcloud",
+      "groupFoldersInactive": "Nextcloud: ERREUR, vérifiez que l'application 'Group Folders' est active",
+      "groupNotFound": "Nextcloud: ERREUR de récupération du groupe {$groupName}",
+      "groupAdded": "Nextcloud: groupe {$groupName} ajouté",
+      "groupAddError": "Nextcloud: ERREUR lors de l'ajout du groupe {$groupName}",
+      "groupFolderAssignError": "Nextcloud: impossible d'assigner le groupe {$groupName} au répertoire {$folderName}",
+      "groupFolderAdded": "Nextcloud: répertoire de groupe {$folderName} ajouté",
+      "permissionsSet": "Nextcloud: permissions définies pour le répertoire de groupe {$folderName}",
+      "quotaSet": "Nextcloud: quota défini pour le répertoire de groupe {$folderName}",
+      "quotaSetError": "Nextcloud: ERREUR lors de la définition des quotas sur le répertoire de goupe {$folderName}",
+      "permissionSetError": "Nextcloud: ERREUR lors de la définition des permissions sur le répertoire de groupe {$folderName}",
+      "folderAddError": "Nextcloud: ERREUR lors de l'ajout du répertoire de groupe {$folderName}",
+      "folderRemoved": "Nextcloud: répertoire de groupe {$id} supprimé ({$mount_point})",
+      "folderRemoveError": "Nextcloud: ERREUR lors de la suppression du répertoire de groupe {$id} ({$message})",
+      "groupRemoved": "Nextcloud: groupe {$groupName} supprimé",
+      "groupRemoveError": "Nextcloud: Erreur lors de la suppression du groupe {$groupName}"
     },
     "logging": {
       "unknownLogLevel": "Le niveau de log spécifié n'existe pas",
