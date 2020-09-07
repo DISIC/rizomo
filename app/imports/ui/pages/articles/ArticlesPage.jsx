@@ -6,6 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 import { InputAdornment, Typography, Fade, IconButton, Collapse, Tooltip } from '@material-ui/core';
@@ -92,12 +93,27 @@ function ArticlesPage() {
 
   const mapList = (func) => items.filter((article) => filterServices(article)).map(func);
 
+  const handleCopyURL = () => {
+    const myPublicPublicationURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}`;
+    navigator.clipboard
+      .writeText(myPublicPublicationURL)
+      .then(msg.success(i18n.__('pages.ArticlesPage.successCopyURL')));
+  };
+
   return (
     <Fade in>
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} className={isMobile ? null : classes.flex}>
             <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
+              <Tooltip
+                title={i18n.__('pages.ArticlesPage.copyOwnPublicPageUrl')}
+                aria-label={i18n.__('pages.ArticlesPage.copyOwnPublicPageUrl')}
+              >
+                <IconButton onClick={handleCopyURL}>
+                  <AssignmentIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
               {i18n.__('pages.ArticlesPage.title')}
 
               <IconButton onClick={toggleSearch}>

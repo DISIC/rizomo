@@ -699,6 +699,8 @@
     "ArticlesPage": {
       "title": "Your publications",
       "openPublicPage": "All publications page",
+      "copyOwnPublicPageUrl": "Copy url to your public publications page",
+      "successCopyURL": "Public URL has been sent to clipboard",
       "searchText": "What are you looking for ?"
     },
     "EditArticlePage": {

@@ -701,6 +701,8 @@
     "ArticlesPage": {
       "title": "Vos publications",
       "openPublicPage": "Voir toutes les publications",
+      "copyOwnPublicPageUrl": "Copier le lien vers la page publique de vos publications",
+      "successCopyURL": "URL publique copiée dans le presse-papier",
       "searchText": "Que recherchez-vous ?"
     },
     "EditArticlePage": {
