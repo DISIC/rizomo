@@ -18,7 +18,7 @@ import { Avatar, CardActionArea, CardHeader, Zoom } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import GroupBadge from './GroupBadge';
 
-const useStyles = ({ type }, member, candidate) =>
+const useStyles = ({ type }, admin, member, candidate) =>
   makeStyles((theme) => ({
     avatar: {
       backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
@@ -35,7 +35,13 @@ const useStyles = ({ type }, member, candidate) =>
     },
     buttonText: {
       textTransform: 'none',
-      color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.text.disabled,
+      color: member
+        ? 'green'
+        : candidate
+        ? theme.palette.secondary.main
+        : admin
+        ? theme.palette.primary.main
+        : theme.palette.text.disabled,
       fontWeight: 'bold',
     },
     serviceName: {
@@ -52,9 +58,9 @@ const useStyles = ({ type }, member, candidate) =>
     },
   }));
 
-function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator, isMobile }) {
+function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator, globalAdmin, isMobile }) {
   const { type } = group;
-  const classes = useStyles(group, member || animator, candidate)();
+  const classes = useStyles(group, admin, member || animator, candidate)();
 
   // const icon = () => {
   //   if (member || animator) {
@@ -79,9 +85,13 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
     if (candidate) {
       return i18n.__('components.GroupDetailsPersSpace.groupCandidate');
     }
+    if (admin) {
+      return i18n.__('components.GroupDetailsPersSpace.groupAdmin');
+    }
     return i18n.__('components.GroupDetailsPersSpace.groupNone');
   };
   const iconHeader = type === 0 ? <PeopleIcon /> : type === 10 ? <LockIcon /> : <SecurityIcon />;
+  const hasAdmin = admin || globalAdmin;
 
   return (
     <Card className={classes.card} elevation={3}>
@@ -101,7 +111,7 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
             <CardHeader
               classes={{ content: classes.cardHeaderContent }}
               avatar={
-                animator || admin ? (
+                animator || hasAdmin ? (
                   <GroupBadge
                     overlap="circle"
                     className={classes.badge}
@@ -129,7 +139,7 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
         </Link>
       </Tooltip>
       {/* <CardActions className={classes.cardActionsUnique}>
-        {admin && (
+        {hasAdmin || globalAdmin && (
           <Tooltip
             title={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
             aria-label={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
@@ -153,6 +163,7 @@ GroupDetailsPersSpace.propTypes = {
   admin: PropTypes.bool.isRequired,
   animator: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
+  globalAdmin: PropTypes.bool.isRequired,
 };
 
 export default GroupDetailsPersSpace;
