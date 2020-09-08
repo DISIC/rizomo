@@ -14,13 +14,13 @@ const {
   maxMinioDiskPerUser,
 } = Meteor.settings.public;
 
-const checkFile = (file, storage) => {
+const checkFile = (file, storage, extension) => {
   const types = storage ? minioStorageFilesTypes : minioFilesTypes;
   const sizes = storage ? minioStorageFilesSize : minioFileSize;
   let goodFormat = false;
   let goodSize = false;
   types.forEach((type) => {
-    if (file.search(type) > -1) {
+    if (extension === type) {
       goodFormat = true;
     }
   });
@@ -86,7 +86,7 @@ const SingleNotification = ({ upload }) => {
   };
 
   const uploadFile = async () => {
-    const { goodFormat, goodSize } = checkFile(file, storage);
+    const { goodFormat, goodSize } = checkFile(file, storage, type);
     let isStorageFull = false;
     if (storage) {
       isStorageFull = await testStorageSize(file.length);

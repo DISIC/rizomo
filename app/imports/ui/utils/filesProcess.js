@@ -11,8 +11,15 @@ export const toBase64 = (image) =>
   });
 
 export const getExtension = (name, file) => {
-  const string = file.split('/')[1];
-  return name.split('.')[name.split('.').length - 1] || string.split(';base64')[0];
+  let extension;
+  if (name) {
+    extension = name.split('.')[name.split('.').length - 1];
+    if (extension) {
+      return extension;
+    }
+  }
+  extension = file.substring(file.indexOf('/') + 1, file.indexOf(';base64'));
+  return extension === 'svg+xml' ? 'svg' : extension;
 };
 
 export const minioSrcBuilder = (src) => {

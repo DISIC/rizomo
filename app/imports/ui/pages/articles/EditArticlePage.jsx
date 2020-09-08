@@ -243,6 +243,7 @@ function EditArticlePage({
       const endImgTag = imgString.search('>');
       const imgTag = imgString.substring(0, endImgTag + 1);
       const imgData = imgTag.split('"')[1];
+      const format = getExtension(null, imgData);
       const fileName = `File_${Random.id()}`;
       setContent(strippedHtml);
       dispatch({
@@ -251,12 +252,12 @@ function EditArticlePage({
           name: fileName,
           fileName,
           file: imgData,
+          type: format,
           path: `users/${Meteor.userId()}`,
           storage: true,
           onFinish: (url) => {
             let newHTML;
             let isImage = false;
-            const format = getExtension(imgData);
             PICTURES_TYPES.forEach((extension) => {
               if (format.search(extension) > -1) {
                 isImage = true;
