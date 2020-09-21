@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import SimpleSchema from 'simpl-schema';
 import { Roles } from 'meteor/alanning:roles';
 import { FindFromPublication } from 'meteor/percolate:find-from-publication';
 import { isActive } from '../../utils';
@@ -30,11 +31,23 @@ Meteor.publish('users.request', function usersRequest() {
   );
 });
 
+function checkUserIds(userIds) {
+  new SimpleSchema({
+    userIds: {
+      type: Array,
+    },
+    'userIds.$': {
+      type: { type: String, regEx: SimpleSchema.RegEx.Id },
+    },
+  }).validate({ userIds });
+}
+
 // publish users waiting for activation by admin
 Meteor.publish('users.fromlist', function usersFromList(userIds = []) {
   if (!isActive(this.userId)) {
     return this.ready();
   }
+  checkUserIds(userIds);
   return Meteor.users.find(
     { _id: { $in: userIds } },
     {
