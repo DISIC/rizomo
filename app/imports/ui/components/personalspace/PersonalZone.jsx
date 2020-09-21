@@ -4,9 +4,9 @@ import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { useTracker } from 'meteor/react-meteor-data';
 import { ReactSortable } from 'react-sortablejs';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionActions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
@@ -205,8 +205,8 @@ const PersonalZone = ({
   };
 
   return (
-    <ExpansionPanel className={classes.expansionpanel} expanded={isSorted ? isExpanded : localIsExpanded}>
-      <ExpansionPanelSummary
+    <Accordion className={classes.expansionpanel} expanded={isSorted ? isExpanded : localIsExpanded}>
+      <AccordionSummary
         expandIcon={
           <ExpandMoreIcon
             className={classes.cursorPointer}
@@ -300,8 +300,8 @@ const PersonalZone = ({
             </div>
           ) : null}
         </Typography>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      </AccordionSummary>
+      <AccordionDetails>
         <ReactSortable
           className={`MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 ${
             elements.length === 0 ? `${classes.emptyZone} ${customDrag ? classes.emptyDragZone : ''}` : ''
@@ -393,8 +393,8 @@ const PersonalZone = ({
                 })
                 .filter((item) => item !== null)}
         </ReactSortable>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 
