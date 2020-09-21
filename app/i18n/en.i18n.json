@@ -636,7 +636,9 @@
       "successUnsetAdmin": "admin rights have been revoked",
       "successDeleteUser": "User deleted",
       "loginInfo": "last login",
-      "neverConnected": "Never connected"
+      "neverConnected": "Never connected",
+      "undefined": "Not defined",
+      "sortByLastLogin": "Sort by last login date"
     },
     "AdminUserValidationPage": {
       "title": "User validation",

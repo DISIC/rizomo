@@ -77,10 +77,10 @@ const PublishersPage = () => {
   const [sortByDate, setSortByDate] = useState(false);
   const { changePage, page, items, total, loading } = usePagination(
     'users.publishers',
-    { search, sort: sortByDate ? { lastArticle: -1 } : { lastname: 1, firstName: 1 } },
+    { search, sort: sortByDate ? { lastArticle: -1 } : { lastName: 1, firstName: 1 } },
     Meteor.users,
     {},
-    { sort: sortByDate ? { lastArticle: -1 } : { lastname: 1, firstName: 1 } },
+    { sort: sortByDate ? { lastArticle: -1 } : { lastName: 1, firstName: 1 } },
     ITEM_PER_PAGE,
   );
 
