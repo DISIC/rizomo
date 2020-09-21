@@ -639,7 +639,9 @@
       "successUnsetAdmin": "Droits d'administateur révoqués",
       "successDeleteUser": "Utilisateur supprimé",
       "loginInfo": "Dernière connexion",
-      "neverConnected": "Jamais connecté"
+      "neverConnected": "Jamais connecté",
+      "undefined": "Non renseigné",
+      "sortByLastLogin": "Trier par date de dernière connexion"
     },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",

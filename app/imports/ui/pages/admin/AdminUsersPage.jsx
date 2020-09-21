@@ -16,7 +16,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import { makeStyles, Divider, Tooltip, TextField, InputAdornment } from '@material-ui/core';
+import { makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -57,12 +57,14 @@ const AdminUsersPage = () => {
   const classes = useStyles();
   const [{ isMobile }] = useAppContext();
   const [search, setSearch] = useState('');
+  const [sortByDate, setSortByDate] = useState(false);
+
   const { changePage, page, items, total } = usePagination(
     'users.admin',
-    { search },
+    { search, sort: sortByDate ? { lastLogin: -1 } : { lastName: 1 } },
     Meteor.users,
     {},
-    { sort: { lastName: 1 } },
+    { sort: sortByDate ? { lastLogin: -1 } : { lastName: 1 } },
     ITEM_PER_PAGE,
   );
   // track all global admin users
@@ -200,11 +202,29 @@ const AdminUsersPage = () => {
                 }}
               />
             </Grid>
-            {total > ITEM_PER_PAGE && (
-              <Grid item xs={12} sm={12} md={6} lg={6} className={classes.pagination}>
-                <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+            <Grid item xs={12} sm={12} md={6} lg={6} className={classes.pagination}>
+              <Grid>
+                <Grid item>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={sortByDate}
+                        onChange={() => setSortByDate(!sortByDate)}
+                        name="checkSortByDate"
+                        color="primary"
+                      />
+                    }
+                    label={i18n.__('pages.AdminUsersPage.sortByLastLogin')}
+                    aria-label={i18n.__('pages.AdminUsersPage.sortByLastLogin')}
+                  />
+                </Grid>
+                {total > ITEM_PER_PAGE && (
+                  <Grid item>
+                    <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+                  </Grid>
+                )}
               </Grid>
-            )}
+            </Grid>
             <Grid item xs={12} sm={12} md={12}>
               <List className={classes.list} disablePadding>
                 {items.map((user, i) => [
@@ -225,7 +245,7 @@ const AdminUsersPage = () => {
                           <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                             {user.emails[0].address}
                           </Typography>
-                          {` - ${user.structure}`}
+                          {` - ${user.structure ? user.structure : i18n.__('pages.AdminUsersPage.undefined')}`}
                         </>
                       }
                     />

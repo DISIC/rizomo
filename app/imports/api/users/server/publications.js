@@ -164,7 +164,7 @@ Meteor.methods({
 // build query for all users from group
 const queryUsersAdmin = ({ search }) => {
   const regex = new RegExp(search, 'i');
-  const fieldsToSearch = ['firstName', 'lastName', 'emails.address', 'username'];
+  const fieldsToSearch = ['firstName', 'lastName', 'emails.address', 'username', 'structure'];
   const searchQuery = fieldsToSearch.map((field) => ({ [field]: { $regex: regex } }));
   return {
     $or: searchQuery,
