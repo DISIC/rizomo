@@ -100,6 +100,7 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }
 
   const showData = () => {
     if (globalEdit && localEdit) {
+      // We can custom the link's fields
       return (
         <CardContent className={classes.cardContentForm}>
           <form onSubmit={handleLocalEdit} className={classes.form}>
