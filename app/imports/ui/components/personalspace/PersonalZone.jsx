@@ -360,6 +360,7 @@ const PersonalZone = ({
                             animator={animatorGroups.includes(elem.element_id)}
                             admin={managedGroups.includes(elem.element_id)}
                             globalAdmin={isAdmin}
+                            customDrag={customDrag}
                           />
                         </Grid>
                       );

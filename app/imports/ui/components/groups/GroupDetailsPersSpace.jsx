@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import SecurityIcon from '@material-ui/icons/Security';
 // import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -58,7 +58,8 @@ const useStyles = ({ type }, admin, member, candidate) =>
     },
   }));
 
-function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator, globalAdmin, isMobile }) {
+function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator, globalAdmin, isMobile, customDrag }) {
+  const history = useHistory();
   const { type } = group;
   const classes = useStyles(group, admin, member || animator, candidate)();
 
@@ -106,37 +107,34 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
         }
         aria-label={group.name}
       >
-        <Link to={`/groups/${group.slug}`} className={classes.noUnderline}>
-          <CardActionArea className={classes.actionarea}>
-            <CardHeader
-              classes={{ content: classes.cardHeaderContent }}
-              avatar={
-                animator || hasAdmin ? (
-                  <GroupBadge
-                    overlap="circle"
-                    className={classes.badge}
-                    color="error"
-                    badgeContent={group.numCandidates}
-                  >
-                    <Avatar className={classes.avatar}>{iconHeader}</Avatar>
-                  </GroupBadge>
-                ) : (
+        <CardActionArea
+          className={classes.actionarea}
+          onClick={() => history.push(`/groups/${group.slug}`)}
+          disabled={customDrag}
+        >
+          <CardHeader
+            classes={{ content: classes.cardHeaderContent }}
+            avatar={
+              animator || hasAdmin ? (
+                <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
                   <Avatar className={classes.avatar}>{iconHeader}</Avatar>
-                )
-              }
-              title={
-                <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
-                  {group.name}
-                </Typography>
-              }
-              subheader={
-                <Typography className={classes.buttonText} variant="body2" component="p">
-                  {text()}
-                </Typography>
-              }
-            />
-          </CardActionArea>
-        </Link>
+                </GroupBadge>
+              ) : (
+                <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+              )
+            }
+            title={
+              <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
+                {group.name}
+              </Typography>
+            }
+            subheader={
+              <Typography className={classes.buttonText} variant="body2" component="p">
+                {text()}
+              </Typography>
+            }
+          />
+        </CardActionArea>
       </Tooltip>
       {/* <CardActions className={classes.cardActionsUnique}>
         {hasAdmin || globalAdmin && (
@@ -164,6 +162,7 @@ GroupDetailsPersSpace.propTypes = {
   animator: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
   globalAdmin: PropTypes.bool.isRequired,
+  customDrag: PropTypes.bool.isRequired,
 };
 
 export default GroupDetailsPersSpace;

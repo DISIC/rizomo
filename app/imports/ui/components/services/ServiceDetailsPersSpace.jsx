@@ -82,7 +82,11 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
         {/* this span is to allow display of tooltip when CardActionArea is disabled 
         (occur when a service is disabled) */}
         <span>
-          <CardActionArea className={classes.actionarea} disabled={service.state === 5} onClick={handleClick}>
+          <CardActionArea
+            className={classes.actionarea}
+            disabled={service.state === 5 || customDrag}
+            onClick={handleClick}
+          >
             <CardHeader
               classes={{ content: classes.cardHeaderContent }}
               avatar={<Avatar aria-label="recipe" className={classes.avatar} alt={service.title} src={service.logo} />}
