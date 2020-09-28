@@ -94,7 +94,7 @@ export const createGroup = new ValidatedMethod({
     name: { type: String, min: 1, label: getLabel('api.groups.labels.name') },
     type: { type: SimpleSchema.Integer, min: 0, label: getLabel('api.groups.labels.type') },
     description: { type: String, label: getLabel('api.groups.labels.description') },
-    content: { type: String, label: getLabel('api.groups.labels.content') },
+    content: { type: String, defaultValue: '', label: getLabel('api.groups.labels.content') },
     nextcloud: { type: Boolean, defaultValue: false, label: getLabel('api.groups.labels.nextcloud') },
   }).validator({ clean: true }),
 
