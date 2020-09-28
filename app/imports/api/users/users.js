@@ -196,7 +196,7 @@ if (Meteor.isServer) {
       if (Meteor.settings.keycloak.adminEmails.indexOf(details.user.services.keycloak.email) !== -1) {
         if (!Roles.userIsInRole(details.user._id, 'admin')) {
           Roles.addUsersToRoles(details.user._id, 'admin');
-          logServer(i18n.__('api.users.adminGiven'), details.user.services.keycloak.email);
+          logServer(`${i18n.__('api.users.adminGiven')} : ${details.user.services.keycloak.email}`);
         }
       }
     } else {
