@@ -13,6 +13,12 @@ export function getLabel(i18nLabel) {
   return () => i18n.__(i18nLabel);
 }
 
+export const checkPaginationParams = new SimpleSchema({
+  page: { type: SimpleSchema.Integer, defaultValue: 1, label: getLabel('api.methods.labels.page') },
+  itemPerPage: { type: SimpleSchema.Integer, defaultValue: 10, label: getLabel('api.methods.labels.pageSize') },
+  search: { type: String, defaultValue: '', label: getLabel('api.methods.labels.filter') },
+});
+
 export function registerSchemaMessages() {
   const regExpMessages = [
     { exp: SimpleSchema.RegEx.Email, msg: 'SimpleSchema.RegEx.Email' },

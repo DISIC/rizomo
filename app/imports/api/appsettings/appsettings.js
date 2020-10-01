@@ -126,9 +126,16 @@ AppSettings.personalData = {
 };
 
 Factory.define('appsettings', AppSettings, {
-  introduction: {
-    content: faker.lorem.sentences(),
-  },
+  introduction: [
+    {
+      language: 'en',
+      content: faker.lorem.sentences(),
+    },
+    {
+      language: 'fr',
+      content: faker.lorem.sentences(),
+    },
+  ],
   legal: {
     external: Boolean(Math.random() * 2),
     link: faker.lorem.slug(),

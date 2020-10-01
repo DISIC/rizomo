@@ -1,5 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { FindFromPublication } from 'meteor/percolate:find-from-publication';
+import SimpleSchema from 'simpl-schema';
+import logServer from '../../logging';
+import { checkPaginationParams, getLabel } from '../../utils';
 import Articles from '../articles';
 
 // build query for all articles
@@ -27,6 +30,21 @@ Meteor.methods({
 
 // publish all existing articles
 FindFromPublication.publish('articles.all', function articlesAll({ page, search, itemPerPage, userId, ...rest }) {
+  try {
+    new SimpleSchema({
+      userId: {
+        optional: true,
+        type: String,
+        regEx: SimpleSchema.RegEx.Id,
+        label: getLabel('api.users.labels.id'),
+      },
+    })
+      .extend(checkPaginationParams)
+      .validate({ page, itemPerPage, userId, search });
+  } catch (err) {
+    logServer(`publish articles.all : ${err}`);
+    this.error(err);
+  }
   const query = queryAllArticles({ search, userId: userId || this.userId });
 
   return Articles.find(query, {
@@ -39,13 +57,25 @@ FindFromPublication.publish('articles.all', function articlesAll({ page, search,
 });
 
 // publish one article based on its slug
-FindFromPublication.publish('articles.one', ({ slug = '' }) =>
-  Articles.find(
+FindFromPublication.publish('articles.one', ({ slug = '' }) => {
+  try {
+    new SimpleSchema({
+      slug: {
+        optional: true,
+        type: String,
+        label: getLabel('api.articles.labels.slug'),
+      },
+    }).validate({ slug });
+  } catch (err) {
+    logServer(`publish articles.one : ${err}`);
+    this.error(err);
+  }
+  return Articles.find(
     { slug },
     {
       fields: Articles.allPublicFields,
       limit: 1,
       sort: { name: -1 },
     },
-  ),
-);
+  );
+});

@@ -10,7 +10,7 @@ import '../../../../i18n/en.i18n.json';
 import faker from 'faker';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
-import { addService, addGroup, updatePersonalSpace, removeElement } from '../methods';
+import { addService, addGroup, updatePersonalSpace, removeElement, checkPersonalSpace } from '../methods';
 import './publications';
 import PersonalSpaces from '../personalspaces';
 import Services from '../../services/services';
@@ -239,6 +239,44 @@ describe('personalspaces', function () {
         ps = PersonalSpaces.findOne({ userId });
         assert.typeOf(ps.sorted[0].elements, 'array');
         assert.lengthOf(ps.sorted[0].elements, 1);
+      });
+    });
+    describe('checkPersonalSpace', function () {
+      it('does ensure that no duplicate entries or missing groups exists in PersonalSpace', function () {
+        updatePersonalSpace._execute({ userId }, { data: emptyPS });
+      });
+      it("does remove deleted groups and duplicates from current user's personalspace", function () {
+        const serviceIdS = Factory.create('service')._id;
+
+        const services = [
+          {
+            element_id: serviceIdS,
+            type: 'service',
+          },
+          {
+            element_id: serviceIdS,
+            type: 'service',
+          },
+        ];
+        updatePersonalSpace._execute({ userId }, { data: { ...emptyPS, unsorted: services } });
+        const groupId = Factory.create('group', { owner: Random.id() })._id;
+        addGroup._execute({ userId }, { groupId });
+        Groups.remove({ _id: groupId });
+        // check that removed group is still present in current PersonalSpace
+        // and serviceIds is duplicated
+        const ps = PersonalSpaces.findOne({ userId });
+        assert.typeOf(ps.unsorted, 'array');
+        assert.lengthOf(ps.unsorted, 3);
+        assert.equal(ps.unsorted[2].type, 'group');
+        assert.equal(ps.unsorted[2].element_id, groupId);
+        assert.typeOf(ps.sorted, 'array');
+        assert.lengthOf(ps.sorted, 0);
+        checkPersonalSpace._execute({ userId });
+        // check that removed group is purged from PersonalSpace after check
+        const psafter = PersonalSpaces.findOne({ userId });
+        assert.typeOf(psafter.unsorted, 'array');
+        assert.lengthOf(psafter.unsorted, 1);
+        assert.equal(psafter.unsorted[0].element_id, serviceIdS);
       });
     });
   });

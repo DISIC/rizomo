@@ -4,7 +4,21 @@ import { useTracker } from 'meteor/react-meteor-data';
 export const usePagination = (subName, args = {}, Collection, query = {}, options = {}, itemPerPage) => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const subscription = useTracker(() => Meteor.subscribe(subName, { ...args, page, itemPerPage }));
+  const subscription = useTracker(() =>
+    Meteor.subscribe(
+      subName,
+      { ...args, page, itemPerPage },
+      {
+        onStop: (err) => {
+          if (err) {
+            if (err.error === 'validation-error')
+              err.details.forEach((detail) => console.log(`Subscribe ${subName}: ${detail.message}`));
+            else console.log(`Subscribe ${subName}: ${err.reason || err.message}`);
+          }
+        },
+      },
+    ),
+  );
   const loading = useTracker(() => !subscription.ready());
 
   const items = useTracker(

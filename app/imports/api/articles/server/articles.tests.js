@@ -11,7 +11,14 @@ import { Random } from 'meteor/random';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 
-import { createArticle, removeArticle, updateArticle } from '../methods';
+import {
+  createArticle,
+  removeArticle,
+  updateArticle,
+  visitArticle,
+  downloadBackupPublications,
+  uploadBackupPublications,
+} from '../methods';
 import './publications';
 import Articles from '../articles';
 
@@ -37,22 +44,52 @@ describe('articles', function () {
       });
       Meteor.users.update(userId, { $set: { isActive: true } });
       Articles.remove({});
-      _.times(4, () => {
+      _.times(3, () => {
         Factory.create('article', { userId });
+      });
+      _.times(1, () => {
+        Factory.create('article', { userId, title: 'coucou' });
       });
       _.times(2, () => {
         Factory.create('article', { userId: Random.id() });
       });
     });
     describe('articles.all', function () {
-      it('sends all services', function (done) {
+      it('sends all articles', function (done) {
         const collector = new PublicationCollector({ userId });
-        collector.collect('articles.all', { userId }, (collections) => {
+        collector.collect('articles.all', { userId, page: 1, search: '', itemPerPage: 10 }, (collections) => {
           assert.equal(collections.articles.length, 4);
           done();
         });
         const nbArticles = Meteor.call('get_articles.all_count', { userId });
         assert.equal(nbArticles, 4);
+      });
+      it('sends all articles with pagination', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('articles.all', { userId, page: 2, search: '', itemPerPage: 2 }, (collections) => {
+          assert.equal(collections.articles.length, 2);
+          done();
+        });
+      });
+      it('sends all articles with search', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('articles.all', { userId, page: 1, search: 'coucou', itemPerPage: 10 }, (collections) => {
+          assert.equal(collections.articles.length, 1);
+          done();
+        });
+      });
+    });
+    describe('articles.one', function () {
+      it('sends one article', function (done) {
+        const artFound = Articles.findOne({ userId, title: 'coucou' });
+        const collector = new PublicationCollector({ userId });
+        collector.collect('articles.one', { slug: artFound.slug }, (collections) => {
+          assert.equal(collections.articles.length, 1);
+          const art = collections.articles[0];
+          assert.typeOf(art, 'object');
+          assert.equal(art.title, 'coucou');
+          done();
+        });
       });
     });
   });
@@ -84,12 +121,16 @@ describe('articles', function () {
       });
       // set users as active
       Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
+      Articles.remove({});
       articleData = {
         title: 'Chat sur un nuage de licorne',
         description: "Chevaucher un dragon rose à pois. C'est en fait une fée pour piéger Peter Pan",
         content: "<div>c'est un article de fou</div>",
       };
       articleId = Factory.create('article', { userId })._id;
+      _.times(3, () => {
+        Factory.create('article', { userId });
+      });
     });
     describe('createArticle', function () {
       it('does create an article with basic user', function () {
@@ -162,6 +203,78 @@ describe('articles', function () {
           },
           Meteor.Error,
           /api.articles.updateArticle.notPermitted/,
+        );
+      });
+    });
+    describe('visitArticle', function () {
+      it('does visit an article incrementing visits', function () {
+        let article = Articles.findOne(articleId);
+        assert.equal(article.visits, 0);
+        visitArticle._execute({}, { articleId });
+        article = Articles.findOne(articleId);
+        assert.equal(article.visits, 1);
+      });
+      it('does not increment visits on undefined article', function () {
+        assert.throws(
+          () => {
+            visitArticle._execute({}, { articleId: Random.id() });
+          },
+          Meteor.Error,
+          /api.articles.visitArticle.unknownArticle/,
+        );
+      });
+    });
+    describe('downloadBackupPublications', function () {
+      it('does send all articles', function () {
+        const allart = downloadBackupPublications._execute({ userId });
+        assert.typeOf(allart, 'array');
+        assert.lengthOf(allart, 4);
+      });
+      it('does not send all articles if not logged in', function () {
+        assert.throws(
+          () => {
+            downloadBackupPublications._execute({});
+          },
+          Meteor.Error,
+          /api.articles.downloadBackupPublications.notLoggedIn/,
+        );
+      });
+    });
+    describe('uploadBackupPublications', function () {
+      const articles = [
+        {
+          title: 'Chat sur un nuage de licorne',
+          description: "Chevaucher un dragon rose à pois. C'est en fait une fée pour piéger Peter Pan",
+          content: "<div>c'est un article de fou</div>",
+        },
+        {
+          title: 'Chat sur MIMOSA',
+          description: 'article modifié',
+          content: "<div>c'est toujours un article de fou</div>",
+        },
+      ];
+      it('does upload articles from table', function () {
+        Articles.remove({});
+        assert.equal(Articles.find({ userId }).count(), 0);
+        uploadBackupPublications._execute({ userId }, { articles });
+        assert.equal(Articles.find({ userId }).count(), 2);
+      });
+      it('does reupload downloaded articles', function () {
+        const downart = downloadBackupPublications._execute({ userId });
+        assert.typeOf(downart, 'array');
+        assert.lengthOf(downart, 4);
+        Articles.remove({});
+        assert.equal(Articles.find({ userId }).count(), 0);
+        uploadBackupPublications._execute({ userId }, { articles: downart });
+        assert.equal(Articles.find({ userId }).count(), 4);
+      });
+      it('does not upload articles if not logged in', function () {
+        assert.throws(
+          () => {
+            uploadBackupPublications._execute({}, { articles });
+          },
+          Meteor.Error,
+          /api.articles.uploadBackupPublications.notLoggedIn/,
         );
       });
     });

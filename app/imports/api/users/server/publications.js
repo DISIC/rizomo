@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
 import { Roles } from 'meteor/alanning:roles';
 import { FindFromPublication } from 'meteor/percolate:find-from-publication';
-import { isActive } from '../../utils';
+import SimpleSchema from 'simpl-schema';
+import { checkPaginationParams, isActive, getLabel } from '../../utils';
 import Groups from '../../groups/groups';
+import logServer from '../../logging';
 
 // publish additional fields for current user
 Meteor.publish('userData', function publishUserData() {
@@ -31,36 +32,6 @@ Meteor.publish('users.request', function usersRequest() {
   );
 });
 
-function checkUserIds(userIds) {
-  new SimpleSchema({
-    userIds: {
-      type: Array,
-    },
-    'userIds.$': {
-      type: { type: String, regEx: SimpleSchema.RegEx.Id },
-    },
-  }).validate({ userIds });
-}
-
-// publish users waiting for activation by admin
-Meteor.publish('users.fromlist', function usersFromList(userIds = []) {
-  if (!isActive(this.userId)) {
-    return this.ready();
-  }
-  checkUserIds(userIds);
-  return Meteor.users.find(
-    { _id: { $in: userIds } },
-    {
-      fields: {
-        username: 1,
-        emails: 1,
-        firstName: 1,
-        lastName: 1,
-      },
-    },
-  );
-});
-
 // automatically publish assignments for current user
 Meteor.publish(null, function publishAssignments() {
   if (this.userId) {
@@ -75,6 +46,7 @@ Meteor.publish('roles.admin', function publishAdmins() {
   }
   return Meteor.roleAssignment.find({ 'role._id': 'admin', scope: null });
 });
+
 // Publish all existing roles
 Meteor.publish(null, function publishRoles() {
   if (this.userId) {
@@ -101,6 +73,19 @@ FindFromPublication.publish('users.group', function usersFromGroup({ page, itemP
   if (!isActive(this.userId)) {
     return this.ready();
   }
+  try {
+    new SimpleSchema({
+      slug: {
+        type: String,
+        label: getLabel('api.groups.labels.slug'),
+      },
+    })
+      .extend(checkPaginationParams)
+      .validate({ page, itemPerPage, slug, search });
+  } catch (err) {
+    logServer(`publish users.group: ${err}`);
+    this.error(err);
+  }
   const query = queryUsersFromGroup({ slug, search });
 
   return Meteor.users.find(query, {
@@ -125,6 +110,12 @@ const queryUsersPublishers = ({ search }) => {
 
 // publish all users who published articles
 FindFromPublication.publish('users.publishers', ({ page, itemPerPage, search, ...rest }) => {
+  try {
+    checkPaginationParams.validate({ page, itemPerPage, search });
+  } catch (err) {
+    logServer(`publish users.publishers: ${err}`);
+    this.error(err);
+  }
   const pubFields = { ...Meteor.users.publicFields };
   // do not leak email adresses on public page
   delete pubFields.emails;
@@ -175,6 +166,12 @@ const queryUsersAdmin = ({ search }) => {
 FindFromPublication.publish('users.admin', function usersAdmin({ page, itemPerPage, search, ...rest }) {
   if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin')) {
     return this.ready();
+  }
+  try {
+    checkPaginationParams.validate({ page, itemPerPage, search });
+  } catch (err) {
+    logServer(`publish users.admin : ${err}`);
+    this.error(err);
   }
   const query = queryUsersAdmin({ search });
 

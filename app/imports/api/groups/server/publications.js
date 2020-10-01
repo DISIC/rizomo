@@ -4,28 +4,10 @@ import { publishComposite } from 'meteor/reywood:publish-composite';
 import { FindFromPublication } from 'meteor/percolate:find-from-publication';
 import SimpleSchema from 'simpl-schema';
 
-import { isActive } from '../../utils';
+import { checkPaginationParams, isActive, getLabel } from '../../utils';
 import Groups from '../groups';
 import AppRoles from '../../users/users';
-
-// publish groups that user is member of
-publishComposite('groups.memberof', function groupsMemberOf() {
-  if (!isActive(this.userId)) {
-    return this.ready();
-  }
-  return {
-    find() {
-      return Meteor.roleAssignment.find({ 'user._id': this.userId, 'role._id': 'member', scope: { $ne: null } });
-    },
-    children: [
-      {
-        find(role) {
-          return Groups.find(role.scope, { fields: Groups.publicFields });
-        },
-      },
-    ],
-  };
-});
+import logServer from '../../logging';
 
 // publish groups that user is admin/animator of
 publishComposite('groups.adminof', function groupsAdminOf() {
@@ -63,21 +45,37 @@ FindFromPublication.publish('groups.one.admin', function GroupsOne({ _id }) {
   if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, ['admin', 'animator'], _id)) {
     return this.ready();
   }
+  try {
+    new SimpleSchema({
+      _id: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id,
+      },
+    }).validate({ _id });
+  } catch (err) {
+    logServer(`publish groups.one.admin : ${err}`);
+    this.error(err);
+  }
   return Groups.find({ _id }, { fields: Groups.adminFields, sort: { name: 1 }, limit: 1 });
 });
 
 // publish one group and all users associated with given role
 publishComposite('groups.users', function groupDetails({ groupId, role = 'member' }) {
-  new SimpleSchema({
-    groupId: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id,
-    },
-    role: {
-      type: String,
-      allowedValues: AppRoles,
-    },
-  }).validate({ groupId, role });
+  try {
+    new SimpleSchema({
+      groupId: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id,
+      },
+      role: {
+        type: String,
+        allowedValues: AppRoles,
+      },
+    }).validate({ groupId, role });
+  } catch (err) {
+    logServer(`publish groups.users : ${err}`);
+    this.error(err);
+  }
   if (!isActive(this.userId)) {
     return this.ready();
   }
@@ -135,6 +133,12 @@ FindFromPublication.publish('groups.all', function groupsAll({ page, search, ite
   if (!isActive(this.userId)) {
     return this.ready();
   }
+  try {
+    checkPaginationParams.validate({ page, itemPerPage, search });
+  } catch (err) {
+    logServer(`publish groups.all : ${err}`);
+    this.error(err);
+  }
   const query = queryAllGroups({ search });
 
   return Groups.find(query, {
@@ -150,6 +154,18 @@ FindFromPublication.publish('groups.all', function groupsAll({ page, search, ite
 FindFromPublication.publish('groups.one', function groupsOne({ slug }) {
   if (!isActive(this.userId)) {
     return this.ready();
+  }
+  try {
+    new SimpleSchema({
+      slug: {
+        optional: true,
+        type: String,
+        label: getLabel('api.groups.labels.slug'),
+      },
+    }).validate({ slug });
+  } catch (err) {
+    logServer(`publish groups.one : ${err}`);
+    this.error(err);
   }
   return Groups.find(
     { slug },

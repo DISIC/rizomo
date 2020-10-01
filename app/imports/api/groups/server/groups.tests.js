@@ -16,7 +16,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 import Groups from '../groups';
 import PersonalSpaces from '../../personalspaces/personalspaces';
-import { createGroup, removeGroup, updateGroup, findGroups, favGroup, unfavGroup } from '../methods';
+import { createGroup, removeGroup, updateGroup, favGroup, unfavGroup } from '../methods';
 import './publications';
 import {
   setAdminOf,
@@ -48,8 +48,14 @@ describe('groups', function () {
   });
   describe('publications', function () {
     let userId;
-    before(function () {
+    let groupId;
+    beforeEach(function () {
+      Groups.remove({});
+      Meteor.roleAssignment.remove({});
+      Meteor.roles.remove({});
       Meteor.users.remove({});
+      Roles.createRole('admin');
+      Roles.createRole('member');
       const email = faker.internet.email();
       userId = Accounts.createUser({
         email,
@@ -61,20 +67,34 @@ describe('groups', function () {
       });
       Meteor.users.update(userId, { $set: { isActive: true } });
       Groups.remove({});
-      _.times(3, () => Factory.create('group', { owner: Random.id() }));
-      Factory.create('group', { owner: Random.id(), name: 'MonGroupe' });
+      _.times(3, () => Factory.create('group', { name: `test${Random.id()}`, owner: Random.id() }));
+      groupId = Factory.create('group', { owner: Random.id(), name: 'MonGroupe' })._id;
     });
     describe('groups.all', function () {
       it('sends all groups', function (done) {
         const collector = new PublicationCollector({ userId });
-        collector.collect('groups.all', {}, (collections) => {
+        collector.collect('groups.all', { page: 1, search: '', itemPerPage: 10 }, (collections) => {
           assert.equal(collections.groups.length, 4);
+          done();
+        });
+      });
+      it('sends a specific page from all groups', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('groups.all', { page: 2, search: '', itemPerPage: 3 }, (collections) => {
+          assert.equal(collections.groups.length, 1);
+          done();
+        });
+      });
+      it('sends all groups matching a filter', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('groups.all', { page: 1, search: 'test', itemPerPage: 10 }, (collections) => {
+          assert.equal(collections.groups.length, 3);
           done();
         });
       });
     });
     describe('groups.one', function () {
-      it('sends all groups', function (done) {
+      it('sends all public fields for a specific group', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('groups.one', { slug: 'mongroupe' }, (collections) => {
           assert.equal(collections.groups.length, 1);
@@ -82,24 +102,74 @@ describe('groups', function () {
         });
       });
     });
-    describe('groups.findGroups method', function () {
-      it('fetches a page of groups', function () {
-        let results = findGroups._execute({ userId }, { pageSize: 3 });
-        assert.equal(results.data.length, 3);
-        assert.equal(results.page, 1);
-        assert.equal(results.totalCount, 4);
-        // fetch page 2
-        results = findGroups._execute({ userId }, { pageSize: 3, page: 2 });
-        assert.equal(results.data.length, 1);
-        assert.equal(results.page, 2);
-        assert.equal(results.totalCount, 4);
+    describe('groups.one.admin', function () {
+      it('sends all admin fields for a specific group (to admin user only)', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('groups.one.admin', { _id: groupId }, (collections) => {
+          assert.notProperty(collections, 'groups');
+        });
+        Roles.addUsersToRoles(userId, 'admin');
+        collector.collect('groups.one.admin', { _id: groupId }, (collections) => {
+          assert.equal(collections.groups.length, 1);
+          assert.property(collections.groups[0], 'admins');
+          done();
+        });
       });
-      it('fetches a page of groups with a filter', function () {
-        const { data, page, totalCount } = findGroups._execute({ userId }, { filter: 'MonGroupe' });
-        assert.equal(data.length, 1);
-        assert.equal(page, 1);
-        assert.equal(totalCount, 1);
-        assert.notProperty(data[0].name, 'MonGroupe');
+    });
+    describe('groups.users', function () {
+      it('sends all users with a given role on a group', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('groups.users', { groupId, role: 'member' }, (collections) => {
+          assert.notProperty(collections, 'users');
+        });
+        setMemberOf._execute({ userId }, { userId, groupId });
+        collector.collect('groups.users', { groupId, role: 'member' }, (collections) => {
+          assert.equal(collections.users.length, 1);
+          assert.equal(collections.users[0]._id, userId);
+          done();
+        });
+      });
+    });
+    describe('groups.adminof', function () {
+      it('sends all groups that user is admin/animator of', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('groups.adminof', (collections) => {
+          assert.notProperty(collections, 'groups');
+        });
+        Roles.addUsersToRoles(userId, 'admin');
+        // global admin : returns all existing groups
+        collector.collect('groups.adminof', (collections) => {
+          assert.equal(collections.groups.length, 4);
+        });
+        setAdminOf._execute({ userId }, { userId, groupId });
+        Roles.removeUsersFromRoles(userId, 'admin');
+        // group admin only : returns only groups user is admin of
+        collector.collect('groups.adminof', (collections) => {
+          assert.equal(collections.groups.length, 1);
+          assert.equal(collections.groups[0]._id, groupId);
+          done();
+        });
+      });
+    });
+    describe('groups.one.admin', function () {
+      it('sends all groups that user is admin/animator of', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('groups.adminof', (collections) => {
+          assert.notProperty(collections, 'groups');
+        });
+        Roles.addUsersToRoles(userId, 'admin');
+        // global admin : returns all existing groups
+        collector.collect('groups.adminof', (collections) => {
+          assert.equal(collections.groups.length, 4);
+        });
+        setAdminOf._execute({ userId }, { userId, groupId });
+        Roles.removeUsersFromRoles(userId, 'admin');
+        // group admin only : returns only groups user is admin of
+        collector.collect('groups.adminof', (collections) => {
+          assert.equal(collections.groups.length, 1);
+          assert.equal(collections.groups[0]._id, groupId);
+          done();
+        });
       });
     });
   });
