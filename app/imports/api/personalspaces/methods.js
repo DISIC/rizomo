@@ -197,9 +197,9 @@ export const checkPersonalSpace = new ValidatedMethod({
 
     // Save modified PS if necessary
     if (changeMade) {
-      Meteor.call('personalspaces.updatePersonalSpace', { data: currentPersonalSpace }, (err) => {
+      updatePersonalSpace._execute({ userId: this.userId }, { data: currentPersonalSpace }, (err) => {
         if (err) {
-          msg.error(err.reason);
+          logServer(err.reason, 'error');
         }
       });
     }

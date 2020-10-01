@@ -4,6 +4,7 @@
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { assert } from 'chai';
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 import { _ } from 'meteor/underscore';
 import '../../../../i18n/en.i18n.json';
 import faker from 'faker';
@@ -15,6 +16,7 @@ import { createService, removeService, updateService, favService, unfavService }
 
 import './publications';
 import Services from '../services';
+import Categories from '../../categories/categories';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 
 function pspaceHasService(user, id) {
@@ -35,8 +37,15 @@ describe('services', function () {
   });
   describe('publications', function () {
     let userId;
-    before(function () {
+    let oneServiceId;
+    let categoryId;
+    let groupServiceId;
+    beforeEach(function () {
+      Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
+      Meteor.roles.remove({});
+      Categories.remove({});
+      Roles.createRole('admin');
       const email = faker.internet.email();
       userId = Accounts.createUser({
         email,
@@ -48,15 +57,60 @@ describe('services', function () {
       });
       Meteor.users.update(userId, { $set: { isActive: true } });
       Services.remove({});
-      _.times(4, () => {
-        Factory.create('service');
+      _.times(3, () => {
+        Factory.create('service', { title: `test${Random.id()}` });
       });
+      categoryId = Factory.create('categorie')._id;
+      oneServiceId = Factory.create('service', { title: 'test', categories: [categoryId] })._id;
+      groupServiceId = Factory.create('service')._id;
     });
     describe('services.all', function () {
       it('sends all services', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect('services.all', (collections) => {
-          assert.equal(collections.services.length, 4);
+          assert.equal(collections.services.length, 5);
+          done();
+        });
+      });
+    });
+    describe('services.one.admin', function () {
+      it('sends one service to admin user only', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('services.one.admin', { _id: oneServiceId }, (collections) => {
+          // non admin user : no result
+          assert.notProperty(collections, 'services');
+        });
+        Roles.addUsersToRoles(userId, 'admin');
+        const adminCollector = new PublicationCollector({ userId });
+        adminCollector.collect('services.one.admin', { _id: oneServiceId }, (collections) => {
+          assert.equal(collections.services.length, 1);
+          assert.equal(collections.services[0]._id, oneServiceId);
+          assert.property(collections.services[0], 'content');
+        });
+        done();
+      });
+    });
+    describe('services.group', function () {
+      it('sends services from a list of services ids', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('services.group', { ids: [oneServiceId, groupServiceId] }, (collections) => {
+          assert.equal(collections.services.length, 2);
+          assert.equal(
+            collections.services.filter((serv) => [oneServiceId, groupServiceId].includes(serv._id)).length,
+            2,
+          );
+          done();
+        });
+      });
+    });
+    describe('services.one', function () {
+      it('sends one service and corresponding categories selected by service slug', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('services.one', { slug: 'test' }, (collections) => {
+          assert.equal(collections.services.length, 1);
+          assert.equal(collections.categories.length, 1);
+          assert.equal(collections.services[0]._id, oneServiceId);
+          assert.equal(collections.categories[0]._id, categoryId);
           done();
         });
       });

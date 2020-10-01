@@ -23,8 +23,10 @@ import {
   setActive,
   unsetActive,
   findUsers,
+  findUser,
   removeUser,
   setMemberOf,
+  setKeycloakId,
 } from './methods';
 import { structures } from '../structures';
 import Groups from '../../groups/groups';
@@ -34,12 +36,17 @@ import './publications';
 describe('users', function () {
   describe('publications', function () {
     let userId;
+    let otherUserId;
     let email;
+    let group;
+    const lastName = `test${faker.name.lastName()}`;
+    const firstName = `test${faker.name.firstName()}`;
     before(function () {
       Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
       Meteor.roles.remove({});
       Roles.createRole('admin');
+      Roles.createRole('member');
       _.times(3, () => {
         // prefix email with 'test' to make sure it won't match
         // with 'user@ac-test.fr' when testing filtered search
@@ -49,21 +56,35 @@ describe('users', function () {
           username: email,
           password: 'toto',
           structure: faker.company.companyName(),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
+          firstName: `test${faker.name.firstName()}`,
+          lastName: `test${faker.name.lastName()}`,
         });
       });
-      // spécific user for userData publication
+      // spécific users for userData publication and search filter test
       email = 'user@ac-test.fr';
       userId = Accounts.createUser({
         email,
         username: email,
         password: 'titi',
         structure: faker.company.companyName(),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
+        firstName,
+        lastName,
       });
-      Meteor.users.update(userId, { $set: { isActive: true, isRequest: false } });
+      email = `test${faker.internet.email()}`;
+      otherUserId = Accounts.createUser({
+        email,
+        username: email,
+        password: 'titi',
+        structure: faker.company.companyName(),
+        firstName: 'BobLeFilou',
+        lastName: `test${faker.name.lastName()}`,
+      });
+
+      Meteor.users.update(userId, { $set: { isActive: true, isRequest: false, articlesCount: 1 } });
+      Meteor.users.update(otherUserId, { $set: { isActive: true, isRequest: false, articlesCount: 1 } });
+      group = Factory.create('group', { owner: userId });
+      setMemberOf._execute({ userId }, { userId, groupId: group._id });
+      setMemberOf._execute({ userId: otherUserId }, { userId: otherUserId, groupId: group._id });
     });
     describe('users.request', function () {
       it('does not send data to non admin users', function (done) {
@@ -99,27 +120,123 @@ describe('users', function () {
         const { data, page, totalCount } = findUsers._execute({ userId }, { pageSize: 2 });
         assert.equal(data.length, 2);
         assert.equal(page, 1);
-        assert.equal(totalCount, 4);
+        assert.equal(totalCount, 5);
       });
       it('fetches a page of users as normal user with a filter', function () {
         const { data, page, totalCount } = findUsers._execute({ userId }, { filter: 'user@ac-test.fr' });
         assert.equal(data.length, 1);
         assert.equal(page, 1);
         assert.equal(totalCount, 1);
-        assert.notProperty(data[0].username, 'user@ac-test.fr');
+        assert.notProperty(data[0], 'createdAt');
+        assert.equal(data[0].emails[0].address, 'user@ac-test.fr');
       });
       it('fetches a page of users as admin user', function () {
         Roles.addUsersToRoles(userId, 'admin');
         let results = findUsers._execute({ userId }, { pageSize: 3 });
         assert.equal(results.data.length, 3);
         assert.equal(results.page, 1);
-        assert.equal(results.totalCount, 4);
-        assert.property(results.data[0], 'emails');
+        assert.equal(results.totalCount, 5);
+        assert.property(results.data[0], 'createdAt');
         // fetch page 2
         results = findUsers._execute({ userId }, { pageSize: 3, page: 2 });
-        assert.equal(results.data.length, 1);
+        assert.equal(results.data.length, 2);
         assert.equal(results.page, 2);
-        assert.equal(results.totalCount, 4);
+        assert.equal(results.totalCount, 5);
+      });
+    });
+    describe('users.findUser method', function () {
+      it('fetches basic info of a specific user (firstname, lastname)', function () {
+        const userData = findUser._execute({ userId }, { userId });
+        assert.equal(userData._id, userId);
+        assert.equal(userData.lastName, lastName);
+        assert.equal(userData.firstName, firstName);
+      });
+    });
+    describe('roles.admin', function () {
+      it('sends all global admin users', function (done) {
+        Roles.addUsersToRoles(userId, 'admin');
+        const collector = new PublicationCollector({ userId });
+        collector.collect('roles.admin', (collections) => {
+          assert.equal(collections['role-assignment'].length, 1);
+          const assignment = collections['role-assignment'][0];
+          assert.equal(assignment.user._id, userId);
+          assert.equal(assignment.role._id, 'admin');
+          done();
+        });
+      });
+    });
+    describe('users.group', function () {
+      it('sends all users from a group', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.group', { page: 1, itemPerPage: 5, slug: group.slug, search: '' }, (collections) => {
+          assert.equal(collections.users.length, 2);
+          assert.equal(
+            collections.users.filter((user) => [firstName, 'BobLeFilou'].includes(user.firstName)).length,
+            2,
+          );
+          done();
+        });
+      });
+      it('sends all users from a group with filter', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect(
+          'users.group',
+          { page: 1, itemPerPage: 5, slug: group.slug, search: 'BobLeFilou' },
+          (collections) => {
+            assert.equal(collections.users.length, 1);
+            assert.equal(collections.users[0].firstName, 'BobLeFilou');
+            done();
+          },
+        );
+      });
+    });
+    describe('users.publishers', function () {
+      it('sends all users who published an article', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.publishers', { page: 1, itemPerPage: 5, search: '' }, (collections) => {
+          assert.equal(collections.users.length, 2);
+          const user = collections.users[0];
+          assert.equal(user._id, userId);
+          done();
+        });
+      });
+      it('sends all users who published an article with filter', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.publishers', { page: 1, itemPerPage: 5, search: 'BobLeFilou' }, (collections) => {
+          assert.equal(collections.users.length, 1);
+          const user = collections.users[0];
+          assert.equal(user._id, otherUserId);
+          done();
+        });
+      });
+    });
+    describe('users.admin', function () {
+      it('sends all users including admin restricted fields', function (done) {
+        Roles.addUsersToRoles(userId, 'admin');
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.admin', { page: 1, itemPerPage: 5, search: '' }, (collections) => {
+          assert.equal(collections.users.length, 5);
+          const user = collections.users[0];
+          assert.property(user, 'createdAt');
+          done();
+        });
+      });
+      it('sends a specific page of users including admin restricted fields', function (done) {
+        Roles.addUsersToRoles(userId, 'admin');
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.admin', { page: 2, itemPerPage: 3, search: '' }, (collections) => {
+          assert.equal(collections.users.length, 2);
+          done();
+        });
+      });
+      it('sends all users including admin restricted fields matching a filter', function (done) {
+        Roles.addUsersToRoles(userId, 'admin');
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.admin', { page: 1, itemPerPage: 5, search: 'user@ac-test.fr' }, (collections) => {
+          assert.equal(collections.users.length, 1);
+          assert.equal(collections.users[0].emails[0].address, 'user@ac-test.fr');
+          done();
+        });
       });
     });
   });
@@ -339,6 +456,22 @@ describe('users', function () {
           },
           Meteor.Error,
           /api.users.setLogoutType.notPermitted/,
+        );
+      });
+    });
+    describe('setKeycloakId', function () {
+      it('admin users can set Keycloak Id of an existing user', function () {
+        setKeycloakId._execute({ userId: adminId }, { email, keycloakId: 'f213b75d-9133-4ca7-9499-e43f15e254b6' });
+        const user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.services.keycloak.id, 'f213b75d-9133-4ca7-9499-e43f15e254b6');
+      });
+      it('only admin users can set keycloak Id of an existing user', function () {
+        assert.throws(
+          () => {
+            setKeycloakId._execute({ userId }, { email, keycloakId: 'f213b75d-9133-4ca7-9499-e43f15e254b6' });
+          },
+          Meteor.Error,
+          /api.users.setKeycloakId.notPermitted/,
         );
       });
     });

@@ -274,80 +274,8 @@ export const updateGroup = new ValidatedMethod({
   },
 });
 
-// groups.findGroups: Returns groups using pagination
-//   filter: string to search for in name or description (case insensitive search)
-//   page: number of the page requested
-//   pageSize: number of entries per page
-//   sortColumn/sortOrder: sort entries on a specific field with given order (1/-1)
-export const findGroups = new ValidatedMethod({
-  name: 'groups.findGroups',
-  validate: new SimpleSchema({
-    page: {
-      type: SimpleSchema.Integer,
-      min: 1,
-      defaultValue: 1,
-      optional: true,
-      label: getLabel('api.methods.labels.page'),
-    },
-    pageSize: {
-      type: SimpleSchema.Integer,
-      min: 1,
-      defaultValue: 10,
-      optional: true,
-      label: getLabel('api.methods.labels.pageSize'),
-    },
-    filter: {
-      type: String,
-      defaultValue: '',
-      optional: true,
-      label: getLabel('api.methods.labels.filter'),
-    },
-    sortColumn: {
-      type: String,
-      allowedValues: ['_id', ...Groups.schema.objectKeys()],
-      defaultValue: 'name',
-      optional: true,
-      label: getLabel('api.methods.labels.sortColumn'),
-    },
-    sortOrder: {
-      type: SimpleSchema.Integer,
-      allowedValues: [1, -1],
-      defaultValue: 1,
-      optional: true,
-      label: getLabel('api.methods.labels.sortOrder'),
-    },
-  }).validator({ clean: true }),
-  run({ page, pageSize, filter, sortColumn, sortOrder }) {
-    // calculate number of entries to skip
-    const skip = (page - 1) * pageSize;
-    let query = {};
-    if (filter && filter.length > 0) {
-      query = {
-        $or: [
-          {
-            name: { $regex: `.*${filter}.*`, $options: 'i' },
-          },
-          {
-            description: { $regex: `.*${filter}.*`, $options: 'i' },
-          },
-        ],
-      };
-    }
-    const sort = {};
-    sort[sortColumn] = sortOrder;
-    const totalCount = Groups.find(query).count();
-    const data = Groups.find(query, {
-      fields: Groups.publicFields,
-      limit: pageSize,
-      skip,
-      sort,
-    }).fetch();
-    return { data, page, totalCount };
-  },
-});
-
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([favGroup, unfavGroup, createGroup, removeGroup, updateGroup, findGroups], 'name');
+const LISTS_METHODS = _.pluck([favGroup, unfavGroup, createGroup, removeGroup, updateGroup], 'name');
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second

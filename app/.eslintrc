@@ -38,12 +38,6 @@
         "code": 120,
         "ignoreComments": true
       }
-    ],
-    "meteor/audit-argument-checks": [
-      "error",
-      {
-        "checkEquivalents": ["checkUserIds", "checkCategories"]
-      }
     ]
   },
   "env": {

@@ -782,6 +782,7 @@ export const findUser = new ValidatedMethod({
 const LISTS_METHODS = _.pluck(
   [
     setUsername,
+    setName,
     setStructure,
     setActive,
     removeUser,

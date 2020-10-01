@@ -67,7 +67,10 @@ export const updateIntroductionLanguage = new ValidatedMethod({
       // check if current user is admin
       const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
       if (!authorized) {
-        throw new Meteor.Error('api.appsettings.updateAppsettings.notPermitted', i18n.__('api.users.adminNeeded'));
+        throw new Meteor.Error(
+          'api.appsettings.updateIntroductionLanguage.notPermitted',
+          i18n.__('api.users.adminNeeded'),
+        );
       }
       const appsettings = AppSettings.findOne({});
       const { introduction } = appsettings;
@@ -98,7 +101,7 @@ export const getAppSettingsLinks = new ValidatedMethod({
 });
 
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([updateAppsettings], 'name');
+const LISTS_METHODS = _.pluck([updateAppsettings, updateIntroductionLanguage, getAppSettingsLinks], 'name');
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second
