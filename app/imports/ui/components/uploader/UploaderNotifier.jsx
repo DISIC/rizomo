@@ -15,6 +15,8 @@ const fileTypes = [
   ...Meteor.settings.public.imageFilesTypes,
   ...Meteor.settings.public.audioFilesTypes,
   ...Meteor.settings.public.videoFilesTypes,
+  ...Meteor.settings.public.textFilesTypes,
+  ...Meteor.settings.public.otherFilesTypes,
 ];
 
 const checkFile = (file, storage, extension) => {
