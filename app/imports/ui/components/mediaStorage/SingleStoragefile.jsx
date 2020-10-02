@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { makeStyles, Typography } from '@material-ui/core';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
@@ -10,9 +11,9 @@ const { minioEndPoint, minioPort, minioBucket, minioSSL } = Meteor.settings.publ
 
 const HOST = `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${minioPort}` : ''}/${minioBucket}/`;
 
-export const PICTURES_TYPES = ['svg', 'png', 'jpg', 'gif', 'jpeg'];
-export const SOUND_TYPES = ['wav', 'mp3', 'ogg'];
-export const VIDEO_TYPES = ['mp4', 'webm', 'avi', 'wmv'];
+export const PICTURES_TYPES = Meteor.settings.public.imageFilesTypes;
+export const SOUND_TYPES = Meteor.settings.public.audioFilesTypes;
+export const VIDEO_TYPES = Meteor.settings.public.videoFilesTypes;
 
 const useStyles = makeStyles((theme) => ({
   singleFile: {

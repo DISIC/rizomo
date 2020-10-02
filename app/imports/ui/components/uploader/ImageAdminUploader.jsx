@@ -54,6 +54,7 @@ const ImageAdminUploader = ({ src, alt, onImageChange, className, name, path, wi
           file: image,
           type: file.name.split('.')[file.name.split('.').length - 1],
           path,
+          storage: false,
           onFinish: onTransmitImage,
         },
       });

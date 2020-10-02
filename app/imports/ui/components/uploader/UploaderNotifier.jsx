@@ -1,32 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
 import { Typography, Slide, CircularProgress } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 import { useAppContext } from '../../contexts/context';
 import { fileUpload, storageToSize } from '../../utils/filesProcess';
 
-const {
-  minioFilesTypes,
-  minioFileSize,
-  minioStorageFilesTypes,
-  minioStorageFilesSize,
-  maxMinioDiskPerUser,
-} = Meteor.settings.public;
+const { minioFileSize, minioStorageFilesSize, maxMinioDiskPerUser } = Meteor.settings.public;
+// minionFileSize : maximum file size when uploading services images in admin space
+// minioStorageFilesSize : maximum file size when uploading media in user space
+
+const fileTypes = [
+  ...Meteor.settings.public.imageFilesTypes,
+  ...Meteor.settings.public.audioFilesTypes,
+  ...Meteor.settings.public.videoFilesTypes,
+];
 
 const checkFile = (file, storage, extension) => {
-  const types = storage ? minioStorageFilesTypes : minioFilesTypes;
+  // if not storage: admin upload for services images
+  // if storage: user media upload
+  const types = storage ? fileTypes : Meteor.settings.public.imageFilesTypes;
   const sizes = storage ? minioStorageFilesSize : minioFileSize;
-  let goodFormat = false;
-  let goodSize = false;
-  types.forEach((type) => {
-    if (extension === type) {
-      goodFormat = true;
-    }
-  });
-  if (file.length < sizes) {
-    goodSize = true;
-  }
+  const goodFormat = types.includes(extension);
+  const goodSize = file.length < sizes;
   return {
     goodFormat,
     goodSize,
@@ -100,7 +97,9 @@ const SingleNotification = ({ upload }) => {
     } else if (!goodSize) {
       setError({
         title: i18n.__('components.UploaderNotifier.fileTooLargeTitle'),
-        message: `${i18n.__('components.UploaderNotifier.fileTooLarge')} ${storageToSize(minioFileSize)}`,
+        message: `${i18n.__('components.UploaderNotifier.fileTooLarge')} ${storageToSize(
+          storage ? minioStorageFilesSize : minioFileSize,
+        )}`,
       });
       deleteUploadFromQueue();
     } else if (!goodFormat) {
@@ -108,7 +107,9 @@ const SingleNotification = ({ upload }) => {
         title: i18n.__('components.UploaderNotifier.formatNotAcceptedTitle'),
         message: `
         ${i18n.__('components.UploaderNotifier.formatNotAccepted')} 
-        ${JSON.stringify(minioFilesTypes).replace(/"/g, '').replace(/,/g, ', ')}`,
+        ${JSON.stringify(storage ? fileTypes : Meteor.settings.public.imageFilesTypes)
+          .replace(/"/g, '')
+          .replace(/,/g, ', ')}`,
       });
       deleteUploadFromQueue();
     } else {
