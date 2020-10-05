@@ -14,6 +14,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { createCategorie, removeCategorie, updateCategorie } from '../methods';
 import './publications';
 import Categories from '../categories';
+import Services from '../../services/services';
 
 describe('categories', function () {
   describe('mutators', function () {
@@ -117,6 +118,12 @@ describe('categories', function () {
       it('does delete a categorie with admin user', function () {
         removeCategorie._execute({ userId: adminId }, { categoryId });
         assert.equal(Categories.findOne(categoryId), undefined);
+      });
+      it('does remove the categorie from a service', function () {
+        const oneServiceId = Factory.create('service', { title: 'test', categories: [categoryId] })._id;
+        removeCategorie._execute({ userId: adminId }, { categoryId });
+        assert.equal(Categories.findOne(categoryId), undefined);
+        assert.equal(Services.findOne(oneServiceId).categories.length, 0);
       });
       it("does not delete a categorie if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to delete the categorie
