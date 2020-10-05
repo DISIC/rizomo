@@ -46,7 +46,6 @@ publishComposite('services.one', ({ slug }) => {
   try {
     new SimpleSchema({
       slug: {
-        optional: true,
         type: String,
         label: getLabel('api.services.labels.slug'),
       },

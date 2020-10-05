@@ -408,9 +408,16 @@ export default withTracker(
       params: { slug },
     },
   }) => {
-    const articleHandle = Meteor.subscribe('articles.one', { slug });
-    const article = Articles.findOneFromPublication('articles.one', {}) || {};
-    const ready = articleHandle.ready();
+    let ready = false;
+    let article = {};
+    if (slug) {
+      const articleHandle = Meteor.subscribe('articles.one', { slug });
+      article = Articles.findOneFromPublication('articles.one', {}) || {};
+      ready = articleHandle.ready();
+    } else {
+      // create new article
+      ready = true;
+    }
     return {
       article,
       ready,

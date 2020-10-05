@@ -158,7 +158,6 @@ FindFromPublication.publish('groups.one', function groupsOne({ slug }) {
   try {
     new SimpleSchema({
       slug: {
-        optional: true,
         type: String,
         label: getLabel('api.groups.labels.slug'),
       },
