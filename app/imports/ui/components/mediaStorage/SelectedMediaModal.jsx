@@ -10,7 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DescriptionIcon from '@material-ui/icons/Description';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ClearIcon from '@material-ui/icons/Clear';
-import { Modal } from '@material-ui/core';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import { Modal, Tooltip } from '@material-ui/core';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import PropTypes from 'prop-types';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -72,6 +73,12 @@ export default function SelectedMediaModal({ file, onClose, onDelete, loading, o
     return null;
   }
 
+  const handleCopyURL = () => {
+    navigator.clipboard
+      .writeText(`${HOST}${file.name}`)
+      .then(msg.success(i18n.__('components.SelectedMediaModal.successCopyURL')));
+  };
+
   return (
     <Modal open onClose={onClose}>
       <div className={classes.paper}>
@@ -117,9 +124,24 @@ export default function SelectedMediaModal({ file, onClose, onDelete, loading, o
               }
               onAction={onDelete}
             />
-            <IconButton onClick={() => window.open(`${HOST}${file.name}`, '_blank', 'noreferrer,noopener')}>
-              <OpenInNewIcon />
-            </IconButton>
+            <div name="accessButtons">
+              <Tooltip
+                title={i18n.__('components.SelectedMediaModal.OpenInWindow')}
+                aria-label={i18n.__('components.SelectedMediaModal.OpenInWindow')}
+              >
+                <IconButton onClick={() => window.open(`${HOST}${file.name}`, '_blank', 'noreferrer,noopener')}>
+                  <OpenInNewIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title={i18n.__('components.SelectedMediaModal.copyUrl')}
+                aria-label={i18n.__('components.SelectedMediaModal.copyUrl')}
+              >
+                <IconButton onClick={handleCopyURL}>
+                  <AssignmentIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
             <IconButton onClick={onClose}>
               <ClearIcon />
             </IconButton>
