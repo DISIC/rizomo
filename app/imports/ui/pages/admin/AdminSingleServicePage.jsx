@@ -420,10 +420,16 @@ export default withTracker(
     },
   }) => {
     const subCategories = Meteor.subscribe('categories.all');
-    const subService = Meteor.subscribe('services.one.admin', { _id });
     const categories = Categories.find({}).fetch();
-    const service = Services.findOneFromPublication('services.one.admin', { _id });
-    const ready = subCategories.ready() && subService.ready();
+    let service = {};
+    let ready = false;
+    if (_id) {
+      const subService = Meteor.subscribe('services.one.admin', { _id });
+      service = Services.findOneFromPublication('services.one.admin', { _id });
+      ready = subCategories.ready() && subService.ready();
+    } else {
+      ready = subCategories.ready();
+    }
     return {
       service,
       categories,

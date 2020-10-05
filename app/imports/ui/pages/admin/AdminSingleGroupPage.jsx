@@ -294,9 +294,15 @@ export default withTracker(
       params: { _id },
     },
   }) => {
-    const subGroup = Meteor.subscribe('groups.one.admin', { _id });
-    const group = Groups.findOneFromPublication('groups.one.admin', { _id });
-    const ready = subGroup.ready();
+    let group = {};
+    let ready = false;
+    if (_id) {
+      const subGroup = Meteor.subscribe('groups.one.admin', { _id });
+      group = Groups.findOneFromPublication('groups.one.admin', { _id });
+      ready = subGroup.ready();
+    } else {
+      ready = true;
+    }
     return {
       group,
       ready,

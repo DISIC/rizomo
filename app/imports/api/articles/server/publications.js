@@ -57,11 +57,10 @@ FindFromPublication.publish('articles.all', function articlesAll({ page, search,
 });
 
 // publish one article based on its slug
-FindFromPublication.publish('articles.one', ({ slug = '' }) => {
+FindFromPublication.publish('articles.one', ({ slug }) => {
   try {
     new SimpleSchema({
       slug: {
-        optional: true,
         type: String,
         label: getLabel('api.articles.labels.slug'),
       },
