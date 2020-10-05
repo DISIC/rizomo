@@ -205,7 +205,7 @@
       "userGroupAdded": "Keycloak: group {$groupName} added to user {$userId}",
       "userGroupAddError": "Keycloak : ERROR adding group {$groupName} to user {$userId}",
       "userGroupRemoved": "Keycloak: group {$groupName} removed from user {$userId}",
-      "userGroupeRemoveError": "Keycloak : ERROR removing group {$groupName} from user {$userId}"
+      "userGroupRemoveError": "Keycloak : ERROR removing group {$groupName} from user {$userId}"
     },
     "nextcloud": {
       "groupExists": "Group already exists in Nextcloud",
@@ -478,6 +478,11 @@
       "validate": "Validate the audio file",
       "cancel": "Cancel",
       "fileName": "Name of the audio file"
+    },
+    "SelectedMediaModal": {
+      "successCopyURL": "Media URL has been sent to clipboard",
+      "OpenInWindow": "Open media",
+      "copyUrl": "Copy this media URL"
     }
   },
   "validatejs": {
