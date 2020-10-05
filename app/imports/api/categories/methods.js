@@ -8,6 +8,7 @@ import i18n from 'meteor/universe:i18n';
 
 import { isActive, getLabel } from '../utils';
 import Categories from './categories';
+import Services from '../services/services';
 
 export const createCategorie = new ValidatedMethod({
   name: 'categories.createCategorie',
@@ -46,6 +47,8 @@ export const removeCategorie = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.categories.removeCategorie.notPermitted', i18n.__('api.users.adminNeeded'));
     }
+    // remove categorie from services
+    Services.update({}, { $pull: { categories: categoryId } }, { multi: true });
     Categories.remove(categoryId);
   },
 });
