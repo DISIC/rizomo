@@ -145,7 +145,8 @@
         "description": "Short description",
         "content": "Content of the publication",
         "createdAt": "Creation date",
-        "updatedAt": "Update date"
+        "updatedAt": "Update date",
+        "markdown": "markdown mode"
       }
     },
     "notifications": {
@@ -761,7 +762,9 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "copyPublicURL": "copy public URL",
-      "successCopyURL": "Public URL has been sent to clipboard"
+      "successCopyURL": "Public URL has been sent to clipboard",
+      "switchToHtml": "Classic editor",
+      "switchToMarkdown": "Markdown editor"
     },
     "PublicArticlePage": {
       "title": "Publications by",

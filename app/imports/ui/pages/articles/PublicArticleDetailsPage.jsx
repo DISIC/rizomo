@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -7,6 +7,14 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import { Typography, Container, Grid, makeStyles, Button, Fade, FormControlLabel, Switch } from '@material-ui/core';
 import html2pdf from 'html2pdf.js';
+import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
+import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
+import { Viewer } from '@toast-ui/react-editor';
+import chart from '@toast-ui/editor-plugin-chart';
+import uml from '@toast-ui/editor-plugin-uml';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
@@ -76,6 +84,7 @@ function PublicArticleDetailsPage({
   const [user, setUser] = useState({});
   const [counted, setCounted] = useState(false);
   const [landscape, setLandscape] = useState(false);
+  const toastRef = useRef(null);
 
   const isFirstRender = history.action === 'POP';
 
@@ -96,7 +105,7 @@ function PublicArticleDetailsPage({
     // Export to PDF. Currently exported as images
     // try to use jsPDF directly ?
     // https://stackoverflow.com/questions/18191893/generate-pdf-from-html-in-div-using-javascript
-    const divContents = article.content;
+    const divContents = article.markdown ? toastRef.current.rootEl.current.innerHTML : article.content;
     const opt = {
       filename: `article_${article.slug}.pdf`,
       enableLinks: true,
@@ -181,7 +190,15 @@ function PublicArticleDetailsPage({
               </Typography>
             </Grid>
             <Grid item xs={12} className={isMobile ? null : classes.flex}>
-              <div className={classes.content} dangerouslySetInnerHTML={{ __html: article.content }} />
+              {article.markdown ? (
+                <Viewer
+                  ref={toastRef}
+                  initialValue={article.content}
+                  plugins={[chart, codeSyntaxHighlight, colorSyntax, tableMergedCell, uml]}
+                />
+              ) : (
+                <div className={classes.content} dangerouslySetInnerHTML={{ __html: article.content }} />
+              )}
             </Grid>
           </Grid>
           <div className={classes.space} />

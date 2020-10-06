@@ -95,7 +95,7 @@ Services.allPublicFields = {
 
 Factory.define('service', Services, {
   title: () => Random.id(),
-  description: faker.lorem.sentence(),
+  description: faker.lorem.sentence().substring(0, 80),
   url: faker.internet.url(),
   logo: faker.internet.url(),
   team: () => Random.id(),
