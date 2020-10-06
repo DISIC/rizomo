@@ -104,7 +104,7 @@ export const uploadBackupPublications = new ValidatedMethod({
   validate: new SimpleSchema({
     articles: { type: Array },
     'articles.$': Articles.schema.omit('userId', 'visits', '_id', 'createdAt', 'updatedAt', 'slug'),
-  }).validator(),
+  }).validator({ clean: true }),
 
   run({ articles }) {
     try {

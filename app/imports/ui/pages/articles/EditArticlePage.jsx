@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import ReactQuill, { Quill } from 'react-quill';
@@ -37,6 +39,7 @@ import '../../utils/QuillVideo';
 import { CustomToolbarArticle } from '../../components/system/CustomQuill';
 import AudioModal from '../../components/system/AudioModal';
 import { PICTURES_TYPES, VIDEO_TYPES, SOUND_TYPES } from '../../components/mediaStorage/SingleStoragefile';
+import ToastUIEditor from '../../components/system/ToastUIEditor';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -61,11 +64,22 @@ const useStyles = makeStyles((theme) => ({
   wysiwyg: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
+    '& label': {
+      marginBottom: theme.spacing(1),
+    },
   },
   buttonGroup: {
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: 60,
+  },
+  buttonsContainer: {
+    display: 'flex',
+    margin: 'auto',
+    justifyContent: 'center',
+    '& button': {
+      margin: theme.spacing(2),
+    },
   },
 }));
 
@@ -120,7 +134,6 @@ const quillOptionsMaker = ({ imageHandler, webcamHandler, audioHandler }) => ({
 });
 
 let quillOptions;
-
 function EditArticlePage({
   article = {},
   ready,
@@ -129,7 +142,7 @@ function EditArticlePage({
   },
   history,
 }) {
-  const [{ isMobile }, dispatch] = useAppContext();
+  const [{ isMobile, language }, dispatch] = useAppContext();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -139,19 +152,37 @@ function EditArticlePage({
   const [audio, toggleAudio] = useState(false);
   const [data, setData] = useObjectState(emptyArticle);
   const [content, setContent] = useState('');
+  const [toastInstance, setToast] = useState();
+  const [toastRange, setRange] = useState(0);
   const publicURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}/${data.slug}`;
+  const toastRef = useRef();
 
-  function imageHandler() {
+  useEffect(() => {
+    if (toastRef.current) {
+      setToast(toastRef.current.getInstance());
+    }
+  }, [toastRef.current]);
+
+  function imageHandler(instance) {
+    if (data.markdown) {
+      setRange(instance.getRange());
+    }
     togglePicker(true);
     // eslint-disable-next-line react/no-this-in-sfc
     setQuill(this.quill);
   }
-  function webcamHandler() {
+  function webcamHandler(instance) {
+    if (data.markdown) {
+      setRange(instance.getRange());
+    }
     toggleWebcam(true);
     // eslint-disable-next-line react/no-this-in-sfc
     setQuill(this.quill);
   }
-  function audioHandler() {
+  function audioHandler(instance) {
+    if (data.markdown) {
+      setRange(instance.getRange());
+    }
     toggleAudio(true);
     // eslint-disable-next-line react/no-this-in-sfc
     setQuill(this.quill);
@@ -165,19 +196,97 @@ function EditArticlePage({
     });
   }, []);
 
+  const onUpdateRichText = (html) => {
+    let imgData;
+    let fileName;
+    let format;
+    let imgTag;
+    let newContent = html;
+    if (!data.markdown) {
+      const noScriptHtml = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+      newContent = noScriptHtml.replace(/cursor: nesw-resize;/gi, '');
+      const isImageBase64 = newContent.search('<img src="data:');
+      if (isImageBase64 > -1) {
+        const imgString = newContent.substring(isImageBase64);
+        const endImgTag = imgString.search('>');
+        imgTag = imgString.substring(0, endImgTag + 1);
+        [, imgData] = imgTag.split('"');
+        format = getExtension(null, imgData);
+        fileName = `File_${Random.id()}`;
+      }
+      setContent(newContent);
+    } else {
+      setContent(newContent);
+      const isImageBase64 = newContent.indexOf('(data:');
+      if (isImageBase64 > -1) {
+        const imgString = newContent.substring(isImageBase64 + 1);
+        const endImgTag = imgString.indexOf(')');
+        imgData = imgString.substring(0, endImgTag);
+        format = getExtension(null, imgData);
+        fileName = `File_${Random.id()}`;
+      }
+    }
+
+    if (imgData) {
+      dispatch({
+        type: 'uploads.add',
+        data: {
+          name: fileName,
+          fileName,
+          file: imgData,
+          type: format,
+          path: `users/${Meteor.userId()}`,
+          storage: true,
+          onFinish: (url) => {
+            let newHTML;
+            let isImage = false;
+            PICTURES_TYPES.forEach((extension) => {
+              if (format.search(extension) > -1) {
+                isImage = true;
+              }
+            });
+            if (isImage || data.markdown) {
+              newHTML = newContent.replace(imgData, url);
+            } else if (!data.markdown) {
+              newHTML = newContent.replace(imgTag, `<a target="_blank" href="${url}">${url}</a>`);
+            }
+            if (data.markdown) {
+              toastRef.current.getInstance().setMarkdown(newHTML);
+            } else {
+              setContent(newHTML);
+            }
+          },
+        },
+      });
+    }
+  };
   const insertVideo = (videoUrl) => {
-    const range = quill.getSelection(true);
-    quill.insertEmbed(range.index, 'webcam', videoUrl);
+    const range = quill ? quill.getSelection(true) : toastRange;
+    if (quill) {
+      quill.insertEmbed(range.index, 'webcam', videoUrl);
+    } else {
+      const stringToAdd = toastInstance.isMarkdownMode()
+        ? `[${videoUrl}](${videoUrl})`
+        : `<a target="_blank" href="${videoUrl}">${videoUrl}</a>`;
+      toastInstance.insertText(stringToAdd);
+    }
     toggleWebcam(false);
   };
   const insertAudio = (audioUrl) => {
-    const range = quill.getSelection(true);
-    quill.insertEmbed(range.index, 'audio', audioUrl);
+    const range = quill ? quill.getSelection(true) : toastRange;
+    if (quill) {
+      quill.insertEmbed(range.index, 'audio', audioUrl);
+    } else {
+      const stringToAdd = toastInstance.isMarkdownMode()
+        ? `[${audioUrl}](${audioUrl})`
+        : `<a target="_blank" href="${audioUrl}">${audioUrl}</a>`;
+      toastInstance.insertText(stringToAdd);
+    }
     toggleAudio(false);
   };
 
   const selectFile = (file) => {
-    const range = quill.getSelection(true);
+    const range = quill ? quill.getSelection(true) : toastRange;
     let format = 'attachment';
     PICTURES_TYPES.forEach((extension) => {
       if (file.name.search(extension) > -1) {
@@ -195,18 +304,29 @@ function EditArticlePage({
       }
     });
     const url = `${HOST}${file.name}`;
-
-    if (format === 'image') {
-      quill.insertEmbed(range.index, format, url);
-    } else if (format === 'video') {
-      quill.insertEmbed(range.index, 'webcam', url);
-    } else if (format === 'audio') {
-      quill.insertEmbed(range.index, 'audio', url);
+    if (quill) {
+      if (format === 'image') {
+        quill.insertEmbed(range.index, format, url);
+      } else if (format === 'video') {
+        quill.insertEmbed(range.index, 'webcam', url);
+      } else if (format === 'audio') {
+        quill.insertEmbed(range.index, 'audio', url);
+      } else {
+        quill.pasteHTML(range.index, `![${url}](${url})`);
+      }
+      setQuill(null);
     } else {
-      quill.pasteHTML(range.index, `<a target="_blank" href="${url}">${url}</a>`);
+      let stringToAdd = '';
+      if (format === 'image') {
+        stringToAdd = toastInstance.isMarkdownMode() ? `![${url}](${url})` : `<img src="${url}" />`;
+      } else {
+        stringToAdd = toastInstance.isMarkdownMode()
+          ? `[${url}](${url})`
+          : `<a target="_blank" href="${url}">${url}</a>`;
+      }
+      toastInstance.insertText(stringToAdd);
     }
     togglePicker(false);
-    setQuill(null);
   };
 
   useEffect(() => {
@@ -231,49 +351,6 @@ function EditArticlePage({
       });
     } else if (name === 'description') {
       setData({ [name]: value.substring(0, 400) });
-    }
-  };
-
-  const onUpdateRichText = async (html) => {
-    const noScriptHtml = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-    const strippedHtml = noScriptHtml.replace(/cursor: nesw-resize;/gi, '');
-    const isImageBase64 = strippedHtml.search('<img src="data:');
-    if (isImageBase64 > -1) {
-      const imgString = strippedHtml.substring(isImageBase64);
-      const endImgTag = imgString.search('>');
-      const imgTag = imgString.substring(0, endImgTag + 1);
-      const imgData = imgTag.split('"')[1];
-      const format = getExtension(null, imgData);
-      const fileName = `File_${Random.id()}`;
-      setContent(strippedHtml);
-      dispatch({
-        type: 'uploads.add',
-        data: {
-          name: fileName,
-          fileName,
-          file: imgData,
-          type: format,
-          path: `users/${Meteor.userId()}`,
-          storage: true,
-          onFinish: (url) => {
-            let newHTML;
-            let isImage = false;
-            PICTURES_TYPES.forEach((extension) => {
-              if (format.search(extension) > -1) {
-                isImage = true;
-              }
-            });
-            if (isImage) {
-              newHTML = strippedHtml.replace(imgData, url);
-            } else {
-              newHTML = strippedHtml.replace(imgTag, `<a target="_blank" href="${url}">${url}</a>`);
-            }
-            setContent(newHTML);
-          },
-        },
-      });
-    } else {
-      setContent(strippedHtml);
     }
   };
 
@@ -308,6 +385,10 @@ function EditArticlePage({
         history.push('/publications');
       }
     });
+  };
+
+  const toggleMarkdown = (bool) => {
+    setData({ markdown: bool });
   };
 
   if (!ready || (slug && !article._id && !data._id) || loading) {
@@ -364,10 +445,39 @@ function EditArticlePage({
           multiline
           helperText={`${data.description.length}/400`}
         />
+
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
-          <CustomToolbarArticle withMedia withWebcam />
-          <ReactQuill {...quillOptions} id="content" value={content} onChange={onUpdateRichText} />
+
+          {typeof data.markdown === 'undefined' && (
+            <div className={classes.buttonsContainer}>
+              <Button variant="contained" onClick={() => toggleMarkdown(false)}>
+                {i18n.__('pages.EditArticlePage.switchToHtml')}
+              </Button>
+
+              <Button variant="contained" onClick={() => toggleMarkdown(true)}>
+                {i18n.__('pages.EditArticlePage.switchToMarkdown')}
+              </Button>
+            </div>
+          )}
+
+          {typeof data.markdown !== 'undefined' ? (
+            data.markdown ? (
+              <ToastUIEditor
+                id="content"
+                language={language}
+                toastRef={toastRef}
+                value={content}
+                onChange={onUpdateRichText}
+                handlers={{ imageHandler, webcamHandler, audioHandler }}
+              />
+            ) : (
+              <>
+                <CustomToolbarArticle withMedia withWebcam />
+                <ReactQuill {...quillOptions} id="content" value={content} onChange={onUpdateRichText} />
+              </>
+            )
+          ) : null}
         </div>
 
         <div className={classes.buttonGroup}>

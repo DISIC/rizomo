@@ -51,6 +51,7 @@ Articles.schema = new SimpleSchema(
       type: String,
       label: getLabel('api.articles.labels.userId'),
     },
+    markdown: { type: Boolean, label: getLabel('api.articles.labels.markdown'), defaultValue: false },
     content: { type: String, label: getLabel('api.articles.labels.content') },
     description: { type: String, label: getLabel('api.articles.labels.description'), max: 400 },
     createdAt: {
@@ -86,6 +87,7 @@ Articles.publicFields = {
   createdAt: 1,
   updatedAt: 1,
   description: 1,
+  markdown: 1,
   visits: 1,
 };
 

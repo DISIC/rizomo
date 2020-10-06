@@ -145,7 +145,8 @@
         "description": "Courte description",
         "content": "Contenu de la publication",
         "createdAt": "Date de création",
-        "updatedAt": "Date de mise à jour"
+        "updatedAt": "Date de mise à jour",
+        "markdown": "mode markdown"
       }
     },
     "notifications": {
@@ -763,7 +764,9 @@
       "cancel": "Annuler",
       "delete": "Supprimer",
       "copyPublicURL": "Copier l'URL publique",
-      "successCopyURL": "URL publique copiée dans le presse-papier"
+      "successCopyURL": "URL publique copiée dans le presse-papier",
+      "switchToHtml": "Éditeur Classic",
+      "switchToMarkdown": "Éditeur Markdown"
     },
     "PublicArticlePage": {
       "title": "Publications de",
