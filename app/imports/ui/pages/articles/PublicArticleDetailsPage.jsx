@@ -111,6 +111,7 @@ function PublicArticleDetailsPage({
       enableLinks: true,
       margin: 4,
       image: { type: 'jpeg', quality: 0.98 },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
       html2canvas: {
         useCORS: true,
       },

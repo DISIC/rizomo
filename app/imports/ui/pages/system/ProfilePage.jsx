@@ -21,7 +21,6 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
-
 import Spinner from '../../components/system/Spinner';
 import CustomSelect from '../../components/admin/CustomSelect';
 import { structureOptions } from '../../../api/users/structures';
@@ -30,6 +29,7 @@ import LanguageSwitcher from '../../components/system/LanguageSwitcher';
 import debounce from '../../utils/debounce';
 import { useObjectState } from '../../utils/hooks';
 import { downloadBackupPublications, uploadBackupPublications } from '../../../api/articles/methods';
+import AvatarPicker from '../../components/users/AvatarPicker';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     marginTop: '10px',
   },
   keycloakMessage: {
@@ -83,6 +83,7 @@ const logoutTypeLabels = {
 };
 
 const ProfilePage = () => {
+  const [, dispatch] = useAppContext();
   const [userData, setUserData] = useState(defaultState);
   const [submitOk, setSubmitOk] = useState(false);
   const [errors, setErrors] = useObjectState(defaultState);
@@ -283,6 +284,42 @@ const ProfilePage = () => {
     reader.readAsText(files[0]);
   };
 
+  const SaveAvatarForUser = (avatarUrl) => {
+    Meteor.call('users.setAvatar', { avatar: avatarUrl }, (error) => {
+      if (error) {
+        msg.error(error.message);
+        console.log(error);
+      }
+    });
+  };
+
+  const SendNewAvatarToMedia = (avImg) => {
+    dispatch({
+      type: 'uploads.add',
+      data: {
+        name: 'Avatar',
+        fileName: 'Avatar',
+        file: avImg,
+        type: 'png',
+        path: `users/${Meteor.userId()}`,
+        storage: true,
+        onFinish: (url) => {
+          // Add time to url to avoid caching
+          SaveAvatarForUser(`${url}?${new Date().getTime()}`);
+        },
+      },
+    });
+  };
+
+  const onAssignAvatar = (avatarObj) => {
+    // avatarObj = {image: base64... or url: http...}
+    if (avatarObj.image) {
+      SendNewAvatarToMedia(avatarObj.image);
+    } else if (avatarObj.url !== user.avatar) {
+      SaveAvatarForUser(avatarObj.url);
+    }
+  };
+
   if (loadingUser) {
     return <Spinner />;
   }
@@ -294,62 +331,64 @@ const ProfilePage = () => {
           <Typography variant={isMobile ? 'h6' : 'h4'}>{i18n.__('pages.ProfilePage.title')}</Typography>
           <form noValidate autoComplete="off">
             <Grid container className={classes.form} spacing={2}>
-              <Grid item>
-                <TextField
-                  disabled={keycloakMode}
-                  autoComplete="fname"
-                  id="firstName"
-                  label={i18n.__('pages.SignUp.firstNameLabel')}
-                  name="firstName"
-                  error={errors.firstName !== ''}
-                  helperText={errors.firstName}
-                  onChange={onUpdateField}
-                  fullWidth
-                  type="text"
-                  value={userData.firstName || ''}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  disabled={keycloakMode}
-                  id="lastName"
-                  autoComplete="lname"
-                  label={i18n.__('pages.SignUp.lastNameLabel')}
-                  name="lastName"
-                  error={errors.lastName !== ''}
-                  helperText={errors.lastName}
-                  onChange={onUpdateField}
-                  fullWidth
-                  type="text"
-                  value={userData.lastName || ''}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  disabled={keycloakMode}
-                  margin="normal"
-                  id="email"
-                  label={i18n.__('pages.SignUp.emailLabel')}
-                  name="email"
-                  autoComplete="email"
-                  error={errors.email !== ''}
-                  helperText={errors.email}
-                  fullWidth
-                  onChange={onUpdateField}
-                  type="text"
-                  value={userData.email || ''}
-                  variant="outlined"
-                />
-              </Grid>
-              {keycloakMode ? (
-                <Grid item>
-                  <Paper className={classes.keycloakMessage}>
-                    <Typography>{i18n.__('pages.ProfilePage.keycloakProcedure')}</Typography>
-                  </Paper>
+              <Grid container spacing={2} style={{ alignItems: 'center' }}>
+                <Grid item xs={6} style={{ paddingLeft: '18px' }}>
+                  <TextField
+                    disabled={keycloakMode}
+                    margin="normal"
+                    autoComplete="fname"
+                    id="firstName"
+                    label={i18n.__('pages.SignUp.firstNameLabel')}
+                    name="firstName"
+                    error={errors.firstName !== ''}
+                    helperText={errors.firstName}
+                    onChange={onUpdateField}
+                    fullWidth
+                    type="text"
+                    value={userData.firstName || ''}
+                    variant="outlined"
+                  />
+                  <TextField
+                    disabled={keycloakMode}
+                    margin="normal"
+                    id="lastName"
+                    autoComplete="lname"
+                    label={i18n.__('pages.SignUp.lastNameLabel')}
+                    name="lastName"
+                    error={errors.lastName !== ''}
+                    helperText={errors.lastName}
+                    onChange={onUpdateField}
+                    fullWidth
+                    type="text"
+                    value={userData.lastName || ''}
+                    variant="outlined"
+                  />
+                  <TextField
+                    disabled={keycloakMode}
+                    margin="normal"
+                    id="email"
+                    label={i18n.__('pages.SignUp.emailLabel')}
+                    name="email"
+                    autoComplete="email"
+                    error={errors.email !== ''}
+                    helperText={errors.email}
+                    fullWidth
+                    onChange={onUpdateField}
+                    type="text"
+                    value={userData.email || ''}
+                    variant="outlined"
+                  />
+                  {keycloakMode ? (
+                    <Paper className={classes.keycloakMessage}>
+                      <Typography>{i18n.__('pages.ProfilePage.keycloakProcedure')}</Typography>
+                    </Paper>
+                  ) : null}
                 </Grid>
-              ) : null}
+                <Grid item xs={6}>
+                  <AvatarPicker user={user} onAssignAvatar={onAssignAvatar} />
+                </Grid>
+              </Grid>
+              <Grid item />
               <Grid item>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel error={errors.username !== ''} htmlFor="username" id="username-label" ref={usernameLabel}>
