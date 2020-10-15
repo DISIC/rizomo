@@ -741,6 +741,25 @@ export const setLogoutType = new ValidatedMethod({
   },
 });
 
+export const setAvatar = new ValidatedMethod({
+  name: 'users.setAvatar',
+  validate: new SimpleSchema({
+    avatar: {
+      type: String,
+      label: getLabel('api.users.labels.avatar'),
+    },
+  }).validator(),
+
+  run({ avatar }) {
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.setAvatar.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    Meteor.users.update(this.userId, {
+      $set: { avatar },
+    });
+  },
+});
+
 // method to associate existing account with a Keycloak Id
 export const setKeycloakId = new ValidatedMethod({
   name: 'users.setKeycloakId',
@@ -799,6 +818,7 @@ const LISTS_METHODS = _.pluck(
     setLanguage,
     setLogoutType,
     setKeycloakId,
+    setAvatar,
   ],
   'name',
 );

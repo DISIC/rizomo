@@ -61,7 +61,8 @@
         "primaryEmail": "Adresse Électronique principale",
         "language": "Langage Préféré",
         "logoutType": "Méthode De Déconnexion",
-        "lastLogin": "Date de dernière connexion"
+        "lastLogin": "Date de dernière connexion",
+        "avatar": "URL de l'avatar"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -484,6 +485,26 @@
       "successCopyURL": "URL du média copiée dans le presse-papier",
       "OpenInWindow": "Ouvrir le média",
       "copyUrl": "Copier l'URL de ce média"
+    },
+    "UserAvatarEdit": {
+      "title": "Créez votre avatar",
+      "subtitle": "à patir d'une image",
+      "sendImage": "Envoyer cet avatar",
+      "turnLeft": "Pivoter à gauche",
+      "turnRight": "Pivoter à droite",
+      "zoom": "Zoom",
+      "cancel": "Annuler"
+    },
+    "UserAvatarGallery": {
+      "title": "Créez votre avatar",
+      "subtitle": "depuis la galerie d'images",
+      "cancel": "Annuler"
+    },
+    "UserAvatarCamCapture": {
+      "title": "Créez votre avatar",
+      "subtitle": "à partir de la webcam",
+      "takePicture": "Prendre une photo",
+      "cancel": "Annuler"
     }
   },
   "validatejs": {
@@ -555,7 +576,10 @@
       "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous également possible de charger des données que vous auriez téléchargé d'une autre instance de la boite",
       "downloadPublicationBackup": "Télécharger les données",
       "UploadPublicationBackup": "Charger des données",
-      "uploadSuccess": "Chargement des données réussi"
+      "uploadSuccess": "Chargement des données réussi",
+      "uploadImg": "Charger une image",
+      "useCam": "Utiliser la webcam",
+      "useGallery": "Choisir parmi la galerie d'images"
     },
     "NotFound": {
       "backButtonLabel": "Retour",

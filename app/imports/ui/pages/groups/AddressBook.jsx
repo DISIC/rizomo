@@ -12,7 +12,6 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { makeStyles, Divider, Tooltip, Button, TextField, InputAdornment } from '@material-ui/core';
@@ -21,6 +20,7 @@ import SendIcon from '@material-ui/icons/Send';
 import Pagination from '@material-ui/lab/Pagination';
 import { useHistory } from 'react-router-dom';
 import { usePagination } from '../../utils/hooks';
+import UserAvatar from '../../components/users/UserAvatar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inline: {
     display: 'inline',
-  },
-  avatar: {
-    backgroundColor: theme.palette.primary.main,
   },
   pagination: {
     display: 'flex',
@@ -125,7 +122,7 @@ const AddressBook = ({
               {items.map((user, i) => [
                 <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
                   <ListItemAvatar>
-                    <Avatar className={classes.avatar} alt={user.firstName} src={user.firstName} />
+                    <UserAvatar user={user} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={`${user.firstName} ${user.lastName}`}

@@ -61,7 +61,8 @@
         "primaryEmail": "Primary Email",
         "language": "Preferred Language",
         "logoutType": "Logout Method",
-        "lastLogin": "Last login date"
+        "lastLogin": "Last login date",
+        "avatar": "avatar URL"
       },
       "logoutTypes": {
         "ask": "Ask at logout",
@@ -484,6 +485,26 @@
       "successCopyURL": "Media URL has been sent to clipboard",
       "OpenInWindow": "Open media",
       "copyUrl": "Copy this media URL"
+    },
+    "UserAvatarEdit": {
+      "title": "Create your avatar",
+      "subtitle": "from an image",
+      "sendImage": "Send this avatar",
+      "turnLeft": "Turn left",
+      "turnRight": "Turn right",
+      "zoom": "Zoom",
+      "cancel": "Cancel"
+    },
+    "UserAvatarGallery": {
+      "title": "Create your avatar",
+      "subtitle": "from image gallery",
+      "cancel": "Cancel"
+    },
+    "UserAvatarCamCapture": {
+      "title": "Create your avatar",
+      "subtitle": "from the webcam",
+      "takePicture": "Take a picture",
+      "cancel": "Cancel"
     }
   },
   "validatejs": {
@@ -555,7 +576,10 @@
       "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance",
       "downloadPublicationBackup": "Download data",
       "UploadPublicationBackup": "Upload datas",
-      "uploadSuccess": "Datas uploaded with success"
+      "uploadSuccess": "Datas uploaded with success",
+      "uploadImg": "Upload an image",
+      "useCam": "Take a picture",
+      "useGallery": "Choose among image gallery"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {

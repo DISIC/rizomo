@@ -13,7 +13,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@material-ui/icons/Check';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox } from '@material-ui/core';
@@ -25,6 +24,7 @@ import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
 import debounce from '../../utils/debounce';
 import { useAppContext } from '../../contexts/context';
+import UserAvatar from '../../components/users/UserAvatar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -230,11 +230,7 @@ const AdminUsersPage = () => {
                 {items.map((user, i) => [
                   <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
                     <ListItemAvatar>
-                      <Avatar
-                        className={isAdmin(user) ? classes.admin : classes.avatar}
-                        alt={user.firstName}
-                        src={user.firstName}
-                      />
+                      <UserAvatar customClass={isAdmin(user) ? classes.admin : classes.avatar} user={user} />
                     </ListItemAvatar>
                     <ListItemText
                       primary={`${user.firstName} ${user.lastName}${

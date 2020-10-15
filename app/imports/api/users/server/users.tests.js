@@ -27,6 +27,7 @@ import {
   removeUser,
   setMemberOf,
   setKeycloakId,
+  setAvatar,
 } from './methods';
 import { structures } from '../structures';
 import Groups from '../../groups/groups';
@@ -472,6 +473,22 @@ describe('users', function () {
           },
           Meteor.Error,
           /api.users.setKeycloakId.notPermitted/,
+        );
+      });
+    });
+    describe('setAvatar', function () {
+      it('users can set their avatar image URL', function () {
+        setAvatar._execute({ userId }, { avatar: 'http://perdu.com/monavatar.png' });
+        const user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.avatar, 'http://perdu.com/monavatar.png');
+      });
+      it('only logged in users can set their language', function () {
+        assert.throws(
+          () => {
+            setAvatar._execute({}, { avatar: 'http://perdu.com/monavatar.png' });
+          },
+          Meteor.Error,
+          /api.users.setAvatar.notPermitted/,
         );
       });
     });

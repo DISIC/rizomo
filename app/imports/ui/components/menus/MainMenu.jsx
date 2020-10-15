@@ -2,11 +2,18 @@ import React, { useState } from 'react';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Button, Menu, MenuItem, Divider } from '@material-ui/core';
+import { Button, Menu, MenuItem, Divider, makeStyles } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import AppVersion from '../system/AppVersion';
 import LogoutDialog from '../system/LogoutDialog';
+import UserAvatar from '../users/UserAvatar';
+
+const useStyles = makeStyles((theme) => ({
+  avatar: {
+    marginLeft: theme.spacing(1),
+  },
+}));
 
 export const adminMenu = [
   {
@@ -47,6 +54,7 @@ export const userMenu = [
 ];
 
 const MainMenu = ({ user = {} }) => {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [openLogout, setOpenLogout] = useState(false);
   const history = useHistory();
@@ -107,6 +115,7 @@ const MainMenu = ({ user = {} }) => {
         endIcon={<ExpandMoreIcon />}
       >
         {user.firstName || ''}
+        {user.avatar ? <UserAvatar user={user} customClass={classes.avatar} /> : null}
       </Button>
       <Menu
         id="main-menu"

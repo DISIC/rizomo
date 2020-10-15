@@ -10,7 +10,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox } from '@material-ui/core';
@@ -23,6 +22,7 @@ import Spinner from '../../components/system/Spinner';
 import TopBar from '../../components/menus/TopBar';
 import { useAppContext } from '../../contexts/context';
 import Footer from '../../components/menus/Footer';
+import UserAvatar from '../../components/users/UserAvatar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,9 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inline: {
     display: 'inline',
-  },
-  avatar: {
-    backgroundColor: theme.palette.primary.main,
   },
   admin: {
     backgroundColor: theme.palette.secondary.main,
@@ -185,7 +182,7 @@ const PublishersPage = () => {
                     key={`user-${user._id}`}
                   >
                     <ListItemAvatar>
-                      <Avatar className={classes.avatar} alt={user.firstName} src={user.firstName} />
+                      <UserAvatar user={user} />
                     </ListItemAvatar>
                     <ListItemText
                       primary={`${user.firstName} ${user.lastName}`}
