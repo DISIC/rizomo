@@ -107,34 +107,43 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
         }
         aria-label={group.name}
       >
-        <CardActionArea
-          className={classes.actionarea}
-          onClick={() => history.push(`/groups/${group.slug}`)}
-          disabled={customDrag}
-        >
-          <CardHeader
-            classes={{ content: classes.cardHeaderContent }}
-            avatar={
-              animator || hasAdmin ? (
-                <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
+        {/* this span is to allow display of tooltip when CardActionArea is disabled 
+        (occur when a service is disabled) */}
+        <span>
+          <CardActionArea
+            className={classes.actionarea}
+            onClick={() => history.push(`/groups/${group.slug}`)}
+            disabled={customDrag}
+          >
+            <CardHeader
+              classes={{ content: classes.cardHeaderContent }}
+              avatar={
+                animator || hasAdmin ? (
+                  <GroupBadge
+                    overlap="circle"
+                    className={classes.badge}
+                    color="error"
+                    badgeContent={group.numCandidates}
+                  >
+                    <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+                  </GroupBadge>
+                ) : (
                   <Avatar className={classes.avatar}>{iconHeader}</Avatar>
-                </GroupBadge>
-              ) : (
-                <Avatar className={classes.avatar}>{iconHeader}</Avatar>
-              )
-            }
-            title={
-              <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
-                {group.name}
-              </Typography>
-            }
-            subheader={
-              <Typography className={classes.buttonText} variant="body2" component="p">
-                {text()}
-              </Typography>
-            }
-          />
-        </CardActionArea>
+                )
+              }
+              title={
+                <Typography className={classes.serviceName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
+                  {group.name}
+                </Typography>
+              }
+              subheader={
+                <Typography className={classes.buttonText} variant="body2" component="p">
+                  {text()}
+                </Typography>
+              }
+            />
+          </CardActionArea>
+        </span>
       </Tooltip>
       {/* <CardActions className={classes.cardActionsUnique}>
         {hasAdmin || globalAdmin && (
