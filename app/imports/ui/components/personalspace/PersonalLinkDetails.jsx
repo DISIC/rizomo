@@ -134,32 +134,36 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }
         }
         aria-label={state.title}
       >
-        <CardActionArea
-          className={classes.actionarea}
-          onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
-          disabled={globalEdit}
-        >
-          <CardHeader
-            classes={{ content: classes.cardHeaderContent }}
-            avatar={
-              globalEdit && localEdit ? null : (
-                <Avatar className={classes.avatar}>
-                  <LaunchIcon />
-                </Avatar>
-              )
-            }
-            title={
-              <Typography className={classes.linkName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
-                {state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
-              </Typography>
-            }
-            subheader={
-              <Typography variant="body2" className={classes.linkUrl} noWrap={!isMobile} component="p">
-                {state.url || i18n.__('components.PersonalLinkDetails.urlLabel')}
-              </Typography>
-            }
-          />
-        </CardActionArea>
+        {/* this span is to allow display of tooltip when CardActionArea is disabled 
+        (occur when a service is disabled) */}
+        <span>
+          <CardActionArea
+            className={classes.actionarea}
+            onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
+            disabled={globalEdit}
+          >
+            <CardHeader
+              classes={{ content: classes.cardHeaderContent }}
+              avatar={
+                globalEdit && localEdit ? null : (
+                  <Avatar className={classes.avatar}>
+                    <LaunchIcon />
+                  </Avatar>
+                )
+              }
+              title={
+                <Typography className={classes.linkName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
+                  {state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
+                </Typography>
+              }
+              subheader={
+                <Typography variant="body2" className={classes.linkUrl} noWrap={!isMobile} component="p">
+                  {state.url || i18n.__('components.PersonalLinkDetails.urlLabel')}
+                </Typography>
+              }
+            />
+          </CardActionArea>
+        </span>
       </Tooltip>
     );
   };
