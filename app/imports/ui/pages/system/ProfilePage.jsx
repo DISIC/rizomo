@@ -378,6 +378,39 @@ const ProfilePage = () => {
                     value={userData.email || ''}
                     variant="outlined"
                   />
+                  <FormControl variant="outlined" fullWidth disabled={keycloakMode} margin="normal">
+                    <InputLabel
+                      error={errors.username !== ''}
+                      htmlFor="username"
+                      id="username-label"
+                      ref={usernameLabel}
+                    >
+                      {i18n.__('api.users.labels.username')}
+                    </InputLabel>
+                    <OutlinedInput
+                      id="username"
+                      name="username"
+                      value={userData.username}
+                      error={errors.username !== ''}
+                      onChange={onUpdateField}
+                      labelWidth={labelUsernameWidth}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <Tooltip
+                            title={i18n.__('pages.ProfilePage.useEmail')}
+                            aria-label={i18n.__('pages.ProfilePage.useEmail')}
+                          >
+                            <IconButton onClick={useEmail} disabled={keycloakMode}>
+                              <MailIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </InputAdornment>
+                      }
+                    />
+                    <FormHelperText id="username-helper-text" error={errors.username !== ''}>
+                      {errors.username}
+                    </FormHelperText>
+                  </FormControl>
                   {keycloakMode ? (
                     <Paper className={classes.keycloakMessage}>
                       <Typography>{i18n.__('pages.ProfilePage.keycloakProcedure')}</Typography>
@@ -389,36 +422,6 @@ const ProfilePage = () => {
                 </Grid>
               </Grid>
               <Grid item />
-              <Grid item>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel error={errors.username !== ''} htmlFor="username" id="username-label" ref={usernameLabel}>
-                    {i18n.__('api.users.labels.username')}
-                  </InputLabel>
-                  <OutlinedInput
-                    id="username"
-                    name="username"
-                    value={userData.username}
-                    error={errors.username !== ''}
-                    onChange={onUpdateField}
-                    labelWidth={labelUsernameWidth}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <Tooltip
-                          title={i18n.__('pages.ProfilePage.useEmail')}
-                          aria-label={i18n.__('pages.ProfilePage.useEmail')}
-                        >
-                          <IconButton onClick={useEmail}>
-                            <MailIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </InputAdornment>
-                    }
-                  />
-                  <FormHelperText id="username-helper-text" error={errors.username !== ''}>
-                    {errors.username}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
               <Grid item>
                 <FormControl variant="outlined" className={classes.formControl} fullWidth>
                   <InputLabel htmlFor="structure" id="structure-label" ref={structureLabel}>
