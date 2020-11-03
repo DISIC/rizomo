@@ -173,6 +173,10 @@ export const setUsername = new ValidatedMethod({
     if (!this.userId) {
       throw new Meteor.Error('api.users.setUsername.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
+    if (Meteor.settings.public.enableKeycloak) {
+      // do not allow if keycloak mode is active
+      throw new Meteor.Error('api.users.setUsername.disabled', i18n.__('api.users.managedByKeycloak'));
+    }
     // will throw error if username already taken
     Accounts.setUsername(this.userId, username);
   },

@@ -171,13 +171,12 @@ if (Meteor.isServer) {
         updateInfos.lastName = details.user.services.keycloak.family_name;
       }
       if (
-        details.user.username === undefined ||
-        (details.user.username === details.user.primaryEmail &&
-          details.user.primaryEmail !== details.user.services.keycloak.email)
+        details.user.services.keycloak.preferred_username &&
+        details.user.services.keycloak.preferred_username !== details.user.username
       ) {
-        // use email as username if no username yet or if username was
-        // email and email has changed on Keycloak
-        updateInfos.username = details.user.services.keycloak.email;
+        // use preferred_username as username if defined
+        // (should be set as mandatory in keycloak)
+        updateInfos.username = details.user.services.keycloak.preferred_username;
       }
       if (details.user.isActive === false) {
         // auto activate user based on email address
