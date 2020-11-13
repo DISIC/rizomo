@@ -15,7 +15,7 @@ import { structures } from '../structures';
 import { favGroup, unfavGroup } from '../../groups/methods';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 import { createRoleNotification, createRequestNotification } from '../../notifications/server/notifsutils';
-import kcClient from '../../appclients/kcClient';
+
 // users.findUsers: Returns users using pagination
 //   filter: string to search for in username/firstname/lastname/emails (case insensitive search)
 //   page: number of the page requested
@@ -294,10 +294,6 @@ export const setAdmin = new ValidatedMethod({
     if (user === undefined) {
       throw new Meteor.Error('api.users.setAdmin.unknownUser', i18n.__('api.users.unknownUser'));
     }
-    if (Meteor.settings.public.enableKeycloak) {
-      // update user's groups in Keycloak
-      kcClient.setAdmin(userId, this.userId);
-    }
     // add role to user collection
     Roles.addUsersToRoles(userId, 'admin');
   },
@@ -367,10 +363,6 @@ export const unsetAdmin = new ValidatedMethod({
     if (user === undefined) {
       throw new Meteor.Error('api.users.setAdmin.unknownUser', i18n.__('api.users.unknownUser'));
     }
-    if (Meteor.settings.public.enableKeycloak) {
-      // update user's groups in Keycloak
-      kcClient.unsetAdmin(userId, this.userId);
-    }
     // remove role from user collection
     Roles.removeUsersFromRoles(userId, 'admin');
   },
@@ -404,11 +396,6 @@ export const setAdminOf = new ValidatedMethod({
     if (group.admins.indexOf(userId) === -1) {
       Groups.update(groupId, { $push: { admins: userId } });
     }
-    // Not used in current implementation
-    // if (kcClient) {
-    //   // update user's groups in Keycloak
-    //   kcClient.setRole(userId, `admin_${group.name}`);
-    // }
     // Notify user
     if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'admin', true);
   },
@@ -445,11 +432,6 @@ export const unsetAdminOf = new ValidatedMethod({
     if (!Roles.userIsInRole(userId, ['animator', 'member', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
     }
-    // Not used in current implementation
-    //  if (kcClient) {
-    //    // update user's groups in Keycloak
-    //    kcClient.unsetRole(userId, `admin_${group.name}`);
-    //  }
     // Notify user
     if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'admin', false);
   },
@@ -485,11 +467,6 @@ export const setAnimatorOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
-    if (kcClient && !Roles.userIsInRole(userId, 'member', groupId)) {
-      // update user's groups in Keycloak
-      kcClient.setRole(userId, group.name, this.userId);
-      // kcClient.setRole(userId, `animator_${group.name}`);
-    }
     // Notify user
     if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'animator', true);
   },
@@ -525,11 +502,6 @@ export const unsetAnimatorOf = new ValidatedMethod({
     // if user has no longer roles, remove group from personalspace
     if (!Roles.userIsInRole(userId, ['member', 'admin', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
-    }
-    if (kcClient && !Roles.userIsInRole(userId, 'member', groupId)) {
-      // update user's groups in Keycloak
-      kcClient.unsetRole(userId, group.name, this.userId);
-      // kcClient.unsetRole(userId, `animator_${group.name}`);
     }
     // Notify user
     if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'animator', false);
@@ -579,11 +551,6 @@ export const setMemberOf = new ValidatedMethod({
     }
     // update user personalSpace
     favGroup._execute({ userId }, { groupId });
-    if (kcClient && !Roles.userIsInRole(userId, 'animator', groupId)) {
-      // update user's groups in Keycloak
-      kcClient.setRole(userId, group.name, this.userId);
-      // kcClient.setRole(userId, `member_${group.name}`);
-    }
     // Notify user
     if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'member', true);
   },
@@ -621,11 +588,6 @@ export const unsetMemberOf = new ValidatedMethod({
     // if user has no longer roles, remove group from personalspace
     if (!Roles.userIsInRole(userId, ['animator', 'admin', 'candidate'], groupId)) {
       unfavGroup._execute({ userId }, { groupId });
-    }
-    if (kcClient && !Roles.userIsInRole(userId, 'animator', groupId)) {
-      // update user's groups in Keycloak
-      kcClient.unsetRole(userId, group.name, this.userId);
-      // kcClient.unsetRole(userId, `member_${group.name}`);
     }
     // Notify user
     if (this.userId !== userId) createRoleNotification(this.userId, userId, groupId, 'member', false);
@@ -801,6 +763,28 @@ export const findUser = new ValidatedMethod({
   },
 });
 
+export const userUpdated = new ValidatedMethod({
+  name: 'users.userUpdated',
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    data: {
+      type: Object,
+      optional: true,
+      blackbox: true,
+    },
+  }).validator(),
+
+  run({ userId, data }) {
+    // this function is used to provide hooks when user data is updated
+    // (currently when logging in with keycloak)
+    if (!Meteor.isServer) {
+      // this should be run by server side code only
+      throw new Meteor.Error('api.users.userUpdated.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    return [userId, data];
+  },
+});
+
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
   [
@@ -823,6 +807,7 @@ const LISTS_METHODS = _.pluck(
     setLogoutType,
     setKeycloakId,
     setAvatar,
+    userUpdated,
   ],
   'name',
 );

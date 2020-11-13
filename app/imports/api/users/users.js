@@ -191,6 +191,7 @@ if (Meteor.isServer) {
       Meteor.users.update({ _id: details.user._id }, { $set: updateInfos });
       // Manage primary email change
       if (details.user.primaryEmail !== details.user.services.keycloak.email) {
+        updateInfos.email = details.user.services.keycloak.email;
         Accounts.addEmail(details.user._id, details.user.services.keycloak.email, true);
         if (details.user.primaryEmail !== undefined) {
           Accounts.removeEmail(details.user._id, details.user.primaryEmail);
@@ -200,9 +201,14 @@ if (Meteor.isServer) {
       if (Meteor.settings.keycloak.adminEmails.indexOf(details.user.services.keycloak.email) !== -1) {
         if (!Roles.userIsInRole(details.user._id, 'admin')) {
           Roles.addUsersToRoles(details.user._id, 'admin');
+          updateInfos.admin = true;
           logServer(`${i18n.__('api.users.adminGiven')} : ${details.user.services.keycloak.email}`);
         }
       }
+      // signal updates to plugins
+      Meteor.call('users.userUpdated', { userId: details.user._id, data: updateInfos }, (err) => {
+        if (err) console.log(err);
+      });
     } else {
       Meteor.users.update({ _id: details.user._id }, { $set: { lastLogin: loginDate } });
     }

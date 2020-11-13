@@ -271,7 +271,7 @@ const ProfilePage = () => {
   const uploadData = ({ target: { files = [] } }) => {
     const reader = new FileReader();
 
-    reader.onload = function (theFile) {
+    reader.onload = function uploadArticles(theFile) {
       const articles = JSON.parse(theFile.target.result);
       uploadBackupPublications.call({ articles }, (error) => {
         if (error) {

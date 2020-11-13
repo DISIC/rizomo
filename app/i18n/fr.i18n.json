@@ -97,7 +97,8 @@
         "animators": "Animateurs",
         "admins": "Administrateurs",
         "applications": "ID de l'application",
-        "nextcloud": "Créer le groupe dans Nextcloud"
+        "nextcloud": "Créer le groupe dans Nextcloud",
+        "plugins": "Services liés gérant les groupes"
       }
     },
     "services": {
@@ -229,7 +230,37 @@
       "folderRemoved": "Nextcloud: répertoire de groupe {$id} supprimé ({$mount_point})",
       "folderRemoveError": "Nextcloud: ERREUR lors de la suppression du répertoire de groupe {$id} ({$message})",
       "groupRemoved": "Nextcloud: groupe {$groupName} supprimé",
-      "groupRemoveError": "Nextcloud: Erreur lors de la suppression du groupe {$groupName}"
+      "groupRemoveError": "Nextcloud: Erreur lors de la suppression du groupe {$groupName}",
+      "enablePluginForGroup": "Créer le groupe dans Nextcloud",
+      "buttonLinkPlugin": "Accéder au partage Nextcloud"
+    },
+    "rocketChat": {
+      "initClient": "RocketChat: client API initialisé",
+      "tokenError": "** RocketChat: échec de récupération de jeton, veuillez vérifier la configuration **",
+      "groupAdded": "RocketChat: canal {$name} ajouté",
+      "groupAddError": "RocketChat : ERREUR lors de l'ajout du canal {$name}",
+      "groupRemoved": "RocketChat: canal {$name} supprimé",
+      "groupRemoveError": "RocketChat: Erreur lors de la suppression du canal {$name}",
+      "getUserError": "RocketChat: Erreur lors de la recherche de l'utilisateur",
+      "getGroupError": "RocketChat: Erreur lors de la recherche du groupe",
+      "userInvited": "RocketChat: utilisateur {$username} ajouté au groupe {$groupId}",
+      "userInviteError": "RocketChat: Erreur lors de l'ajout de l'utilisateur {$username} au groupe {$groupId}",
+      "userAdded": "RocketChat: utilisateur {$username} créé",
+      "userAddError": "RocketChat: Erreur lors de la création de l'utilisateur {$username}",
+      "logout": "RocketChat: Invalidation du jeton actuel",
+      "logoutError": "RocketChat: Erreur lors de l'invalidation du jeton",
+      "userKicked": "RocketChat: utilisateur {$username} supprimé du groupe {$groupId}",
+      "userKickError": "RocketChat: Erreur lors de la suppression de l'utilisateur {$username} du groupe {$groupId}",
+      "roleSet": "RocketChat: Rôle {$role} attribué à l'utilisateur {$username} sur le groupe {$groupId}",
+      "setRoleError": "RocketChat: Erreur lors de l'attribution du rôle {$role} à l'utilisateur {$username} sur le groupe {$groupId}",
+      "roleUnset": "RocketChat: Rôle {$role} enlevé à l'utilisateur {$username} sur le groupe {$groupId}",
+      "unsetRoleError": "RocketChat: Erreur lors de la suppression du rôle {$role} à l'utilisateur {$username} sur le groupe {$groupId}",
+      "updateEmail": "RocketChat: Adresse email de l'utilisateur {$username} définie à {$email}",
+      "updateEmailError": "RocketChat: Erreur lors du passage de l'adresse email de l'utilisateur {$username} à {$email}",
+      "owner": "propriétaire",
+      "moderator": "modérateur",
+      "enablePluginForGroup": "Créer le groupe dans RocketChat",
+      "buttonLinkPlugin": "Discuter dans RocketChat"
     },
     "logging": {
       "unknownLogLevel": "Le niveau de log spécifié n'existe pas",
@@ -739,8 +770,7 @@
       "content": "Longue description du groupe",
       "save": "Sauvegarder",
       "update": "Mettre à jour",
-      "cancel": "Annuler",
-      "nextcloud": "Créer le groupe dans Nextcloud"
+      "cancel": "Annuler"
     },
     "SingleGroupPage": {
       "backToList": "Retour à la liste",
@@ -758,8 +788,7 @@
       "stopAnimating": "Arrêter d'animer ce groupe",
       "animationLeft": "Vous n'êtes plus animateur de ce groupe",
       "apps": "Applications",
-      "resources": "Ressources du groupe",
-      "shareGroupButtonLabel": "Accès aux documents partagés"
+      "resources": "Ressources du groupe"
     },
     "AddressBook": {
       "sendEmail": "Envoyer un email à",

@@ -76,3 +76,17 @@ export function registerSchemaMessages() {
     },
   });
 }
+
+export function genRandomPassword(pwdlen = 16) {
+  // original code and explanations here :
+  // https://www.geeksforgeeks.org/how-to-generate-a-random-password-using-javascript/
+  let password = '';
+  const allChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$';
+
+  for (let i = 1; i <= pwdlen; i += 1) {
+    const char = Math.floor(Math.random() * allChars.length + 1);
+    password += allChars.charAt(char);
+  }
+
+  return password;
+}

@@ -146,7 +146,8 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
   const favorite = user.favGroups.includes(group._id);
   const classes = useStyles(member || animator, candidate, type)();
   const history = useHistory();
-  const nextcloudEnabled = Meteor.settings.public.enableNextcloud === true;
+
+  const { groupPlugins } = Meteor.settings.public;
 
   const handleOpenedContent = () => {
     toggleOpenedContent(!openedContent);
@@ -248,8 +249,31 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     history.goBack();
   };
 
-  const openGroupFolder = () => {
-    window.open(`${Meteor.settings.public.nextcloudURL}/apps/files/?dir=/${encodeURIComponent(group.name)}`, '_blank');
+  const openGroupFolder = (plugin) => {
+    const resourceURL = groupPlugins[plugin].groupURL
+      .replace('[URL]', groupPlugins[plugin].URL)
+      .replace('[GROUPNAME]', encodeURIComponent(group.name))
+      .replace('[GROUPSLUG]', group.slug);
+    window.open(resourceURL, '_blank');
+  };
+
+  const groupPluginsShow = (plugin) => {
+    if (group.plugins[plugin] && (member || animator)) {
+      return (
+        <Grid item key={`${plugin}_${group._id}`} className={classes.cardGrid}>
+          <Button
+            startIcon={<FolderIcon />}
+            className={classes.buttonAdmin}
+            size="large"
+            variant="contained"
+            onClick={() => openGroupFolder(plugin)}
+          >
+            {i18n.__(`api.${plugin}.buttonLinkPlugin`)}
+          </Button>
+        </Grid>
+      );
+    }
+    return null;
   };
 
   return (
@@ -312,27 +336,22 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
               )}
             </Grid>
           </Grid>
-          {group.nextcloud && nextcloudEnabled && (member || animator) ? (
+          {Object.keys(group.plugins || {}).filter((plug) => group.plugins[plug] === true).length > 0 ? (
             <>
               <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
                 <Typography className={classes.smallTitle} variant="h5">
                   {i18n.__('pages.SingleGroupPage.resources')}
                 </Typography>
               </Grid>
-              <Grid item key={`share_${group._id}`} xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
-                <Button
-                  startIcon={<FolderIcon />}
-                  className={classes.buttonAdmin}
-                  size="large"
-                  variant="contained"
-                  onClick={openGroupFolder}
-                >
-                  {i18n.__('pages.SingleGroupPage.shareGroupButtonLabel')}
-                </Button>
+              <Grid container className={classes.cardGrid} spacing={1}>
+                {Object.keys(groupPlugins)
+                  .filter((p) => groupPlugins[p].enable === true)
+                  .map((p) => {
+                    return groupPluginsShow(p);
+                  })}
               </Grid>
             </>
           ) : null}
-
           <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
             <Typography className={classes.smallTitle} variant="h5">
               {i18n.__('pages.SingleGroupPage.apps')}
