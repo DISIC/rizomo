@@ -3,8 +3,6 @@
     "enableKeycloak": true,
     "keycloakUrl": "https://auth.appseducation.fr/auth",
     "keycloakRealm": "apps",
-    "enableNextcloud": false,
-    "nextcloudURL": "",
     "minioSSL": false,
     "minioPort": null,
     "minioAccess": "Uhjm4KJ8MV",
@@ -24,6 +22,20 @@
       "request": null,
       "group": null,
       "default": null
+    },
+    "groupPlugins": {
+      "rocketChat": {
+        "enable": false,
+        "URL": "",
+        "groupURL": "[URL]/group/[GROUPSLUG]",
+        "enableChangeName": true
+      },
+      "nextcloud": {
+        "enable": false,
+        "URL": "",
+        "groupURL": "[URL]/apps/files/?dir=/[GROUPNAME]",
+        "enableChangeName": false
+      }
     }
   },
   "keycloak": {
@@ -37,6 +49,10 @@
     "nextcloudUser": "",
     "nextcloudPassword": "",
     "nextcloudQuota": "1073741824"
+  },
+  "rocketChat": {
+    "rocketChatUser": "",
+    "rocketChatPassword": ""
   },
   "private": {
     "fillWithFakeData": true,

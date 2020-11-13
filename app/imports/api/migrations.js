@@ -11,7 +11,7 @@ Migrations.add({
     Services.update({ state: null }, { $set: { state: 0 } }, { multi: true });
   },
   down: () => {
-    Services.rawCollection().update({}, { $unset: { state: true } }, { multi: true });
+    Services.rawCollection().updateMany({}, { $unset: { state: true } });
   },
 });
 
@@ -34,7 +34,7 @@ Migrations.add({
       });
   },
   down: () => {
-    Meteor.users.rawCollection().update({}, { $unset: { articlesCount: true, lastArticle: true } }, { multi: true });
+    Meteor.users.rawCollection().updateMany({}, { $unset: { articlesCount: true, lastArticle: true } });
   },
 });
 
@@ -50,7 +50,7 @@ Migrations.add({
       });
   },
   down: () => {
-    Groups.rawCollection().update({}, { $unset: { numCandidates: true } }, { multi: true });
+    Groups.rawCollection().updateMany({}, { $unset: { numCandidates: true } });
   },
 });
 
@@ -61,7 +61,7 @@ Migrations.add({
     Articles.update({}, { $set: { visits: 0 } }, { multi: true });
   },
   down: () => {
-    Articles.rawCollection().update({}, { $unset: { visits: true } }, { multi: true });
+    Articles.rawCollection().updateMany({}, { $unset: { visits: true } });
   },
 });
 
@@ -69,9 +69,28 @@ Migrations.add({
   version: 5,
   name: 'Add nextcloud setting to groups',
   up: () => {
-    Groups.update({}, { $set: { nextcloud: false } }, { multi: true });
+    if (Groups.schema._schemaKeys.includes('nextcloud')) {
+      Groups.update({}, { $set: { nextcloud: false } }, { multi: true });
+    }
   },
   down: () => {
-    Groups.rawCollection().update({}, { $unset: { nextcloud: true } }, { multi: true });
+    Groups.rawCollection().updateMany({}, { $unset: { nextcloud: true } });
+  },
+});
+
+Migrations.add({
+  version: 6,
+  name: 'Add plugins setting to groups and remove nextcloud',
+  up: () => {
+    Groups.update({}, { $set: { plugins: {} } }, { multi: true });
+    Groups.update(
+      { nextcloud: true },
+      { $set: { plugins: { nextcloud: { enable: true } } }, $unset: { nextcloud: true } },
+      { multi: true },
+    );
+  },
+  down: () => {
+    Groups.rawCollection().updateMany({ plugins: { nextcloud: { enable: true } } }, { $set: { nextcloud: true } });
+    Groups.rawCollection().updateMany({}, { $unset: { plugins: true } });
   },
 });

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function (func, wait) {
+export default function debounceFunc(func, wait) {
   // let timeout;
   const [timeout, settimeout] = useState(null);
   return (...args) => {

@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
-import AppRoles from '../users/users';
+import { Roles } from 'meteor/alanning:roles';
 import logServer from '../logging';
+import Groups from '../groups/groups';
+import AppRoles from '../users/users';
 
 class KeyCloakClient {
   constructor() {
@@ -232,9 +234,9 @@ class KeyCloakClient {
     });
   }
 
-  addGroupWithRoles(group, callerId) {
+  addGroupWithRoles(name, callerId) {
     AppRoles.filter((role) => role !== 'candidate').forEach((role) => {
-      const groupName = `${role}_${group.name}`;
+      const groupName = `${role}_${name}`;
       this._getToken().then((token) => {
         this._addGroup(groupName, token).catch((error) => {
           logServer(i18n.__('api.keycloak.groupAddError', { groupName }), 'error', callerId);
@@ -244,10 +246,10 @@ class KeyCloakClient {
     });
   }
 
-  addGroup(group, callerId) {
+  addGroup(name, callerId) {
     this._getToken().then((token) => {
-      this._addGroup(group.name, token).catch((error) => {
-        logServer(i18n.__('api.keycloak.groupAddError', { groupName: group.name }), 'error', callerId);
+      this._addGroup(name, token).catch((error) => {
+        logServer(i18n.__('api.keycloak.groupAddError', { groupName: name }), 'error', callerId);
         logServer(error.response && error.response.data ? error.response.data : error, 'error');
       });
     });
@@ -349,8 +351,8 @@ class KeyCloakClient {
     });
   }
 
-  removeGroup(group, callerId) {
-    this._removeGroup(group.name, callerId);
+  removeGroup(name, callerId) {
+    this._removeGroup(name, callerId);
   }
 
   setAdmin(userId, callerId) {
@@ -468,6 +470,60 @@ class KeyCloakClient {
   }
 }
 
-const kcClient = Meteor.isServer && Meteor.settings.public.enableKeycloak ? new KeyCloakClient() : null;
+// setup client calls on methods hooks
+if (Meteor.isServer && Meteor.settings.public.enableKeycloak) {
+  const kcClient = new KeyCloakClient();
 
-export default kcClient;
+  Meteor.afterMethod('groups.createGroup', function kcCreateGroup({ name }) {
+    kcClient.addGroup(name, this.userId);
+  });
+
+  Meteor.afterMethod('groups.updateGroup', function kcUpdateGroup() {
+    const [newData, oldGroup] = this.result;
+    if (newData.name !== oldGroup.name) {
+      kcClient.updateGroup(oldGroup.name, newData.name, this.userId);
+    }
+  });
+
+  Meteor.beforeMethod('groups.removeGroup', function kcRemoveGroup({ groupId }) {
+    const group = Groups.findOne({ _id: groupId });
+    kcClient.removeGroup(group.name, this.userId);
+  });
+
+  Meteor.afterMethod('users.setAdmin', function kcSetAdmin({ userId }) {
+    kcClient.setAdmin(userId, this.userId);
+  });
+
+  Meteor.afterMethod('users.unsetAdmin', function kcUnsetAdmin({ userId }) {
+    kcClient.unsetAdmin(userId, this.userId);
+  });
+
+  Meteor.afterMethod('users.setAnimatorOf', function kcSetAnimator({ userId, groupId }) {
+    // there is no difference between member and animator roles in keycloak
+    if (!Roles.userIsInRole(userId, 'member', groupId)) {
+      const group = Groups.findOne({ _id: groupId });
+      kcClient.setRole(userId, group.name, this.userId);
+    }
+  });
+
+  Meteor.afterMethod('users.unsetAnimatorOf', function kcUnsetAnimator({ userId, groupId }) {
+    if (!Roles.userIsInRole(userId, 'member', groupId)) {
+      const group = Groups.findOne({ _id: groupId });
+      kcClient.unsetRole(userId, group.name, this.userId);
+    }
+  });
+
+  Meteor.afterMethod('users.setMemberOf', function kcSetMember({ userId, groupId }) {
+    if (!Roles.userIsInRole(userId, 'animator', groupId)) {
+      const group = Groups.findOne({ _id: groupId });
+      kcClient.setRole(userId, group.name, this.userId);
+    }
+  });
+
+  Meteor.afterMethod('users.unsetMemberOf', function kcUnsetMember({ userId, groupId }) {
+    if (!Roles.userIsInRole(userId, 'animator', groupId)) {
+      const group = Groups.findOne({ _id: groupId });
+      kcClient.unsetRole(userId, group.name, this.userId);
+    }
+  });
+}

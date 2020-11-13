@@ -97,8 +97,9 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const [loading, setLoading] = useState(!!params._id);
   const [tabId, setTabId] = React.useState(0);
   const [content, setContent] = useState('');
-  const [nextcloud, setNextcloud] = useState(false);
-  const nextEnabled = Meteor.settings.public.enableNextcloud === true;
+
+  const [plugins, setPlugins] = useState({}); // { nextcloud: false, rocketChat: true}
+  const { groupPlugins } = Meteor.settings.public;
   const history = useHistory();
   const classes = useStyles();
 
@@ -110,7 +111,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
       setLoading(false);
       setGroupData(group);
       setContent(group.content || '');
-      setNextcloud(group.nextcloud);
+      setPlugins(group.plugins || {});
     }
   }, [group]);
 
@@ -153,17 +154,16 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
         data: {
           ...rest,
           content,
-          nextcloud,
+          plugins,
         },
       };
     } else {
       args = {
         ...rest,
         content,
-        nextcloud,
+        plugins,
       };
     }
-
     method.call(args, (error) => {
       setLoading(false);
       if (error) {
@@ -178,6 +178,37 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   if (!ready || loading || (!!params._id && !group._id)) {
     return <Spinner />;
   }
+
+  const onChangePlugins = (event, plugin) => {
+    setPlugins({ ...plugins, [plugin]: event.target.checked });
+  };
+
+  const groupEnableChangeName = Object.keys(group.plugins || {})
+    .filter((plug) => group.plugins[plug] === true)
+    .map((plug) => groupPlugins[plug].enableChangeName)
+    .reduce((acculator, currentValue) => acculator && currentValue, true);
+
+  const groupPluginsShow = (plugin) => {
+    if (groupPlugins[plugin].enable) {
+      return (
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={plugins[plugin]}
+                onChange={(event) => onChangePlugins(event, plugin)}
+                name={plugin}
+                color="primary"
+                disabled={!isAdmin && !!params._id}
+              />
+            }
+            label={i18n.__(`api.${plugin}.enablePluginForGroup`)}
+          />
+        </FormGroup>
+      );
+    }
+    return null;
+  };
 
   return (
     <Fade in>
@@ -195,7 +226,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               variant="outlined"
               fullWidth
               margin="normal"
-              disabled={(!isAdmin || (nextEnabled && group.nextcloud)) && !!params._id}
+              disabled={(!isAdmin && !!params._id) || !groupEnableChangeName}
             />
             <TextField
               onChange={onUpdateField}
@@ -207,22 +238,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               margin="normal"
               disabled
             />
-            {nextEnabled ? (
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={nextcloud}
-                      onChange={() => setNextcloud(!nextcloud)}
-                      name="nextcloud"
-                      color="primary"
-                      disabled={!isAdmin && !!params._id}
-                    />
-                  }
-                  label={i18n.__('pages.AdminSingleGroupPage.nextcloud')}
-                />
-              </FormGroup>
-            ) : null}
+            {Object.keys(groupPlugins).map((p) => groupPluginsShow(p))}
             <FormControl>
               <InputLabel htmlFor="type" id="type-label">
                 {i18n.__('pages.AdminSingleGroupPage.type')}

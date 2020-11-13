@@ -17,3 +17,6 @@ import '../../api/appsettings/server/publications';
 import '../../api/notifications/methods';
 import '../../api/notifications/server/publications';
 import '../../api/migrations';
+import '../../api/appclients/rocketChat';
+import '../../api/appclients/kcClient';
+import '../../api/appclients/nextcloud';

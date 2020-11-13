@@ -97,7 +97,8 @@
         "animators": "Animators",
         "admins": "Admins",
         "applications": "Applications ID",
-        "nextcloud": "Create groupe in Nextcloud"
+        "nextcloud": "Create groupe in Nextcloud",
+        "plugins": "Related services managing groups"
       }
     },
     "services": {
@@ -229,7 +230,37 @@
       "folderRemoved": "Nextcloud: removed group folder {$id} ({$mount_point})",
       "folderRemoveError": "Nextcloud: ERROR deleting group folder {$id} ({$message})",
       "groupRemoved": "Nextcloud: group {$groupName} removed",
-      "groupRemoveError": "Nextcloud: Error removing group {$groupName}"
+      "groupRemoveError": "Nextcloud: Error removing group {$groupName}",
+      "enablePluginForGroup": "Create group in Nextcloud",
+      "buttonLinkPlugin": "Access shared files in Nextcloud"
+    },
+    "rocketChat": {
+      "initClient": "RocketChat: API client initialized",
+      "tokenError": "** RocketChat: could not get token, please check settings **",
+      "groupAdded": "RocketChat: channel {$name} added",
+      "groupAddError": "RocketChat : ERROR adding channel {$name}",
+      "groupRemoved": "RocketChat: channel {$name} removed",
+      "groupRemoveError": "RocketChat: Error removing channel {$name}",
+      "getUserError": "RocketChat: Error getting user data",
+      "getGroupError": "RocketChat: Error getting group data",
+      "userInvited": "RocketChat: user {$username} added to group {$groupId}",
+      "userInviteError": "RocketChat: Error inviting user {$username} to group {$groupId}",
+      "userAdded": "RocketChat: user {$username} created",
+      "userAddError": "RocketChat: Error creating user {$username}",
+      "logout": "RocketChat: Invalidate current token",
+      "logoutError": "RocketChat: error while invalidating token",
+      "userKicked": "RocketChat: user {$username} removed from group {$groupId}",
+      "userKickError": "RocketChat: Error removing user {$username} from group {$groupId}",
+      "roleSet": "RocketChat: Role {$role} set for user {$username} on group {$groupId}",
+      "setRoleError": "RocketChat: Error setting role {$role} for user {$username} on group {$groupId}",
+      "roleUnset": "RocketChat: Role {$role} removed for user {$username} on group {$groupId}",
+      "unsetRoleError": "RocketChat: Error removing role {$role} for user {$username} on group {$groupId}",
+      "updateEmail": "RocketChat: updated email to {$email} for user {$username}",
+      "updateEmailError": "RocketChat: error updating email to {$email} for user {$username}",
+      "owner": "owner",
+      "moderator": "moderator",
+      "enablePluginForGroup": "Create group in RocketChat",
+      "buttonLinkPlugin": "Access shared files in RocketChat"
     },
     "logging": {
       "unknownLogLevel": "Specified log level does not exist",
@@ -736,8 +767,7 @@
       "content": "Long description of the group",
       "save": "Save",
       "update": "Update",
-      "cancel": "Cancel",
-      "nextcloud": "Create group in Nextcloud"
+      "cancel": "Cancel"
     },
     "SingleGroupPage": {
       "backToList": "Back to the list",
@@ -756,8 +786,7 @@
       "stopAnimating": "Stop animating this group",
       "animationLeft": "You are no longer animator of this group",
       "apps": "Applications",
-      "resources": "Group resources",
-      "shareGroupButtonLabel": "Access shared files"
+      "resources": "Group resources"
     },
     "AddressBook": {
       "sendEmail": "Send an email to",
