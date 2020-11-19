@@ -199,7 +199,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                 onChange={(event) => onChangePlugins(event, plugin)}
                 name={plugin}
                 color="primary"
-                disabled={!isAdmin && !!params._id}
+                disabled={!!params._id}
               />
             }
             label={i18n.__(`api.${plugin}.enablePluginForGroup`)}
