@@ -94,3 +94,14 @@ Migrations.add({
     Groups.rawCollection().updateMany({}, { $unset: { plugins: true } });
   },
 });
+
+Migrations.add({
+  version: 7,
+  name: 'Add tags list to articles',
+  up: () => {
+    Articles.update({}, { $set: { tags: [] } }, { multi: true });
+  },
+  down: () => {
+    Articles.rawCollection().updateMany({}, { $unset: { tags: true } });
+  },
+});

@@ -65,7 +65,10 @@ export const updateCategorie = new ValidatedMethod({
     // check categorie existence
     const categorie = Categories.findOne({ _id: categoryId });
     if (categorie === undefined) {
-      throw new Meteor.Error('api.categories.updateCategorie.unknownGroup', i18n.__('api.categories.unknownCategorie'));
+      throw new Meteor.Error(
+        'api.categories.updateCategorie.unknownCategory',
+        i18n.__('api.categories.unknownCategorie'),
+      );
     }
     // check if current user has admin rights
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');

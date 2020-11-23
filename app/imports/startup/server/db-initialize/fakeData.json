@@ -207,5 +207,27 @@
       "_id": "PrTZTq2FnDYdABNHh",
       "name": "Communication"
     }
+  ],
+  "defaultTags": [
+    {
+      "_id": "EviKfwAnFZcjEWFdz",
+      "name": "Production"
+    },
+    {
+      "_id": "HxQFJXymMXXrYByXt",
+      "name": "Collaboration"
+    },
+    {
+      "_id": "dQLERbBJ2sXXkXktX",
+      "name": "Coordination"
+    },
+    {
+      "_id": "KZXPogfdLZmHAowaN",
+      "name": "Partage"
+    },
+    {
+      "_id": "PrTZTq2FnDYdABNHh",
+      "name": "Communication"
+    }
   ]
 }

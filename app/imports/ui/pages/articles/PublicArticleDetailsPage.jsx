@@ -5,7 +5,17 @@ import { withTracker } from 'meteor/react-meteor-data';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
-import { Typography, Container, Grid, makeStyles, Button, Fade, FormControlLabel, Switch } from '@material-ui/core';
+import {
+  Typography,
+  Container,
+  Grid,
+  makeStyles,
+  Button,
+  Fade,
+  FormControlLabel,
+  Switch,
+  Chip,
+} from '@material-ui/core';
 import html2pdf from 'html2pdf.js';
 import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
@@ -20,6 +30,7 @@ import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
 import TopBar from '../../components/menus/TopBar';
 import Footer from '../../components/menus/Footer';
+import Tags from '../../../api/tags/tags';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,10 +80,22 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.tertiary.main,
     },
   },
+  cardGrid: {
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(5),
+    marginBottom: theme.spacing(3),
+  },
+  tag: {
+    marginLeft: theme.spacing(1),
+  },
+  smallTitle: {
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 function PublicArticleDetailsPage({
   article = {},
+  tags = [],
   ready,
   history,
   match: {
@@ -190,6 +213,14 @@ function PublicArticleDetailsPage({
                 </Button>
               </Typography>
             </Grid>
+            <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
+              <Typography className={classes.smallTitle} variant="h5">
+                {i18n.__('api.articles.labels.tags')}
+              </Typography>
+              {tags.map((tag) => (
+                <Chip className={classes.tag} key={tag._id} label={tag.name} color="secondary" />
+              ))}
+            </Grid>
             <Grid item xs={12} className={isMobile ? null : classes.flex}>
               {article.markdown ? (
                 <Viewer
@@ -212,6 +243,7 @@ function PublicArticleDetailsPage({
 
 PublicArticleDetailsPage.propTypes = {
   article: PropTypes.objectOf(PropTypes.any).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.any).isRequired,
   ready: PropTypes.bool.isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -224,10 +256,12 @@ export default withTracker(
     },
   }) => {
     const articleHandle = Meteor.subscribe('articles.one', { slug });
-    const article = Articles.findOneFromPublication('articles.one', {}) || {};
+    const article = Articles.findOne({ slug }) || {};
+    const tags = Tags.find({}).fetch();
     const ready = articleHandle.ready();
     return {
       article,
+      tags,
       ready,
     };
   },

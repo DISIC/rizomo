@@ -29,8 +29,16 @@
       }
     },
     "categories": {
+      "unknownCategorie": "La categorie n'existe pas.",
       "labels": {
         "id": "Id de Catégorie",
+        "name": "Nom"
+      }
+    },
+    "tags": {
+      "unknownTag": "Le tag n'existe pas.",
+      "labels": {
+        "id": "Id de Tag",
         "name": "Nom"
       }
     },
@@ -146,6 +154,7 @@
         "userId": "ID de l'auteur",
         "description": "Courte description",
         "content": "Contenu de la publication",
+        "tags": "Mots clés",
         "createdAt": "Date de création",
         "updatedAt": "Date de mise à jour",
         "markdown": "mode markdown"
@@ -348,6 +357,7 @@
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs",
       "menuAdminCategories": "Gestion des categories",
+      "menuAdminTags": "Gestion des mots clé",
       "menuAdminGroups": "Gestion des Groupes",
       "menuAdminUsers": "Gestion des utilisateurs",
       "menuPublications": "Publications",
@@ -383,8 +393,20 @@
       }
     },
     "UserFinder": {
-      "noUser": "Aucun utilisateur trouvé",
-      "userLabel": "Utilisateur",
+      "selectTag": "Sélectionner",
+      "CreateTag": "Créer",
+      "addTag": "Ajouter ",
+      "noUser": "Aucun mot clé trouvé",
+      "tagLabel": "Utilisateur",
+      "placeholder": "Saisir pour rechercher",
+      "clear": "Effacer",
+      "loading": "Chargement...",
+      "open": "Ouvrir",
+      "close": "Fermer"
+    },
+    "TagFinder": {
+      "noTag": "Aucun utilisateur trouvé",
+      "TagLabel": "Mot clé",
       "placeholder": "Saisir pour rechercher",
       "clear": "Effacer",
       "loading": "Chargement...",
@@ -669,6 +691,19 @@
         "body_editRow_deleteText": "Supprimer vraiment cette catégorie ?"
       }
     },
+    "AdminTagsPage": {
+      "title": "Gestion des Mots clé",
+      "columnName": "Nom",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher un Mot clé",
+        "pagination_labelRowsSelect": "Mots clés par page",
+        "body_emptyDataSourceMessage": "Aucun Mot clé enregistrée",
+        "body_addTooltip": "Ajouter un Mot clé",
+        "body_editTooltip": "Modifier ce Mot clé",
+        "body_deleteTooltip": "Supprimer ce Mot clé",
+        "body_editRow_deleteText": "Supprimer vraiment ce Mots clé ?"
+      }
+    },
     "AdminGroupsPage": {
       "title": "Gestion des groupes",
       "columnName": "Nom",
@@ -819,7 +854,9 @@
       "copyPublicURL": "Copier l'URL publique",
       "successCopyURL": "URL publique copiée dans le presse-papier",
       "switchToHtml": "Éditeur Classic",
-      "switchToMarkdown": "Éditeur Markdown"
+      "switchToMarkdown": "Éditeur Markdown",
+      "selectTag": "Sélectionner",
+      "createTag": "Créer"
     },
     "PublicArticlePage": {
       "title": "Publications de",

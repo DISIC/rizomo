@@ -30,6 +30,7 @@ import NotificationsDisplay from '../components/notifications/NotificationsDispl
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
 const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPage'));
+const AdminTagsPage = lazy(() => import('../pages/admin/AdminTagsPage'));
 const AdminServicesPage = lazy(() => import('../pages/admin/AdminServicesPage'));
 const AdminUserValidationPage = lazy(() => import('../pages/admin/AdminUserValidationPage'));
 const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
@@ -124,6 +125,7 @@ function MainLayout() {
                   userId={userId}
                   loadingUser={loadingUser}
                 />
+                <AdminRoute path="/admintags" component={AdminTagsPage} userId={userId} loadingUser={loadingUser} />
                 <AdminRoute path="/settings" component={AdminSettingsPage} userId={userId} loadingUser={loadingUser} />
                 <Route component={NotFound} />
               </Switch>

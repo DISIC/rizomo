@@ -29,8 +29,16 @@
       }
     },
     "categories": {
+      "unknownCategorie": "Category does not exist.",
       "labels": {
         "id": "Category Id",
+        "name": "Name"
+      }
+    },
+    "tags": {
+      "unknownTag": "Tag does not exist.",
+      "labels": {
+        "id": "Tag Id",
         "name": "Name"
       }
     },
@@ -146,6 +154,7 @@
         "userId": "Author's ID",
         "description": "Short description",
         "content": "Content of the publication",
+        "tags": "Tags",
         "createdAt": "Creation date",
         "updatedAt": "Update date",
         "markdown": "markdown mode"
@@ -349,6 +358,7 @@
       "menuAdminUsers": "Users Management",
       "menuAdminUserValidation": "User validation",
       "menuAdminCategories": "Categories Management",
+      "menuAdminTags": "Tags Management",
       "menuAdminGroups": "Groups Management",
       "menuPublications": "Publications",
       "menuProfileLabel": "Profile",
@@ -386,6 +396,16 @@
       "noUser": "No user found",
       "userLabel": "User",
       "placeholder": "Type to search more users",
+      "clear": "Clear",
+      "loading": "Loading...",
+      "open": "Open",
+      "close": "Fermer"
+    },
+    "TagFinder": {
+      "addTag": "Add ",
+      "noTag": "No tag found",
+      "tagLabel": "Mot clé",
+      "placeholder": "Type to search a tag",
       "clear": "Clear",
       "loading": "Loading...",
       "open": "Open",
@@ -666,6 +686,19 @@
         "body_editRow_deleteText": "Do you really want to delete this category ?"
       }
     },
+    "AdminTagsPage": {
+      "title": "Tags Management",
+      "columnName": "Name",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a tag",
+        "pagination_labelRowsSelect": "Tags par page",
+        "body_emptyDataSourceMessage": "No tag registered",
+        "body_addTooltip": "Add a tag",
+        "body_editTooltip": "Modify this tag",
+        "body_deleteTooltip": "Remove this tag",
+        "body_editRow_deleteText": "Do you really want to delete this tag ?"
+      }
+    },
     "AdminGroupsPage": {
       "title": "Groups Management",
       "columnName": "Logo",
@@ -817,7 +850,9 @@
       "copyPublicURL": "copy public URL",
       "successCopyURL": "Public URL has been sent to clipboard",
       "switchToHtml": "Classic editor",
-      "switchToMarkdown": "Markdown editor"
+      "switchToMarkdown": "Markdown editor",
+      "selectTag": "Select",
+      "createTag": "Create"
     },
     "PublicArticlePage": {
       "title": "Publications by",

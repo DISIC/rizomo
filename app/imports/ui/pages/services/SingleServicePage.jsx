@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   fab: {},
 }));
 
-const SingleServicePage = ({ service = [], ready, categories = [] }) => {
+const SingleServicePage = ({ service = {}, ready, categories = [] }) => {
   const history = useHistory();
   const classes = useStyles();
   const [{ user = {}, isMobile }] = useAppContext();

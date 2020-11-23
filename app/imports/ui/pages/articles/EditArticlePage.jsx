@@ -20,6 +20,8 @@ import {
   Button,
   InputAdornment,
   IconButton,
+  Chip,
+  ButtonGroup,
 } from '@material-ui/core';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
@@ -40,6 +42,8 @@ import { CustomToolbarArticle } from '../../components/system/CustomQuill';
 import AudioModal from '../../components/system/AudioModal';
 import { PICTURES_TYPES, VIDEO_TYPES, SOUND_TYPES } from '../../components/mediaStorage/SingleStoragefile';
 import ToastUIEditor from '../../components/system/ToastUIEditor';
+import Tags from '../../../api/tags/tags';
+import TagFinder from '../../components/articles/TagFinder';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -73,6 +77,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     marginTop: 60,
   },
+  tagInputs: {
+    display: 'flex',
+    margin: 'auto',
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    alignItems: 'center',
+  },
   buttonsContainer: {
     display: 'flex',
     margin: 'auto',
@@ -81,6 +92,17 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
+  cardGrid: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+  tag: {
+    marginLeft: theme.spacing(1),
+  },
+  smallTitle: {
+    marginRigt: theme.spacing(1),
+  },
 }));
 
 const emptyArticle = {
@@ -88,6 +110,7 @@ const emptyArticle = {
   slug: '',
   content: '',
   description: '',
+  tags: [],
 };
 
 const quillOptionsMaker = ({ imageHandler, webcamHandler, audioHandler }) => ({
@@ -134,8 +157,10 @@ const quillOptionsMaker = ({ imageHandler, webcamHandler, audioHandler }) => ({
 });
 
 let quillOptions;
+
 function EditArticlePage({
   article = {},
+  tags = [],
   ready,
   match: {
     params: { slug },
@@ -152,10 +177,13 @@ function EditArticlePage({
   const [audio, toggleAudio] = useState(false);
   const [data, setData] = useObjectState(emptyArticle);
   const [content, setContent] = useState('');
+  const [newTag, setNewTag] = useState({ _id: null, name: '' });
   const [toastInstance, setToast] = useState();
   const [toastRange, setRange] = useState(0);
   const publicURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}/${data.slug}`;
   const toastRef = useRef();
+  // tagsKey : used to force re-render of autocomplete component (tags)
+  const [tagsKey, setTagsKey] = useState(new Date().toISOString());
 
   useEffect(() => {
     if (toastRef.current) {
@@ -387,6 +415,46 @@ function EditArticlePage({
     });
   };
 
+  const addTag = () => {
+    if (newTag._id === null) {
+      // add new Tag in database and get its Id
+      Meteor.call('tags.createTag', { name: newTag.name }, (err, res) => {
+        if (err) msg.error(err.reason);
+        else data.tags.push(res);
+      });
+    } else if (!data.tags.includes(newTag._id)) {
+      const newTags = [...data.tags, newTag._id];
+      setData({ ...data, tags: newTags });
+    }
+    setNewTag({ _id: null, name: '' });
+    // hack : change key to reset component selected value
+    setTagsKey(new Date().toISOString());
+  };
+
+  const removeTag = (tagId) => {
+    const newTags = data.tags.filter((tag) => tag !== tagId);
+    setData({ ...data, tags: newTags });
+  };
+
+  const newTagChanged = (evt, newValue) => {
+    if (typeof newValue === 'string') {
+      // check if value already exists (in case the user entered manually an already selected tag)
+      if (!tags.map((tag) => tag.name.toLowerCase()).includes(newValue.toLowerCase()))
+        setNewTag({
+          _id: null,
+          name: newValue,
+        });
+    } else if (newValue && newValue.inputValue) {
+      // Create a new value from the user input
+      if (!tags.map((tag) => tag.name.toLowerCase()).includes(newValue.inputValue.toLowerCase()))
+        setNewTag({
+          _id: null,
+          name: newValue.inputValue,
+        });
+    } else if (newValue === null) setNewTag({ _id: null, name: '' });
+    else setNewTag(newValue);
+  };
+
   const toggleMarkdown = (bool) => {
     setData({ markdown: bool });
   };
@@ -445,7 +513,32 @@ function EditArticlePage({
           multiline
           helperText={`${data.description.length}/400`}
         />
-
+        <Grid container className={classes.tagInputs}>
+          <Grid item>
+            <ButtonGroup>
+              <TagFinder resetKey={tagsKey} tags={tags} exclude={data.tags} onSelected={newTagChanged} />
+              <Button variant="contained" disabled={newTag.name === ''} color="primary" onClick={addTag}>
+                {i18n.__(
+                  newTag._id === null && newTag.name
+                    ? 'pages.EditArticlePage.createTag'
+                    : 'pages.EditArticlePage.selectTag',
+                )}
+              </Button>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
+        {data.tags.map((tagId) => {
+          const tagName = Tags.findOne(tagId).name;
+          return (
+            <Chip
+              className={classes.tag}
+              key={tagId}
+              label={tagName}
+              color="secondary"
+              onDelete={() => removeTag(tagId)}
+            />
+          );
+        })}
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
 
@@ -507,6 +600,7 @@ function EditArticlePage({
 
 EditArticlePage.propTypes = {
   article: PropTypes.objectOf(PropTypes.any).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.any).isRequired,
   ready: PropTypes.bool.isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -520,16 +614,19 @@ export default withTracker(
   }) => {
     let ready = false;
     let article = {};
+    const tagsHandle = Meteor.subscribe('tags.all');
+    const tags = Tags.find({}).fetch();
     if (slug) {
-      const articleHandle = Meteor.subscribe('articles.one', { slug });
-      article = Articles.findOneFromPublication('articles.one', {}) || {};
-      ready = articleHandle.ready();
+      const articleHandle = Meteor.subscribe('articles.one.admin', { slug });
+      article = Articles.findOneFromPublication('articles.one.admin', {}) || {};
+      ready = articleHandle.ready() && tagsHandle.ready();
     } else {
       // create new article
-      ready = true;
+      ready = tagsHandle.ready();
     }
     return {
       article,
+      tags,
       ready,
     };
   },
