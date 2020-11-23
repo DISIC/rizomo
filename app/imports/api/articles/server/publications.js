@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { FindFromPublication } from 'meteor/percolate:find-from-publication';
+import { publishComposite } from 'meteor/reywood:publish-composite';
 import SimpleSchema from 'simpl-schema';
 import logServer from '../../logging';
+import Tags from '../../tags/tags';
 import { checkPaginationParams, getLabel } from '../../utils';
 import Articles from '../articles';
 
@@ -57,7 +59,7 @@ FindFromPublication.publish('articles.all', function articlesAll({ page, search,
 });
 
 // publish one article based on its slug
-FindFromPublication.publish('articles.one', ({ slug }) => {
+FindFromPublication.publish('articles.one.admin', ({ slug }) => {
   try {
     new SimpleSchema({
       slug: {
@@ -77,4 +79,39 @@ FindFromPublication.publish('articles.one', ({ slug }) => {
       sort: { name: -1 },
     },
   );
+});
+
+publishComposite('articles.one', ({ slug }) => {
+  try {
+    new SimpleSchema({
+      slug: {
+        type: String,
+        label: getLabel('api.articles.labels.slug'),
+      },
+    }).validate({ slug });
+  } catch (err) {
+    logServer(`publish articles.one : ${err}`);
+    this.error(err);
+  }
+  return {
+    find() {
+      // Find top ten highest scoring posts
+      return Articles.find(
+        { slug },
+        {
+          fields: Articles.PublicFields,
+          limit: 1,
+          sort: { name: -1 },
+        },
+      );
+    },
+    children: [
+      {
+        find({ tags = [] }) {
+          // Find asssociated tags
+          return Tags.find({ _id: { $in: tags } }, { fields: Tags.publicFields, sort: { name: 1 }, limit: 1000 });
+        },
+      },
+    ],
+  };
 });

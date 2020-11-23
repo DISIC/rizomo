@@ -25,6 +25,10 @@ export const adminMenu = [
     content: 'menuAdminCategories',
   },
   {
+    path: '/admintags',
+    content: 'menuAdminTags',
+  },
+  {
     path: '/adminusers',
     content: 'menuAdminUsers',
   },

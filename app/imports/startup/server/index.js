@@ -18,6 +18,7 @@ import './db-initialize/Accounts';
 import './db-initialize/Services';
 import './db-initialize/Categories';
 import './db-initialize/Groups';
+import './db-initialize/Tags';
 import './db-initialize/Articles';
 import './db-initialize/AppSettings';
 import './db-initialize/PersonalSpaces';
