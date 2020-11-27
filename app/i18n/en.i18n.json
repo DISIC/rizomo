@@ -157,7 +157,8 @@
         "tags": "Tags",
         "createdAt": "Creation date",
         "updatedAt": "Update date",
-        "markdown": "markdown mode"
+        "markdown": "markdown mode",
+        "structure": "Article's attachment Structure"
       }
     },
     "notifications": {
@@ -630,7 +631,8 @@
       "uploadSuccess": "Datas uploaded with success",
       "uploadImg": "Upload an image",
       "useCam": "Take a picture",
-      "useGallery": "Choose among image gallery"
+      "useGallery": "Choose among image gallery",
+      "structureMessage": "Check this box to link all imported articles to your current attachment structure."
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
@@ -842,6 +844,7 @@
       "titleLabel": "Title",
       "slugLabel": "URL to the publication's page",
       "descriptionLabel": "Short description of this publication",
+      "structureMessage": "Reattach to my current structure ({$structure})",
       "contentLabel": "Content of the publication",
       "update": "Update",
       "save": "Create",

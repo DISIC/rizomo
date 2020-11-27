@@ -19,6 +19,8 @@ import {
   FormHelperText,
   Grid,
   Tooltip,
+  Checkbox,
+  FormControlLabel,
 } from '@material-ui/core';
 import MailIcon from '@material-ui/icons/Mail';
 import Spinner from '../../components/system/Spinner';
@@ -88,6 +90,7 @@ const ProfilePage = () => {
   const [submitOk, setSubmitOk] = useState(false);
   const [errors, setErrors] = useObjectState(defaultState);
   const [submitted, setSubmitted] = useState(false);
+  const [structChecked, setStructChecked] = useState(false);
   const classes = useStyles();
   const keycloakMode = Meteor.settings.public.enableKeycloak === true;
   const [{ user, loadingUser, isMobile }] = useAppContext();
@@ -273,7 +276,7 @@ const ProfilePage = () => {
 
     reader.onload = function uploadArticles(theFile) {
       const articles = JSON.parse(theFile.target.result);
-      uploadBackupPublications.call({ articles }, (error) => {
+      uploadBackupPublications.call({ articles, updateStructure: structChecked }, (error) => {
         if (error) {
           msg.error(error.reason);
         } else {
@@ -492,6 +495,19 @@ const ProfilePage = () => {
               </div>
             </Grid>
           </Grid>
+          <p>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="primary"
+                  checked={structChecked}
+                  onChange={() => setStructChecked(!structChecked)}
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+              }
+              label={i18n.__('pages.ProfilePage.structureMessage')}
+            />
+          </p>
         </Paper>
       </Container>
     </Fade>

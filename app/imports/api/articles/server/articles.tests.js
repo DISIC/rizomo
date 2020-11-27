@@ -95,6 +95,7 @@ describe('articles', function () {
   });
   describe('methods', function () {
     let userId;
+    let userStructure;
     let otherUserId;
     let articleId;
     let articleData;
@@ -107,7 +108,7 @@ describe('articles', function () {
         email,
         username: email,
         password: 'toto',
-        structure: faker.company.companyName(),
+        structure: `userId_${faker.company.companyName()}`,
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
       });
@@ -121,15 +122,16 @@ describe('articles', function () {
       });
       // set users as active
       Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
+      userStructure = Meteor.users.findOne(userId).structure;
       Articles.remove({});
       articleData = {
         title: 'Chat sur un nuage de licorne',
         description: "Chevaucher un dragon rose à pois. C'est en fait une fée pour piéger Peter Pan",
         content: "<div>c'est un article de fou</div>",
       };
-      articleId = Factory.create('article', { userId })._id;
+      articleId = Factory.create('article', { userId, structure: 'la troisième dimension' })._id;
       _.times(3, () => {
-        Factory.create('article', { userId });
+        Factory.create('article', { userId, structure: 'la troisième dimension' });
       });
     });
     describe('createArticle', function () {
@@ -138,6 +140,7 @@ describe('articles', function () {
         const article = Articles.findOne({ title: articleData.title, userId });
         assert.typeOf(article, 'object');
         assert.equal(article.slug.search('chat-sur-un-nuage-de-licorne') !== -1, true);
+        assert.equal(article.structure, userStructure);
       });
       it("does not create an article if you're not logged in", function () {
         // Throws if logged out user, tries to create an article
@@ -186,6 +189,17 @@ describe('articles', function () {
         assert.equal(article.title, data.title);
         assert.equal(article.description, data.description);
         assert.equal(article.content, data.content);
+        assert.equal(article.structure, 'la troisième dimension');
+        assert.notEqual(oldDate, article.updatedAt);
+      });
+      it("does update an article's structure if asked with author user", function () {
+        const oldDate = Articles.findOne(articleId).updatedAt;
+        updateArticle._execute({ userId }, { articleId, data, updateStructure: true });
+        const article = Articles.findOne(articleId);
+        assert.equal(article.title, data.title);
+        assert.equal(article.description, data.description);
+        assert.equal(article.content, data.content);
+        assert.equal(article.structure, userStructure);
         assert.notEqual(oldDate, article.updatedAt);
       });
       it("does not update an article if you're not author", function () {
@@ -246,11 +260,13 @@ describe('articles', function () {
           title: 'Chat sur un nuage de licorne',
           description: "Chevaucher un dragon rose à pois. C'est en fait une fée pour piéger Peter Pan",
           content: "<div>c'est un article de fou</div>",
+          structure: 'la troisième dimension',
         },
         {
           title: 'Chat sur MIMOSA',
           description: 'article modifié',
           content: "<div>c'est toujours un article de fou</div>",
+          structure: 'la troisième dimension',
         },
       ];
       it('does upload articles from table', function () {
@@ -266,7 +282,21 @@ describe('articles', function () {
         Articles.remove({});
         assert.equal(Articles.find({ userId }).count(), 0);
         uploadBackupPublications._execute({ userId }, { articles: downart });
-        assert.equal(Articles.find({ userId }).count(), 4);
+        const uploaded = Articles.find({ userId });
+        assert.equal(uploaded.count(), 4);
+        // by default, articles original structure should be restored
+        uploaded.fetch().forEach((article) => assert.equal(article.structure, 'la troisième dimension'));
+      });
+      it('does reupload downloaded articles and update structure if asked', function () {
+        const downart = downloadBackupPublications._execute({ userId });
+        assert.typeOf(downart, 'array');
+        assert.lengthOf(downart, 4);
+        Articles.remove({});
+        assert.equal(Articles.find({ userId }).count(), 0);
+        uploadBackupPublications._execute({ userId }, { articles: downart, updateStructure: true });
+        const uploaded = Articles.find({ userId });
+        assert.equal(uploaded.count(), 4);
+        uploaded.fetch().forEach((article) => assert.equal(article.structure, userStructure));
       });
       it('does not upload articles if not logged in', function () {
         assert.throws(

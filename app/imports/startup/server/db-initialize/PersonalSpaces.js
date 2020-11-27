@@ -26,20 +26,25 @@ if (Meteor.isDevelopment) {
   const usersWithEmptyPS = PersonalSpaces.find({ unsorted: [], sorted: [] }, { fields: { userId: 1, _id: 0 } });
   usersWithEmptyPS.forEach((user) => {
     const u = Meteor.users.findOne({ _id: user.userId }, { fields: { username: 1, favServices: 1, favGroups: 1 } });
-    logServer(`Regen personalspaces for ${u.username}...`);
-    const unsorted = [];
-    u.favServices.forEach((s) => {
-      unsorted.push({
-        element_id: s,
-        type: 'service',
+    if (u === undefined) {
+      logServer(`Error: user "${user.userId}" not found while updating PersonalSpaces`, 'error');
+    } else {
+      logServer(`XXX : ${JSON.stringify(user)}`);
+      logServer(`Regen personalspaces for ${u.username}...`);
+      const unsorted = [];
+      u.favServices.forEach((s) => {
+        unsorted.push({
+          element_id: s,
+          type: 'service',
+        });
       });
-    });
-    u.favGroups.forEach((g) => {
-      unsorted.push({
-        element_id: g,
-        type: 'group',
+      u.favGroups.forEach((g) => {
+        unsorted.push({
+          element_id: g,
+          type: 'group',
+        });
       });
-    });
-    updatePersonalSpace._execute({ userId: user.userId }, { data: { userId: user.userId, unsorted, sorted: [] } });
+      updatePersonalSpace._execute({ userId: user.userId }, { data: { userId: user.userId, unsorted, sorted: [] } });
+    }
   });
 }

@@ -105,3 +105,14 @@ Migrations.add({
     Articles.rawCollection().updateMany({}, { $unset: { tags: true } });
   },
 });
+
+Migrations.add({
+  version: 8,
+  name: 'Add author structure to articles',
+  up: () => {
+    Articles.update({}, { $set: { tags: [] } }, { multi: true });
+  },
+  down: () => {
+    Articles.rawCollection().updateMany({}, { $unset: { tags: true } });
+  },
+});

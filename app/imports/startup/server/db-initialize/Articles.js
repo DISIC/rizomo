@@ -6,7 +6,12 @@ import logServer from '../../../api/logging';
 const users = (number) => {
   const limit = Math.floor(Math.random() * number);
   const skip = Math.floor(Math.random() * 1000);
-  return Meteor.users.find({}, { limit, skip, fields: { _id: 1 } }).map(({ _id }) => _id);
+  return Meteor.users.find({}, { limit, skip, fields: { _id: 1, structure: 1 } }).map(({ _id, structure }) => {
+    return {
+      userId: _id,
+      structure,
+    };
+  });
 };
 
 /** When running app for first time, pass a settings file to set up default groups. */
@@ -15,7 +20,7 @@ if (Articles.find().count() === 0) {
     const PUBLISHERS_RANDOM = 100;
     const publishers = users(PUBLISHERS_RANDOM);
     logServer('Creating the default articles.');
-    publishers.forEach((userId) => {
+    publishers.forEach(({ userId, structure }) => {
       const array = new Array(Math.floor(Math.random() * 30));
       array.fill(0);
       array.forEach(() => {
@@ -23,6 +28,7 @@ if (Articles.find().count() === 0) {
         logServer(`Creating article ${title} for user ${userId}.`);
         Articles.insert({
           userId,
+          structure,
           title,
           description: faker.lorem.paragraph(),
           content: faker.lorem.paragraphs(),
