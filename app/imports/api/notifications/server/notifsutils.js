@@ -64,12 +64,14 @@ export function createRequestNotification(currentUser, userId, groupId) {
  * @param groupId {string} Group ID concerned
  * @param title {string} Notification title to be send
  * @param content {string} Notification content to be send
+ * @param link {string optionnal} Destination link of notification, default link to group page
  */
-export function createGroupNotification(currentUser, groupId, title, content) {
+export function createGroupNotification(currentUser, groupId, title, content, link = '') {
   const group = Groups.findOne({ _id: groupId }, { fields: Groups.adminFields });
   const usersToSend = [...new Set([...group.admins, ...group.animators, ...group.members])]; // Concats arrays and removes duplicate user ids
+  const notifLink = link === '' ? `/groups/${group.slug}` : link;
   usersToSend.forEach((uid) => {
-    const newNotif = { userId: uid, title, content, link: `/groups/${group.slug}`, type: 'group' };
+    const newNotif = { userId: uid, title, content, link: notifLink, type: 'group' };
     createNotification._execute({ userId: currentUser }, { data: newNotif });
   });
 }
@@ -80,10 +82,11 @@ export function createGroupNotification(currentUser, groupId, title, content) {
  * @param users {array} Users ID to send notification
  * @param title {string} Notification title to be send
  * @param content {string} Notification content to be send
+ * @param link {string} Destination link of notification
  */
-export function createMultiUsersNotification(currentUser, users, title, content) {
+export function createMultiUsersNotification(currentUser, users, title, content, link) {
   users.forEach((uid) => {
-    const newNotif = { userId: uid, title, content, type: 'group' };
+    const newNotif = { userId: uid, title, content, type: 'group', link };
     createNotification._execute({ userId: currentUser }, { data: newNotif });
   });
 }

@@ -18,6 +18,7 @@ import {
   Badge,
 } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
+import { isUrlExternal } from '../../utils/utilsFuncs';
 
 const useStyles = makeStyles(() => ({
   inline: {
@@ -60,7 +61,13 @@ const Notification = ({ notification, toast }) => {
   };
 
   const handleLink = () => {
-    if (notification.link) history.push(notification.link);
+    if (notification.link) {
+      if (isUrlExternal(notification.link)) {
+        window.open(notification.link, '_blank', 'noreferrer,noopener');
+      } else {
+        history.push(notification.link.replace(Meteor.absoluteUrl(), '/'));
+      }
+    }
   };
 
   const notifIcon = () => {
