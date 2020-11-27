@@ -22,6 +22,8 @@ import {
   IconButton,
   Chip,
   ButtonGroup,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
@@ -56,6 +58,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  flexVertical: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: theme.spacing(2),
   },
   gridItem: {
     display: 'flex',
@@ -102,6 +109,9 @@ const useStyles = makeStyles((theme) => ({
   },
   smallTitle: {
     marginRigt: theme.spacing(1),
+  },
+  structure: {
+    marginBottom: '0px',
   },
 }));
 
@@ -167,7 +177,7 @@ function EditArticlePage({
   },
   history,
 }) {
-  const [{ isMobile, language }, dispatch] = useAppContext();
+  const [{ isMobile, language, user }, dispatch] = useAppContext();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -180,6 +190,8 @@ function EditArticlePage({
   const [newTag, setNewTag] = useState({ _id: null, name: '' });
   const [toastInstance, setToast] = useState();
   const [toastRange, setRange] = useState(0);
+  const [updateStructure, setUpdateStructure] = useState(false);
+  const [showUpdateStructure, setShowUpdateStructure] = useState(false);
   const publicURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}/${data.slug}`;
   const toastRef = useRef();
   // tagsKey : used to force re-render of autocomplete component (tags)
@@ -362,6 +374,7 @@ function EditArticlePage({
       setMounted(true);
       setData(article);
       setContent(article.content);
+      setShowUpdateStructure(article.structure !== user.structure);
     }
   }, [article]);
 
@@ -403,11 +416,12 @@ function EditArticlePage({
     const payload = { data };
     if (article._id) {
       payload.articleId = article._id;
+      payload.updateStructure = updateStructure;
     }
     method.call(payload, (err) => {
       setLoading(false);
       if (err) {
-        msg.error(err.reason);
+        msg.error(err.reason || err.message);
       } else {
         msg.success(i18n.__(`pages.EditArticlePage.${slug ? 'successUpdate' : 'successCreate'}`));
         history.push('/publications');
@@ -513,6 +527,29 @@ function EditArticlePage({
           multiline
           helperText={`${data.description.length}/400`}
         />
+        {article._id && showUpdateStructure ? (
+          <div className={classes.flexVertical}>
+            <TextField
+              className={classes.structure}
+              value={article.structure}
+              label={i18n.__('api.articles.labels.structure')}
+              variant="outlined"
+              margin="normal"
+              disabled
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="primary"
+                  checked={updateStructure}
+                  onChange={() => setUpdateStructure(!updateStructure)}
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+              }
+              label={i18n.__('pages.EditArticlePage.structureMessage', { structure: user.structure })}
+            />
+          </div>
+        ) : null}
         <Grid container className={classes.tagInputs}>
           <Grid item>
             <ButtonGroup>

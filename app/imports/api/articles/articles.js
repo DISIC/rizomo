@@ -51,8 +51,12 @@ Articles.schema = new SimpleSchema(
       type: String,
       label: getLabel('api.articles.labels.userId'),
     },
+    structure: {
+      type: String,
+      label: getLabel('api.articles.labels.structure'),
+    },
     markdown: { type: Boolean, label: getLabel('api.articles.labels.markdown'), defaultValue: false },
-    content: { type: String, label: getLabel('api.articles.labels.content') },
+    content: { type: String, label: getLabel('api.articles.labels.content'), min: 1 },
     description: { type: String, label: getLabel('api.articles.labels.description'), max: 400 },
     tags: { type: Array, defaultValue: [], label: getLabel('api.articles.labels.tag') },
     'tags.$': { type: String, regEx: SimpleSchema.RegEx.Id },
@@ -78,7 +82,7 @@ Articles.schema = new SimpleSchema(
       defaultValue: 0,
     },
   },
-  { tracker: Tracker },
+  { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
 
 Articles.publicFields = {
@@ -99,6 +103,7 @@ Factory.define('article', Articles, {
   content: faker.lorem.sentence(),
   description: faker.lorem.sentence(),
   userId: () => Random.id(),
+  structure: () => faker.company.companyName(),
 });
 
 Articles.attachSchema(Articles.schema);

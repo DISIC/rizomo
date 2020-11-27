@@ -11,7 +11,7 @@ import Articles from './articles';
 export const createArticle = new ValidatedMethod({
   name: 'articles.createArticle',
   validate: new SimpleSchema({
-    data: Articles.schema.omit('createdAt', 'updatedAt', 'userId', 'slug'),
+    data: Articles.schema.omit('createdAt', 'updatedAt', 'userId', 'slug', 'structure'),
   }).validator({ clean: true }),
 
   run({ data }) {
@@ -19,7 +19,8 @@ export const createArticle = new ValidatedMethod({
       throw new Meteor.Error('api.articles.createArticle.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
     Meteor.users.update({ _id: this.userId }, { $inc: { articlesCount: 1 }, $set: { lastArticle: new Date() } });
-    return Articles.insert({ ...data, userId: this.userId });
+    const structure = Meteor.users.findOne(this.userId, { fields: { structure: 1 } }).structure || '';
+    return Articles.insert({ ...data, userId: this.userId, structure });
   },
 });
 export const removeArticle = new ValidatedMethod({
@@ -46,10 +47,11 @@ export const updateArticle = new ValidatedMethod({
   name: 'articles.updateArticle',
   validate: new SimpleSchema({
     articleId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.articles.labels.id') },
-    data: Articles.schema.omit('createdAt', 'updatedAt', 'userId', 'slug'),
+    data: Articles.schema.omit('createdAt', 'updatedAt', 'userId', 'slug', 'structure'),
+    updateStructure: { type: Boolean, defaultValue: false },
   }).validator({ clean: true }),
 
-  run({ data, articleId }) {
+  run({ data, articleId, updateStructure }) {
     // check article existence
     const article = Articles.findOne({ _id: articleId });
     if (article === undefined) {
@@ -60,8 +62,11 @@ export const updateArticle = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.articles.updateArticle.notPermitted', i18n.__('api.articles.adminArticleNeeded'));
     }
+    const userStructure = Meteor.users.findOne(this.userId, { fields: { structure: 1 } }).structure || '';
     Meteor.users.update({ _id: this.userId }, { $set: { lastArticle: new Date() } });
-    return Articles.update({ _id: articleId }, { $set: { ...data, userId: this.userId } });
+    const updateData = { ...data, userId: this.userId };
+    if (updateStructure) updateData.structure = userStructure;
+    return Articles.update({ _id: articleId }, { $set: updateData });
   },
 });
 
@@ -104,9 +109,11 @@ export const uploadBackupPublications = new ValidatedMethod({
   validate: new SimpleSchema({
     articles: { type: Array },
     'articles.$': Articles.schema.omit('userId', 'visits', '_id', 'createdAt', 'updatedAt', 'slug'),
+    // if updateStructure is true, all articles will be attached to user's current structure
+    updateStructure: { type: Boolean, defaultValue: false },
   }).validator({ clean: true }),
 
-  run({ articles }) {
+  run({ articles, updateStructure }) {
     try {
       const authorized = isActive(this.userId);
       if (!authorized) {
@@ -115,7 +122,14 @@ export const uploadBackupPublications = new ValidatedMethod({
           i18n.__('api.users.mustBeLoggedIn'),
         );
       }
-      return articles.map((article) => Articles.insert({ ...article, userId: this.userId }));
+      const userStructure = Meteor.users.findOne(this.userId, { fields: { structure: 1 } }).structure || '';
+      return articles.map((article) =>
+        Articles.insert({
+          ...article,
+          userId: this.userId,
+          structure: updateStructure ? userStructure : article.structure,
+        }),
+      );
     } catch (error) {
       throw new Meteor.Error(error, error);
     }

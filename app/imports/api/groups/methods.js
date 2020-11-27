@@ -100,7 +100,6 @@ export const createGroup = new ValidatedMethod({
     if (!isActive(this.userId)) {
       throw new Meteor.Error('api.groups.createGroup.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
-    console.log('plugins', plugins);
     return _createGroup({ name, type, content, description, plugins, userId: this.userId });
   },
 });
