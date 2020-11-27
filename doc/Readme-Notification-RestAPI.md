@@ -15,7 +15,8 @@ Used to send a notification to a single user or a group.
   "userId": "[string : user ID]",
   "title": "[string : notification title]",
   "content": "[string : notification content]",
-  "type": "[optionnal string : notification type, can be info, group, request, setRole, unsetRole]"
+  "type": "[ string : notification type, can be info, group, request, setRole, unsetRole]",
+  "link": "[optionnal string : destination link of notification]"
 }
 ```
 
@@ -30,10 +31,10 @@ Used to send a notification to a single user or a group.
 }
 ```
 
-**Curl example for group notification**
+**Curl example for single user notification**
 
 ```bash
-curl -X POST -H "X-API-KEY: 849b7648-14b8-4154-9ef2-8d1dc4c2b7e9" \
+curl POST -H "X-API-KEY: 849b7648-14b8-4154-9ef2-8d1dc4c2b7e9" \
      -H "Content-Type: application/json" \
      -d '{"userId":"MvSficML8rXEJjFMq", "title":"Information importante", "content":"Les clés sont sous le paillasson", "type": "info"}' \
      http://localhost:3000/api/notifications
@@ -47,7 +48,8 @@ curl -X POST -H "X-API-KEY: 849b7648-14b8-4154-9ef2-8d1dc4c2b7e9" \
 {
   "groupId": "[string : group ID]",
   "title": "[string : notification title]",
-  "content": "[string : notification content]"
+  "content": "[string : notification content]",
+  "link": "[optionnal string : destination link of notification, default link to group page]"
 }
 ```
 
@@ -64,7 +66,7 @@ curl -X POST -H "X-API-KEY: 849b7648-14b8-4154-9ef2-8d1dc4c2b7e9" \
 **Curl example for group notification**
 
 ```bash
-curl -X POST -H "X-API-KEY: 849b7648-14b8-4154-9ef2-8d1dc4c2b7e9" \
+curl POST -H "X-API-KEY: 849b7648-14b8-4154-9ef2-8d1dc4c2b7e9" \
      -H "Content-Type: application/json" \
      -d '{"groupId":"ps8DGazDdrQGL3d4q", "title":"Réunion cruciale", "content":"Préparer des supports de communication percutants"}' \
      http://localhost:3000/api/notifications

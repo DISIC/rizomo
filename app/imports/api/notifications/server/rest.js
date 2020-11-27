@@ -52,7 +52,7 @@ export default async function addNotification(req, content) {
     if (!group) {
       throw new Meteor.Error('restapi.notifications.addNotifications.unknownGroup', i18n.__('api.groups.unknownGroup'));
     }
-    createGroupNotification({}, content.groupId, content.title, content.content);
+    createGroupNotification({}, content.groupId, content.title, content.content, content.link || '');
     return `Group Notification for ${group.name} sent by API`;
   }
   throw new Meteor.Error(
