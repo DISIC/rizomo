@@ -1,4 +1,4 @@
-image: geoffreybooth/meteor-base:1.10.2
+image: geoffreybooth/meteor-base:1.11.1
 
 stages:
   - deps
@@ -13,7 +13,7 @@ cache:
     - app/node_modules/
 
 variables:
-  METEOR_ALLOW_SUPERUSER: "true"
+  METEOR_ALLOW_SUPERUSER: 'true'
 
 Deps:
   stage: deps
