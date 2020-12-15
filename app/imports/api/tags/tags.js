@@ -38,7 +38,7 @@ Tags.publicFields = {
 };
 
 Factory.define('tag', Tags, {
-  name: () => Random.id(),
+  name: () => Random.id().toLowerCase(),
 });
 
 Tags.attachSchema(Tags.schema);

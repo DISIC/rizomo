@@ -59,7 +59,7 @@ Articles.schema = new SimpleSchema(
     content: { type: String, label: getLabel('api.articles.labels.content'), min: 1 },
     description: { type: String, label: getLabel('api.articles.labels.description'), max: 400 },
     tags: { type: Array, defaultValue: [], label: getLabel('api.articles.labels.tag') },
-    'tags.$': { type: String, regEx: SimpleSchema.RegEx.Id },
+    'tags.$': { type: String, min: 1 },
     createdAt: {
       type: Date,
       label: getLabel('api.articles.labels.createdAt'),
@@ -96,6 +96,7 @@ Articles.publicFields = {
   markdown: 1,
   visits: 1,
   tags: 1,
+  structure: 1,
 };
 
 Factory.define('article', Articles, {

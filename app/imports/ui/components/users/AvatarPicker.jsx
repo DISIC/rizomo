@@ -65,7 +65,7 @@ const AvatarPicker = ({ user, onAssignAvatar }) => {
   const uploadAvatarImg = ({ target: { files = [] } }) => {
     const readerImg = new FileReader();
 
-    readerImg.onload = function () {
+    readerImg.onload = function onImgLoad() {
       setImageAvatar(readerImg.result);
       setOpenAvatarEdit(true);
     };

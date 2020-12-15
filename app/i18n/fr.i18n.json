@@ -37,6 +37,7 @@
     },
     "tags": {
       "unknownTag": "Le tag n'existe pas.",
+      "notLowerCase": "Les Mots clés doivent être en minuscules",
       "labels": {
         "id": "Id de Tag",
         "name": "Nom"

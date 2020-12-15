@@ -8,7 +8,6 @@ import { Roles } from 'meteor/alanning:roles';
 
 import { isActive, getLabel } from '../utils';
 import Tags from './tags';
-import Articles from '../articles/articles';
 
 export const createTag = new ValidatedMethod({
   name: 'tags.createTag',
@@ -21,8 +20,11 @@ export const createTag = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.tags.createTag.notPermitted', i18n.__('api.users.notPermitted'));
     }
+    if (name !== name.toLowerCase()) {
+      throw new Meteor.Error('api.tags.createTag.notLowerCase', i18n.__('api.tags.notLowerCase'));
+    }
     return Tags.insert({
-      name,
+      name: name.toLowerCase(),
     });
   },
 });
@@ -44,8 +46,8 @@ export const removeTag = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.tags.removeTag.notPermitted', i18n.__('api.users.notPermitted'));
     }
-    // remove tag from articles
-    Articles.update({}, { $pull: { tags: tagId } }, { multi: true });
+    // changed: do not remove tag from existing articles
+    // Articles.update({}, { $pull: { tags: tag.name } }, { multi: true });
     return Tags.remove(tagId);
   },
 });

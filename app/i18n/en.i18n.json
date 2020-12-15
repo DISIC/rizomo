@@ -37,6 +37,7 @@
     },
     "tags": {
       "unknownTag": "Tag does not exist.",
+      "notLowerCase": "Tags must be lower case only",
       "labels": {
         "id": "Tag Id",
         "name": "Name"

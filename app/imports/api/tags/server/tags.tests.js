@@ -55,8 +55,9 @@ describe('tags', function () {
   describe('methods', function () {
     let userId;
     let adminId;
+    let tagName;
     let tagId;
-    let chatData;
+    let tagData;
     beforeEach(function () {
       // Clear
       Meteor.users.remove({});
@@ -85,29 +86,31 @@ describe('tags', function () {
       Roles.addUsersToRoles(adminId, 'admin');
       // set users as active
       Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
-      tagId = Factory.create('tag')._id;
-      chatData = {
+      const theTag = Factory.create('tag');
+      tagId = theTag._id;
+      tagName = theTag.name;
+      tagData = {
         name: 'application',
       };
     });
     describe('createTag', function () {
       it('does create a tag with admin user', function () {
-        createTag._execute({ userId }, chatData);
-        const tag = Tags.findOne({ name: chatData.name });
+        createTag._execute({ userId }, tagData);
+        const tag = Tags.findOne({ name: tagData.name });
         assert.typeOf(tag, 'object');
       });
       // it("does not create a tag if you're not admin", function () {
       //   // Throws if non admin user, or logged out user, tries to create a tag
       //   assert.throws(
       //     () => {
-      //       createTag._execute({ userId }, chatData);
+      //       createTag._execute({ userId }, tagData);
       //     },
       //     Meteor.Error,
       //     /api.tags.createTag.notPermitted/,
       //   );
       //   assert.throws(
       //     () => {
-      //       createTag._execute({}, chatData);
+      //       createTag._execute({}, tagData);
       //     },
       //     Meteor.Error,
       //     /api.tags.createTag.notPermitted/,
@@ -119,11 +122,11 @@ describe('tags', function () {
         removeTag._execute({ userId: adminId }, { tagId });
         assert.equal(Tags.findOne(tagId), undefined);
       });
-      it('does remove the tag from an article', function () {
-        const oneArticleId = Factory.create('article', { title: 'test', tags: [tagId] })._id;
+      it('does not remove the tag from an article when deleted', function () {
+        const oneArticleId = Factory.create('article', { title: 'test', tags: [tagName] })._id;
         removeTag._execute({ userId: adminId }, { tagId });
         assert.equal(Tags.findOne(tagId), undefined);
-        assert.equal(Articles.findOne(oneArticleId).tags.length, 0);
+        assert.equal(Articles.findOne(oneArticleId).tags.length, 1);
       });
       it("does not delete a tag if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to delete the tag
