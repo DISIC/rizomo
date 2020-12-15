@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import Articles from './articles/articles';
 import Services from './services/services';
 import Groups from './groups/groups';
+import Tags from './tags/tags';
+import logServer from './logging';
 
 Migrations.add({
   version: 1,
@@ -108,11 +110,80 @@ Migrations.add({
 
 Migrations.add({
   version: 8,
-  name: 'Add author structure to articles',
+  name: 'No update here (kept for compatibility)',
   up: () => {
-    Articles.update({}, { $set: { tags: [] } }, { multi: true });
+    // nothing to do here, wrong code previsouly added by mistake
+    // Articles.update({}, { $set: { tags: [] } }, { multi: true });
   },
   down: () => {
-    Articles.rawCollection().updateMany({}, { $unset: { tags: true } });
+    // nothing to do here, wrong code previsouly added by mistake
+    // Articles.rawCollection().updateMany({}, { $unset: { tags: true } });
+  },
+});
+
+Migrations.add({
+  version: 9,
+  name: 'Add author structure to articles',
+  up: () => {
+    Articles.find({})
+      .fetch()
+      .forEach((article) => {
+        const updateData = {};
+        // set article structure when possible
+        if (article.structure === undefined || article.structure === '') {
+          const author = Meteor.users.findOne({ _id: article.userId }, { fields: { structure: 1 } });
+          if (author) {
+            updateData.structure = author.structure || '';
+          } else {
+            logServer(`Migration: could not find author ${article.userId} for article ${article._id}`);
+          }
+        }
+        // store tag name in articles instead of _id
+        const newTags = [];
+        if (article.tags) {
+          article.tags.forEach((tagId) => {
+            const tag = Tags.findOne(tagId);
+            if (tag && !newTags.includes(tag.name.toLowerCase())) {
+              // add and force tag to lower case
+              newTags.push(tag.name.toLowerCase());
+            }
+          });
+          updateData.tags = newTags;
+        }
+        if (Object.keys(updateData).length > 0) {
+          Articles.update({ _id: article._id }, { $set: updateData });
+        }
+      });
+    // update Tags collection to be lowercase only
+    Tags.find({})
+      .fetch()
+      .forEach((tag) => {
+        const tagName = tag.name.toLowerCase();
+        if (tag.name !== tagName) {
+          if (Tags.findOne({ name: tagName })) {
+            // tag names are unique, remove if lowercase version exists
+            Tags.remove({ _id: tag._id });
+          } else {
+            // otherwise, update tag
+            Tags.update({ _id: tag._id }, { $set: { name: tagName } });
+          }
+        }
+      });
+  },
+  down: () => {
+    Articles.rawCollection().updateMany({}, { $unset: { structure: true } });
+    Articles.find({})
+      .fetch()
+      .forEach((article) => {
+        // store back tag _id (unknown tags are removed to prevent schema check errors)
+        const newTags = [];
+        if (article.tags) {
+          article.tags.forEach((tagName) => {
+            const tag = Tags.findOne({ name: tagName });
+            if (tag) newTags.push(tag._id);
+          });
+        }
+        Articles.update({ _id: article._id }, { $set: { tags: newTags } });
+      });
   },
 });

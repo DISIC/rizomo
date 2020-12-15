@@ -495,19 +495,22 @@ const ProfilePage = () => {
               </div>
             </Grid>
           </Grid>
-          <p>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="primary"
-                  checked={structChecked}
-                  onChange={() => setStructChecked(!structChecked)}
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
-                />
-              }
-              label={i18n.__('pages.ProfilePage.structureMessage')}
-            />
-          </p>
+          {user.structure ? (
+            <p>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    disabled={!user.structure}
+                    color="primary"
+                    checked={structChecked}
+                    onChange={() => setStructChecked(!structChecked)}
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                }
+                label={i18n.__('pages.ProfilePage.structureMessage')}
+              />
+            </p>
+          ) : null}
         </Paper>
       </Container>
     </Fade>

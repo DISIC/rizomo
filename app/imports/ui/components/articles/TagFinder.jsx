@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
 function TagFinder({ tags, onSelected, exclude, opened, resetKey }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState(tags.filter((tag) => !exclude.includes(tag._id)));
+  const [options, setOptions] = useState(tags.filter((tag) => !exclude.includes(tag.name)));
   let existingTags = tags.map((tag) => tag.name.toLowerCase());
 
   React.useEffect(() => {
@@ -24,7 +24,7 @@ function TagFinder({ tags, onSelected, exclude, opened, resetKey }) {
   }, [opened]);
 
   React.useEffect(() => {
-    setOptions(tags.filter((tag) => !exclude.includes(tag._id)));
+    setOptions(tags.filter((tag) => !exclude.includes(tag.name)));
   }, [tags, exclude]);
 
   React.useEffect(() => {
@@ -57,7 +57,7 @@ function TagFinder({ tags, onSelected, exclude, opened, resetKey }) {
           if (!existingTags.includes(params.inputValue.toLowerCase())) {
             filtered.push({
               inputValue: params.inputValue,
-              name: `${i18n.__('components.TagFinder.addTag')} "${params.inputValue}"`,
+              name: `${i18n.__('components.TagFinder.addTag')} "${params.inputValue.toLowerCase()}"`,
             });
           }
         }

@@ -30,7 +30,7 @@ import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
 import TopBar from '../../components/menus/TopBar';
 import Footer from '../../components/menus/Footer';
-import Tags from '../../../api/tags/tags';
+// import Tags from '../../../api/tags/tags';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
 
 function PublicArticleDetailsPage({
   article = {},
-  tags = [],
   ready,
   history,
   match: {
@@ -217,8 +216,8 @@ function PublicArticleDetailsPage({
               <Typography className={classes.smallTitle} variant="h5">
                 {i18n.__('api.articles.labels.tags')}
               </Typography>
-              {tags.map((tag) => (
-                <Chip className={classes.tag} key={tag._id} label={tag.name} color="secondary" />
+              {article.tags.map((tag) => (
+                <Chip className={classes.tag} key={tag} label={tag} color="secondary" />
               ))}
             </Grid>
             <Grid item xs={12} className={isMobile ? null : classes.flex}>
@@ -243,7 +242,7 @@ function PublicArticleDetailsPage({
 
 PublicArticleDetailsPage.propTypes = {
   article: PropTypes.objectOf(PropTypes.any).isRequired,
-  tags: PropTypes.arrayOf(PropTypes.any).isRequired,
+  // tags: PropTypes.arrayOf(PropTypes.any).isRequired,
   ready: PropTypes.bool.isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -257,11 +256,11 @@ export default withTracker(
   }) => {
     const articleHandle = Meteor.subscribe('articles.one', { slug });
     const article = Articles.findOne({ slug }) || {};
-    const tags = Tags.find({}).fetch();
+    // const tags = Tags.find({}).fetch();
     const ready = articleHandle.ready();
     return {
       article,
-      tags,
+      // tags,
       ready,
     };
   },

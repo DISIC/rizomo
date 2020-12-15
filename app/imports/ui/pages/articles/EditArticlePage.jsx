@@ -374,7 +374,7 @@ function EditArticlePage({
       setMounted(true);
       setData(article);
       setContent(article.content);
-      setShowUpdateStructure(article.structure !== user.structure);
+      setShowUpdateStructure(user.structure && article.structure !== user.structure);
     }
   }, [article]);
 
@@ -432,12 +432,12 @@ function EditArticlePage({
   const addTag = () => {
     if (newTag._id === null) {
       // add new Tag in database and get its Id
-      Meteor.call('tags.createTag', { name: newTag.name }, (err, res) => {
+      Meteor.call('tags.createTag', { name: newTag.name }, (err) => {
         if (err) msg.error(err.reason);
-        else data.tags.push(res);
+        else data.tags.push(newTag.name);
       });
-    } else if (!data.tags.includes(newTag._id)) {
-      const newTags = [...data.tags, newTag._id];
+    } else if (!data.tags.includes(newTag.name)) {
+      const newTags = [...data.tags, newTag.name];
       setData({ ...data, tags: newTags });
     }
     setNewTag({ _id: null, name: '' });
@@ -445,8 +445,8 @@ function EditArticlePage({
     setTagsKey(new Date().toISOString());
   };
 
-  const removeTag = (tagId) => {
-    const newTags = data.tags.filter((tag) => tag !== tagId);
+  const removeTag = (tagName) => {
+    const newTags = data.tags.filter((tag) => tag !== tagName);
     setData({ ...data, tags: newTags });
   };
 
@@ -456,14 +456,14 @@ function EditArticlePage({
       if (!tags.map((tag) => tag.name.toLowerCase()).includes(newValue.toLowerCase()))
         setNewTag({
           _id: null,
-          name: newValue,
+          name: newValue.toLowerCase(),
         });
     } else if (newValue && newValue.inputValue) {
       // Create a new value from the user input
       if (!tags.map((tag) => tag.name.toLowerCase()).includes(newValue.inputValue.toLowerCase()))
         setNewTag({
           _id: null,
-          name: newValue.inputValue,
+          name: newValue.inputValue.toLowerCase(),
         });
     } else if (newValue === null) setNewTag({ _id: null, name: '' });
     else setNewTag(newValue);
@@ -564,15 +564,15 @@ function EditArticlePage({
             </ButtonGroup>
           </Grid>
         </Grid>
-        {data.tags.map((tagId) => {
-          const tagName = Tags.findOne(tagId).name;
+        {data.tags.map((tagName) => {
+          // const tagName = Tags.findOne(tagId).name;
           return (
             <Chip
               className={classes.tag}
-              key={tagId}
+              key={tagName}
               label={tagName}
               color="secondary"
-              onDelete={() => removeTag(tagId)}
+              onDelete={() => removeTag(tagName)}
             />
           );
         })}
