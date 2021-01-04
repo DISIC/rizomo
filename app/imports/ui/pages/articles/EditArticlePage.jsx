@@ -201,7 +201,7 @@ function EditArticlePage({
     if (toastRef.current) {
       setToast(toastRef.current.getInstance());
     }
-  }, [toastRef.current]);
+  }, [toastRef.current, data.markdown]);
 
   function imageHandler(instance) {
     if (data.markdown) {
