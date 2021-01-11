@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -92,9 +93,15 @@ function ArticlesPage() {
   };
 
   const mapList = (func) => items.filter((article) => filterServices(article)).map(func);
+  const blogPage = Meteor.settings.public.laboiteBlogURL || `${Meteor.absoluteUrl()}public/`;
 
   const handleCopyURL = () => {
-    const myPublicPublicationURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}`;
+    let myPublicPublicationURL;
+    if (Meteor.settings.public.laboiteBlogURL !== '') {
+      myPublicPublicationURL = `${blogPage}/authors/${Meteor.userId()}`;
+    } else {
+      myPublicPublicationURL = `${blogPage}${Meteor.userId()}`;
+    }
     navigator.clipboard
       .writeText(myPublicPublicationURL)
       .then(msg.success(i18n.__('pages.ArticlesPage.successCopyURL')));
@@ -130,7 +137,7 @@ function ArticlesPage() {
                 title={i18n.__('pages.ArticlesPage.openPublicPage')}
                 aria-label={i18n.__('pages.ArticlesPage.openPublicPage')}
               >
-                <IconButton onClick={() => window.open(`${Meteor.absoluteUrl()}public/`, '_blank')}>
+                <IconButton onClick={() => window.open(blogPage, '_blank')}>
                   <OpenInNewIcon fontSize="large" />
                 </IconButton>
               </Tooltip>

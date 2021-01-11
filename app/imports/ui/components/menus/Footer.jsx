@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -27,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 25,
     fontFamily: 'WorkSansBold',
   },
+  blog: {
+    color: theme.palette.tertiary.main,
+    fontFamily: 'WorkSansBold',
+  },
   li: {
     listStyle: 'none',
   },
@@ -43,6 +48,7 @@ const Footer = () => {
   const classes = useStyles();
   const [settingsData, setSettingsData] = useState([]);
   const [{ isMobile }] = useAppContext();
+  const externalBlog = Meteor.settings.public.laboiteBlogURL;
 
   const toolbarContent = () => {
     return (
@@ -75,6 +81,22 @@ const Footer = () => {
     );
   };
 
+  const blogLink = () => {
+    return (
+      <>
+        {externalBlog === '' ? (
+          <Link className={classes.link} to="/public">
+            Publications
+          </Link>
+        ) : (
+          <a href={externalBlog} className={classes.blog} target="_blank" rel="noreferrer noopener">
+            Publications
+          </a>
+        )}
+      </>
+    );
+  };
+
   useEffect(() => {
     getAppSettingsLinks.call(null, (error, result) => {
       const newData = { ...result };
@@ -96,19 +118,13 @@ const Footer = () => {
         <Toolbar className={classes.root}>
           <ul>
             {toolbarContent()}
-            <li className={classes.li}>
-              <Link className={classes.link} to="/public">
-                Publications
-              </Link>
-            </li>
+            <li className={classes.li}>{blogLink()}</li>
           </ul>
         </Toolbar>
       ) : (
         <Toolbar className={classes.root}>
           <div>{toolbarContent()}</div>
-          <Link className={classes.link} to="/public">
-            Publications
-          </Link>
+          {blogLink()}
         </Toolbar>
       )}
     </AppBar>
