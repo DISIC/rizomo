@@ -3,6 +3,7 @@
     "enableKeycloak": true,
     "keycloakUrl": "https://auth.appseducation.fr/auth",
     "keycloakRealm": "apps",
+    "laboiteBlogURL": "",
     "minioSSL": false,
     "minioPort": null,
     "minioAccess": "Uhjm4KJ8MV",

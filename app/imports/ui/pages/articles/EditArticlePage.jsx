@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
@@ -192,7 +193,12 @@ function EditArticlePage({
   const [toastRange, setRange] = useState(0);
   const [updateStructure, setUpdateStructure] = useState(false);
   const [showUpdateStructure, setShowUpdateStructure] = useState(false);
-  const publicURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}/${data.slug}`;
+  let publicURL;
+  if (Meteor.settings.public.laboiteBlogURL) {
+    publicURL = `${Meteor.settings.public.laboiteBlogURL}/articles/${data.slug}`;
+  } else {
+    publicURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}/${data.slug}`;
+  }
   const toastRef = useRef();
   // tagsKey : used to force re-render of autocomplete component (tags)
   const [tagsKey, setTagsKey] = useState(new Date().toISOString());

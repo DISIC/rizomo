@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -52,6 +53,12 @@ const useStyles = makeStyles((theme) => ({
 export default function ArticleDetails({ article, publicPage }) {
   const classes = useStyles();
   const history = useHistory();
+  let articleURL;
+  if (Meteor.settings.public.laboiteBlogURL !== '') {
+    articleURL = `${Meteor.settings.public.laboiteBlogURL}/articles/${article.slug}`;
+  } else {
+    articleURL = `${Meteor.absoluteUrl()}public/${Meteor.userId()}/${article.slug}`;
+  }
 
   const handlePublic = () => {
     history.push(`/public/${article.userId}/${article.slug}`);
@@ -77,7 +84,7 @@ export default function ArticleDetails({ article, publicPage }) {
           className={classes.buttonText}
           color="primary"
           variant="contained"
-          onClick={() => window.open(`${Meteor.absoluteUrl()}public/${Meteor.userId()}/${article.slug}`, '_blank')}
+          onClick={() => window.open(articleURL, '_blank')}
         >
           <OpenInNewIcon fontSize="large" />
         </Button>
