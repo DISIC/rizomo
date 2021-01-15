@@ -13,7 +13,7 @@ RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
 
 
 # Rather than Node 8 latest (Alpine), you can also use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html
-FROM node:12.18.4-alpine
+FROM hub.eole.education/proxyhub/library/node:12.18.4-alpine
 
 ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
