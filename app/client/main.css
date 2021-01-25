@@ -1,4 +1,14 @@
-body {
-  padding: 10px;
-  font-family: sans-serif;
+* {
+  box-sizing: border-box;
+}
+#root {
+  min-height: 100vh;
+}
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
+.ql-editor {
+  max-height: 600px;
 }

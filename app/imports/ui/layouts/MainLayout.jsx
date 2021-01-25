@@ -1,59 +1,148 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
-import TopBar from '../components/TopBar';
-import LeftDrawer from '../components/LeftDrawer';
-import ServicesPage from '../pages/ServicesPage';
+// components
+import TopBar from '../components/menus/TopBar';
+import Spinner from '../components/system/Spinner';
+import AdminRoute from '../components/system/AdminRoute';
+import MobileMenu from '../components/menus/MobileMenu';
+import NotValidatedMessage from '../components/system/NotValidatedMessage';
+import CustomToast from '../components/system/CustomToast';
+import { useAppContext } from '../contexts/context';
+
+// pages
+import ServicesPage from '../pages/services/ServicesPage';
+import SingleServicePage from '../pages/services/SingleServicePage';
+import GroupsPage from '../pages/groups/GroupsPage';
+import NotFound from '../pages/system/NotFound';
+import PersonalPage from '../pages/PersonalPage';
+import SingleGroupPage from '../pages/groups/SingleGroupPage';
+import AddressBook from '../pages/groups/AddressBook';
+import ProfilePage from '../pages/system/ProfilePage';
+import ArticlesPage from '../pages/articles/ArticlesPage';
+import EditArticlePage from '../pages/articles/EditArticlePage';
+import MediaStoragePage from '../pages/MediaStoragePage';
+import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
+import NotificationsDisplay from '../components/notifications/NotificationsDisplay';
+
+// dynamic imports
+const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
+const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPage'));
+const AdminTagsPage = lazy(() => import('../pages/admin/AdminTagsPage'));
+const AdminServicesPage = lazy(() => import('../pages/admin/AdminServicesPage'));
+const AdminUserValidationPage = lazy(() => import('../pages/admin/AdminUserValidationPage'));
+const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
+const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupPage'));
+const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage'));
 
 // CSS
-const drawerWidth = 240;
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    position: 'relative',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-    marginTop: 50,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-}));
+const useStyles = (isMobile) =>
+  makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+      position: 'relative',
+    },
+    content: {
+      flexGrow: 1,
+      padding: isMobile ? null : theme.spacing(3),
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginTop: 60,
+      marginBottom: isMobile ? 100 : 50,
+    },
+    contentShift: {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    },
+  }));
 
-export default function MainLayout() {
-  const classes = useStyles();
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [searchString, setSearchString] = React.useState('');
+function MainLayout() {
+  const [{ userId, user, loadingUser, isMobile }] = useAppContext();
+  const classes = useStyles(isMobile)();
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <TopBar setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} setSearchString={setSearchString} />
-      <LeftDrawer setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: drawerOpen,
-        })}
-      >
-        <Switch>
-          <Route path="/" render={(props) => <ServicesPage {...props} searchString={searchString} />} />
-        </Switch>
-      </main>
+      <TopBar />
+      {loadingUser ? (
+        <Spinner full />
+      ) : (
+        <main className={classes.content}>
+          <Suspense fallback={<Spinner full />}>
+            {user.isActive ? (
+              <Switch>
+                <Route exact path="/" component={PersonalPage} />
+                <Route exact path="/profile" component={ProfilePage} />
+                <Route exact path="/services" component={ServicesPage} />
+                <Route exact path="/publications" component={ArticlesPage} />
+                <Route exact path="/publications/new" component={EditArticlePage} />
+                <Route exact path="/publications/:slug" component={EditArticlePage} />
+                <Route exact path="/services/:slug" component={SingleServicePage} />
+                <Route exact path="/groups" component={GroupsPage} />
+                <Route exact path="/groups/:slug" component={SingleGroupPage} />
+                <Route exact path="/groups/:slug/addressbook" component={AddressBook} />
+                <Route exact path="/admingroups" component={AdminGroupsPage} />
+                <Route exact path="/admingroups/new" component={AdminSingleGroupPage} />
+                <Route exact path="/admingroups/:_id" component={AdminSingleGroupPage} />
+                <Route exact path="/medias" component={MediaStoragePage} />
+                <AdminRoute
+                  exact
+                  path="/adminservices"
+                  component={AdminServicesPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  exact
+                  path="/adminservices/new"
+                  component={AdminSingleServicePage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  exact
+                  path="/adminservices/:_id"
+                  component={AdminSingleServicePage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute path="/adminusers" component={AdminUsersPage} userId={userId} loadingUser={loadingUser} />
+                <AdminRoute
+                  path="/usersvalidation"
+                  component={AdminUserValidationPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  path="/admincategories"
+                  component={AdminCategoriesPage}
+                  userId={userId}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute path="/admintags" component={AdminTagsPage} userId={userId} loadingUser={loadingUser} />
+                <AdminRoute path="/settings" component={AdminSettingsPage} userId={userId} loadingUser={loadingUser} />
+                <Route component={NotFound} />
+              </Switch>
+            ) : (
+              <Switch>
+                <Route exact path="/profile" component={ProfilePage} />
+                <Route component={NotValidatedMessage} />
+              </Switch>
+            )}
+          </Suspense>
+          {isMobile && <MobileMenu />}
+        </main>
+      )}
+      <NotificationsDisplay />
+      <CustomToast />
     </div>
   );
 }
+
+export default MainLayout;

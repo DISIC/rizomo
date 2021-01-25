@@ -1,37 +1,592 @@
 {
   "api": {
+    "appsettings": {
+      "labels": {
+        "external": "Use an external link",
+        "link": "Link to the page",
+        "content": "Content",
+        "introduction": "Introduction",
+        "content_introduction": "Introduction text",
+        "legal": "Legal notice",
+        "external_legal": "Use an external link for legal notice page",
+        "link_legal": "Legal notice text page link",
+        "content_legal": "Legal notice text",
+        "gcu": "General Conditions of Usage",
+        "external_gcu": "Use an external link for G.C.U page",
+        "link_gcu": "G.C.U text page link",
+        "content_gcu": "G.C.U text",
+        "accessibility": "Accessibility",
+        "external_accessibility": "Use an external link for Accessibility page",
+        "link_accessibility": "Accessibility text page link",
+        "content_accessibility": "Accessibility text",
+        "personalData": "Personal Data",
+        "external_personalData": "Use an external link for Personal Data page",
+        "link_personalData": "Personal Data text page link",
+        "content_personalData": "Personal Data text"
+      },
+      "updateAppsettings": {
+        "notPermitted": "You don't have sufficient rights."
+      }
+    },
+    "categories": {
+      "unknownCategorie": "Category does not exist.",
+      "labels": {
+        "id": "Category Id",
+        "name": "Name"
+      }
+    },
+    "tags": {
+      "unknownTag": "Tag does not exist.",
+      "notLowerCase": "Tags must be lower case only",
+      "labels": {
+        "id": "Tag Id",
+        "name": "Name"
+      }
+    },
     "users": {
       "unknownUser": "User does not exist.",
       "mustBeLoggedIn": "You must be logged in.",
-      "adminNeeded": "You don't have admin rights."
+      "adminNeeded": "You don't have admin rights.",
+      "adminGiven": "Admin rights have been given to user: ",
+      "notPermitted": "You don't have sufficient rights.",
+      "lastAdminError": "Can not remove rights on last admin user",
+      "managedByKeycloak": "This information must be managed in Keycloak",
+      "labels": {
+        "id": "User Id",
+        "username": "User Name",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "emails": "Email",
+        "emailAddress": "Email Address",
+        "emailVerified": "Email Verified",
+        "createdAt": "User Creation Date",
+        "profile": "Profile",
+        "services": "Services",
+        "heartbeat": "Heartbeat",
+        "isActive": "User Is Active",
+        "isRequest": "User Awaits Activation",
+        "favServices": "Favorite Services",
+        "structure": "Attachment Structure",
+        "primaryEmail": "Primary Email",
+        "language": "Preferred Language",
+        "logoutType": "Logout Method",
+        "lastLogin": "Last login date",
+        "avatar": "avatar URL"
+      },
+      "logoutTypes": {
+        "ask": "Ask at logout",
+        "local": "Disconnect only this app",
+        "global": "Disconnect from all apps"
+      }
     },
     "groups": {
       "unknownGroup": "Group does not exist.",
-      "adminGroupNeeded": "You don't have admin rights on this group."
+      "adminGroupNeeded": "You don't have admin rights on this group.",
+      "moderatedGroupOnly": "This action is available for moderated group only.",
+      "userNotFound": "User not found",
+      "groupAlreadyExist": "A group with the same name already exists",
+      "types": {
+        "open": "open",
+        "moderated": "moderated",
+        "private": "private"
+      },
+      "labels": {
+        "id": "Group Id",
+        "name": "Name",
+        "slug": "Slug",
+        "desciption": "Description",
+        "content": "Long description",
+        "active": "Active",
+        "groupPadID": "Group Pad ID",
+        "digest": "Digest",
+        "type": "Type",
+        "owner": "Owner",
+        "candidates": "Candidates",
+        "members": "Members",
+        "animators": "Animators",
+        "admins": "Admins",
+        "applications": "Applications ID",
+        "nextcloud": "Create groupe in Nextcloud",
+        "plugins": "Related services managing groups"
+      }
     },
     "services": {
-      "unknownService": "Service does not exist."
+      "unknownService": "Service does not exist.",
+      "states": {
+        "displayed": "displayed",
+        "inactive": "inactive",
+        "invisible": "invisible"
+      },
+      "labels": {
+        "id": "Service Id",
+        "title": "Title",
+        "slug": "Slug",
+        "team": "Team",
+        "usage": "Usage",
+        "state": "State",
+        "content": "Long description",
+        "description": "Description",
+        "logo": "Logo",
+        "categories": "Categories",
+        "screenshots": "Screenshots"
+      }
+    },
+    "events": {
+      "labels": {
+        "id": "Event Id",
+        "title": "Title",
+        "startsAt": "Start Date",
+        "endsAt": "End Date",
+        "allDay": "Full Day",
+        "description": "Description",
+        "location": "Location",
+        "groupId": "Group Id",
+        "eventPadId": "Event Pad Id",
+        "participantId": "Participant Id"
+      }
+    },
+    "articles": {
+      "adminArticleNeeded": "You don't have admin rights on this publication",
+      "unknownArticle": "This publication does not exists",
+      "labels": {
+        "id": "Article Id",
+        "title": "Title",
+        "slug": "Publication's URL",
+        "userId": "Author's ID",
+        "description": "Short description",
+        "content": "Content of the publication",
+        "tags": "Tags",
+        "createdAt": "Creation date",
+        "updatedAt": "Update date",
+        "markdown": "markdown mode",
+        "structure": "Article's attachment Structure"
+      }
+    },
+    "notifications": {
+      "setRole": "Add or delete role for user",
+      "setRoleNotifTitle": "New role",
+      "setRoleNotifContent": "You are {$role} for {$group} group.",
+      "unsetRoleNotifTitle": "Role suppression",
+      "unsetRoleNotifContent": "You are no longer {$role} for {$group} group.",
+      "requestNotifTitle": "Group request",
+      "requestNotifContent": "{$name} is candidate for group {$group}.",
+      "badConfig": "Bad configuration for notifications of type {$type} (expiration delay in days)",
+      "labels": {
+        "id": "Notification Id",
+        "userId": "Owner ID",
+        "type": "Type",
+        "title": "Title",
+        "content": "Content of the notification",
+        "createdAt": "Creation date",
+        "expireAt": "Expiration date",
+        "read": "Notification read",
+        "roles": {
+          "candidate": "candidate",
+          "member": "member",
+          "animator": "animator",
+          "admin": "administrator"
+        }
+      }
+    },
+    "methods": {
+      "operationSuccessMsg": "Operation succeeded.",
+      "labels": {
+        "page": "Page",
+        "pageSize": "Page Size",
+        "filter": "Filter",
+        "sortColumn": "Sort Column",
+        "sortOrder": "Sort Order",
+        "excludeGroupId": "Excluded Group Id",
+        "excludeRole": "Excluded Role",
+        "keycloakId": "Keycloak Id"
+      }
+    },
+    "keycloak": {
+      "initClient": "Keycloak: API client initialized",
+      "tokenError": "** Keycloak: could not get token, please check settings **",
+      "clientIdFound": "Keycloak: client ID found ({$clientId})",
+      "clientIdError": "** Keycloak: could not find client Id, please check settings **",
+      "groupAdded": "Keycloak: group {$groupName} added (id {$groupId})",
+      "groupAddError": "Keycloak : ERROR adding group {$groupName}",
+      "groupNotFound": "Keycloak: could not find group {$groupName}",
+      "groupNameChanged": "Keycloak: changed group name from {$oldName} to {$newName}",
+      "groupUpdateError": "Keycloak: Error updating group {$groupName}",
+      "groupRemoved": "Keycloak: group {$groupName} removed",
+      "groupRemoveError": "Keycloak: Error removing group {$groupName}",
+      "adminAdded": "Keycloak: user {$userId} added to admins",
+      "addAdminError": "Keycloak : ERROR adding user {$userId} to admins`",
+      "userNotFound": "Keycloak: could not find Keycloak ID for user {$userId}",
+      "userGroupAdded": "Keycloak: group {$groupName} added to user {$userId}",
+      "userGroupAddError": "Keycloak : ERROR adding group {$groupName} to user {$userId}",
+      "userGroupRemoved": "Keycloak: group {$groupName} removed from user {$userId}",
+      "userGroupRemoveError": "Keycloak : ERROR removing group {$groupName} from user {$userId}"
+    },
+    "nextcloud": {
+      "groupExists": "Group already exists in Nextcloud",
+      "addGroupError": "Error, could not create group in Nextcloud",
+      "addGroupFolderError": "Error, could not create group folder in Nextcloud",
+      "removeGroupError": "Warning, could not delete group in Nextcloud",
+      "removeGroupFolderError": "Warning, could not delete group folder in Nextcloud",
+      "groupFoldersInactive": "Nextcloud: ERROR, make sure 'Group Folders' application is active",
+      "groupNotFound": "Nextcloud: ERROR getting group {$groupName}",
+      "groupAdded": "Nextcloud: group {$groupName} added",
+      "groupAddError": "Nextcloud: ERROR adding group {$groupName}",
+      "groupFolderAssignError": "Nextcloud: could not assign group {$groupName} to folder {$folderName}",
+      "groupFolderAdded": "Nextcloud: group folder {$folderName} added",
+      "permissionsSet": "Nextcloud: access and permissions set for group folder {$folderName}",
+      "quotaSet": "Nextcloud: quota set for group folder {$folderName}",
+      "quotaSetError": "Nextcloud: ERROR setting quota on group folder {$folderName}",
+      "permissionSetError": "Nextcloud: ERROR settings group permissions for group folder {$folderName}",
+      "folderAddError": "Nextcloud: ERROR adding group folder {$folderName}",
+      "folderRemoved": "Nextcloud: removed group folder {$id} ({$mount_point})",
+      "folderRemoveError": "Nextcloud: ERROR deleting group folder {$id} ({$message})",
+      "groupRemoved": "Nextcloud: group {$groupName} removed",
+      "groupRemoveError": "Nextcloud: Error removing group {$groupName}",
+      "enablePluginForGroup": "Create group in Nextcloud",
+      "buttonLinkPlugin": "Access shared files in Nextcloud"
+    },
+    "rocketChat": {
+      "initClient": "RocketChat: API client initialized",
+      "tokenError": "** RocketChat: could not get token, please check settings **",
+      "groupAdded": "RocketChat: channel {$name} added",
+      "groupAddError": "RocketChat : ERROR adding channel {$name}",
+      "groupRemoved": "RocketChat: channel {$name} removed",
+      "groupRemoveError": "RocketChat: Error removing channel {$name}",
+      "getUserError": "RocketChat: Error getting user data",
+      "getGroupError": "RocketChat: Error getting group data",
+      "userInvited": "RocketChat: user {$username} added to group {$groupId}",
+      "userInviteError": "RocketChat: Error inviting user {$username} to group {$groupId}",
+      "userAdded": "RocketChat: user {$username} created",
+      "userAddError": "RocketChat: Error creating user {$username}",
+      "logout": "RocketChat: Invalidate current token",
+      "logoutError": "RocketChat: error while invalidating token",
+      "userKicked": "RocketChat: user {$username} removed from group {$groupId}",
+      "userKickError": "RocketChat: Error removing user {$username} from group {$groupId}",
+      "roleSet": "RocketChat: Role {$role} set for user {$username} on group {$groupId}",
+      "setRoleError": "RocketChat: Error setting role {$role} for user {$username} on group {$groupId}",
+      "roleUnset": "RocketChat: Role {$role} removed for user {$username} on group {$groupId}",
+      "unsetRoleError": "RocketChat: Error removing role {$role} for user {$username} on group {$groupId}",
+      "updateEmail": "RocketChat: updated email to {$email} for user {$username}",
+      "updateEmailError": "RocketChat: error updating email to {$email} for user {$username}",
+      "owner": "owner",
+      "moderator": "moderator",
+      "enablePluginForGroup": "Create group in RocketChat",
+      "buttonLinkPlugin": "Access shared files in RocketChat"
+    },
+    "logging": {
+      "unknownLogLevel": "Specified log level does not exist",
+      "info": "Server information",
+      "warning": "Server warning",
+      "error": "Server error"
     }
   },
   "components": {
+    "IntroductionEdition": {
+      "title": "Introduction",
+      "language": "Select the language to edit",
+      "language_fr": "French",
+      "language_en": "English",
+      "content": "Introduction text",
+      "update": "Update",
+      "cancel": "Cancel"
+    },
+    "Notifications": {
+      "remove": "Remove"
+    },
+    "NotificationsDisplay": {
+      "title": "Notifications",
+      "confirm": "Yes",
+      "cancel": "No",
+      "empty": "You have no notifications",
+      "removeAll": "Remove all the notifications",
+      "confirmRemoveAll": "Are you sure you want to delete all the notifications ?"
+    },
+    "Footer": {
+      "personalData": "Personal Data",
+      "gcu": "G.C.U",
+      "accessibility": "Accessibility",
+      "legal": "Legal notice"
+    },
+    "LegalComponent": {
+      "title_introduction": "Introduction",
+      "content_introduction": "Introduction text",
+      "title_legal": "Legal notice",
+      "external_legal": "Use an external link for legal notice page",
+      "link_legal": "Legal notice text page link",
+      "content_legal": "Legal notice text",
+      "title_gcu": "G.C.U",
+      "external_gcu": "Use an external link for G.C.U page",
+      "link_gcu": "G.C.U text page link",
+      "content_gcu": "G.C.U text",
+      "title_accessibility": "Accessibility",
+      "external_accessibility": "Use an external link for Accessibility page",
+      "link_accessibility": "Accessibility text page link",
+      "content_accessibility": "Accessibility text",
+      "title_personalData": "Personal Data",
+      "external_personalData": "Use an external link for Personal Data page",
+      "link_personalData": "Personal Data text page link",
+      "content_personalData": "Personal Data text",
+      "changesNotSaved": "Changes not saved",
+      "update": "Update",
+      "cancel": "Cancel"
+    },
+    "MenuBar": {
+      "menuMyspace": "My Dashboard",
+      "menuMyspaceMobile": "Dashboard",
+      "menuServices": "Applications",
+      "menuGroupes": "All Groups",
+      "menuGroupesMobile": "Groups",
+      "menuAdminServices": "Service Management",
+      "menuAdminUserValidation": "User validation"
+    },
     "ServiceDetails": {
       "runServiceButtonLabel": "Run this service",
-      "favButtonLabelFav": "Add to your favorites",
-      "favButtonLabelNoFav": "Remove from your favorites"
+      "singleServiceButtonLabel": "Learn more",
+      "favButtonLabelFav": "Add to your personal space",
+      "favButtonLabelNoFav": "Remove from your personal space",
+      "unfavSuccessMsg": "Removed from your personal space",
+      "favSuccessMsg": "Added to your personal space",
+      "open": "Open",
+      "pin": "Pin",
+      "unpin": "Unpin"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Open side menu",
       "userMenuOpenLabel": "Open user menu",
-      "inputSearchLabel": "Search...",
+      "inputSearchLabel": "Search..."
+    },
+    "MainMenu": {
+      "menuAdminServices": "Service Management",
+      "menuAdminUsers": "Users Management",
+      "menuAdminUserValidation": "User validation",
+      "menuAdminCategories": "Categories Management",
+      "menuAdminTags": "Tags Management",
+      "menuAdminGroups": "Groups Management",
+      "menuPublications": "Publications",
       "menuProfileLabel": "Profile",
-      "menuLogoutLabel": "Logout"
+      "menuLogoutLabel": "Logout",
+      "menuMedias": "Medias Storage",
+      "menuAdminAppSettings": "Admin Settings"
+    },
+    "NotValidatedMessage": {
+      "inactiveAccount": "Your account has not been activated",
+      "waitAccount": "Wait for an administrator to validate your account"
+    },
+    "GroupUsersList": {
+      "title": "",
+      "loadingTitle": "Loading ...",
+      "columnUsername": "username",
+      "columnFirstName": "firstName",
+      "columnLastName": "lastname",
+      "columnEmail": "email",
+      "validate_tooltip": "Accept this candidate",
+      "memberAdded": "User set as member",
+      "userAdded": "Successfully added user",
+      "addUserButton": "Add",
+      "userRemoved": "User removed from group",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a user",
+        "pagination_labelRowsSelect": "users per page",
+        "body_emptyDataSourceMessage": "No user registered",
+        "body_addTooltip": "Add a user",
+        "body_editTooltip": "Modify this user",
+        "body_deleteTooltip": "Remove this user",
+        "body_editRow_deleteText": "Do you really want to remove this user?"
+      }
+    },
+    "UserFinder": {
+      "noUser": "No user found",
+      "userLabel": "User",
+      "placeholder": "Type to search more users",
+      "clear": "Clear",
+      "loading": "Loading...",
+      "open": "Open",
+      "close": "Fermer"
+    },
+    "TagFinder": {
+      "addTag": "Add ",
+      "noTag": "No tag found",
+      "tagLabel": "Mot clé",
+      "placeholder": "Type to search a tag",
+      "clear": "Clear",
+      "loading": "Loading...",
+      "open": "Open",
+      "close": "Fermer"
+    },
+    "GroupDetails": {
+      "favButtonLabelNoFav": "Remove from your personal space",
+      "favButtonLabelFav": "Add to your personal space",
+      "singleGroupButtonLabel": "Learn more",
+      "manageGroupButtonLabel": "Manage this group",
+      "joinPublicGroupButtonLabel": "Join the public group",
+      "askToJoinModerateGroupButtonLabel": "Request to join the group",
+      "groupMember": "Member",
+      "groupAnimator": "Animator",
+      "groupCandidate": "Membership awaiting",
+      "waitingForValidation": "On validation",
+      "leaveGroup": "Leave group",
+      "publicGroup": "Public group",
+      "moderateGroup": "Moderated group",
+      "closedGroup": "Restricted Group",
+      "groupLeft": "You left the group",
+      "groupJoined": "You are now a member of this group",
+      "candidateSent": "The admin will be notified of your request",
+      "alreadyCandidate": "You already sent a requet to the group",
+      "candidateCancel": "Your request has been canceled"
+    },
+    "GroupDetailsPersSpace": {
+      "groupCandidate": "Candidate",
+      "groupAdmin": "Administrator",
+      "groupNone": "No role"
+    },
+    "AppVersion": {
+      "title": "Version"
+    },
+    "PersonalZone": {
+      "delZoneLabel": "Delete this zone",
+      "forbiddenDelZoneLabel": "Empty this zone before delete it",
+      "upZoneLabel": "Move up this zone",
+      "downZoneLabel": "Move down this zone",
+      "addPersonalLink": "Add a personal in this zone",
+      "emptyDragZone": "Drop elements here",
+      "modifyTitle": "Modify zone title"
+    },
+    "PersonalLinkDetails": {
+      "visitLink": "Visit this link",
+      "delLink": "Delete this link",
+      "titleLabel": "Link title",
+      "urlLabel": "Link url",
+      "modifyLink": "Modify this link",
+      "saveLink": "Save this lien"
+    },
+    "ArticleDetails": {
+      "editArticleButtonLabel": "Edit this publication",
+      "open": "Open this publication",
+      "publicButton": "Open this publication public page",
+      "publishedOn": "Published on the",
+      "noDescription": "There is no description for this publication",
+      "visitsCount": "Views"
+    },
+    "ValidationButton": {
+      "sure": "Are you sure ?"
+    },
+    "UploaderNotifier": {
+      "storageFullTitle": "Your storage is full",
+      "storageFull": "You cannot upload this file because your are limited at",
+      "errorTitle": "An Error has occurred",
+      "fileTooLargeTitle": "File too large",
+      "fileTooLarge": "This file is too large, please select a file less than",
+      "formatNotAcceptedTitle": "Wrong format",
+      "formatNotAccepted": "This file's format is not accepted, please upload one of",
+      "uploadInProgress": "Upload in progress",
+      "uploadFinished": "Upload finished"
+    },
+    "LogoutDialog": {
+      "dialogTitle": "global logout",
+      "dialogContent": "Do you also want to logout from all applications ?",
+      "dontAskAgain": "Do not ask again",
+      "buttonYes": "Yes",
+      "buttonNo": "No"
+    },
+    "CustomQuill": {
+      "header": "Paragraph style",
+      "bold": "Bold (ctrl+b)",
+      "italic": "Italic (ctrl+i)",
+      "underline": "Underlined (ctrl+u)",
+      "strike": "Strike",
+      "blockquote": "Quote",
+      "ordered": "Ordered list",
+      "bullet": "Bullet list",
+      "unindent": "Unindent",
+      "indent": "Indent",
+      "link": "Add link to selected text",
+      "image": "Add media",
+      "video": "Embed video",
+      "webcam": "Record video",
+      "audio": "Record audio",
+      "clean": "Clean selected text formatting",
+      "enterUrl": "Enter the video URL"
+    },
+    "WebcamModal": {
+      "header": "Record a new video",
+      "start": "Start the recording",
+      "stop": "Stop the recording",
+      "upload": "Upload the video",
+      "tooLongVideo": "You reached your storage limit",
+      "refresh": "Reset the video",
+      "validate": "Validate the video",
+      "cancel": "Cancel",
+      "fileName": "Name of the video",
+      "quality": "Quality",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "nowebcam": "No webcam available"
+    },
+    "AudioModal": {
+      "header": "Record a new audio file",
+      "start": "Start the recording",
+      "stop": "Stop the recording",
+      "upload": "Upload the audio file",
+      "tooLongVideo": "You reached your storage limit",
+      "refresh": "Reset the recording",
+      "validate": "Validate the audio file",
+      "cancel": "Cancel",
+      "fileName": "Name of the audio file"
+    },
+    "SelectedMediaModal": {
+      "successCopyURL": "Media URL has been sent to clipboard",
+      "OpenInWindow": "Open media",
+      "copyUrl": "Copy this media URL"
+    },
+    "UserAvatarEdit": {
+      "title": "Create your avatar",
+      "subtitle": "from an image",
+      "sendImage": "Send this avatar",
+      "turnLeft": "Turn left",
+      "turnRight": "Turn right",
+      "zoom": "Zoom",
+      "cancel": "Cancel"
+    },
+    "UserAvatarGallery": {
+      "title": "Create your avatar",
+      "subtitle": "from image gallery",
+      "cancel": "Cancel"
+    },
+    "UserAvatarCamCapture": {
+      "title": "Create your avatar",
+      "subtitle": "from the webcam",
+      "takePicture": "Take a picture",
+      "cancel": "Cancel"
     }
   },
   "validatejs": {
     "isRequired": "this field is required",
     "isEmail": "email not valid"
   },
+  "materialTable": {
+    "pagination_firstTooltip": "First page",
+    "pagination_previousTooltip": "Previous page",
+    "pagination_nextTooltip": "Next page",
+    "pagination_lastTooltip": "Last page",
+    "body_editRow_cancelTooltip": "Cancel",
+    "body_editRow_saveTooltip": "Save changes"
+  },
   "pages": {
+    "LegalPage": {
+      "personalData": "Personal Data",
+      "gcu": "General Conditions of Use",
+      "accessibility": "Accessibility",
+      "legal": "Legal notice"
+    },
+    "AdminSettingsPage": {
+      "edition": "Edition of the App's settings",
+      "introduction": "Introduction",
+      "legal": "Legal notice",
+      "gcu": "G.C.U",
+      "accessibility": "Accessibility",
+      "personalData": "Personal Data"
+    },
     "SignIn": {
       "appDescription": "Digital services shared by National Education agents",
       "appVersion": "Test Alpha 0.1 Version",
@@ -41,7 +596,10 @@
       "forgotPwd": "Forgot password ?",
       "createAccount": "Create an account",
       "loginError": "Error: Bad account or password",
-      "loginKeycloak": "Login with OpenID"
+      "keycloakError": "Connection error",
+      "EmailAlreadyExists": "Error: An account already exists with the same email",
+      "loginKeycloak": "Login",
+      "rememberMe": "Remember me"
     },
     "SignUp": {
       "appDescription": "Create new account",
@@ -55,11 +613,325 @@
       "submitButtonLabel": "Sign Up",
       "createError": "Error: impossible to create this account"
     },
+    "ProfilePage": {
+      "title": "My settings",
+      "useEmail": "Use my email",
+      "usernameError": "Name not available",
+      "emailAlreadyExists": "Email already exists",
+      "update": "Update",
+      "reset": "Reset",
+      "valueRequired": "This field can not be empty",
+      "updateSuccess": "Profile update success",
+      "noModifications": "No changes to apply",
+      "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data.",
+      "logoutType": "Logout perimeter",
+      "backupTitle": "Backup your publications",
+      "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance",
+      "downloadPublicationBackup": "Download data",
+      "UploadPublicationBackup": "Upload datas",
+      "uploadSuccess": "Datas uploaded with success",
+      "uploadImg": "Upload an image",
+      "useCam": "Take a picture",
+      "useGallery": "Choose among image gallery",
+      "structureMessage": "Check this box to link all imported articles to your current attachment structure."
+    },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
+      "title": "Discover the apps",
+      "categories": "Filter by categories",
+      "reset": "Reset filter",
+      "validate": "Validate",
       "tabsLabel": "Services tabs",
       "tabFavServicesLabel": "Favorite services",
-      "tabAllServicesLabel": "All services"
+      "tabAllServicesLabel": "All services",
+      "searchText": "Which app would you need ?",
+      "viewMode": "Change view mode",
+      "viewCard": "Card view",
+      "viewList": "List view",
+      "filter": "Filter"
+    },
+    "GroupsPage": {
+      "title": "Explore the groups",
+      "searchText": "Which group are you looking for ?",
+      "viewMode": "Change view mode",
+      "viewCard": "Card view",
+      "viewList": "List view",
+      "endOfList": "End of the list"
+    },
+    "AdminServicesPage": {
+      "title": "Service Management",
+      "columnLogo": "Logo",
+      "columnTitle": "Name",
+      "columnUsage": "Usage",
+      "columnUrl": "Link",
+      "columnState": "State",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a service",
+        "pagination_labelRowsSelect": "services per page",
+        "body_emptyDataSourceMessage": "No service registered",
+        "body_addTooltip": "Add a service",
+        "body_editTooltip": "Modify this service",
+        "body_goTooltip": "Go to this service",
+        "body_deleteTooltip": "Remove this service",
+        "body_editRow_deleteText": "Do you really want to delete this service?"
+      }
+    },
+    "AdminCategoriesPage": {
+      "title": "Categories Management",
+      "columnName": "Name",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a category",
+        "pagination_labelRowsSelect": "Categories par page",
+        "body_emptyDataSourceMessage": "No category registered",
+        "body_addTooltip": "Add a category",
+        "body_editTooltip": "Modify this category",
+        "body_deleteTooltip": "Remove this category",
+        "body_editRow_deleteText": "Do you really want to delete this category ?"
+      }
+    },
+    "AdminTagsPage": {
+      "title": "Tags Management",
+      "columnName": "Name",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a tag",
+        "pagination_labelRowsSelect": "Tags par page",
+        "body_emptyDataSourceMessage": "No tag registered",
+        "body_addTooltip": "Add a tag",
+        "body_editTooltip": "Modify this tag",
+        "body_deleteTooltip": "Remove this tag",
+        "body_editRow_deleteText": "Do you really want to delete this tag ?"
+      }
+    },
+    "AdminGroupsPage": {
+      "title": "Groups Management",
+      "columnName": "Logo",
+      "columnInfo": "Description",
+      "columnType": "Type",
+      "columnMembers": "Members",
+      "columnCandidates": "Candidates",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a group",
+        "pagination_labelRowsSelect": "groups per page",
+        "body_emptyDataSourceMessage": "No groups to manage",
+        "body_addTooltip": "Add a group",
+        "body_editTooltip": "Modify this group",
+        "body_deleteTooltip": "Remove this group",
+        "body_editRow_deleteText": "Do you really want to delete this group ?"
+      }
+    },
+    "AdminUsersPage": {
+      "title": "Users Management",
+      "searchText": "Which user are you looking for ?",
+      "admin": "Administrator",
+      "setAdmin": "Give admin rights",
+      "unsetAdmin": "Remove admin rights",
+      "deleteUser": "Remove user",
+      "deleteUserConfirmation": "Do you really want to delete this user ?",
+      "deleteSelfConfirmation": "You are about to delete your own account. Continue ?",
+      "cancelDelete": "Cancel deletion",
+      "successSetAdmin": "admin rights have been granted",
+      "successUnsetAdmin": "admin rights have been revoked",
+      "successDeleteUser": "User deleted",
+      "loginInfo": "last login",
+      "neverConnected": "Never connected",
+      "undefined": "Not defined",
+      "sortByLastLogin": "Sort by last login date"
+    },
+    "AdminUserValidationPage": {
+      "title": "User validation",
+      "columnUsername": "Username",
+      "columnLastName": "LastName",
+      "columnFirstName": "FirstName",
+      "columnEmails": "Mails",
+      "columnStructure": "Structure",
+      "columnCreatedAt": "Registration date",
+      "actions_tooltip": "Validate this user",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Find a user",
+        "pagination_labelRowsSelect": "users per page",
+        "body_emptyDataSourceMessage": "No user to validate"
+      }
+    },
+    "SingleServicePage": {
+      "backToList": "Back to the list",
+      "screenshots": "Screenshots",
+      "categories": "Categories",
+      "open": "Open",
+      "inactive": "Inactive service",
+      "propulsedBy": "Propulsed by"
+    },
+    "PersonalPage": {
+      "welcome": "Welcome on your personal space",
+      "searchText": "Need to find a service, group or personal link ?",
+      "noFavYet": "Add here some elements from Applications tab",
+      "unsorted": "To be sorted",
+      "unsortedFav": "My Favorites",
+      "newZone": "New Zone",
+      "typeApplication": "Application",
+      "typeGroup": "Group",
+      "typeLink": "Link",
+      "addZoneStartButton": "Add a new zone at start",
+      "addZoneEndButton": "Add a new zone at the end",
+      "toggleEdition": "Toggle edition mode"
+    },
+    "AdminSingleServicePage": {
+      "edition": "Edition of the service",
+      "creation": "Creation of a new service",
+      "title": "Title",
+      "slug": "Slug",
+      "state": "State",
+      "team": "Team",
+      "usage": "App usage",
+      "logo": "Logo of the application",
+      "description": "Short description",
+      "url": "URL of the service",
+      "content": "Long description of the app",
+      "categories": "Categories",
+      "screenshots": "Screenshots",
+      "addScreenshots": "Add a screenshot",
+      "save": "Save",
+      "update": "Update",
+      "cancel": "Cancel"
+    },
+    "AdminSingleGroupPage": {
+      "edition": "Edition of the group",
+      "creation": "Creation of a new group",
+      "name": "Name",
+      "slug": "Slug",
+      "type": "Type",
+      "description": "Short description",
+      "content": "Long description of the group",
+      "save": "Save",
+      "update": "Update",
+      "cancel": "Cancel"
+    },
+    "SingleGroupPage": {
+      "backToList": "Back to the list",
+      "leaveGroup": "Leave group",
+      "seeLess": "See less",
+      "seeMore": "See more",
+      "addressBook": "Address Book",
+      "addressBookUsage": "User's list of the group",
+      "cancelCandidate": "Cancel the membership request",
+      "moderateGroup": "Restricted group",
+      "groupLeft": "You left the group",
+      "groupJoined": "You are now a member of this group",
+      "candidateSent": "The admin will be notified of your request",
+      "alreadyCandidate": "You already sent a requet to the group",
+      "candidateCancel": "Your request has been canceled",
+      "stopAnimating": "Stop animating this group",
+      "animationLeft": "You are no longer animator of this group",
+      "apps": "Applications",
+      "resources": "Group resources"
+    },
+    "AddressBook": {
+      "sendEmail": "Send an email to",
+      "back": "Back to the group",
+      "searchText": "Which user are you looking for ?"
+    },
+    "ArticlesPage": {
+      "title": "Your publications",
+      "openPublicPage": "All publications page",
+      "copyOwnPublicPageUrl": "Copy url to your public publications page",
+      "successCopyURL": "Public URL has been sent to clipboard",
+      "searchText": "What are you looking for ?"
+    },
+    "EditArticlePage": {
+      "title": "Edit this publication",
+      "creationTitle": "New publication",
+      "successUpdate": "Publication updated successfully",
+      "successCreate": "Publication created successfully",
+      "successDelete": "Publication deleted sucessfully",
+      "titleLabel": "Title",
+      "slugLabel": "URL to the publication's page",
+      "descriptionLabel": "Short description of this publication",
+      "structureMessage": "Reattach to my current structure ({$structure})",
+      "contentLabel": "Content of the publication",
+      "update": "Update",
+      "save": "Create",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "copyPublicURL": "copy public URL",
+      "successCopyURL": "Public URL has been sent to clipboard",
+      "switchToHtml": "Classic editor",
+      "switchToMarkdown": "Markdown editor",
+      "selectTag": "Select",
+      "createTag": "Create"
+    },
+    "PublicArticlePage": {
+      "title": "Publications by",
+      "searchText": "What are you looking for ?",
+      "goToList": "See the authors"
+    },
+    "PublicArticleDetailsPage": {
+      "backToList": "Back to the list",
+      "goToList": "Go to the list",
+      "views": "views",
+      "exportPDF": "Export to PDF",
+      "exportLandscape": "Landscape",
+      "exportPortrait": "Portrait"
+    },
+    "PublishersPage": {
+      "title": "Authors list",
+      "searchText": "Who are you looking for ?",
+      "goToPublications": "See this author's publications",
+      "articles": "publications",
+      "updatedAt": "last updated",
+      "sortByDate": "Sort by publication date"
+    },
+    "MediaStoragePage": {
+      "title": "Media Storage",
+      "usage": "Usage",
+      "delete": "Delete",
+      "confirmDelete": "Confirm delete",
+      "objectUsedText": "This file is used in a publication (title under this text), if you delete it, it will result as an empty link in your article. If you click again on delete, be aware that it will not be possible to restore it."
+    }
+  },
+  "layouts": {
+    "MainLayout": {}
+  },
+  "languages": {
+    "en": "English",
+    "fr": "French"
+  },
+  "SimpleSchema": {
+    "required": "{$label} is required",
+    "minString": "{$label} must be at least {$min} characters",
+    "maxString": "{$label} cannot exceed {$max} characters",
+    "minNumber": "{$label} must be at least {$min}",
+    "maxNumber": "{$label} cannot exceed {$max}",
+    "minNumberExclusive": "{$label} must be greater than {$min}",
+    "maxNumberExclusive": "{$label} must be less than {$max}",
+    "minDate": "{$label} must be on or after {$min}",
+    "maxDate": "{$label} cannot be after {$max}",
+    "badDate": "{$label} is not a valid date",
+    "minCount": "You must specify at least {$minCount} values",
+    "maxCount": "You cannot specify more than {$maxCount} values",
+    "noDecimal": "{$label} must be an integer",
+    "notAllowed": "{$value} is not an allowed value",
+    "expectedType": "{$label} must be of type {$dataType}",
+    "keyNotInSchema": "{$name} is not allowed by the schema",
+    "RegEx": {
+      "Default": "failed regular expression validation",
+      "Email": "must be a valid email address",
+      "EmailWithTLD": "must be a valid email address",
+      "Domain": "must be a valid domain",
+      "WeakDomain": "must be a valid domain",
+      "IP": "must be a valid IPv4 or IPv6 address",
+      "IPv4": "must be a valid IPv4 address",
+      "IPv6": "must be a valid IPv6 address",
+      "Url": "must be a valid URL",
+      "Id": "must be a valid alphanumeric ID",
+      "ZipCode": "must be a valid ZIP code",
+      "Phone": "must be a valid phone number"
+    },
+    "dataTypes": {
+      "String": "String",
+      "Number": "Number",
+      "Integer": "Integer",
+      "Boolean": "Boolean",
+      "Array": "Array",
+      "Object": "Object"
     }
   }
 }

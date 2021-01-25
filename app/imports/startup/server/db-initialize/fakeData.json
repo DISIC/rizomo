@@ -1,0 +1,233 @@
+{
+  "defaultAccounts": [
+    {
+      "email": "admin@ac-dijon.fr",
+      "password": "changeme",
+      "role": "admin",
+      "structure": "Bourgogne-Franche-Comté",
+      "firstName": "Jean",
+      "lastName": "Dupont"
+    },
+    {
+      "email": "eole@ac-dijon.fr",
+      "password": "changeme",
+      "structure": "Bourgogne-Franche-Comté",
+      "firstName": "Guy",
+      "lastName": "Durand"
+    }
+  ],
+  "defaultServices": [
+    {
+      "url": "/publications",
+      "logo": "https://rocket.chat/favicon.ico?v=1",
+      "title": "Blogs",
+      "state": 0,
+      "description": "Service d'édition et de publication de blogs",
+      "categories": ["HxQFJXymMXXrYByXt", "PrTZTq2FnDYdABNHh"],
+      "team": "Pôle Logiciel Libre",
+      "usage": "Publication de contenus sur le web",
+      "content": "Un blog est un espace sur internet où l’on partage une expérience et où l'on donne un point de vue personnel (et professionnel dans notre contexte ) sur un sujet donné. Ce blog, à destination des personnels de l'éducation national offre, après authentification, la possibilité de communiquer et de prolonger le travail collectif d'une classe ou d'un groupe de professionnels. Ce service sécurisé permet notamment de partager, selon une organisation définie par son auteur, des textes, des images, des vidéos ...",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1534137667199-675a46e143f3?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1524226750215-b424f7377a80?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1581093067310-624c320ffd3c?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    },
+    {
+      "url": "https://chat.mim-libre.fr",
+      "logo": "https://rocket.chat/favicon.ico?v=1",
+      "title": "Chat sur MIM",
+      "state": 0,
+      "description": "Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow.",
+      "categories": ["HxQFJXymMXXrYByXt", "PrTZTq2FnDYdABNHh"],
+      "team": "Académie de Dijon",
+      "usage": "Discuter en direct",
+      "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1534137667199-675a46e143f3?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1524226750215-b424f7377a80?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1581093067310-624c320ffd3c?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    },
+    {
+      "url": "https://nextcloud.apps.education.fr",
+      "logo": "https://nextcloud.com/media/screenshot-150x150.png?x53054",
+      "name": "NextCloud",
+      "state": 0,
+      "title": "Info Nuagiques",
+      "description": "Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow.",
+      "categories": ["HxQFJXymMXXrYByXt", "KZXPogfdLZmHAowaN"],
+      "team": "Académie de Dijon",
+      "usage": "Partager ses documents.",
+      "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1529429612779-c8e40ef2f36d?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1535191042502-e6a9a3d407e7?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1533709752211-118fcaf03312?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    },
+    {
+      "url": "https://filepizza.mim-libre.fr",
+      "logo": "https://file.pizza/images/fb.png",
+      "state": 5,
+      "title": "Transfert pair a pair",
+      "description": "Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow.",
+      "usage": "Echanger vos gros fichiers",
+      "categories": ["HxQFJXymMXXrYByXt", "dQLERbBJ2sXXkXktX", "KZXPogfdLZmHAowaN", "PrTZTq2FnDYdABNHh"],
+      "team": "Académie de Dijon",
+      "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1581092333203-42374bcf7d89?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1542903660-eedba2cda473?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1445740503840-28bc9900d00f?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    },
+    {
+      "url": "https://etherpad.apps.education.fr/",
+      "state": 10,
+      "title": "Pad Public",
+      "description": "Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow.",
+      "usage": "Editeur de texte collaboratif",
+      "logo": "https://framagit.org/uploads/-/system/project/avatar/1526/logo-pad.png",
+      "categories": ["HxQFJXymMXXrYByXt"],
+      "team": "Académie de Dijon",
+      "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1526925712774-2833a7ecd0d4?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1516383274235-5f42d6c6426d?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1566241477600-ac026ad43874?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    },
+    {
+      "url": "https://codimd.apps.education.fr",
+      "logo": "https://demo.codimd.org/favicon.png",
+      "state": 0,
+      "title": "CodiMD Public",
+      "description": "Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow.",
+      "usage": "Ecrire Ensemble",
+      "categories": ["HxQFJXymMXXrYByXt", "dQLERbBJ2sXXkXktX", "PrTZTq2FnDYdABNHh"],
+      "team": "Académie de Dijon",
+      "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1528588641076-3fe42e01df36?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1555949963-aa79dcee981c?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1529429612779-c8e40ef2f36d?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    },
+    {
+      "url": "https://mastodon.etalab.gouv.fr",
+      "logo": "https://mastodon.social/apple-touch-icon.png",
+      "state": 0,
+      "title": "Mastodon - EtatLab",
+      "description": "Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow.",
+      "usage": "Réseau social",
+      "categories": ["HxQFJXymMXXrYByXt", "KZXPogfdLZmHAowaN", "PrTZTq2FnDYdABNHh"],
+      "team": "Académie de Paris",
+      "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1555952494-efd681c7e3f9?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1581093067310-624c320ffd3c?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    },
+    {
+      "url": "https://auth.apps.education.fr/auth/realms/snp/account",
+      "title": "Mon compte",
+      "state": 5,
+      "logo": "https://pbs.twimg.com/profile_images/702119821979344897/oAC05cEB_400x400.png",
+      "description": "Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow.",
+      "usage": "Consulter vos infos de connexion",
+      "categories": [],
+      "team": "Académie de Dijon",
+      "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1531986362435-16b427eb9c26?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1524226750215-b424f7377a80?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    },
+    {
+      "logo": "https://www.draw.io/favicon.ico",
+      "url": "https://draw.io?lang=fr",
+      "state": 10,
+      "title": "Diagrammes",
+      "description": "Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow.",
+      "usage": "Dessiner en ligne",
+      "categories": [],
+      "team": "Académie d'ailleurs",
+      "content": "<h1>Yar Pirate Ipsum</h1><p>Run a shot across the bow mizzen swab draught gunwalls booty rope's end snow piracy spyglass. Mutiny carouser fire ship parley nipperkin barque yard to go on account warp Jolly Roger. Tender lass rigging main sheet prow shrouds fire ship Yellow Jack long clothes tack. </p><p>Jack Tar provost keel gangplank barkadeer pressgang six pounders ahoy cutlass bring a spring upon her cable. Carouser clap of thunder capstan gally hulk lass transom fore sheet Jack Ketch. Hands Spanish Main come about ye shrouds hang the jib yo-ho-ho grog blossom avast overhaul. </p><p>Quarter dance the hempen jig hail-shot me keel hardtack quarterdeck ye furl Brethren of the Coast. Lookout Jolly Roger loaded to the gunwalls holystone log Corsair grapple wench grog to go on account. Driver scurvy bowsprit haul wind lass black spot lugger Corsair grapple line.</p>",
+      "screenshots": [
+        "https://images.unsplash.com/photo-1524635962361-d7f8ae9c79b1?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1518773553398-650c184e0bb3?fit=crop&fm=jpg&h=900&q=80&w=1600",
+        "https://images.unsplash.com/photo-1534137667199-675a46e143f3?fit=crop&fm=jpg&h=900&q=80&w=1600"
+      ]
+    }
+  ],
+  "defaultGroups": [
+    {
+      "owner": "admin@ac-dijon.fr",
+      "name": "Tous",
+      "type": 0,
+      "description": "Groupe commun",
+      "content": "Group commun"
+    },
+    {
+      "owner": "admin@ac-dijon.fr",
+      "name": "Dev",
+      "type": 5,
+      "description": "Développeurs",
+      "content": "Développeurs"
+    },
+    {
+      "owner": "admin@ac-dijon.fr",
+      "name": "SNP",
+      "type": 5,
+      "description": "Apps Education",
+      "content": "Apps Education"
+    }
+  ],
+  "defaultCategories": [
+    {
+      "_id": "EviKfwAnFZcjEWFdz",
+      "name": "Production"
+    },
+    {
+      "_id": "HxQFJXymMXXrYByXt",
+      "name": "Collaboration"
+    },
+    {
+      "_id": "dQLERbBJ2sXXkXktX",
+      "name": "Coordination"
+    },
+    {
+      "_id": "KZXPogfdLZmHAowaN",
+      "name": "Partage"
+    },
+    {
+      "_id": "PrTZTq2FnDYdABNHh",
+      "name": "Communication"
+    }
+  ],
+  "defaultTags": [
+    {
+      "_id": "EviKfwAnFZcjEWFdz",
+      "name": "Production"
+    },
+    {
+      "_id": "HxQFJXymMXXrYByXt",
+      "name": "Collaboration"
+    },
+    {
+      "_id": "dQLERbBJ2sXXkXktX",
+      "name": "Coordination"
+    },
+    {
+      "_id": "KZXPogfdLZmHAowaN",
+      "name": "Partage"
+    },
+    {
+      "_id": "PrTZTq2FnDYdABNHh",
+      "name": "Communication"
+    }
+  ]
+}

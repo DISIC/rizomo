@@ -2,8 +2,9 @@
 /* eslint-disable func-names, prefer-arrow-callback */
 
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
-import { chai, assert } from 'meteor/practicalmeteor:chai';
+import { assert } from 'chai';
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 import { _ } from 'meteor/underscore';
 import '../../../../i18n/en.i18n.json';
 import faker from 'faker';
@@ -11,31 +12,105 @@ import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-import { createService, removeService } from '../methods';
-import { favService, unfavService } from '../../users/methods';
+import { createService, removeService, updateService, favService, unfavService } from '../methods';
+
 import './publications';
 import Services from '../services';
+import Categories from '../../categories/categories';
+import PersonalSpaces from '../../personalspaces/personalspaces';
+
+function pspaceHasService(user, id) {
+  const pspace = PersonalSpaces.findOne({
+    userId: user,
+    unsorted: { $elemMatch: { type: 'service', element_id: id } },
+  });
+  const inFavs = Meteor.users.findOne(user).favServices.includes(id);
+  return pspace !== undefined && inFavs;
+}
 
 describe('services', function () {
   describe('mutators', function () {
     it('builds correctly from factory', function () {
       const service = Factory.create('service');
       assert.typeOf(service, 'object');
-      assert.equal(service.target, '_blank');
     });
   });
   describe('publications', function () {
-    before(function () {
-      Services.remove({});
-      _.times(4, () => {
-        Factory.create('service');
+    let userId;
+    let oneServiceId;
+    let categoryId;
+    let groupServiceId;
+    beforeEach(function () {
+      Meteor.roleAssignment.remove({});
+      Meteor.users.remove({});
+      Meteor.roles.remove({});
+      Categories.remove({});
+      Roles.createRole('admin');
+      const email = faker.internet.email();
+      userId = Accounts.createUser({
+        email,
+        username: email,
+        password: 'toto',
+        structure: faker.company.companyName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       });
+      Meteor.users.update(userId, { $set: { isActive: true } });
+      Services.remove({});
+      _.times(3, () => {
+        Factory.create('service', { title: `test${Random.id()}` });
+      });
+      categoryId = Factory.create('categorie')._id;
+      oneServiceId = Factory.create('service', { title: 'test', categories: [categoryId] })._id;
+      groupServiceId = Factory.create('service')._id;
     });
     describe('services.all', function () {
       it('sends all services', function (done) {
-        const collector = new PublicationCollector();
+        const collector = new PublicationCollector({ userId });
         collector.collect('services.all', (collections) => {
-          chai.assert.equal(collections.services.length, 4);
+          assert.equal(collections.services.length, 5);
+          done();
+        });
+      });
+    });
+    describe('services.one.admin', function () {
+      it('sends one service to admin user only', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('services.one.admin', { _id: oneServiceId }, (collections) => {
+          // non admin user : no result
+          assert.notProperty(collections, 'services');
+        });
+        Roles.addUsersToRoles(userId, 'admin');
+        const adminCollector = new PublicationCollector({ userId });
+        adminCollector.collect('services.one.admin', { _id: oneServiceId }, (collections) => {
+          assert.equal(collections.services.length, 1);
+          assert.equal(collections.services[0]._id, oneServiceId);
+          assert.property(collections.services[0], 'content');
+        });
+        done();
+      });
+    });
+    describe('services.group', function () {
+      it('sends services from a list of services ids', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('services.group', { ids: [oneServiceId, groupServiceId] }, (collections) => {
+          assert.equal(collections.services.length, 2);
+          assert.equal(
+            collections.services.filter((serv) => [oneServiceId, groupServiceId].includes(serv._id)).length,
+            2,
+          );
+          done();
+        });
+      });
+    });
+    describe('services.one', function () {
+      it('sends one service and corresponding categories selected by service slug', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('services.one', { slug: 'test' }, (collections) => {
+          assert.equal(collections.services.length, 1);
+          assert.equal(collections.categories.length, 1);
+          assert.equal(collections.services[0]._id, oneServiceId);
+          assert.equal(collections.categories[0]._id, categoryId);
           done();
         });
       });
@@ -48,9 +123,12 @@ describe('services', function () {
     let chatData;
     beforeEach(function () {
       // Clear
+      Services.remove({});
+      PersonalSpaces.remove({});
+      Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
-      // FIXME : find a way to reset roles collection ?
-      Roles.createRole('admin', { unlessExists: true });
+      Meteor.roles.remove({});
+      Roles.createRole('admin');
       // Generate 'users'
       const email = faker.internet.email();
       userId = Accounts.createUser({
@@ -72,13 +150,22 @@ describe('services', function () {
       });
       // set this user as global admin
       Roles.addUsersToRoles(adminId, 'admin');
+      // set users as active
+      Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
       serviceId = Factory.create('service')._id;
+      // add service to userId favorites
+      Meteor.users.update({ _id: userId }, { $set: { favServices: [serviceId] } });
       chatData = {
-        title: 'Chat sur MIM',
-        description: 'Discuter en direct ',
-        url: 'https://chat.mim.ovh',
+        title: 'Chat sur un nuage de liconre',
+        description: "Chevaucher un dragon rose à pois. C'est en fait une fée pour piéger Peter Pan",
+        url: 'https://chat.licorne.ovh',
         logo: 'https://rocket.chat/images/default/logo--dark.svg',
-        glyphicon: 'glyphicon-comment',
+        categories: [],
+        team: 'Dijon',
+        usage: 'Discuter en Troubadour',
+        screenshots: [],
+        content: "<div>c'est un service de fou</div>",
+        state: 0,
       };
     });
     describe('createService', function () {
@@ -86,8 +173,6 @@ describe('services', function () {
         createService._execute({ userId: adminId }, chatData);
         const service = Services.findOne({ title: chatData.title });
         assert.typeOf(service, 'object');
-        // checks that default values work
-        assert.equal(service.target, '_blank');
       });
       it("does not create a service if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to create a service
@@ -111,6 +196,8 @@ describe('services', function () {
       it('does delete a service with admin user', function () {
         removeService._execute({ userId: adminId }, { serviceId });
         assert.equal(Services.findOne(serviceId), undefined);
+        // check that service has been removed from userId favorites
+        assert.equal(Meteor.users.findOne({ favServices: { $all: [serviceId] } }), undefined);
       });
       it("does not delete a service if you're not admin", function () {
         // Throws if non admin user, or logged out user, tries to delete the service
@@ -130,14 +217,59 @@ describe('services', function () {
         );
       });
     });
+    describe('updateService', function () {
+      const data = {
+        title: 'Chat sur MIMOSA',
+        description: "Chevaucher un dragon rose à pois. C'est en fait une fée pour piéger Peter Pan",
+        usage: 'Discuter en Troubadour',
+        url: 'https://chat.licorne.ovh',
+        logo: 'https://rocket.chat/images/default/logo--dark.svg',
+        categories: [],
+        team: 'Dijon',
+        screenshots: ['https://rocket.chat/images/default/logo--dark.svg'],
+        content: "<div>c'est un service de fou</div>",
+        state: 0,
+      };
+      it('does update a service with admin user', function () {
+        updateService._execute({ userId: adminId }, { serviceId, data: { ...data } });
+        const service = Services.findOne(serviceId);
+        assert.equal(service.title, data.title);
+        assert.equal(service.description, data.description);
+        assert.equal(service.url, data.url);
+        assert.equal(service.logo, data.logo);
+        assert.equal(service.team, data.team);
+        assert.equal(service.usage, data.usage);
+        assert.deepEqual(service.screenshots, data.screenshots);
+        assert.equal(service.content, data.content);
+      });
+      it("does not update a service if you're not admin", function () {
+        // Throws if non admin user, or logged out user, tries to delete the service
+        assert.throws(
+          () => {
+            updateService._execute({ userId }, { serviceId, data });
+          },
+          Meteor.Error,
+          /api.services.updateService.notPermitted/,
+        );
+        assert.throws(
+          () => {
+            updateService._execute({}, { serviceId, data });
+          },
+          Meteor.Error,
+          /api.services.updateService.notPermitted/,
+        );
+      });
+    });
     describe('(un)favService', function () {
       it('does (un)set a service as favorite', function () {
         favService._execute({ userId }, { serviceId });
         let user = Meteor.users.findOne(userId);
         assert.include(user.favServices, serviceId, 'favorite service list contains serviceId');
+        assert.equal(pspaceHasService(userId, serviceId), true, 'service is in personal space');
         unfavService._execute({ userId }, { serviceId });
         user = Meteor.users.findOne(userId);
         assert.notInclude(user.favServices, serviceId, 'favorite service list does not contains serviceId');
+        assert.equal(pspaceHasService(userId, serviceId), false, 'service is no longer in personal space');
       });
       it('does not set a service as favorite if not logged in', function () {
         assert.throws(
@@ -145,7 +277,7 @@ describe('services', function () {
             favService._execute({}, { serviceId });
           },
           Meteor.Error,
-          /api.users.favService.notPermitted/,
+          /api.services.favService.notPermitted/,
         );
       });
       it('does not unset a service as favorite if not logged in', function () {
@@ -154,7 +286,7 @@ describe('services', function () {
             unfavService._execute({}, { serviceId });
           },
           Meteor.Error,
-          /api.users.unfavService.notPermitted/,
+          /api.services.unfavService.notPermitted/,
         );
       });
     });

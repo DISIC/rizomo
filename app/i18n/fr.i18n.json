@@ -1,37 +1,594 @@
 {
   "api": {
+    "appsettings": {
+      "labels": {
+        "external": "Utiliser un lien externe",
+        "link": "Lien vers la page",
+        "content": "Contenu",
+        "introduction": "Introduction",
+        "content_introduction": "Texte d'introduction",
+        "legal": "Mentions légales",
+        "external_legal": "Utiliser un lien externe pour la page Mentions légales",
+        "link_legal": "Lien vers la page Mentions légales",
+        "content_legal": "Texte des Mentions légales",
+        "gcu": "C.G.U.",
+        "external_gcu": "Utiliser un lien externe pour la page  des C.G.U.",
+        "link_gcu": "Lien vers la page C.G.U.",
+        "content_gcu": "Texte des C.G.U.",
+        "accessibility": "Accessibilité",
+        "external_accessibility": "Utiliser un lien externe pour la page d'Accessibilité",
+        "link_accessibility": "Lien vers la page Accessibilité",
+        "content_accessibility": "Texte de l'Accessibilité",
+        "personalData": "Données Personnelles",
+        "external_personalData": "Utiliser un lien externe pour la page Données Personnelles",
+        "link_personalData": "Données Personnelles",
+        "content_personalData": "Texte des Données Personnelles"
+      },
+      "updateAppsettings": {
+        "notPermitted": "Vous n'avez pas les droits suffisants."
+      }
+    },
+    "categories": {
+      "unknownCategorie": "La categorie n'existe pas.",
+      "labels": {
+        "id": "Id de Catégorie",
+        "name": "Nom"
+      }
+    },
+    "tags": {
+      "unknownTag": "Le tag n'existe pas.",
+      "notLowerCase": "Les Mots clés doivent être en minuscules",
+      "labels": {
+        "id": "Id de Tag",
+        "name": "Nom"
+      }
+    },
     "users": {
       "unknownUser": "L'utilisateur n'existe pas.",
       "mustBeLoggedIn": "Vous devez être connecté.",
-      "adminNeeded": "Vous n'êtes pas administrateur."
+      "adminNeeded": "Vous n'êtes pas administrateur.",
+      "adminGiven": "Les droits d'administration ont été donnés à cet utilisateur: ",
+      "notPermitted": "Vous n'avez pas les droits suffisants.",
+      "lastAdminError": "Impossible de supprimer les droits du dernier administrateur",
+      "managedByKeycloak": "Cette information doit être gérée dans Keycloak",
+      "labels": {
+        "id": "Id Utilisateur",
+        "username": "Pseudonyme",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "emails": "Adresse Électronique",
+        "emailAddress": "Adresse Électronique",
+        "emailVerified": "Adresse Vérifiée",
+        "createdAt": "Crée Le",
+        "profile": "Profil",
+        "services": "Services",
+        "heartbeat": "heartbeat",
+        "isActive": "Utilisateur Actif",
+        "isRequest": "Utilisateur En Attente De Validation",
+        "favServices": "Services Favoris",
+        "structure": "Structure De Rattachement",
+        "primaryEmail": "Adresse Électronique principale",
+        "language": "Langage Préféré",
+        "logoutType": "Méthode De Déconnexion",
+        "lastLogin": "Date de dernière connexion",
+        "avatar": "URL de l'avatar"
+      },
+      "logoutTypes": {
+        "ask": "Demander à la déconnexion",
+        "local": "Déconnecter seulement cette application",
+        "global": "Se Déconnecter de toutes les applications"
+      }
     },
     "groups": {
       "unknownGroup": "Le groupe n'existe pas.",
-      "adminGroupNeeded": "Vous n'avez pas les droits d'administration sur ce groupe."
+      "adminGroupNeeded": "Vous n'avez pas les droits d'administration sur ce groupe.",
+      "moderatedGroupOnly": "Cette action est possible seulement sur un groupe modéré.",
+      "userNotFound": "Utilisateur non retrouvé",
+      "groupAlreadyExist": "Un groupe avec le même nom existe déjà",
+      "types": {
+        "open": "ouvert",
+        "moderated": "modéré",
+        "private": "réservé"
+      },
+      "labels": {
+        "id": "Id de Groupe",
+        "name": "Nom",
+        "slug": "Slug",
+        "desciption": "Description",
+        "content": "Description longue",
+        "active": "Actif",
+        "groupPadID": "Id de Pad du groupe",
+        "digest": "Digest",
+        "type": "Type",
+        "owner": "Propriétaire",
+        "candidates": "Candidats",
+        "members": "Membres",
+        "animators": "Animateurs",
+        "admins": "Administrateurs",
+        "applications": "ID de l'application",
+        "nextcloud": "Créer le groupe dans Nextcloud",
+        "plugins": "Services liés gérant les groupes"
+      }
     },
     "services": {
-      "unknownService": "Le service n'existe pas."
+      "unknownService": "Le service n'existe pas.",
+      "states": {
+        "displayed": "affiché",
+        "inactive": "inactif",
+        "invisible": "caché"
+      },
+      "labels": {
+        "id": "Id de Service",
+        "title": "Titre",
+        "slug": "Slug",
+        "team": "Équipe",
+        "usage": "Usage",
+        "state": "État",
+        "content": "Description longue",
+        "description": "Description",
+        "logo": "Logo",
+        "categories": "Catégories",
+        "screenshots": "Captures d'écran"
+      }
+    },
+    "events": {
+      "labels": {
+        "id": "Id d'Évènement",
+        "title": "Intitulé",
+        "startsAt": "Date De Début",
+        "endsAt": "Date De Fin",
+        "allDay": "Journée Complète",
+        "description": "Description",
+        "location": "Lieu",
+        "groupId": "Id de groupe",
+        "eventPadId": "Id De Pad",
+        "participantId": "Id De Participant"
+      }
+    },
+    "articles": {
+      "adminArticleNeeded": "Vous n'avez pas les droits d'administration sur cette publication.",
+      "unknownArticle": "Cette publication n'existe pas",
+      "labels": {
+        "id": "Id d'article",
+        "title": "Titre",
+        "slug": "URL de la publication",
+        "userId": "ID de l'auteur",
+        "description": "Courte description",
+        "content": "Contenu de la publication",
+        "tags": "Mots clés",
+        "createdAt": "Date de création",
+        "updatedAt": "Date de mise à jour",
+        "markdown": "mode markdown",
+        "structure": "Structure De Rattachement de l'article"
+      }
+    },
+    "notifications": {
+      "setRole": "Ajout ou suppression du rôle pour l'utilisateur",
+      "setRoleNotifTitle": "Nouveau rôle",
+      "setRoleNotifContent": "Vous êtes {$role} pour le groupe {$group}.",
+      "unsetRoleNotifTitle": "Suppression de rôle",
+      "unsetRoleNotifContent": "Vous n'êtes plus {$role} pour le groupe {$group}.",
+      "requestNotifTitle": "Demande de candidature",
+      "requestNotifContent": "{$name} est candidat pour le groupe {$group}.",
+      "badConfig": "Mauvaise configuration pour les notifications de type {$type} (expiration en jours)",
+      "labels": {
+        "id": "Id de la notification",
+        "userId": "ID du destinataire",
+        "type": "Type",
+        "title": "Titre",
+        "content": "Contenu de la publication",
+        "createdAt": "Date de création",
+        "expireAt": "Date d'expiration",
+        "read": "Notification lue",
+        "roles": {
+          "candidate": "candidat",
+          "member": "membre",
+          "animator": "animateur",
+          "admin": "administrateur"
+        }
+      }
+    },
+    "methods": {
+      "operationSuccessMsg": "Opération réalisée avec succès.",
+      "labels": {
+        "page": "Page",
+        "pageSize": "Taille de Page",
+        "filter": "Filtre",
+        "sortColumn": "Colonne de Tri",
+        "sortOrder": "Ordre de Tri",
+        "excludeGroupId": "Identifiant Du Groupe Exclus",
+        "excludeRole": "Rôle Exclus",
+        "keycloakId": "Identifiant Keycloak"
+      }
+    },
+    "keycloak": {
+      "initClient": "Keycloak: client API initialisé",
+      "tokenError": "** Keycloak: échec de récupération de jeton, veuillez vérifier la configuration **",
+      "clientIdFound": "Keycloak: Id du client trouvé ({$clientId})",
+      "clientIdError": "** Keycloak: échec de récupération de l'Id du client, veuillez vérifier la configuration **",
+      "groupAdded": "Keycloak: groupe {$groupName} ajouté (Id {$groupId})",
+      "groupAddError": "Keycloak : ERREUR lors de l'ajout du groupe {$groupName}",
+      "groupNotFound": "Keycloak: groupe {$groupName} introuvable",
+      "groupNameChanged": "Keycloak: nom du groupe changé de {$oldName} à {$newName}",
+      "groupUpdateError": "Keycloak: ERREUR lors de la mise à jour du groupe {$groupName}",
+      "groupRemoved": "Keycloak: groupe {$groupName} supprimé",
+      "groupRemoveError": "Keycloak: ERREUR lors de la suppression du groupe {$groupName}",
+      "adminAdded": "Keycloak: utilisateur {$userId} ajouté comme administrateur",
+      "addAdminError": "Keycloak : ERREUR lors de l'ajout de l'utilisateur {$userId} aux administrateurs",
+      "userNotFound": "Keycloak: Id de l'utilisateur {$userId} introuvable",
+      "userGroupAdded": "Keycloak: groupe {$groupName} ajouté à l'utilisateur {$userId}",
+      "userGroupAddError": "Keycloak : ERREUR lors de l'ajout du groupe {$groupName} à l'utilisateur {$userId}",
+      "userGroupRemoved": "Keycloak: groupe {$groupName} supprimé pour l'utilisateur {$userId}",
+      "userGroupRemoveError": "Keycloak : ERREUR lors de la suppression du groupe {$groupName} pour l'utilisateur {$userId}"
+    },
+    "nextcloud": {
+      "groupExists": "Ce groupe existe déjà dans Nextcloud",
+      "addGroupError": "Erreur lors de la création du groupe dans Nextcloud",
+      "addGroupFolderError": "Erreur lors de la création du partage dans Nextcloud",
+      "removeGroupError": "Attention, le groupe n'a pas pu être supprimé dans Nextcloud",
+      "removeGroupFolderError": "Attention, le dossier n'a pas pu être supprimé dans Nextcloud",
+      "groupFoldersInactive": "Nextcloud: ERREUR, vérifiez que l'application 'Group Folders' est active",
+      "groupNotFound": "Nextcloud: ERREUR de récupération du groupe {$groupName}",
+      "groupAdded": "Nextcloud: groupe {$groupName} ajouté",
+      "groupAddError": "Nextcloud: ERREUR lors de l'ajout du groupe {$groupName}",
+      "groupFolderAssignError": "Nextcloud: impossible d'assigner le groupe {$groupName} au répertoire {$folderName}",
+      "groupFolderAdded": "Nextcloud: répertoire de groupe {$folderName} ajouté",
+      "permissionsSet": "Nextcloud: permissions définies pour le répertoire de groupe {$folderName}",
+      "quotaSet": "Nextcloud: quota défini pour le répertoire de groupe {$folderName}",
+      "quotaSetError": "Nextcloud: ERREUR lors de la définition des quotas sur le répertoire de goupe {$folderName}",
+      "permissionSetError": "Nextcloud: ERREUR lors de la définition des permissions sur le répertoire de groupe {$folderName}",
+      "folderAddError": "Nextcloud: ERREUR lors de l'ajout du répertoire de groupe {$folderName}",
+      "folderRemoved": "Nextcloud: répertoire de groupe {$id} supprimé ({$mount_point})",
+      "folderRemoveError": "Nextcloud: ERREUR lors de la suppression du répertoire de groupe {$id} ({$message})",
+      "groupRemoved": "Nextcloud: groupe {$groupName} supprimé",
+      "groupRemoveError": "Nextcloud: Erreur lors de la suppression du groupe {$groupName}",
+      "enablePluginForGroup": "Créer le groupe dans Nextcloud",
+      "buttonLinkPlugin": "Accéder au partage Nextcloud"
+    },
+    "rocketChat": {
+      "initClient": "RocketChat: client API initialisé",
+      "tokenError": "** RocketChat: échec de récupération de jeton, veuillez vérifier la configuration **",
+      "groupAdded": "RocketChat: canal {$name} ajouté",
+      "groupAddError": "RocketChat : ERREUR lors de l'ajout du canal {$name}",
+      "groupRemoved": "RocketChat: canal {$name} supprimé",
+      "groupRemoveError": "RocketChat: Erreur lors de la suppression du canal {$name}",
+      "getUserError": "RocketChat: Erreur lors de la recherche de l'utilisateur",
+      "getGroupError": "RocketChat: Erreur lors de la recherche du groupe",
+      "userInvited": "RocketChat: utilisateur {$username} ajouté au groupe {$groupId}",
+      "userInviteError": "RocketChat: Erreur lors de l'ajout de l'utilisateur {$username} au groupe {$groupId}",
+      "userAdded": "RocketChat: utilisateur {$username} créé",
+      "userAddError": "RocketChat: Erreur lors de la création de l'utilisateur {$username}",
+      "logout": "RocketChat: Invalidation du jeton actuel",
+      "logoutError": "RocketChat: Erreur lors de l'invalidation du jeton",
+      "userKicked": "RocketChat: utilisateur {$username} supprimé du groupe {$groupId}",
+      "userKickError": "RocketChat: Erreur lors de la suppression de l'utilisateur {$username} du groupe {$groupId}",
+      "roleSet": "RocketChat: Rôle {$role} attribué à l'utilisateur {$username} sur le groupe {$groupId}",
+      "setRoleError": "RocketChat: Erreur lors de l'attribution du rôle {$role} à l'utilisateur {$username} sur le groupe {$groupId}",
+      "roleUnset": "RocketChat: Rôle {$role} enlevé à l'utilisateur {$username} sur le groupe {$groupId}",
+      "unsetRoleError": "RocketChat: Erreur lors de la suppression du rôle {$role} à l'utilisateur {$username} sur le groupe {$groupId}",
+      "updateEmail": "RocketChat: Adresse email de l'utilisateur {$username} définie à {$email}",
+      "updateEmailError": "RocketChat: Erreur lors du passage de l'adresse email de l'utilisateur {$username} à {$email}",
+      "owner": "propriétaire",
+      "moderator": "modérateur",
+      "enablePluginForGroup": "Créer le groupe dans RocketChat",
+      "buttonLinkPlugin": "Discuter dans RocketChat"
+    },
+    "logging": {
+      "unknownLogLevel": "Le niveau de log spécifié n'existe pas",
+      "info": "Information serveur",
+      "warning": "Avertissement serveur",
+      "error": "Erreur serveur"
     }
   },
   "components": {
+    "IntroductionEdition": {
+      "title": "Introduction",
+      "language": "Selectionnez la langue à éditer",
+      "language_fr": "Français",
+      "language_en": "Anglais",
+      "content": "Texte d'introduction",
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
+    },
+    "Notifications": {
+      "remove": "Supprimer"
+    },
+    "NotificationsDisplay": {
+      "title": "Notifications",
+      "confirm": "Oui",
+      "cancel": "Non",
+      "empty": "Vous n'avez aucune notification.",
+      "removeAll": "Supprimer toutes les notifications",
+      "confirmRemoveAll": "Êtes vous sûr de vouloir supprimer toutes les notifications ?"
+    },
+    "Footer": {
+      "personalData": "Données Personnelles",
+      "gcu": "Conditions générales d'utilisation",
+      "accessibility": "Accessibilité",
+      "legal": "Mentions légales"
+    },
+    "LegalComponent": {
+      "title_introduction": "Introduction",
+      "content_introduction": "Texte d'introduction",
+      "title_legal": "Mentions légales",
+      "external_legal": "Utiliser un lien externe pour la page Mentions légales",
+      "link_legal": "Lien vers la page Mentions légales",
+      "content_legal": "Texte des Mentions légales",
+      "title_gcu": "Conditions générales d'utilisation",
+      "external_gcu": "Utiliser un lien externe pour la page  des C.G.U.",
+      "link_gcu": "Lien vers la page C.G.U.",
+      "content_gcu": "Texte des C.G.U.",
+      "title_accessibility": "Accessibilité",
+      "external_accessibility": "Utiliser un lien externe pour la page d'Accessibilité",
+      "link_accessibility": "Lien vers la page Accessibilité",
+      "content_accessibility": "Texte de l'Accessibilité",
+      "title_personalData": "Données Personnelles",
+      "external_personalData": "Utiliser un lien externe pour la page Données Personnelles",
+      "link_personalData": "Données Personnelles",
+      "content_personalData": "Texte des Données Personnelles",
+      "changesNotSaved": "Changements non sauvegardés",
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
+    },
+    "MenuBar": {
+      "menuMyspace": "Mon Espace Personnel",
+      "menuMyspaceMobile": "Mon Espace",
+      "menuServices": "Applications",
+      "menuGroupes": "Les Groupes",
+      "menuGroupesMobile": "Groupes",
+      "menuAdminServices": "Gestion des Services",
+      "menuAdminUserValidation": "Validation des utilisateurs"
+    },
     "ServiceDetails": {
-      "runServiceButtonLabel": "Lancer le service",
-      "favButtonLabelFav": "Ajouter à vos favoris",
-      "favButtonLabelNoFav": "Supprimer de vos favoris"
+      "runServiceButtonLabel": "Ouvrir l'application",
+      "singleServiceButtonLabel": "Détails de l'application",
+      "favButtonLabelFav": "Ajouter à votre espace personnel",
+      "favButtonLabelNoFav": "Supprimer de votre espace personnel",
+      "unfavSuccessMsg": "Supprimé de votre espace personnel",
+      "favSuccessMsg": "Ajouté à votre espace personnel",
+      "open": "Ouvrir",
+      "pin": "Épingler",
+      "unpin": "Retirer"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Ouvrir le menu latéral",
       "userMenuOpenLabel": "Ouvrir le menu utilisateur",
-      "inputSearchLabel": "Rechercher...",
+      "inputSearchLabel": "Rechercher..."
+    },
+    "MainMenu": {
+      "menuAdminServices": "Gestion des Services",
+      "menuAdminUserValidation": "Validation des utilisateurs",
+      "menuAdminCategories": "Gestion des categories",
+      "menuAdminTags": "Gestion des mots clé",
+      "menuAdminGroups": "Gestion des Groupes",
+      "menuAdminUsers": "Gestion des utilisateurs",
+      "menuPublications": "Publications",
       "menuProfileLabel": "Profil",
-      "menuLogoutLabel": "Se déconnecter"
+      "menuLogoutLabel": "Se déconnecter",
+      "menuMedias": "Stockage de Médias",
+      "menuAdminAppSettings": "Réglages Administrateurs"
+    },
+    "NotValidatedMessage": {
+      "inactiveAccount": "Votre compte n'a pas été activé",
+      "waitAccount": "Un administrateur va bientôt valider votre compte"
+    },
+    "GroupUsersList": {
+      "title": "",
+      "loadingTitle": "Chargement en cours ...",
+      "columnUsername": "Pseudo",
+      "columnFirstName": "Prénom",
+      "columnLastName": "Nom",
+      "columnEmail": "Courriel",
+      "validate_tooltip": "Accepter ce candidat",
+      "memberAdded": "Utilisateur promu comme membre",
+      "userAdded": "Utilisateur ajouté avec succès",
+      "addUserButton": "Ajouter",
+      "userRemoved": "Utilisateur supprimé du groupe",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Trouver un utilisateur",
+        "pagination_labelRowsSelect": "utilisateurs par page",
+        "body_emptyDataSourceMessage": "Aucun utilisateur enregistré",
+        "body_addTooltip": "Ajouter un utilisateur",
+        "body_editTooltip": "Modifier cet utilisateur",
+        "body_deleteTooltip": "Enlever cet utilisateur",
+        "body_editRow_deleteText": "Enlever vraiment cet utilisateur ?"
+      }
+    },
+    "UserFinder": {
+      "selectTag": "Sélectionner",
+      "CreateTag": "Créer",
+      "addTag": "Ajouter ",
+      "noUser": "Aucun mot clé trouvé",
+      "tagLabel": "Utilisateur",
+      "placeholder": "Saisir pour rechercher",
+      "clear": "Effacer",
+      "loading": "Chargement...",
+      "open": "Ouvrir",
+      "close": "Fermer"
+    },
+    "TagFinder": {
+      "noTag": "Aucun utilisateur trouvé",
+      "TagLabel": "Mot clé",
+      "placeholder": "Saisir pour rechercher",
+      "clear": "Effacer",
+      "loading": "Chargement...",
+      "open": "Ouvrir",
+      "close": "Fermer"
+    },
+    "GroupDetails": {
+      "favButtonLabelNoFav": "Supprimer de votre espace personnel",
+      "favButtonLabelFav": "Ajouter à votre espace personnel",
+      "singleGroupButtonLabel": "Détails du groupe",
+      "manageGroupButtonLabel": "Administrer ce groupe",
+      "joinPublicGroupButtonLabel": "Rejoindre le groupe",
+      "askToJoinModerateGroupButtonLabel": "Demander à rejoindre",
+      "groupMember": "Membre",
+      "groupAnimator": "Animateur",
+      "groupCandidate": "Candidature en cours",
+      "waitingForValidation": "En validation",
+      "leaveGroup": "Quitter le groupe",
+      "publicGroup": "Groupe public",
+      "moderateGroup": "Groupe modéré",
+      "closedGroup": "Groupe restreint",
+      "groupLeft": "Vous avez quitté le groupe",
+      "groupJoined": "Vous êtes membre du groupe",
+      "candidateSent": "L'administrateur du groupe va être notifié de votre demande",
+      "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe",
+      "candidateCancel": "Votre requête a été annulée"
+    },
+    "GroupDetailsPersSpace": {
+      "groupCandidate": "Candidat",
+      "groupAdmin": "Administrateur",
+      "groupNone": "Aucun rôle"
+    },
+    "AppVersion": {
+      "title": "Version"
+    },
+    "PersonalZone": {
+      "delZoneLabel": "Supprimer cette zone",
+      "forbiddenDelZoneLabel": "Vider la zone pour la supprimer",
+      "upZoneLabel": "Faire monter cette zone",
+      "downZoneLabel": "Faire descendre cette zone",
+      "addPersonalLink": "Ajouter un lien personnel à cette zone",
+      "emptyDragZone": "Glissez les éléments ici",
+      "modifyTitle": "Modifier le titre de la zone"
+    },
+    "PersonalLinkDetails": {
+      "visitLink": "Visiter ce lien",
+      "delLink": "Supprimer ce lien",
+      "titleLabel": "Titre du lien",
+      "urlLabel": "Url du lien",
+      "modifyLink": "Modifier le lien",
+      "saveLink": "Enregistrer le lien"
+    },
+    "ArticleDetails": {
+      "editArticleButtonLabel": "Editer cette publication",
+      "open": "Ouvrir cette publication",
+      "publicButton": "Ouvrir la page publique de cette publication",
+      "publishedOn": "Publiée le",
+      "noDescription": "Il n'y a pas de description pour cette publication",
+      "visitsCount": "Consultations"
+    },
+    "ValidationButton": {
+      "sure": "Êtes-vous sûr(e) ?"
+    },
+    "UploaderNotifier": {
+      "storageFullTitle": "Votre stockage est plein",
+      "storageFull": "Vous ne pouvez pas téléverser ce fichier car vous êtes limité à",
+      "errorTitle": "Une erreur s'est produite",
+      "fileTooLargeTitle": "Fichier trop gros",
+      "fileTooLarge": "Ce fichier est trop gros, veuillez choisir un fichier de moins de",
+      "formatNotAcceptedTitle": "Mauvais format",
+      "formatNotAccepted": "Le format de ce fichier n'est pas accepté, veuillez choisir un fichier de l'un de ces format",
+      "uploadInProgress": "Téléversement en cours",
+      "uploadFinished": "Téléversement terminé"
+    },
+    "LogoutDialog": {
+      "dialogTitle": "Déconnexion globale",
+      "dialogContent": "Voulez vous également vous déconnecter de toutes les applications ?",
+      "dontAskAgain": "Ne plus demander",
+      "buttonYes": "Oui",
+      "buttonNo": "Non"
+    },
+    "CustomQuill": {
+      "header": "Style de paragraphe",
+      "bold": "Gras (ctrl+b)",
+      "italic": "Italique (ctrl+i)",
+      "underline": "Souligné (ctrl+u)",
+      "strike": "Barré",
+      "blockquote": "Citation",
+      "ordered": "Liste ordonnée",
+      "bullet": "Liste à puces",
+      "unindent": "Diminuer le retrait",
+      "indent": "Augmenter le retrait",
+      "link": "Associer un lien au texte sélectionné",
+      "image": "Ajouter un média",
+      "video": "Intégrer une vidéo",
+      "audio": "Enregistrer un fichier audio",
+      "webcam": "Enregistrer une vidéo",
+      "clean": "Supprimer la mise en forme de la sélection",
+      "enterUrl": "Entrez l'URL de la video"
+    },
+    "WebcamModal": {
+      "header": "Enregistrer une nouvelle vidéo",
+      "start": "Démarrer l'enregistrement",
+      "stop": "Arrêter l'enregistrement",
+      "upload": "Téléverser la vidéo",
+      "tooLongVideo": "Vous avez atteint votre limite de stockage",
+      "refresh": "Recommencer",
+      "validate": "Valider la vidéo",
+      "cancel": "Annuler",
+      "fileName": "Nom de la vidéo",
+      "quality": "Résolution",
+      "low": "Basse",
+      "medium": "Moyenne",
+      "high": "Haute",
+      "nowebcam": "Aucune caméra disponible"
+    },
+    "AudioModal": {
+      "header": "Enregistrer un nouveau fichier audio",
+      "start": "Démarrer l'enregistrement",
+      "stop": "Arrêter l'enregistrement",
+      "upload": "Téléverser le fichier audio",
+      "tooLongVideo": "Vous avez atteint votre limite de stockage",
+      "refresh": "Recommencer",
+      "validate": "Valider le fichier audio",
+      "cancel": "Annuler",
+      "fileName": "Nom du fichier audio"
+    },
+    "SelectedMediaModal": {
+      "successCopyURL": "URL du média copiée dans le presse-papier",
+      "OpenInWindow": "Ouvrir le média",
+      "copyUrl": "Copier l'URL de ce média"
+    },
+    "UserAvatarEdit": {
+      "title": "Créez votre avatar",
+      "subtitle": "à patir d'une image",
+      "sendImage": "Envoyer cet avatar",
+      "turnLeft": "Pivoter à gauche",
+      "turnRight": "Pivoter à droite",
+      "zoom": "Zoom",
+      "cancel": "Annuler"
+    },
+    "UserAvatarGallery": {
+      "title": "Créez votre avatar",
+      "subtitle": "depuis la galerie d'images",
+      "cancel": "Annuler"
+    },
+    "UserAvatarCamCapture": {
+      "title": "Créez votre avatar",
+      "subtitle": "à partir de la webcam",
+      "takePicture": "Prendre une photo",
+      "cancel": "Annuler"
     }
   },
   "validatejs": {
     "isRequired": "ce champ est requis",
     "isEmail": "courriel non valide"
   },
+  "materialTable": {
+    "pagination_firstTooltip": "Première page",
+    "pagination_previousTooltip": "Page précédente",
+    "pagination_nextTooltip": "Page suivante",
+    "pagination_lastTooltip": "Dernière page",
+    "body_editRow_cancelTooltip": "Annuler",
+    "body_editRow_saveTooltip": "Enregistrer les changements"
+  },
   "pages": {
+    "LegalPage": {
+      "personalData": "Données Personnelles",
+      "gcu": "Conditions générales d'utilisation",
+      "accessibility": "Accessibilité",
+      "legal": "Mentions légales"
+    },
+    "AdminSettingsPage": {
+      "edition": "Edition des réglages de l'application",
+      "introduction": "Introduction",
+      "legal": "Mentions légales",
+      "gcu": "C.G.U",
+      "accessibility": "Accessibilité",
+      "personalData": "Données Personnelles"
+    },
     "SignIn": {
       "appDescription": "Les services numériques partagés des agents de l&apos;Éducation nationale",
       "appVersion": "Version Test Alpha 0.1",
@@ -41,7 +598,10 @@
       "forgotPwd": "Mot de passe oublié ?",
       "createAccount": "Créer un compte",
       "loginError": "Erreur: Mauvais compte ou mot de passe",
-      "loginKeycloak": "Se connecter avec OpenID"
+      "keycloakError": "Erreur de connexion",
+      "EmailAlreadyExists": "Erreur: Un compte existant utilise le même email",
+      "loginKeycloak": "Se connecter",
+      "rememberMe": "Rester connecté(e)"
     },
     "SignUp": {
       "appDescription": "Création de votre compte",
@@ -55,14 +615,327 @@
       "submitButtonLabel": "Inscription",
       "createError": "Erreur: problème lors de la création du compte"
     },
+    "ProfilePage": {
+      "title": "Mes préférences",
+      "useEmail": "Utiliser mon email",
+      "usernameError": "Ce pseudonyme n'est pas disponible",
+      "emailAlreadyExists": "Cette adresse électronique est déjà utilisée",
+      "update": "Mettre à jour",
+      "reset": "Réinitialiser",
+      "valueRequired": "Ce champ ne peut pas être vide",
+      "updateSuccess": "Profil mis à jour avec succès",
+      "noModifications": "Aucun changement à appliquer",
+      "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
+      "logoutType": "Portée de la déconnexion",
+      "backupTitle": "Téléchargez vos données de publication",
+      "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous également possible de charger des données que vous auriez téléchargé d'une autre instance de la boite",
+      "downloadPublicationBackup": "Télécharger les données",
+      "UploadPublicationBackup": "Charger des données",
+      "uploadSuccess": "Chargement des données réussi",
+      "uploadImg": "Charger une image",
+      "useCam": "Utiliser la webcam",
+      "useGallery": "Choisir parmi la galerie d'images",
+      "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle."
+    },
     "NotFound": {
       "backButtonLabel": "Retour",
       "message": "Page inexistante !"
     },
     "ServicesPage": {
+      "title": "Découvrez les applications",
+      "categories": "Filtrer par catégories",
+      "reset": "Réinitialiser",
+      "validate": "Valider",
       "tabsLabel": "Onglet des services",
-      "tabFavServicesLabel": "Mes services favoris",
-      "tabAllServicesLabel": "Tous les services"
+      "tabFavServicesLabel": "Mes services épinglés",
+      "tabAllServicesLabel": "Tous les services",
+      "searchText": "De quelle application avez-vous besoin ?",
+      "viewMode": "Changer le mode d'affichage",
+      "viewCard": "Mode cartes",
+      "viewList": "Mode liste",
+      "filter": "Filtrer"
+    },
+    "GroupsPage": {
+      "title": "Explorer les groupes",
+      "searchText": "Quel groupe cherchez-vous ?",
+      "viewMode": "Changer le mode d'affichage",
+      "viewCard": "Mode cartes",
+      "viewList": "Mode liste",
+      "endOfList": "Fin de la liste"
+    },
+    "AdminServicesPage": {
+      "title": "Gestion des Services",
+      "columnLogo": "Logo",
+      "columnTitle": "Nom",
+      "columnUsage": "Usage",
+      "columnUrl": "Lien",
+      "columnState": "État",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher un service",
+        "pagination_labelRowsSelect": "services par page",
+        "body_emptyDataSourceMessage": "Aucun service enregistré",
+        "body_addTooltip": "Ajouter un service",
+        "body_editTooltip": "Modifier ce service",
+        "body_goTooltip": "Aller à ce service",
+        "body_deleteTooltip": "Supprimer ce service",
+        "body_editRow_deleteText": "Supprimer vraiment ce service ?"
+      }
+    },
+    "AdminCategoriesPage": {
+      "title": "Gestion des Catégories",
+      "columnName": "Nom",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher une catégorie",
+        "pagination_labelRowsSelect": "Catégories par page",
+        "body_emptyDataSourceMessage": "Aucune catégorie enregistrée",
+        "body_addTooltip": "Ajouter une catégorie",
+        "body_editTooltip": "Modifier cette catégorie",
+        "body_deleteTooltip": "Supprimer cette catégorie",
+        "body_editRow_deleteText": "Supprimer vraiment cette catégorie ?"
+      }
+    },
+    "AdminTagsPage": {
+      "title": "Gestion des Mots clé",
+      "columnName": "Nom",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher un Mot clé",
+        "pagination_labelRowsSelect": "Mots clés par page",
+        "body_emptyDataSourceMessage": "Aucun Mot clé enregistrée",
+        "body_addTooltip": "Ajouter un Mot clé",
+        "body_editTooltip": "Modifier ce Mot clé",
+        "body_deleteTooltip": "Supprimer ce Mot clé",
+        "body_editRow_deleteText": "Supprimer vraiment ce Mots clé ?"
+      }
+    },
+    "AdminGroupsPage": {
+      "title": "Gestion des groupes",
+      "columnName": "Nom",
+      "columnInfo": "Description",
+      "columnType": "Type",
+      "columnMembers": "Membres",
+      "columnCandidates": "Candidats",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher un groupe",
+        "pagination_labelRowsSelect": "groupes par page",
+        "body_emptyDataSourceMessage": "Aucun groupe à gérer",
+        "body_addTooltip": "Ajouter un groupe",
+        "body_editTooltip": "Modifier ce groupe",
+        "body_deleteTooltip": "Supprimer ce groupe",
+        "body_editRow_deleteText": "Supprimer vraiment ce groupe ?"
+      }
+    },
+    "AdminUsersPage": {
+      "title": "Gestion des utilisateurs",
+      "searchText": "Quel utilisateur cherchez-vous ?",
+      "admin": "Administrateur",
+      "setAdmin": "Donner les droits d'administrateur",
+      "unsetAdmin": "Enlever les droits d'administrateur",
+      "deleteUser": "Supprimer l'utilisateur",
+      "deleteUserConfirmation": "Supprimer vraiment cet utilisateur ?",
+      "deleteSelfConfirmation": "Vous allez supprimer votre propre compte. Continuer ?",
+      "cancelDelete": "Annuler la suppression",
+      "successSetAdmin": "Droits d'administrateur donnés",
+      "successUnsetAdmin": "Droits d'administateur révoqués",
+      "successDeleteUser": "Utilisateur supprimé",
+      "loginInfo": "Dernière connexion",
+      "neverConnected": "Jamais connecté",
+      "undefined": "Non renseigné",
+      "sortByLastLogin": "Trier par date de dernière connexion"
+    },
+    "AdminUserValidationPage": {
+      "title": "Utilisateurs en attente de validation",
+      "columnUsername": "Pseudo",
+      "columnLastName": "Nom",
+      "columnFirstName": "Prénom",
+      "columnEmails": "Emails",
+      "columnStructure": "Structure",
+      "columnCreatedAt": "Date d'inscription",
+      "actions_tooltip": "Valider cet utilisateur",
+      "materialTableLocalization": {
+        "toolbar_searchPlaceholder": "Rechercher un utilisateur",
+        "pagination_labelRowsSelect": "utilisateurs par page",
+        "body_emptyDataSourceMessage": "Aucun utilisateur à valider"
+      }
+    },
+    "SingleServicePage": {
+      "backToList": "Retour à la liste",
+      "screenshots": "Captures d'écran",
+      "categories": "Catégories",
+      "open": "Ouvrir",
+      "inactive": "Service inactif",
+      "propulsedBy": "Propulsé par"
+    },
+    "PersonalPage": {
+      "welcome": "Bienvenue sur votre espace personnel",
+      "searchText": "Besoin de retrouver un service, groupe ou lien personnel ?",
+      "noFavYet": "Ajoutez ici des éléments depuis l'onglet Applications",
+      "unsorted": "À trier",
+      "unsortedFav": "Mes Favoris",
+      "newZone": "Nouvelle Zone",
+      "typeApplication": "Application",
+      "typeGroup": "Groupe",
+      "typeLink": "Lien",
+      "addZoneStartButton": "Ajouter une nouvelle zone au début",
+      "addZoneEndButton": "Ajouter une nouvelle zone à la fin",
+      "toggleEdition": "Activer/Désactiver le mode édition"
+    },
+    "AdminSingleServicePage": {
+      "edition": "Edition du service",
+      "creation": "Création d'un nouveau service",
+      "title": "Titre",
+      "slug": "Slug",
+      "state": "État",
+      "team": "Equipe",
+      "usage": "Utilisation de l'application",
+      "logo": "Logo du service",
+      "description": "Courte description",
+      "url": "URL du service",
+      "content": "Longue description du service",
+      "categories": "Catégories",
+      "screenshots": "Captures d'écran",
+      "addScreenshots": "Ajouter un écran",
+      "save": "Sauvegarder",
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
+    },
+    "AdminSingleGroupPage": {
+      "edition": "Édition du groupe",
+      "creation": "Création d'un nouveau groupe",
+      "name": "Nom",
+      "slug": "Slug",
+      "type": "Type",
+      "description": "Courte description",
+      "content": "Longue description du groupe",
+      "save": "Sauvegarder",
+      "update": "Mettre à jour",
+      "cancel": "Annuler"
+    },
+    "SingleGroupPage": {
+      "backToList": "Retour à la liste",
+      "leaveGroup": "Quitter le groupe",
+      "seeLess": "Voir moins",
+      "seeMore": "Voir plus",
+      "addressBook": "Annuaire",
+      "addressBookUsage": "Liste des utilisateurs du groupe",
+      "cancelCandidate": "Annuler la candidature",
+      "groupLeft": "Vous avez quitté le groupe",
+      "groupJoined": "Vous êtes membre du groupe",
+      "candidateSent": "L'administrateur du groupe va être notifié de votre demande",
+      "alreadyCandidate": "Vous avez déjà envoyé votre demande à ce groupe",
+      "candidateCancel": "Votre requête a été annulée",
+      "stopAnimating": "Arrêter d'animer ce groupe",
+      "animationLeft": "Vous n'êtes plus animateur de ce groupe",
+      "apps": "Applications",
+      "resources": "Ressources du groupe"
+    },
+    "AddressBook": {
+      "sendEmail": "Envoyer un email à",
+      "back": "Retour au groupe",
+      "searchText": "Quel utilisateur cherchez-vous ?"
+    },
+    "ArticlesPage": {
+      "title": "Vos publications",
+      "openPublicPage": "Voir toutes les publications",
+      "copyOwnPublicPageUrl": "Copier le lien vers la page publique de vos publications",
+      "successCopyURL": "URL publique copiée dans le presse-papier",
+      "searchText": "Que recherchez-vous ?"
+    },
+    "EditArticlePage": {
+      "title": "Edition de la publication",
+      "creationTitle": "Nouvelle publication",
+      "successUpdate": "Publication mise à jour avec succès",
+      "successCreate": "Publication créée avec succès",
+      "successDelete": "Publication supprimée avec succès",
+      "titleLabel": "Titre",
+      "slugLabel": "URL publique de la publication",
+      "descriptionLabel": "Courte description de cette publication",
+      "structureMessage": "Rattacher à ma structure actuelle ({$structure})",
+      "contentLabel": "Contenu de cette publication",
+      "update": "Mettre à jour",
+      "save": "Créer",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "copyPublicURL": "Copier l'URL publique",
+      "successCopyURL": "URL publique copiée dans le presse-papier",
+      "switchToHtml": "Éditeur Classic",
+      "switchToMarkdown": "Éditeur Markdown",
+      "selectTag": "Sélectionner",
+      "createTag": "Créer"
+    },
+    "PublicArticlePage": {
+      "title": "Publications de",
+      "searchText": "Que recherchez-vous ?",
+      "goToList": "Voir les auteurs"
+    },
+    "PublicArticleDetailsPage": {
+      "backToList": "Retour à la liste",
+      "goToList": "Aller à la liste",
+      "views": "consultations",
+      "exportPDF": "Export PDF",
+      "exportLandscape": "Paysage",
+      "exportPortrait": "Portrait"
+    },
+    "PublishersPage": {
+      "title": "Liste des auteurs",
+      "searchText": "Qui recherchez-vous ?",
+      "goToPublications": "Voir les publications de cet auteur",
+      "articles": "publications",
+      "updatedAt": "Mis à jour le",
+      "sortByDate": "Trier par date de publication"
+    },
+    "MediaStoragePage": {
+      "title": "Stockage de fichiers",
+      "usage": "Utilisation",
+      "delete": "Supprimer",
+      "confirmDelete": "Confirmer la suppression",
+      "objectUsedText": "Ce fichier est utilisé dans un article (titre ci dessous), si vous le supprimer, vos lecteurs tomberont sur un lien vide dans cet article. Si vous confirmez la suppression en cliquant une fois de plus sur le bouton, prenez note que cela ne sera pas réversible."
+    }
+  },
+  "layouts": {
+    "MainLayout": {}
+  },
+  "languages": {
+    "en": "Anglais",
+    "fr": "Français"
+  },
+  "SimpleSchema": {
+    "required": "{$label} est requis",
+    "minString": "{$label} doit faire au moins {$min} caractères",
+    "maxString": "{$label} est limité à {$max} caractères",
+    "minNumber": "{$label} doit être supérieur ou égal à {$min}",
+    "maxNumber": "{$label} doit être inférieur ou égal à {$max}",
+    "minNumberExclusive": "{$label} doit être supérieur à {$min}",
+    "maxNumberExclusive": "{$label} doit être inférieur à {$max}",
+    "minDate": "{$label} doit être postérieur à {$min}",
+    "maxDate": "{$label} doit être antérieur à {$max}",
+    "badDate": "{$label} n'est pas une tâche valide",
+    "minCount": "Vous devez saisir plus de {$minCount} valeurs",
+    "maxCount": "Vous devez saisir moins de {$maxCount} valeurs",
+    "noDecimal": "{$label} doit être un entier ",
+    "notAllowed": "{$value} n'est pas une valeur acceptée",
+    "expectedType": "{$label} doit être du type {$dataType}",
+    "keyNotInSchema": "{$name} n'est pas autorisé par le schéma",
+    "RegEx": {
+      "Default": "Echec de validation de l'expression régulière",
+      "Email": "doit être une adresse e-mail valide",
+      "EmailWithTLD": "doit être une adresse e-mail valide",
+      "Domain": "doit être un domaine valide",
+      "WeakDomain": "doit être un domaine valide",
+      "IP": "doit être une adresse IPv4/IPv6 valide",
+      "IPv4": "doit être une adresse IPv4 valide",
+      "IPv6": "doit être une adresse IPv6 valide",
+      "Url": "doit être une URL valide",
+      "Id": "doit être un identifiant alphanumérique valide",
+      "ZipCode": "doit être un code postal valide",
+      "Phone": "doit être un numéro de téléphone valide"
+    },
+    "dataTypes": {
+      "String": "Chaine de caractères",
+      "Number": "Numérique",
+      "Integer": "Entier",
+      "Boolean": "Booléen",
+      "Array": "Tableau",
+      "Object": "Objet"
     }
   }
 }

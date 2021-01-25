@@ -1,92 +1,69 @@
 {
-  "defaultAccounts": [
-    {
-      "email": "admin@ac-dijon.fr",
-      "password": "changeme",
-      "role": "admin",
-      "structure": "Bourgogne-Franche-Comté",
-      "firstName": "Jean",
-      "lastName": "Dupont"
+  "public": {
+    "enableKeycloak": true,
+    "keycloakUrl": "https://auth.appseducation.fr/auth",
+    "keycloakRealm": "apps",
+    "laboiteBlogURL": "",
+    "minioSSL": false,
+    "minioPort": null,
+    "minioAccess": "Uhjm4KJ8MV",
+    "minioEndPoint": "minio.appseducation.fr",
+    "minioBucket": "laboite-dev",
+    "imageFilesTypes": ["svg", "png", "jpg", "gif", "jpeg"],
+    "audioFilesTypes": ["wav", "mp3", "ogg"],
+    "videoFilesTypes": ["mp4", "webm", "avi", "wmv"],
+    "textFilesTypes": ["pdf", "odt", "txt", "docx"],
+    "otherFilesTypes": ["csv"],
+    "minioFileSize": 500000,
+    "minioStorageFilesSize": 3000000,
+    "maxMinioDiskPerUser": 1000000,
+    "NotificationsExpireDays": {
+      "setRole": null,
+      "unsetRole": null,
+      "request": null,
+      "group": null,
+      "default": null
     },
-    {
-      "email": "eole@ac-dijon.fr",
-      "password": "changeme",
-      "structure": "Bourgogne-Franche-Comté",
-      "firstName": "Guy",
-      "lastName": "Durand"
+    "groupPlugins": {
+      "rocketChat": {
+        "enable": false,
+        "URL": "",
+        "groupURL": "[URL]/group/[GROUPSLUG]",
+        "enableChangeName": true
+      },
+      "nextcloud": {
+        "enable": false,
+        "URL": "",
+        "groupURL": "[URL]/apps/files/?dir=/[GROUPNAME]",
+        "enableChangeName": false
+      }
     }
-  ],
-  "defaultServices": [
-    {
-      "glyphicon": "glyphicon-comment",
-      "url": "https://chat.mim.ovh",
-      "logo": "https://rocket.chat/images/default/logo--dark.svg",
-      "title": "Chat sur MIM",
-      "description": "Discuter en direct",
-      "target": "_blank"
-    },
-    {
-      "glyphicon": "glyphicon-cloud",
-      "url": "https://nextcloud.apps.education.fr",
-      "logo": "https://www.c-rieger.de/wp-content/uploads/2017/10/cropped-nextcloud-logo-white-transparent-1.png",
-      "name": "NextCloud",
-      "title": "Info Nuagiques",
-      "description": "Partager ses documents.",
-      "target": "_blank"
-    },
-    {
-      "glyphicon": "glyphicon-certificate",
-      "url": "https://filepizza.mim.ovh",
-      "logo": "https://raw.githubusercontent.com/luceole/filepizza/master/static/images/wordmark.png",
-      "title": "Transfert pair a pair",
-      "description": "Echanger vos gros fichiers",
-      "target": "_blank"
-    },
-    {
-      "glyphicon": "glyphicon-pencil",
-      "url": "https://etherpad.apps.education.fr/",
-      "title": "Pad Public",
-      "description": "Editeur de texte en mode collaboratif",
-      "logo": "https://opensharing.fr/wp-content/uploads/2017/04/etherpad-logo-1.png",
-      "target": "_blank"
-    },
-    {
-      "glyphicon": "glyphicon-comment",
-      "url": "https://codimd.apps.education.fr",
-      "logo": "https://hackmd.io/images/home/cover.svg",
-      "title": "CodiMD Public",
-      "description": "Ecrire Ensemble",
-      "target": "_blank"
-    },
-    {
-      "glyphicon": "glyphicon-globe",
-      "url": "https://mastodon.etalab.gouv.fr",
-      "logo": "https://blog.joinmastodon.org/brand.svg",
-      "title": "Mastodon - EtatLab",
-      "description": "Réseau social",
-      "target": "_blank"
-    },
-    {
-      "glyphicon": "glyphicon-user",
-      "url": "https://auth.apps.education.fr/auth/realms/snp/account",
-      "title": "OpenID Profil",
-      "logo": "https://www.keycloak.org/resources/images/keycloak_logo_480x108.png",
-      "description": "Consulter vos infos de connexion",
-      "target": "_blank"
-    },
-    {
-      "glyphicon": "glyphicon-stats",
-      "logo": "https://about.draw.io/wp-content/uploads/2017/07/drawio_logo_50px.png",
-      "url": "https://draw.io?lang=fr",
-      "title": "Diagrammes",
-      "description": "Dessiner en ligne",
-      "target": "_blank"
-    }
-  ],
+  },
   "keycloak": {
-    "url": "https://auth.apps.education.fr/auth",
-    "realm": "snp",
-    "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoTH8XgAI3ZajBTypPDRtqIZocbyYWhPt1+PWcqqIpJloTJPANlNSB+k27hd8oR8DDI/oUTYiHlwUYXWWFSjuseybp7AO9Ekc+a4LGbvw6AaDJtrtYGdkfffGV+eDLqP5egZke/XvpIMdj4FvE5/AeDFOzTt6xsm6wiBrMPtjSimjFKEsf/vuOOwvS/Ln2sjncH7FJqEVX+z8wvU3hM+8UjUr5sWCD9uSOy1DD+IV1ofKPbHk8KBBIci3DGyIF6pdxd21ELIM3jCAd4038Ynwz3f9l7edlz1MmTr2rTL1aOJjaw5es9Z345MnKaFjBNVl5BlRrfzLwHKDFhinG9D/RwIDAQAB",
-    "client": "sso"
+    "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvyVtOgah8FjiXmFcnavID9b0lEhCl5k7jISPkPweOQtB1+hRAajcT7Y4v9babrUAXVL7bAb8nRTJVrks3Jl+o/nfZjfLxx7vIE1mMsRGVAqPg88UgyP79fFBvWdPnrIaIweNqlH5r1WoBOVjsoX0rFNijZqQ5llcC/uUYQW35urjGUJIZlHDSOdp34qnrrnohE3714PUuiKHhqFx15MpzmO/KQuIt0lJXuJ3NgAwt1OndksvP03Kkm0ls7IvveF0GiM2dki2xPRAHvv3jC1hLdHm0kGdrn+EndX0xFwBl9kL5zcjILGwm1gyfeJdfzOQrBUf6WL+FpgNseWq5MD+vwIDAQAB",
+    "client": "sso",
+    "adminEmails": [],
+    "adminUser": "",
+    "adminPassword": ""
+  },
+  "nextcloud": {
+    "nextcloudUser": "",
+    "nextcloudPassword": "",
+    "nextcloudQuota": "1073741824"
+  },
+  "rocketChat": {
+    "rocketChatUser": "",
+    "rocketChatPassword": ""
+  },
+  "private": {
+    "fillWithFakeData": true,
+    "minioSecret": "Pr6SvbtBkutUHmdlN2uYWi5g7oo5EZquMq9k2t00",
+    "apiKeys": [
+      "849b7648-14b8-4154-9ef2-8d1dc4c2b7e9"
+    ],
+    "whiteDomains": [
+      "^ac-[a-z-]*\\.fr",
+      "^[a-z-]*\\.gouv.fr"
+    ]
   }
 }
