@@ -191,7 +191,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const groupPluginsShow = (plugin) => {
     if (groupPlugins[plugin].enable) {
       return (
-        <FormGroup>
+        <FormGroup key={plugin}>
           <FormControlLabel
             control={
               <Checkbox

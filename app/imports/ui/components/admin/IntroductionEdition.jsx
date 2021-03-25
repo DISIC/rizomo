@@ -107,7 +107,9 @@ const IntroductionEdition = ({ data = [] }) => {
         <InputLabel id="language-selector-label">{i18n.__('components.IntroductionEdition.language')}</InputLabel>
         <Select labelId="language-selector-label" id="language-selector" value={language} onChange={handleChange}>
           {translations.map((tra) => (
-            <MenuItem value={tra}>{i18n.__(`components.IntroductionEdition.language_${tra}`)}</MenuItem>
+            <MenuItem value={tra} key={`components.IntroductionEdition.language_${tra}`}>
+              {i18n.__(`components.IntroductionEdition.language_${tra}`)}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

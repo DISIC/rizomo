@@ -55,7 +55,7 @@ function UserFinder({ onSelected, hidden, exclude, opened }) {
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.username === value.name}
+      getOptionSelected={(option, value) => option.username === value.username}
       getOptionLabel={(option) => `${option.username} (${option.firstName || ''} ${option.lastName || ''})`}
       noOptionsText={i18n.__('components.UserFinder.noUser')}
       clearText={i18n.__('components.UserFinder.clear')}
