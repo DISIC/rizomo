@@ -68,5 +68,10 @@
       "^ac-[a-z-]*\\.fr",
       "^[a-z-]*\\.gouv.fr"
     ]
+  },
+  "smtp":{
+    "url": "smtps://USERNAME:PASSWORD@HOST:PORT",
+    "fromEmail": "USERNAME",
+    "toEmail": "admin@domain.fr"
   }
 }

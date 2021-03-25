@@ -311,7 +311,8 @@
       "personalData": "Données Personnelles",
       "gcu": "Conditions générales d'utilisation",
       "accessibility": "Accessibilité",
-      "legal": "Mentions légales"
+      "legal": "Mentions légales",
+      "contact": "Contact"
     },
     "LegalComponent": {
       "title_introduction": "Introduction",
@@ -620,6 +621,19 @@
       "structureLabel": "Structure de rattachement",
       "submitButtonLabel": "Inscription",
       "createError": "Erreur: problème lors de la création du compte"
+    },
+    "ContactForm": {
+      "appDescription": "Formulaire de contact",
+      "firstNameLabel": "Prénom",
+      "nameLabel": "Nom",
+      "emailLabel": "Courriel",
+      "structureLabel": "Structure de rattachement",
+      "submitButtonLabel": "Envoyer",
+      "createError": "Erreur: problème lors de l'envoi du formulaire",
+      "textLabel": "Texte",
+      "captchaInfo": "Indiquez le résultat de l'opération",
+      "redirectMsg": "Formulaire envoyé. Redirection automatique en cours...",
+      "redirectTime": "secondes"
     },
     "ProfilePage": {
       "title": "Mes préférences",

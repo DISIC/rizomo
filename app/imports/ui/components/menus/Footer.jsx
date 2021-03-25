@@ -118,13 +118,21 @@ const Footer = () => {
         <Toolbar className={classes.root}>
           <ul>
             {toolbarContent()}
+            <Link className={classes.link} to="/contact">
+              {i18n.__(`components.Footer.contact`)}
+            </Link>
             <li className={classes.li}>{blogLink()}</li>
           </ul>
         </Toolbar>
       ) : (
         <Toolbar className={classes.root}>
           <div>{toolbarContent()}</div>
-          {blogLink()}
+          <div>
+            <Link className={classes.link} to="/contact">
+              {i18n.__(`components.Footer.contact`)}
+            </Link>
+            {blogLink()}
+          </div>
         </Toolbar>
       )}
     </AppBar>

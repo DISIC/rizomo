@@ -311,7 +311,8 @@
       "personalData": "Personal Data",
       "gcu": "G.C.U",
       "accessibility": "Accessibility",
-      "legal": "Legal notice"
+      "legal": "Legal notice",
+      "contact": "Contact"
     },
     "LegalComponent": {
       "title_introduction": "Introduction",
@@ -618,6 +619,19 @@
       "structureLabel": "Connection structure",
       "submitButtonLabel": "Sign Up",
       "createError": "Error: impossible to create this account"
+    },
+    "ContactForm": {
+      "appDescription": "Send contact formular",
+      "firstNameLabel": "First name",
+      "nameLabel": "Last name",
+      "emailLabel": "Email",
+      "structureLabel": "Connection structure",
+      "submitButtonLabel": "Send",
+      "createError": "Error: an error as occured",
+      "textLabel": "Text",
+      "captchaInfo": "Indicate the result of the operation",
+      "redirectMsg": "Your request has been sent. Redirection in progress...",
+      "redirectTime": "seconds"
     },
     "ProfilePage": {
       "title": "My settings",

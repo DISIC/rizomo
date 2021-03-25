@@ -7,6 +7,7 @@ import LanguageSwitcher from '../components/system/LanguageSwitcher';
 import SignUp from '../pages/system/SignUp';
 import SignIn from '../pages/system/SignIn';
 import Footer from '../components/menus/Footer';
+import Contact from '../pages/system/Contact';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +58,7 @@ export default function SignLayout() {
             <Switch>
               <Route exact path="/signin" component={SignIn} />
               <Route exact path="/signup" component={SignUp} />
+              <Route exact path="/contact" component={Contact} />
             </Switch>
             <LanguageSwitcher />
           </div>
