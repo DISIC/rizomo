@@ -4,6 +4,8 @@
     "keycloakUrl": "https://auth.appseducation.fr/auth",
     "keycloakRealm": "apps",
     "laboiteBlogURL": "",
+    "enableBBB": true,
+    "BBBUrl": "https://bbb-lms-scalelite.visio.education.fr/bigbluebutton/api",
     "minioSSL": false,
     "minioPort": null,
     "minioAccess": "Uhjm4KJ8MV",
@@ -61,6 +63,7 @@
     "apiKeys": [
       "849b7648-14b8-4154-9ef2-8d1dc4c2b7e9"
     ],
+    "BBBSecret": "",
     "whiteDomains": [
       "^ac-[a-z-]*\\.fr",
       "^[a-z-]*\\.gouv.fr"

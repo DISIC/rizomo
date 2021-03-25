@@ -195,10 +195,9 @@ export const updateGroup = new ValidatedMethod({
   },
 });
 
-// Get list of all method names on User
-const LISTS_METHODS = _.pluck([favGroup, unfavGroup, createGroup, removeGroup, updateGroup], 'name');
-
 if (Meteor.isServer) {
+  // Get list of all method names on User
+  const LISTS_METHODS = _.pluck([favGroup, unfavGroup, createGroup, removeGroup, updateGroup], 'name');
   // Only allow 5 list operations per connection per second
   DDPRateLimiter.addRule(
     {

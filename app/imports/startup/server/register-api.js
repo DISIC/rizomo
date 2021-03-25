@@ -1,6 +1,7 @@
 import '../../api/users/server/methods';
 import '../../api/users/server/publications';
 import '../../api/groups/methods';
+import '../../api/groups/server/bbbMethods';
 import '../../api/groups/server/publications';
 import '../../api/services/methods';
 import '../../api/services/server/publications';
