@@ -23,3 +23,4 @@ import '../../api/migrations';
 import '../../api/appclients/rocketChat';
 import '../../api/appclients/kcClient';
 import '../../api/appclients/nextcloud';
+import '../../api/smtp/methods';
