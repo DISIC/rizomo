@@ -403,9 +403,11 @@ const ProfilePage = () => {
                             title={i18n.__('pages.ProfilePage.useEmail')}
                             aria-label={i18n.__('pages.ProfilePage.useEmail')}
                           >
-                            <IconButton onClick={useEmail} disabled={keycloakMode}>
-                              <MailIcon />
-                            </IconButton>
+                            <span>
+                              <IconButton onClick={useEmail} disabled={keycloakMode}>
+                                <MailIcon />
+                              </IconButton>
+                            </span>
                           </Tooltip>
                         </InputAdornment>
                       }

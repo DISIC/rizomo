@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const GroupsUsersList = (props) => {
-  const { ready, group, groupId, userRole } = props;
+  const { ready, group, users, groupId, userRole } = props;
 
   const removeMethods = {
     candidate: 'users.unsetCandidateOf',
@@ -70,6 +70,7 @@ const GroupsUsersList = (props) => {
   const [title, setTitle] = useState('');
   const [user, setUser] = useState(null);
   const [showSearch, setShowSearch] = useState(false);
+  const [finderId, setFinderId] = useState(new Date().getTime());
   const classes = useStyles();
 
   const addUser = () => {
@@ -80,6 +81,7 @@ const GroupsUsersList = (props) => {
         msg.success(i18n.__('components.GroupUsersList.userAdded'));
       }
     });
+    setFinderId(new Date().getTime());
   };
 
   function userDeletable(userData) {
@@ -93,19 +95,16 @@ const GroupsUsersList = (props) => {
   useEffect(() => {
     if (ready === true) {
       const usersField = `${userRole}s`;
-      const users = {};
-      Meteor.users
-        .find()
-        .fetch()
-        .forEach((entry) => {
-          users[entry._id] = entry;
-        });
-      setData(group[usersField].map((uId) => users[uId] || { ...unknownUser, _id: uId }));
+      const groupUsers = {};
+      users.forEach((entry) => {
+        groupUsers[entry._id] = entry;
+      });
+      setData(group[usersField].map((uId) => groupUsers[uId] || { ...unknownUser, _id: uId }));
       setTitle(i18n.__('components.GroupUsersList.title'));
     } else {
       setTitle(i18n.__('components.GroupUsersList.loadingTitle'));
     }
-  }, [ready, group]);
+  }, [ready, users]);
 
   const actions = [
     {
@@ -137,6 +136,7 @@ const GroupsUsersList = (props) => {
         <div className={classes.adduser}>
           <UserFinder
             onSelected={setUser}
+            key={finderId}
             hidden={!showSearch}
             exclude={{ groupId, role: userRole }}
             opened={showSearch}
@@ -186,6 +186,7 @@ const GroupsUsersList = (props) => {
 
 GroupsUsersList.propTypes = {
   group: PropTypes.objectOf(PropTypes.any).isRequired,
+  users: PropTypes.arrayOf(PropTypes.object).isRequired,
   ready: PropTypes.bool.isRequired,
   groupId: PropTypes.string.isRequired,
   userRole: PropTypes.string.isRequired,
@@ -194,11 +195,13 @@ GroupsUsersList.propTypes = {
 export default withTracker(({ groupId, userRole }) => {
   const subUsers = Meteor.subscribe('groups.users', { groupId, role: userRole });
   const group = Groups.findOne(groupId);
+  const users = Meteor.users.find({}).fetch();
   const ready = subUsers.ready();
   return {
     ready,
     group,
     groupId,
     userRole,
+    users,
   };
 })(GroupsUsersList);

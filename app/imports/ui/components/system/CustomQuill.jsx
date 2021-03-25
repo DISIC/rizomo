@@ -205,11 +205,11 @@ function CustomToolbar() {
         aria-label={i18n.__('components.CustomQuill.header')}
       >
         <span className="ql-formats">
-          <select className="ql-header">
+          <select className="ql-header" defaultValue="">
             <option value="1" aria-labelledby="header-tooltip" />
             <option value="2" aria-labelledby="header-tooltip" />
             <option value="3" aria-labelledby="header-tooltip" />
-            <option selected="selected" aria-labelledby="header-tooltip" />
+            <option aria-labelledby="header-tooltip" />
           </select>
         </span>
       </Tooltip>
