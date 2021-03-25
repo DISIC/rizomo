@@ -128,6 +128,15 @@ Groups.schema = new SimpleSchema(
       blackbox: true,
       label: getLabel('api.groups.labels.plugins'),
     },
+    meeting: {
+      // server-side only, do not publish
+      type: Object,
+      defaultValue: {},
+      label: getLabel('api.groups.labels.meetingParams'),
+    },
+    'meeting.attendeePW': { type: String, defaultValue: '' },
+    'meeting.moderatorPW': { type: String, defaultValue: '' },
+    'meeting.createTime': { type: String, defaultValue: '' },
   },
   { tracker: Tracker },
 );

@@ -273,6 +273,12 @@
       "enablePluginForGroup": "Create group in RocketChat",
       "buttonLinkPlugin": "Access shared files in RocketChat"
     },
+    "bbb": {
+      "meetingName": "Meeting: {$name}",
+      "welcomeMsg": "Welcome to {$name}",
+      "joinMeeting": "Access to meeting",
+      "createError": "Error encountered while creating meeting"
+    },
     "logging": {
       "unknownLogLevel": "Specified log level does not exist",
       "info": "Server information",

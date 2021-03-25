@@ -273,6 +273,12 @@
       "enablePluginForGroup": "Créer le groupe dans RocketChat",
       "buttonLinkPlugin": "Discuter dans RocketChat"
     },
+    "bbb": {
+      "meetingName": "Conférence: {$name}",
+      "welcomeMsg": "Bienvenue à {$name}",
+      "joinMeeting": "Accéder à la conférence",
+      "createError": "Erreur lors de la création de la conférence"
+    },
     "logging": {
       "unknownLogLevel": "Le niveau de log spécifié n'existe pas",
       "info": "Information serveur",
