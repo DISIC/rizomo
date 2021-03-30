@@ -17,26 +17,33 @@ function AdminServicesPage({ services, loading }) {
     {
       title: i18n.__('pages.AdminServicesPage.columnLogo'),
       field: 'logo',
-      render: (rowData) => (
-        <img style={{ height: 36, borderRadius: '10%' }} src={rowData.logo} alt={`Logo - ${rowData.title}`} />
-      ),
+      render: (rowData) => {
+        const { logo, title } = rowData;
+        return <img style={{ height: 36, borderRadius: '10%' }} src={logo} alt={`Logo - ${title}`} />;
+      },
     },
     { title: i18n.__('pages.AdminServicesPage.columnTitle'), field: 'title', defaultSort: 'asc' },
     { title: i18n.__('pages.AdminServicesPage.columnUsage'), field: 'usage' },
     {
       title: i18n.__('pages.AdminServicesPage.columnUrl'),
       field: 'url',
-      render: (rowData) => (
-        <a href={rowData.url} target="_blank" rel="noreferrer noopener">
-          {rowData.url}
-        </a>
-      ),
+      render: (rowData) => {
+        const { url } = rowData;
+        return (
+          <a href={url} target="_blank" rel="noreferrer noopener">
+            {url}
+          </a>
+        );
+      },
     },
     {
       title: i18n.__('pages.AdminServicesPage.columnState'),
       field: 'state',
       initialEditValue: Object.keys(Services.stateLabels)[0],
-      render: (rowData) => i18n.__(Services.stateLabels[rowData.state]),
+      render: (rowData) => {
+        const { state } = rowData;
+        return i18n.__(Services.stateLabels[state]);
+      },
     },
   ];
 
