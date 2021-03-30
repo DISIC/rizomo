@@ -1,5 +1,5 @@
 # The tag here should match the Meteor version of your app, per .meteor/release
-FROM hub.eole.education/proxyhub/geoffreybooth/meteor-base:1.11.1
+FROM hub.eole.education/proxyhub/geoffreybooth/meteor-base:2.1
 
 # Copy app package.json and package-lock.json into container
 COPY ./app/package*.json $APP_SOURCE_FOLDER/
@@ -13,7 +13,7 @@ RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
 
 
 # Rather than Node 8 latest (Alpine), you can also use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html
-FROM hub.eole.education/proxyhub/library/node:12.18.4-alpine
+FROM hub.eole.education/proxyhub/library/node:12.21.0-alpine
 
 ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
