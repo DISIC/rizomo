@@ -373,7 +373,8 @@
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
       "menuMedias": "Stockage de Médias",
-      "menuAdminAppSettings": "Réglages Administrateurs"
+      "menuAdminAppSettings": "Réglages Administrateurs",
+      "menuAdminStructureUsers": "Gestion de la structure"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
@@ -760,7 +761,12 @@
       "loginInfo": "Dernière connexion",
       "neverConnected": "Jamais connecté",
       "undefined": "Non renseigné",
-      "sortByLastLogin": "Trier par date de dernière connexion"
+      "sortByLastLogin": "Trier par date de dernière connexion",
+      "setAdminStructure": "Donner les droits d'administrateur de structure",
+      "unsetAdminStructure": "Enlever les droits d'administrateur de structure",
+      "successSetAdminStructure": "Droits d'administrateur de structure donnés",
+      "successUnsetAdminStructure": "Droits d'administrateur de structure révoqués",
+      "adminStructure": "Administrateur de structure"
     },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",
@@ -909,6 +915,20 @@
       "delete": "Supprimer",
       "confirmDelete": "Confirmer la suppression",
       "objectUsedText": "Ce fichier est utilisé dans un article (titre ci dessous), si vous le supprimer, vos lecteurs tomberont sur un lien vide dans cet article. Si vous confirmez la suppression en cliquant une fois de plus sur le bouton, prenez note que cela ne sera pas réversible."
+    },
+    "AdminStructureUsersPage": {
+      "title": "Gestion des utilisateurs de la structure",
+      "searchText": "Quel utilisateur cherchez-vous ?",
+      "structureAdmin": "Administrateur de la structure",
+      "setStructureAdmin": "Donner les droits d'administrateur de structure",
+      "unsetStructureAdmin": "Enlever les droits d'administrateur de structure",
+      "cancelDelete": "Annuler la suppression",
+      "successSetStructureAdmin": "Droits d'administrateur de structure donnés",
+      "successUnsetStructureAdmin": "Droits d'administateur de structure révoqués",
+      "loginInfo": "Dernière connexion",
+      "neverConnected": "Jamais connecté",
+      "undefined": "Non renseigné",
+      "sortByLastLogin": "Trier par date de dernière connexion"
     }
   },
   "layouts": {

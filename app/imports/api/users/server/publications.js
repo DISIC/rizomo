@@ -4,6 +4,7 @@ import { FindFromPublication } from 'meteor/percolate:find-from-publication';
 import SimpleSchema from 'simpl-schema';
 import { checkPaginationParams, isActive, getLabel } from '../../utils';
 import Groups from '../../groups/groups';
+import { structures } from '../structures';
 import logServer from '../../logging';
 
 // publish additional fields for current user
@@ -45,6 +46,31 @@ Meteor.publish('roles.admin', function publishAdmins() {
     return this.ready();
   }
   return Meteor.roleAssignment.find({ 'role._id': 'admin', scope: null });
+});
+
+// publish all structure admin assignments for one structure
+Meteor.publish('roles.adminStructure', function publishStructureAdmins() {
+  const user = Meteor.users.findOne({ _id: this.userId });
+  if (
+    !isActive(this.userId) ||
+    (!Roles.userIsInRole(this.userId, 'adminStructure', user.structure) && !Roles.userIsInRole(this.userId, 'admin'))
+  ) {
+    return this.ready();
+  }
+  return Meteor.roleAssignment.find({ 'role._id': 'adminStructure', scope: user.structure });
+});
+
+// publish all structure admin assignments for all structure
+Meteor.publish('roles.adminStructureAll', function publishStructureAdminsAll() {
+  const ret = Meteor.roleAssignment.find({ 'role._id': 'adminStructure', scope: { $in: structures } });
+
+  if (
+    !isActive(this.userId) ||
+    (ret.fetch().indexOf(this.userId) !== -1 && !Roles.userIsInRole(this.userId, 'admin'))
+  ) {
+    return this.ready();
+  }
+  return ret;
 });
 
 // Publish all existing roles
@@ -187,6 +213,56 @@ FindFromPublication.publish('users.admin', function usersAdmin({ page, itemPerPa
 Meteor.methods({
   'get_users.admin_count': ({ search }) => {
     const query = queryUsersAdmin({ search });
+
+    return Meteor.users
+      .find(query, {
+        sort: { lastName: 1 },
+      })
+      .count();
+  },
+});
+
+// build query for all users with same structure
+const queryUsersByStructure = ({ search }, currentStructure) => {
+  const regex = new RegExp(search, 'i');
+  const fieldsToSearch = ['firstName', 'lastName', 'emails.address', 'username'];
+  const searchQuery = fieldsToSearch.map((field) => ({ [field]: { $regex: regex } }));
+  return {
+    structure: currentStructure,
+    $or: searchQuery,
+  };
+};
+
+// publish all users with same structure
+FindFromPublication.publish('users.byStructure', function usersStructure({ page, itemPerPage, search, ...rest }) {
+  const currentUser = Meteor.users.findOne(this.userId);
+  if (
+    !isActive(this.userId) ||
+    (!Roles.userIsInRole(this.userId, 'admin') &&
+      !Roles.userIsInRole(this.userId, 'adminStructure', currentUser.structure))
+  ) {
+    return this.ready();
+  }
+  try {
+    checkPaginationParams.validate({ page, itemPerPage, search });
+  } catch (err) {
+    logServer(`publish users.byStructure : ${err}`);
+    this.error(err);
+  }
+  const query = queryUsersByStructure({ search }, currentUser.structure);
+  return Meteor.users.find(query, {
+    fields: Meteor.users.adminFields,
+    skip: itemPerPage * (page - 1),
+    limit: itemPerPage,
+    sort: { lastName: 1, firstName: 1 },
+    ...rest,
+  });
+});
+// count structure users
+Meteor.methods({
+  'get_users.byStructure_count': function ({ search }) {
+    const currentUser = Meteor.users.findOne(this.userId);
+    const query = queryUsersByStructure({ search }, currentUser.structure);
 
     return Meteor.users
       .find(query, {

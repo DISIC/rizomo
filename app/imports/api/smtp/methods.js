@@ -22,11 +22,20 @@ Adresse mail: ${email}
                  
 ${cleanText}`;
 
-    const to = Meteor.settings.smtp.toEmail;
+    const tabTo = Meteor.roleAssignment
+      .find({ 'role._id': 'adminStructure', scope: structureSelect })
+      .fetch()
+      .map((role) => Meteor.users.findOne({ _id: role.user._id }).emails[0].address);
+
     const from = Meteor.settings.smtp.fromEmail;
+    const to = Meteor.settings.smtp.toEmail;
 
     this.unblock();
 
-    Email.send({ to, from, subject: object, text: msg });
+    if (tabTo.length > 0) {
+      Email.send({ to: tabTo, cc: to, from, subject: object, text: msg });
+    } else {
+      Email.send({ to, from, subject: object, text: msg });
+    }
   },
 });

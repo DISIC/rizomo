@@ -57,6 +57,13 @@ export const userMenu = [
   },
 ];
 
+export const structureMenu = [
+  {
+    path: '/adminstructureusers',
+    content: 'menuAdminStructureUsers',
+  },
+];
+
 const MainMenu = ({ user = {} }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -64,6 +71,7 @@ const MainMenu = ({ user = {} }) => {
   const history = useHistory();
   const { pathname } = useLocation();
   const isAdmin = Roles.userIsInRole(user._id, 'admin');
+  const isAdminStructure = Roles.userIsInRole(user._id, 'adminStructure', user.structure);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const handleMenuClick = (path) => {
@@ -72,7 +80,9 @@ const MainMenu = ({ user = {} }) => {
   };
   let menu;
   if (isAdmin) {
-    menu = [...userMenu, ...adminMenu];
+    menu = [...userMenu, ...structureMenu, ...adminMenu];
+  } else if (isAdminStructure) {
+    menu = [...userMenu, ...structureMenu];
   } else {
     menu = [...userMenu];
   }

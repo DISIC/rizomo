@@ -7,7 +7,7 @@ import { getLabel } from '../utils';
 import checkDomain from '../domains';
 import logServer from '../logging';
 
-const AppRoles = ['candidate', 'member', 'animator', 'admin'];
+const AppRoles = ['candidate', 'member', 'animator', 'admin', 'adminStructure'];
 
 Meteor.users.schema = new SimpleSchema(
   {

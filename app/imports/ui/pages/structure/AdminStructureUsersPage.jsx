@@ -11,19 +11,14 @@ import i18n from 'meteor/universe:i18n';
 import ListItemText from '@material-ui/core/ListItemText';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
-import CheckIcon from '@material-ui/icons/Check';
-import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Pagination from '@material-ui/lab/Pagination';
 import { Roles } from 'meteor/alanning:roles';
-import { structures } from '../../../api/users/structures';
 import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
 import debounce from '../../utils/debounce';
@@ -45,10 +40,7 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: theme.palette.primary.main,
   },
-  admin: {
-    backgroundColor: theme.palette.secondary.main,
-  },
-  adminstructure: {
+  structureAdmin: {
     backgroundColor: theme.palette.secondary.dark,
   },
   pagination: {
@@ -60,39 +52,30 @@ const useStyles = makeStyles((theme) => ({
 
 const ITEM_PER_PAGE = 10;
 
-const AdminUsersPage = () => {
+const AdminStructureUsersPage = () => {
   const classes = useStyles();
-  const [{ isMobile }] = useAppContext();
+  const [{ userId, isMobile }] = useAppContext();
   const [search, setSearch] = useState('');
   const [sortByDate, setSortByDate] = useState(false);
+  const selfUser = Meteor.users.findOne({ _id: userId });
 
   const { changePage, page, items, total } = usePagination(
-    'users.admin',
+    'users.byStructure',
     { search, sort: sortByDate ? { lastLogin: -1 } : { lastName: 1 } },
     Meteor.users,
     {},
     { sort: sortByDate ? { lastLogin: -1 } : { lastName: 1 } },
     ITEM_PER_PAGE,
   );
-  // track all global admin users
-  const { isLoading, admins } = useTracker(() => {
-    const roleshandlers = Meteor.subscribe('roles.admin');
+  // track all structure admin users
+  const { isLoading } = useTracker(() => {
+    const roleshandlers = Meteor.subscribe('roles.adminStructure');
     const adminsIds = Meteor.roleAssignment
-      .find({ scope: null, 'role._id': 'admin' })
+      .find({ scope: selfUser.structure, 'role._id': 'adminStructure' })
       .fetch()
       .map((assignment) => assignment.user._id);
 
-    const roleshandlers2 = Meteor.subscribe('roles.adminStructureAll');
-    const adminsIds2 = Meteor.roleAssignment
-      .find({ scope: { $in: structures }, 'role._id': 'adminStructure' })
-      .fetch()
-      .map((assignment) => assignment.user._id);
-
-    return {
-      isLoading: !roleshandlers.ready() && !roleshandlers2.ready(),
-      admins: adminsIds,
-      adminStructure: adminsIds2,
-    };
+    return { isLoading: !roleshandlers.ready(), adminsStructure: adminsIds };
   });
   const handleChangePage = (event, value) => {
     changePage(value);
@@ -109,101 +92,43 @@ const AdminUsersPage = () => {
       changePage(1);
     }
   }, [search]);
-  const isAdmin = (user) => admins.includes(user._id);
-  const changeAdmin = (user) => {
-    const method = isAdmin(user) ? 'users.unsetAdmin' : 'users.setAdmin';
-    Meteor.call(method, { userId: user._id }, (error) => {
-      if (error) msg.error(error.reason);
-      else {
-        msg.success(
-          method === 'users.unsetAdmin'
-            ? i18n.__('pages.AdminUsersPage.successUnsetAdmin')
-            : i18n.__('pages.AdminUsersPage.successSetAdmin'),
-        );
-      }
-    });
-  };
   const isStructureAdmin = (user) => Roles.userIsInRole(user._id, 'adminStructure', user.structure);
-
-  const changeAdminStructure = (user) => {
+  const changeStructureAdmin = (user) => {
     const method = isStructureAdmin(user) ? 'users.unsetAdminStructure' : 'users.setAdminStructure';
     Meteor.call(method, { userId: user._id }, (error) => {
       if (error) msg.error(error.reason);
       else {
         msg.success(
           method === 'users.unsetAdminStructure'
-            ? i18n.__('pages.AdminUsersPage.successUnsetAdminStructure')
-            : i18n.__('pages.AdminUsersPage.successSetAdminStructure'),
+            ? i18n.__('pages.AdminStructureUsersPage.successUnsetStructureAdmin')
+            : i18n.__('pages.AdminStructureUsersPage.successSetStructureAdmin'),
         );
       }
-    });
-  };
-  const deleteUser = (user) => {
-    Meteor.call('users.removeUser', { userId: user._id }, (error) => {
-      if (error) msg.error(error.reason);
-      else msg.success(i18n.__('pages.AdminUsersPage.successDeleteUser'));
     });
   };
   const loginInfo = (user) =>
     ` - ${
       user.lastLogin
-        ? `${i18n.__('pages.AdminUsersPage.loginInfo')} : ${user.lastLogin.toLocaleString()}`
-        : i18n.__('pages.AdminUsersPage.neverConnected')
+        ? `${i18n.__('pages.AdminStructureUsersPage.loginInfo')} : ${user.lastLogin.toLocaleString()}`
+        : i18n.__('pages.AdminStructureUsersPage.neverConnected')
     }`;
   const UserActions = ({ user }) => {
-    const [verifyDelete, setVerifyDelete] = useState(false);
-    return verifyDelete ? (
-      <>
-        <Typography
-          component="span"
-          variant="body2"
-          className={classes.inline}
-          color={user._id === Meteor.userId() ? 'error' : 'textPrimary'}
-        >
-          {user._id === Meteor.userId()
-            ? i18n.__('pages.AdminUsersPage.deleteSelfConfirmation')
-            : i18n.__('pages.AdminUsersPage.deleteUserConfirmation')}
-        </Typography>
-        <Tooltip title={i18n.__('pages.AdminUsersPage.deleteUser')} aria-label="delete">
-          <IconButton edge="end" aria-label="delete" onClick={() => deleteUser(user)}>
-            <CheckIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title={i18n.__('pages.AdminUsersPage.cancelDelete')} aria-label="cancel">
-          <IconButton edge="end" aria-label="cancel" onClick={() => setVerifyDelete(false)}>
-            <ClearIcon />
-          </IconButton>
-        </Tooltip>
-      </>
-    ) : (
+    return (
       <>
         <Tooltip
           title={
             isStructureAdmin(user)
-              ? i18n.__('pages.AdminUsersPage.unsetAdminStructure')
-              : i18n.__('pages.AdminUsersPage.setAdminStructure')
+              ? i18n.__('pages.AdminStructureUsersPage.unsetStructureAdmin')
+              : i18n.__('pages.AdminStructureUsersPage.setStructureAdmin')
           }
           aria-label="add"
         >
           <IconButton
             edge="end"
-            aria-label={isStructureAdmin(user) ? 'noadminstructure' : 'adminstructure'}
-            onClick={() => changeAdminStructure(user)}
+            aria-label={isStructureAdmin(user) ? 'noadmin' : 'admin'}
+            onClick={() => changeStructureAdmin(user)}
           >
-            {isStructureAdmin(user) ? <PersonAddDisabled /> : <GroupAddIcon />}
-          </IconButton>
-        </Tooltip>
-        <Tooltip
-          title={isAdmin(user) ? i18n.__('pages.AdminUsersPage.unsetAdmin') : i18n.__('pages.AdminUsersPage.setAdmin')}
-          aria-label="add"
-        >
-          <IconButton edge="end" aria-label={isAdmin(user) ? 'noadmin' : 'admin'} onClick={() => changeAdmin(user)}>
-            {isAdmin(user) ? <ClearIcon /> : <VerifiedUserIcon />}
-          </IconButton>
-        </Tooltip>
-        <Tooltip title={i18n.__('pages.AdminUsersPage.deleteUser')} aria-label="del">
-          <IconButton edge="end" aria-label="delete" onClick={() => setVerifyDelete(true)}>
-            <DeleteIcon />
+            {isStructureAdmin(user) ? <ClearIcon /> : <GroupAddIcon />}
           </IconButton>
         </Tooltip>
       </>
@@ -222,13 +147,15 @@ const AdminUsersPage = () => {
         ) : (
           <Grid container spacing={4}>
             <Grid item md={12}>
-              <Typography variant={isMobile ? 'h6' : 'h4'}>{i18n.__('pages.AdminUsersPage.title')}</Typography>
+              <Typography variant={isMobile ? 'h6' : 'h4'}>
+                {i18n.__('pages.AdminStructureUsersPage.title')} {selfUser.structure}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={6}>
               <TextField
                 margin="normal"
                 id="search"
-                label={i18n.__('pages.AdminUsersPage.searchText')}
+                label={i18n.__('pages.AdminStructureUsersPage.searchText')}
                 name="search"
                 fullWidth
                 onChange={updateSearch}
@@ -263,8 +190,8 @@ const AdminUsersPage = () => {
                         color="primary"
                       />
                     }
-                    label={i18n.__('pages.AdminUsersPage.sortByLastLogin')}
-                    aria-label={i18n.__('pages.AdminUsersPage.sortByLastLogin')}
+                    label={i18n.__('pages.AdminStructureUsersPage.sortByLastLogin')}
+                    aria-label={i18n.__('pages.AdminStructureUsersPage.sortByLastLogin')}
                   />
                 </Grid>
                 {total > ITEM_PER_PAGE && (
@@ -280,36 +207,30 @@ const AdminUsersPage = () => {
                   <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
                     <ListItemAvatar>
                       <UserAvatar
-                        customClass={
-                          isAdmin(user)
-                            ? classes.admin
-                            : isStructureAdmin(user)
-                            ? classes.adminstructure
-                            : classes.avatar
-                        }
+                        customClass={isStructureAdmin(user) ? classes.structureAdmin : classes.avatar}
                         user={user}
                       />
                     </ListItemAvatar>
                     <ListItemText
                       primary={`${user.firstName} ${user.lastName}${
-                        isAdmin(user)
-                          ? ` (${i18n.__('pages.AdminUsersPage.admin')})`
-                          : isStructureAdmin(user)
-                          ? ` (${i18n.__('pages.AdminUsersPage.adminStructure')})`
-                          : ''
+                        isStructureAdmin(user) ? ` (${i18n.__('pages.AdminStructureUsersPage.structureAdmin')})` : ''
                       } ${loginInfo(user)}`}
                       secondary={
                         <>
                           <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                             {user.emails[0].address}
                           </Typography>
-                          {` - ${user.structure ? user.structure : i18n.__('pages.AdminUsersPage.undefined')}`}
+                          {` - ${user.structure ? user.structure : i18n.__('pages.AdminStructureUsersPage.undefined')}`}
                         </>
                       }
                     />
-                    <ListItemSecondaryAction>
-                      <UserActions user={user} />
-                    </ListItemSecondaryAction>
+                    {user._id !== userId ? (
+                      <ListItemSecondaryAction>
+                        <UserActions user={user} />
+                      </ListItemSecondaryAction>
+                    ) : (
+                      ' '
+                    )}
                   </ListItem>,
                   i < ITEM_PER_PAGE - 1 && i < total - 1 && (
                     <Divider variant="inset" component="li" key={`divider-${user.emails[0].address}`} />
@@ -329,4 +250,4 @@ const AdminUsersPage = () => {
   );
 };
 
-export default AdminUsersPage;
+export default AdminStructureUsersPage;

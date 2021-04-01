@@ -217,6 +217,13 @@ export const setStructure = new ValidatedMethod({
     if (!this.userId) {
       throw new Meteor.Error('api.users.setStructure.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
+    // check if user has structure admin role and remove it only if new structure and old structure are different
+    const user = Meteor.users.findOne({ _id: this.userId });
+    if (user.structure !== structure) {
+      if (Roles.userIsInRole(this.userId, 'adminStructure', user.structure)) {
+        Roles.removeUsersFromRoles(this.userId, 'adminStructure', user.structure);
+      }
+    }
     // will throw error if username already taken
     Meteor.users.update({ _id: this.userId }, { $set: { structure } });
   },
@@ -299,6 +306,30 @@ export const setAdmin = new ValidatedMethod({
   },
 });
 
+export const setAdminStructure = new ValidatedMethod({
+  name: 'users.setAdminStructure',
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+  }).validator(),
+
+  run({ userId }) {
+    // check user existence
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.setAdminStructure.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    // check if current user has global admin rights
+    const authorized =
+      isActive(this.userId) &&
+      (Roles.userIsInRole(this.userId, 'admin') || Roles.userIsInRole(this.userId, 'adminStructure', user.structure));
+    if (!authorized) {
+      throw new Meteor.Error('api.users.setAdminStructure.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+    // add role to user collection
+    Roles.addUsersToRoles(userId, 'adminStructure', user.structure);
+  },
+});
+
 export const setActive = new ValidatedMethod({
   name: 'users.setActive',
   validate: new SimpleSchema({
@@ -365,6 +396,31 @@ export const unsetAdmin = new ValidatedMethod({
     }
     // remove role from user collection
     Roles.removeUsersFromRoles(userId, 'admin');
+  },
+});
+
+export const unsetAdminStructure = new ValidatedMethod({
+  name: 'users.unsetAdminStructure',
+  validate: new SimpleSchema({
+    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+  }).validator(),
+
+  run({ userId }) {
+    // check user existence
+    const user = Meteor.users.findOne({ _id: userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.unsetAdminStructure.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    // check if current user has global admin rights
+    const authorized =
+      isActive(this.userId) &&
+      (Roles.userIsInRole(this.userId, 'admin') || Roles.userIsInRole(this.userId, 'adminStructure', user.structure));
+    if (!authorized) {
+      throw new Meteor.Error('api.users.unsetAdminStructure.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+
+    // remove role from user collection
+    Roles.removeUsersFromRoles(userId, 'adminStructure', user.structure);
   },
 });
 
@@ -795,6 +851,8 @@ const LISTS_METHODS = _.pluck(
     removeUser,
     setAdminOf,
     unsetAdminOf,
+    setAdminStructure,
+    unsetAdminStructure,
     setAnimatorOf,
     unsetAnimatorOf,
     setMemberOf,

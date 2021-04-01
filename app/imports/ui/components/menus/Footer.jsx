@@ -61,20 +61,16 @@ const Footer = () => {
               </a>
             );
           }
-          return (
-            <>
-              {isMobile ? (
-                <li className={classes.li}>
-                  <Link key={key} className={classes.mobileLink} to={`/legal/${link}`}>
-                    {i18n.__(`components.Footer.${text}`)}
-                  </Link>
-                </li>
-              ) : (
-                <Link key={key} className={classes.link} to={`/legal/${link}`}>
-                  {i18n.__(`components.Footer.${text}`)}
-                </Link>
-              )}
-            </>
+          return isMobile ? (
+            <li className={classes.li}>
+              <Link key={key} className={classes.mobileLink} to={`/legal/${link}`}>
+                {i18n.__(`components.Footer.${text}`)}
+              </Link>
+            </li>
+          ) : (
+            <Link key={key} className={classes.link} to={`/legal/${link}`}>
+              {i18n.__(`components.Footer.${text}`)}
+            </Link>
           );
         })}
       </>
@@ -82,18 +78,14 @@ const Footer = () => {
   };
 
   const blogLink = () => {
-    return (
-      <>
-        {externalBlog === '' ? (
-          <Link className={classes.link} to="/public">
-            Publications
-          </Link>
-        ) : (
-          <a href={externalBlog} className={classes.blog} target="_blank" rel="noreferrer noopener">
-            Publications
-          </a>
-        )}
-      </>
+    return externalBlog === '' ? (
+      <Link className={classes.link} to="/public">
+        Publications
+      </Link>
+    ) : (
+      <a href={externalBlog} className={classes.blog} target="_blank" rel="noreferrer noopener">
+        Publications
+      </a>
     );
   };
 
