@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TopBar from '../components/menus/TopBar';
 import Spinner from '../components/system/Spinner';
 import AdminRoute from '../components/system/AdminRoute';
+import StructureAdminRoute from '../components/system/StructureAdminRoute';
 import MobileMenu from '../components/menus/MobileMenu';
 import NotValidatedMessage from '../components/system/NotValidatedMessage';
 import CustomToast from '../components/system/CustomToast';
@@ -36,6 +37,7 @@ const AdminUserValidationPage = lazy(() => import('../pages/admin/AdminUserValid
 const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
 const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupPage'));
 const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage'));
+const AdminStructureUsersPage = lazy(() => import('../pages/structure/AdminStructureUsersPage'));
 
 // CSS
 const useStyles = (isMobile) =>
@@ -91,6 +93,13 @@ function MainLayout() {
                 <Route exact path="/admingroups/new" component={AdminSingleGroupPage} />
                 <Route exact path="/admingroups/:_id" component={AdminSingleGroupPage} />
                 <Route exact path="/medias" component={MediaStoragePage} />
+                <StructureAdminRoute
+                  exact
+                  path="/adminstructureusers"
+                  component={AdminStructureUsersPage}
+                  user={user}
+                  loadingUser={loadingUser}
+                />
                 <AdminRoute
                   exact
                   path="/adminservices"

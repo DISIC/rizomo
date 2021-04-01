@@ -373,7 +373,8 @@
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
       "menuMedias": "Medias Storage",
-      "menuAdminAppSettings": "Admin Settings"
+      "menuAdminAppSettings": "Admin Settings",
+      "menuAdminStructureUsers": "Structure Management"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
@@ -755,7 +756,12 @@
       "loginInfo": "last login",
       "neverConnected": "Never connected",
       "undefined": "Not defined",
-      "sortByLastLogin": "Sort by last login date"
+      "sortByLastLogin": "Sort by last login date",
+      "setAdminStructure": "Give structure admin rights",
+      "unsetAdminStructure": "Remove structure admin rights",
+      "successSetAdminStructure": "structure admin rights have been granted",
+      "successUnsetAdminStructure": "structure admin rights have been revoked",
+      "adminStructure": "Structure administrator"
     },
     "AdminUserValidationPage": {
       "title": "User validation",
@@ -905,6 +911,20 @@
       "delete": "Delete",
       "confirmDelete": "Confirm delete",
       "objectUsedText": "This file is used in a publication (title under this text), if you delete it, it will result as an empty link in your article. If you click again on delete, be aware that it will not be possible to restore it."
+    },
+    "AdminStructureUsersPage": {
+      "title": "Structure Users Management",
+      "searchText": "Which user are you looking for ?",
+      "structureAdmin": "Structure Administrator",
+      "setStructureAdmin": "Give structure admin rights",
+      "unsetStructureAdmin": "Remove structure admin rights",
+      "successSetStructureAdmin": "structure admin rights have been granted",
+      "successUnsetStructureAdmin": "structure admin rights have been revoked",
+      "successDeleteUser": "User deleted",
+      "loginInfo": "last login",
+      "neverConnected": "Never connected",
+      "undefined": "Not defined",
+      "sortByLastLogin": "Sort by last login date"
     }
   },
   "layouts": {
