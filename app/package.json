@@ -44,7 +44,7 @@
     "material-table": "^1.69.2",
     "meteor-node-stubs": "^1.0.3",
     "mic-recorder-to-mp3": "^2.2.2",
-    "minio": "^7.0.18",
+    "minio": "^7.0.17",
     "node-fetch": "^2.6.1",
     "prop-types": "^15.7.2",
     "quill-image-resize-module": "^3.0.0",
