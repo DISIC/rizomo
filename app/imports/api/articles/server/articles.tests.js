@@ -11,6 +11,7 @@ import { Random } from 'meteor/random';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 
+import Articles from '../articles';
 import {
   createArticle,
   removeArticle,
@@ -20,7 +21,7 @@ import {
   uploadBackupPublications,
 } from '../methods';
 import './publications';
-import Articles from '../articles';
+import './factories';
 
 describe('articles', function () {
   describe('mutators', function () {

@@ -11,10 +11,13 @@ import faker from 'faker';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 import { addService, addGroup, updatePersonalSpace, removeElement, checkPersonalSpace } from '../methods';
-import './publications';
 import PersonalSpaces from '../personalspaces';
+import './publications';
+import './factories';
 import Services from '../../services/services';
+import '../../services/server/factories';
 import Groups from '../../groups/groups';
+import '../../groups/server/factories';
 
 describe('personalspaces', function () {
   describe('mutators', function () {

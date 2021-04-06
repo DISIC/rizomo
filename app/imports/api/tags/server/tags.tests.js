@@ -12,9 +12,11 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import { createTag, removeTag, updateTag } from '../methods';
-import './publications';
 import Tags from '../tags';
+import './publications';
+import './factories';
 import Articles from '../../articles/articles';
+import '../../articles/server/factories';
 
 describe('tags', function () {
   describe('mutators', function () {

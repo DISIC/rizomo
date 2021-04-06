@@ -1,8 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
-import { Factory } from 'meteor/dburles:factory';
-import { Random } from 'meteor/random';
 
 const PersonalSpaces = new Mongo.Collection('personalspaces');
 
@@ -95,12 +93,6 @@ PersonalSpaces.publicFields = {
   unsorted: 1,
   sorted: 1,
 };
-
-Factory.define('personalspace', PersonalSpaces, {
-  userId: () => Random.id(),
-  unsorted: [],
-  sorted: [],
-});
 
 PersonalSpaces.attachSchema(PersonalSpaces.schema);
 

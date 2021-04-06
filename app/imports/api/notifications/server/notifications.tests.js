@@ -10,6 +10,7 @@ import { Random } from 'meteor/random';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 // import { Roles } from 'meteor/alanning:roles';
+import Notifications from '../notifications';
 import {
   createNotification,
   removeNotification,
@@ -19,7 +20,7 @@ import {
   removeAllNotificationRead,
 } from '../methods';
 import './publications';
-import Notifications from '../notifications';
+import './factories';
 
 describe('notifications', function () {
   describe('mutators', function () {

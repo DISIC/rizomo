@@ -1,9 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { Factory } from 'meteor/dburles:factory';
 import SimpleSchema from 'simpl-schema';
-// import faker from "faker";
-import { Random } from 'meteor/random';
 import { Tracker } from 'meteor/tracker';
 import slugify from 'slugify';
 import { getLabel } from '../utils';
@@ -197,15 +194,5 @@ Groups.helpers({
 });
 
 Groups.attachSchema(Groups.schema);
-
-Factory.define('group', Groups, {
-  name: () => Random.id(),
-  active: true,
-  type: 0,
-  admins: [],
-  animators: [],
-  members: [],
-  candidates: [],
-});
 
 export default Groups;
