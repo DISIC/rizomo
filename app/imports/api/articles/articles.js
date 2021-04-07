@@ -1,9 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
-import { Factory } from 'meteor/dburles:factory';
-import { Random } from 'meteor/random';
-import faker from 'faker';
 import slugy from '../../ui/utils/slugy';
 import { getLabel } from '../utils';
 
@@ -98,14 +95,6 @@ Articles.publicFields = {
   tags: 1,
   structure: 1,
 };
-
-Factory.define('article', Articles, {
-  title: () => Random.id(),
-  content: faker.lorem.sentence(),
-  description: faker.lorem.sentence(),
-  userId: () => Random.id(),
-  structure: () => faker.company.companyName(),
-});
 
 Articles.attachSchema(Articles.schema);
 

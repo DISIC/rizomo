@@ -1,8 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
-import { Factory } from 'meteor/dburles:factory';
-import { Random } from 'meteor/random';
 import { getLabel } from '../utils';
 
 const Categories = new Mongo.Collection('categories');
@@ -36,10 +34,6 @@ Categories.schema = new SimpleSchema(
 Categories.publicFields = {
   name: 1,
 };
-
-Factory.define('categorie', Categories, {
-  name: () => Random.id(),
-});
 
 Categories.attachSchema(Categories.schema);
 

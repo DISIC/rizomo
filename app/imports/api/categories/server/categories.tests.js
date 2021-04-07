@@ -11,10 +11,12 @@ import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
+import Categories from '../categories';
 import { createCategorie, removeCategorie, updateCategorie } from '../methods';
 import './publications';
-import Categories from '../categories';
+import './factories';
 import Services from '../../services/services';
+import '../../services/server/factories';
 
 describe('categories', function () {
   describe('mutators', function () {

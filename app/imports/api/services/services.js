@@ -1,9 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
-import { Factory } from 'meteor/dburles:factory';
-import { Random } from 'meteor/random';
-import faker from 'faker';
 import slugy from '../../ui/utils/slugy';
 import { getLabel } from '../utils';
 
@@ -92,19 +89,6 @@ Services.allPublicFields = {
   screenshots: 1,
   content: 1,
 };
-
-Factory.define('service', Services, {
-  title: () => Random.id(),
-  description: faker.lorem.sentence().substring(0, 80),
-  url: faker.internet.url(),
-  logo: faker.internet.url(),
-  team: () => Random.id(),
-  usage: () => Random.id(),
-  screenshots: [],
-  content: faker.lorem.sentence(),
-  categories: [],
-  state: 0,
-});
 
 Services.attachSchema(Services.schema);
 

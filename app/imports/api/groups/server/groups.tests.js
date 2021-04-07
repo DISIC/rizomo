@@ -18,6 +18,7 @@ import Groups from '../groups';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 import { createGroup, removeGroup, updateGroup, favGroup, unfavGroup } from '../methods';
 import './publications';
+import './factories';
 import {
   setAdminOf,
   unsetAdminOf,
