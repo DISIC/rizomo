@@ -347,6 +347,7 @@
     "MenuBar": {
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
+      "menuHelp" : "Help",
       "menuServices": "Applications",
       "menuGroupes": "All Groups",
       "menuGroupesMobile": "Groups",
@@ -805,7 +806,11 @@
       "typeLink": "Link",
       "addZoneStartButton": "Add a new zone at start",
       "addZoneEndButton": "Add a new zone at the end",
-      "toggleEdition": "Toggle edition mode"
+      "toggleEdition": "Toggle edition mode",
+      "tutoTitle" : "Learn to custom this page"
+    },
+    "HelpPage":{
+      "title": "Find here every tuto to help you master LaBoite"
     },
     "AdminSingleServicePage": {
       "edition": "Edition of the service",

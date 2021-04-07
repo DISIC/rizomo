@@ -15,6 +15,7 @@ import { useAppContext } from '../contexts/context';
 
 // pages
 import ServicesPage from '../pages/services/ServicesPage';
+import HelpPage from '../pages/HelpPage';
 import SingleServicePage from '../pages/services/SingleServicePage';
 import GroupsPage from '../pages/groups/GroupsPage';
 import NotFound from '../pages/system/NotFound';
@@ -84,6 +85,7 @@ function MainLayout() {
                 <Route exact path="/profile" component={ProfilePage} />
                 <Route exact path="/services" component={ServicesPage} />
                 <Route exact path="/publications" component={ArticlesPage} />
+                <Route exact path="/help" component={HelpPage} />
                 <Route exact path="/publications/new" component={EditArticlePage} />
                 <Route exact path="/publications/:slug" component={EditArticlePage} />
                 <Route exact path="/services/:slug" component={SingleServicePage} />

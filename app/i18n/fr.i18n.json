@@ -347,6 +347,7 @@
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
+      "menuHelp" : "Aide",
       "menuServices": "Applications",
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
@@ -810,7 +811,11 @@
       "typeLink": "Lien",
       "addZoneStartButton": "Ajouter une nouvelle zone au début",
       "addZoneEndButton": "Ajouter une nouvelle zone à la fin",
-      "toggleEdition": "Activer/Désactiver le mode édition"
+      "toggleEdition": "Activer/Désactiver le mode édition",
+      "tutoTitle" : "Apprenez a personaliser cette page"
+    },
+    "HelpPage":{
+      "title": "Retrouvez ici tout les tuoriels nécessaire pour maitriser LaBoite"
     },
     "AdminSingleServicePage": {
       "edition": "Edition du service",
