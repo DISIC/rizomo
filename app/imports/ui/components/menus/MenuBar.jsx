@@ -28,6 +28,12 @@ export const links = [
     icon: <SearchIcon />,
     admin: false,
   },
+  {
+    path: '/help',
+    content: 'menuHelp',
+    icon: <HomeIcon />,
+    admin: false,
+  },
 ];
 
 const useStyles = (mobile) =>
