@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     outline: 'none',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(1),
+    maxWidth: 'calc(100vw - 10px)',
   },
   notifsList: {
     overflowY: 'scroll',
