@@ -16,6 +16,12 @@ import { favGroup, unfavGroup } from '../../groups/methods';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 import { createRoleNotification, createRequestNotification } from '../../notifications/server/notifsutils';
 
+if (Meteor.settings.public.enableKeycloak === true) {
+  const { whiteDomains } = Meteor.settings.private;
+  if (whiteDomains.length > 0) {
+    console.log(i18n.__('api.users.logWhiteDomains', { domains: JSON.stringify(whiteDomains) }));
+  }
+}
 // users.findUsers: Returns users using pagination
 //   filter: string to search for in username/firstname/lastname/emails (case insensitive search)
 //   page: number of the page requested

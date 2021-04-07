@@ -51,6 +51,7 @@
       "notPermitted": "Vous n'avez pas les droits suffisants.",
       "lastAdminError": "Impossible de supprimer les droits du dernier administrateur",
       "managedByKeycloak": "Cette information doit être gérée dans Keycloak",
+      "logWhiteDomains": "Les utilisateurs correspondant à ces domaines seront activés à leur connexion: {$domains}",
       "labels": {
         "id": "Id Utilisateur",
         "username": "Pseudonyme",
@@ -243,7 +244,10 @@
       "groupRemoved": "Nextcloud: groupe {$groupName} supprimé",
       "groupRemoveError": "Nextcloud: Erreur lors de la suppression du groupe {$groupName}",
       "enablePluginForGroup": "Créer le groupe dans Nextcloud",
-      "buttonLinkPlugin": "Accéder au partage Nextcloud"
+      "buttonLinkPlugin": "Accéder au partage Nextcloud",
+      "checkConfig": "Vérification de l'accès à l'API Nextcloud ({$URL})",
+      "badConfig": "Erreur d'accès à Nextcloud, veuillez vérifier la configuration et l'activation de l'application 'Group Folders'",
+      "configOk": "connecté avec succès à l'API Nextcloud"
     },
     "rocketChat": {
       "initClient": "RocketChat: client API initialisé",
@@ -277,7 +281,10 @@
       "meetingName": "Conférence: {$name}",
       "welcomeMsg": "Bienvenue à {$name}",
       "joinMeeting": "Accéder à la conférence",
-      "createError": "Erreur lors de la création de la conférence"
+      "createError": "Erreur lors de la création de la conférence",
+      "checkConfig": "Vérification de l'accès à l'API BigBlueButton ({$URL})",
+      "badConfig": "Erreur d'accès à BigBlueButton, veuillez vérifier la configuration",
+      "configOk": "Connecté avec succès à l'API BigBlueButton"
     },
     "logging": {
       "unknownLogLevel": "Le niveau de log spécifié n'existe pas",

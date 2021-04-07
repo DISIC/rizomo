@@ -51,6 +51,7 @@
       "notPermitted": "You don't have sufficient rights.",
       "lastAdminError": "Can not remove rights on last admin user",
       "managedByKeycloak": "This information must be managed in Keycloak",
+      "logWhiteDomains": "Users matching these domains will be activated when logging in: {$domains}",
       "labels": {
         "id": "User Id",
         "username": "User Name",
@@ -243,7 +244,10 @@
       "groupRemoved": "Nextcloud: group {$groupName} removed",
       "groupRemoveError": "Nextcloud: Error removing group {$groupName}",
       "enablePluginForGroup": "Create group in Nextcloud",
-      "buttonLinkPlugin": "Access shared files in Nextcloud"
+      "buttonLinkPlugin": "Access shared files in Nextcloud",
+      "checkConfig": "Checking access to Nextcloud API ({$URL})",
+      "badConfig": "Error accessing Nextcloud, check settings and make sure 'Group Folders' app is active",
+      "configOk": "connection to Nextcloud API successfull"
     },
     "rocketChat": {
       "initClient": "RocketChat: API client initialized",
@@ -277,7 +281,10 @@
       "meetingName": "Meeting: {$name}",
       "welcomeMsg": "Welcome to {$name}",
       "joinMeeting": "Access to meeting",
-      "createError": "Error encountered while creating meeting"
+      "createError": "Error encountered while creating meeting",
+      "checkConfig": "Checking access to BigBlueButton API ({$URL})",
+      "badConfig": "Error accessing BigBlueButton, please check settings",
+      "configOk": "connection to BigBlueButton API successfull"
     },
     "logging": {
       "unknownLogLevel": "Specified log level does not exist",
