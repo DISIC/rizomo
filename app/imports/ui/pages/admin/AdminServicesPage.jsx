@@ -62,7 +62,7 @@ function AdminServicesPage({ services, loading }) {
         <Spinner />
       ) : (
         <Fade in>
-          <Container>
+          <Container style={{ overflowX: 'auto' }}>
             <MaterialTable
               // other props
               title={i18n.__('pages.AdminServicesPage.title')}

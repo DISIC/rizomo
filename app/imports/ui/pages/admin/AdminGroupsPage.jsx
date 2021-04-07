@@ -59,7 +59,7 @@ function AdminGroupsPage({ groups, loading }) {
       {loading ? (
         <Spinner />
       ) : (
-        <Container>
+        <Container style={{ overflowX: 'auto' }}>
           <MaterialTable
             // other props
             title={i18n.__('pages.AdminGroupsPage.title')}
