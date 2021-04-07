@@ -45,6 +45,31 @@ class NextcloudClient {
       });
   }
 
+  checkConfig() {
+    logServer(i18n.__('api.nextcloud.checkConfig', { URL: this.nextURL }));
+    return axios
+      .get(`${this.appsURL}/groupfolders/folders`, {
+        params: { format: 'json' },
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Basic ${this.basicAuth}`,
+          'OCS-APIRequest': true,
+        },
+      })
+      .then((response) => {
+        if (checkFolderActive(response) === true) {
+          logServer(i18n.__('api.nextcloud.configOk'));
+          return true;
+        }
+        return false;
+      })
+      .catch((error) => {
+        logServer(error.response && error.response.data ? error.response.data : error, 'error');
+        logServer(i18n.__('api.nextcloud.badConfig'), 'error');
+        return false;
+      });
+  }
+
   addGroup(groupName) {
     return axios
       .post(
@@ -270,6 +295,8 @@ class NextcloudClient {
 
 if (Meteor.isServer && Meteor.settings.public.groupPlugins.nextcloud.enable) {
   const nextClient = new NextcloudClient();
+  // check that api is accessible and groupFolders plugin is active
+  nextClient.checkConfig();
 
   Meteor.afterMethod('groups.createGroup', function nextCreateGroup({ name, plugins }) {
     if (plugins.nextcloud === true) {

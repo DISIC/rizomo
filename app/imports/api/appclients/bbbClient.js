@@ -169,9 +169,11 @@ class BigBlueButtonClient {
 let Client = null;
 if (Meteor.isServer && bbbEnabled) {
   Client = new BigBlueButtonClient();
-  // const test_group = Groups.findOne({ slug: 'groupe-bbb' }, { sort: { slug: 1 } });
-  // BBBClient.createMeeting(test_group.slug, 'RTvXz3XwTdstn9oPw').then((res) => console.log('*** JOIN URL : ', res);
-  // BBBClient.getMeetings().then((response) => console.log('*** ALL MEETINGS : ', JSON.stringify(response)));
+  logServer(i18n.__('api.bbb.checkConfig', { URL: Client.bbbURL }));
+  Client.getMeetings().then(() => {
+    // console.log('*** ALL MEETINGS : ', JSON.stringify(response));
+    logServer(i18n.__('api.bbb.configOk'));
+  });
 }
 const BBBClient = Client;
 
