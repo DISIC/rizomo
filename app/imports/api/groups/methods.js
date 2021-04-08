@@ -71,11 +71,13 @@ function _createGroup({ name, type, content, description, plugins, userId }) {
       content,
       description,
       owner: userId,
+      animators: [userId],
       admins: [userId],
       active: true,
       plugins,
     });
-    Roles.addUsersToRoles(userId, 'admin', groupId);
+    Roles.addUsersToRoles(userId, ['admin', 'animator'], groupId);
+
     favGroup._execute({ userId }, { groupId });
   } catch (error) {
     if (error.code === 11000) {
