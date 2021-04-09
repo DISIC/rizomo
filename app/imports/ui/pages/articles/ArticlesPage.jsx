@@ -10,7 +10,13 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
-import { InputAdornment, Typography, Fade, IconButton, Collapse, Tooltip } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import Articles from '../../../api/articles/articles';

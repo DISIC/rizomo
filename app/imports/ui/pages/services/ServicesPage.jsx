@@ -17,24 +17,22 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
-import {
-  InputAdornment,
-  Typography,
-  Chip,
-  Fade,
-  IconButton,
-  Button,
-  Collapse,
-  Slide,
-  AppBar,
-  ListItem,
-  ListItemText,
-  Toolbar,
-  Dialog,
-  List,
-  Divider,
-  ListItemSecondaryAction,
-} from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
+import Slide from '@material-ui/core/Slide';
+import AppBar from '@material-ui/core/AppBar';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Toolbar from '@material-ui/core/Toolbar';
+import Dialog from '@material-ui/core/Dialog';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ServiceDetails from '../../components/services/ServiceDetails';
 import Services from '../../../api/services/services';
 import Categories from '../../../api/categories/categories';

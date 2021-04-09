@@ -12,7 +12,9 @@ import RemoveIcon from '@material-ui/icons/Remove';
 // import OpenWithIcon from '@material-ui/icons/OpenWith';
 
 import Tooltip from '@material-ui/core/Tooltip';
-import { Button, CardHeader, IconButton } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import CardHeader from '@material-ui/core/CardHeader';
+import IconButton from '@material-ui/core/IconButton';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 

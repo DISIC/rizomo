@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import i18n from 'meteor/universe:i18n';
-import { Container, Paper, makeStyles, Typography, Fade, Tab, Tabs, Grid } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Grid from '@material-ui/core/Grid';
+
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Spinner from '../../components/system/Spinner';
 import AppSettings from '../../../api/appsettings/appsettings';

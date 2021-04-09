@@ -14,20 +14,20 @@ import CustomToast from '../components/system/CustomToast';
 import { useAppContext } from '../contexts/context';
 
 // pages
-import ServicesPage from '../pages/services/ServicesPage';
-import HelpPage from '../pages/HelpPage';
-import SingleServicePage from '../pages/services/SingleServicePage';
-import GroupsPage from '../pages/groups/GroupsPage';
-import NotFound from '../pages/system/NotFound';
-import PersonalPage from '../pages/PersonalPage';
-import SingleGroupPage from '../pages/groups/SingleGroupPage';
-import AddressBook from '../pages/groups/AddressBook';
-import ProfilePage from '../pages/system/ProfilePage';
-import ArticlesPage from '../pages/articles/ArticlesPage';
-import EditArticlePage from '../pages/articles/EditArticlePage';
-import MediaStoragePage from '../pages/MediaStoragePage';
-import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
-import NotificationsDisplay from '../components/notifications/NotificationsDisplay';
+const ServicesPage = lazy(() => import('../pages/services/ServicesPage'));
+const HelpPage = lazy(() => import('../pages/HelpPage'));
+const SingleServicePage = lazy(() => import('../pages/services/SingleServicePage'));
+const GroupsPage = lazy(() => import('../pages/groups/GroupsPage'));
+const NotFound = lazy(() => import('../pages/system/NotFound'));
+const PersonalPage = lazy(() => import('../pages/PersonalPage'));
+const SingleGroupPage = lazy(() => import('../pages/groups/SingleGroupPage'));
+const AddressBook = lazy(() => import('../pages/groups/AddressBook'));
+const ProfilePage = lazy(() => import('../pages/system/ProfilePage'));
+const ArticlesPage = lazy(() => import('../pages/articles/ArticlesPage'));
+const EditArticlePage = lazy(() => import('../pages/articles/EditArticlePage'));
+const MediaStoragePage = lazy(() => import('../pages/MediaStoragePage'));
+const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'));
+const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));

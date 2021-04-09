@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { Grid, IconButton, Input, makeStyles, Tooltip } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import PublishIcon from '@material-ui/icons/Publish';
 import CameraEnhanceIcon from '@material-ui/icons/CameraEnhance';
 import FaceIcon from '@material-ui/icons/Face';

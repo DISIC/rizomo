@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Snackbar } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 const defaultOptions = {
