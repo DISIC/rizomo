@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import 'react-quill/dist/quill.snow.css';
 import Select from '@material-ui/core/Select';
 
 import i18n from 'meteor/universe:i18n';
