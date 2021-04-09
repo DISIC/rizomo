@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
-import {
-  Container,
-  Paper,
-  makeStyles,
-  Button,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-  Typography,
-  InputLabel,
-  Fade,
-  Select,
-  MenuItem,
-  FormControl,
-  FormHelperText,
-  Grid,
-  Tooltip,
-  Checkbox,
-  FormControlLabel,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import InputLabel from '@material-ui/core/InputLabel';
+import Fade from '@material-ui/core/Fade';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import MailIcon from '@material-ui/icons/Mail';
 import Spinner from '../../components/system/Spinner';
 import CustomSelect from '../../components/admin/CustomSelect';

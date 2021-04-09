@@ -8,6 +8,10 @@ import CardContent from '@material-ui/core/CardContent';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
@@ -17,7 +21,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
 import EditIcon from '@material-ui/icons/Edit';
 
-import { Button, CardHeader, Avatar, IconButton } from '@material-ui/core';
 import i18n from 'meteor/universe:i18n';
 
 import { useAppContext } from '../../contexts/context';

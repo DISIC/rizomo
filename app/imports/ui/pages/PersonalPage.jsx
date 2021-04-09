@@ -8,7 +8,15 @@ import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
-import { Typography, Fade, IconButton, Button, Divider, Collapse, TextField, InputAdornment } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import Collapse from '@material-ui/core/Collapse';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 import Switch from '@material-ui/core/Switch';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';

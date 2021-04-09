@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Random } from 'meteor/random';
 import PropTypes from 'prop-types';
-import { makeStyles, Container, Grid, Fade, Typography, IconButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Fade from '@material-ui/core/Fade';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import AddIcon from '@material-ui/icons/Add';
 import i18n from 'meteor/universe:i18n';

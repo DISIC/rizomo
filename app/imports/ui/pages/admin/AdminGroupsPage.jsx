@@ -5,7 +5,7 @@ import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import { useHistory } from 'react-router-dom';
 import MaterialTable from 'material-table';
-import { Container } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import Spinner from '../../components/system/Spinner';
 import Groups from '../../../api/groups/groups';
 import { removeGroup } from '../../../api/groups/methods';

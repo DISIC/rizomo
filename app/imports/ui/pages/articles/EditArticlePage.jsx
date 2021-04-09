@@ -11,21 +11,19 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Random } from 'meteor/random';
 import ImageResize from 'quill-image-resize-module';
-import {
-  TextField,
-  Typography,
-  InputLabel,
-  Container,
-  Grid,
-  makeStyles,
-  Button,
-  InputAdornment,
-  IconButton,
-  Chip,
-  ButtonGroup,
-  FormControlLabel,
-  Checkbox,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import InputLabel from '@material-ui/core/InputLabel';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';

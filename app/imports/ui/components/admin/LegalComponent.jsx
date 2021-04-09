@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill'; // ES6
-import { makeStyles, TextField, FormControlLabel, Checkbox, InputLabel, Button, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import InputLabel from '@material-ui/core/InputLabel';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
 import i18n from 'meteor/universe:i18n';
 import { useObjectState } from '../../utils/hooks';
 import { updateAppsettings } from '../../../api/appsettings/methods';

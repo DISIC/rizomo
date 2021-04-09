@@ -9,7 +9,13 @@ import Grid from '@material-ui/core/Grid';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
-import { InputAdornment, Typography, Fade, IconButton, Collapse, Button } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import Button from '@material-ui/core/Button';
+
 import Pagination from '@material-ui/lab/Pagination';
 import Articles from '../../../api/articles/articles';
 import Spinner from '../../components/system/Spinner';

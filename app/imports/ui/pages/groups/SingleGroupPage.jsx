@@ -5,7 +5,15 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { Link, useHistory } from 'react-router-dom';
-import { Container, makeStyles, Button, Typography, Grid, Avatar, Fade, Divider } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import Fade from '@material-ui/core/Fade';
+import Divider from '@material-ui/core/Divider';
+
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SecurityIcon from '@material-ui/icons/Security';

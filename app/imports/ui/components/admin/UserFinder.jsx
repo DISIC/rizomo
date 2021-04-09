@@ -6,7 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import i18n from 'meteor/universe:i18n';
-import { InputAdornment } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import debounce from '../../utils/debounce';
 
 function UserFinder({ onSelected, hidden, exclude, opened }) {
