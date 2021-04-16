@@ -32,7 +32,7 @@ class KeyCloakClient {
     const { adminUser } = Meteor.settings.keycloak;
     const { adminPassword } = Meteor.settings.keycloak;
     return axios.post(
-      `${this.kcURL}/realms/master/protocol/openid-connect/token`,
+      `${this.kcURL}/realms/${this.kcRealm}/protocol/openid-connect/token`,
       `username=${encodeURIComponent(adminUser)}&password=${encodeURIComponent(
         adminPassword,
       )}&grant_type=password&client_id=admin-cli`,
@@ -46,7 +46,7 @@ class KeyCloakClient {
 
   _refreshToken() {
     return axios.post(
-      `${this.kcURL}/realms/master/protocol/openid-connect/token`,
+      `${this.kcURL}/realms/${this.kcRealm}/protocol/openid-connect/token`,
       `refresh_token=${this.refreshToken}&grant_type=refresh_token&client_id=admin-cli`,
       {
         headers: {
