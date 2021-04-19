@@ -54,23 +54,26 @@ const Footer = () => {
     return (
       <>
         {settingsData.map(({ key, external, link, text }) => {
-          if (external) {
-            return (
-              <a key={key} href={link} target="_blank" rel="noreferrer noopener">
-                {i18n.__(`components.Footer.${text}`)}
-              </a>
-            );
-          }
           return isMobile ? (
-            <li className={classes.li}>
-              <Link key={key} className={classes.mobileLink} to={`/legal/${link}`}>
-                {i18n.__(`components.Footer.${text}`)}
-              </Link>
+            <li key={key} className={classes.li}>
+              {external ? (
+                <Link className={classes.mobileLink} to={`/legal/${link}`}>
+                  {i18n.__(`components.Footer.${text}`)}
+                </Link>
+              ) : (
+                <a className={classes.mobileLink} href={link} target="_blank" rel="noreferrer noopener">
+                  {i18n.__(`components.Footer.${text}`)}
+                </a>
+              )}
             </li>
-          ) : (
+          ) : external ? (
             <Link key={key} className={classes.link} to={`/legal/${link}`}>
               {i18n.__(`components.Footer.${text}`)}
             </Link>
+          ) : (
+            <a key={key} className={classes.link} href={link} target="_blank" rel="noreferrer noopener">
+              {i18n.__(`components.Footer.${text}`)}
+            </a>
           );
         })}
       </>
@@ -78,18 +81,31 @@ const Footer = () => {
   };
 
   const blogLink = () => {
-    return externalBlog === '' ? (
-      <Link className={classes.link} to="/public">
+    return isMobile ? (
+      <li key="blogLinkKey" className={classes.li}>
+        {externalBlog === '' ? (
+          <Link className={classes.link} to="/public">
+            Publications
+          </Link>
+        ) : (
+          <a href={externalBlog} className={classes.blog} target="_blank" rel="noreferrer noopener">
+            Publications
+          </a>
+        )}
+      </li>
+    ) : externalBlog === '' ? (
+      <Link key="blogLinkKey" className={classes.link} to="/public">
         Publications
       </Link>
     ) : (
-      <a href={externalBlog} className={classes.blog} target="_blank" rel="noreferrer noopener">
+      <a key="blogLinkKey" href={externalBlog} className={classes.blog} target="_blank" rel="noreferrer noopener">
         Publications
       </a>
     );
   };
 
   useEffect(() => {
+    let isCancelled = false;
     getAppSettingsLinks.call(null, (error, result) => {
       const newData = { ...result };
       delete newData._id;
@@ -100,8 +116,13 @@ const Footer = () => {
         link: newData[key].external ? newData[key].link : LEGAL_ROUTES[key],
         text: key,
       }));
-      setSettingsData(appsettings);
+      if (!isCancelled) setSettingsData(appsettings);
     });
+    return () => {
+      // fix to avoid modifying component after unmounting
+      // see : https://stackoverflow.com/questions/56442582/react-hooks-cant-perform-a-react-state-update-on-an-unmounted-component/56443045#56443045
+      isCancelled = true;
+    };
   }, []);
 
   return (
@@ -110,17 +131,19 @@ const Footer = () => {
         <Toolbar className={classes.root}>
           <ul>
             {toolbarContent()}
-            <Link className={classes.link} to="/contact">
-              {i18n.__(`components.Footer.contact`)}
-            </Link>
-            <li className={classes.li}>{blogLink()}</li>
+            <li key="contactKey" className={classes.li}>
+              <Link className={classes.link} to="/contact">
+                {i18n.__(`components.Footer.contact`)}
+              </Link>
+            </li>
+            {blogLink()}
           </ul>
         </Toolbar>
       ) : (
         <Toolbar className={classes.root}>
           <div>{toolbarContent()}</div>
           <div>
-            <Link className={classes.link} to="/contact">
+            <Link key="contactKey" className={classes.link} to="/contact">
               {i18n.__(`components.Footer.contact`)}
             </Link>
             {blogLink()}
