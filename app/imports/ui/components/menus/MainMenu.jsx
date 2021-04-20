@@ -134,7 +134,9 @@ const MainMenu = ({ user = {} }) => {
         endIcon={<ExpandMoreIcon />}
       >
         {user.firstName || ''}
-        {user.avatar ? <UserAvatar user={user} customClass={classes.avatar} /> : null}
+        {user.avatar ? (
+          <UserAvatar userAvatar={user.avatar} userFirstName={user.firstName || ''} customClass={classes.avatar} />
+        ) : null}
       </Button>
       <Menu
         id="main-menu"

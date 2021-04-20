@@ -173,6 +173,31 @@ export const moveFiles = new ValidatedMethod({
   },
 });
 
+export const rename = new ValidatedMethod({
+  name: 'files.rename',
+  validate: new SimpleSchema({
+    path: String,
+    oldName: String,
+    newName: String,
+  }).validator(),
+  async run({ path, oldName, newName }) {
+    // check if current user has admin rights
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    if (!authorized) {
+      throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+
+    const conds = new Minio.CopyConditions();
+    s3Client.copyObject(minioBucket, `${path}/${newName}`, `${minioBucket}/${path}/${oldName}`, conds, (err) => {
+      s3Client.removeObject(minioBucket, `${path}/${oldName}`);
+      if (err) {
+        logServer(`Error renaming ${minioBucket}/${path}/${oldName} to ${path}/${newName}`, 'error');
+        logServer(err, 'error');
+      }
+    });
+  },
+});
+
 export const getFilesForCurrentUser = new ValidatedMethod({
   name: 'files.user',
   validate: null,
@@ -205,7 +230,7 @@ export const getFilesForCurrentUser = new ValidatedMethod({
 
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
-  [removeFilesFolder, filesupload, removeSelectedFiles, moveFiles, getFilesForCurrentUser],
+  [removeFilesFolder, filesupload, removeSelectedFiles, moveFiles, rename, getFilesForCurrentUser],
   'name',
 );
 

@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AvatarPicker = ({ user, onAssignAvatar }) => {
+const AvatarPicker = ({ userAvatar, userFirstName, onAssignAvatar }) => {
   const classes = useStyles();
   const [imageAvatar, setImageAvatar] = useState('');
   const [openAvatarEdit, setOpenAvatarEdit] = useState(false);
@@ -86,7 +86,11 @@ const AvatarPicker = ({ user, onAssignAvatar }) => {
     <div>
       <Grid container>
         <Grid item xs={12} className={classes.buttonWrapper}>
-          <UserAvatar customClass={user.avatar ? classes.avatar : classes.avatarDefault} user={user} />
+          <UserAvatar
+            customClass={userAvatar ? classes.avatar : classes.avatarDefault}
+            userAvatar={userAvatar || ''}
+            userFirstName={userFirstName || ''}
+          />
         </Grid>
         <Grid item xs={12} className={classes.buttonWrapper}>
           <Tooltip title={i18n.__('pages.ProfilePage.uploadImg')} aria-label={i18n.__('pages.ProfilePage.uploadImg')}>
@@ -134,7 +138,8 @@ const AvatarPicker = ({ user, onAssignAvatar }) => {
 };
 
 AvatarPicker.propTypes = {
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  userAvatar: PropTypes.string.isRequired,
+  userFirstName: PropTypes.string.isRequired,
   onAssignAvatar: PropTypes.func.isRequired,
 };
 
