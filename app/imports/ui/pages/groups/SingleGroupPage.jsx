@@ -21,6 +21,8 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import PeopleIcon from '@material-ui/icons/People';
+import TodayIcon from '@material-ui/icons/Today';
+import PollIcon from '@material-ui/icons/Poll';
 import LockIcon from '@material-ui/icons/Lock';
 import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
@@ -417,6 +419,34 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                   logo: <PeopleIcon className={classes.icon} color="primary" fontSize="large" />,
                   title: i18n.__('pages.SingleGroupPage.addressBook'),
                   url: `/groups/${group.slug}/addressbook`,
+                }}
+                isShort
+              />
+            </Grid>
+          )}
+          {(admin || member || animator || type === 0) && (
+            <Grid item xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
+              <ServiceDetails
+                service={{
+                  _id: 'events',
+                  usage: i18n.__('pages.SingleGroupPage.EventsUsage'),
+                  logo: <TodayIcon className={classes.icon} color="primary" fontSize="large" />,
+                  title: i18n.__('pages.SingleGroupPage.Events'),
+                  url: `/groups/${group.slug}/events`,
+                }}
+                isShort
+              />
+            </Grid>
+          )}
+          {(admin || member || animator || type === 0) && (
+            <Grid item xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
+              <ServiceDetails
+                service={{
+                  _id: 'polls',
+                  usage: i18n.__('pages.SingleGroupPage.PollUsage'),
+                  logo: <PollIcon className={classes.icon} color="primary" fontSize="large" />,
+                  title: i18n.__('pages.SingleGroupPage.Polls'),
+                  url: `/groups/${group.slug}/poll`,
                 }}
                 isShort
               />

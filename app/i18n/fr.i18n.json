@@ -864,12 +864,29 @@
       "stopAnimating": "Arrêter d'animer ce groupe",
       "animationLeft": "Vous n'êtes plus animateur de ce groupe",
       "apps": "Applications",
-      "resources": "Ressources du groupe"
+      "resources": "Ressources du groupe",
+      "EventsUsage": "Liste des événements",
+      "Events": "Evénements",
+      "PollUsage": "Liste des sondages",
+      "Polls": "Sondages"
     },
     "AddressBook": {
       "sendEmail": "Envoyer un email à",
       "back": "Retour au groupe",
       "searchText": "Quel utilisateur cherchez-vous ?"
+    },
+    "Events": {
+      "seeEvent": "Voir l'événement",
+      "back": "Retour au groupe",
+      "searchText": "Quel événement cherchez-vous ?",
+      "dayOf": "Sur la journée du",
+      "noEvents": "Il n'y a actuellement aucun événements en cours ou à venir pour ce groupe."
+    },
+    "Polls": {
+      "seePoll": "Voir le sondage",
+      "back": "Retour au groupe",
+      "searchText": "Quel sondage cherchez-vous ?",
+      "noPoll": "Il n'y a actuellement aucun sondage en cours ou à venir pour ce groupe."
     },
     "ArticlesPage": {
       "title": "Vos publications",

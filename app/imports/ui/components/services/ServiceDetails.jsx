@@ -110,6 +110,8 @@ function ServiceDetails({ service, favAction, isShort }) {
   const classes = useStyles();
   const favorite = favAction === 'fav';
   const isAddressBook = service._id === 'addressbook';
+  const isEvents = service._id === 'events';
+  const isPoll = service._id === 'polls';
 
   const handleFavorite = () => {
     if (!favorite) {
@@ -169,11 +171,18 @@ function ServiceDetails({ service, favAction, isShort }) {
           </IconButton>
         )}
       /> */}
-      <Link to={isAddressBook ? service.url : `/services/${service.slug}`} className={classes.noUnderline}>
+      <Link
+        to={isAddressBook ? service.url : isEvents ? service.url : isPoll ? service.url : `/services/${service.slug}`}
+        className={classes.noUnderline}
+      >
         <CardHeader
           className={classes.cardHeader}
           avatar={
             isAddressBook ? (
+              service.logo
+            ) : isEvents ? (
+              service.logo
+            ) : isPoll ? (
               service.logo
             ) : (
               <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
@@ -217,7 +226,7 @@ function ServiceDetails({ service, favAction, isShort }) {
             );
           })}
         </Paper> */}
-        {!isAddressBook && (
+        {!isAddressBook && !isEvents && !isPoll && (
           <div className={isShort ? classes.cardActionShort : classes.cardActions}>
             {service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
 
