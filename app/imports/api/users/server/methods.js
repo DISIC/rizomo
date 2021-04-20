@@ -15,11 +15,12 @@ import { structures } from '../structures';
 import { favGroup, unfavGroup } from '../../groups/methods';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 import { createRoleNotification, createRequestNotification } from '../../notifications/server/notifsutils';
+import logServer from '../../logging';
 
 if (Meteor.settings.public.enableKeycloak === true) {
   const { whiteDomains } = Meteor.settings.private;
   if (whiteDomains.length > 0) {
-    console.log(i18n.__('api.users.logWhiteDomains', { domains: JSON.stringify(whiteDomains) }));
+    logServer(i18n.__('api.users.logWhiteDomains', { domains: JSON.stringify(whiteDomains) }));
   }
 }
 // users.findUsers: Returns users using pagination

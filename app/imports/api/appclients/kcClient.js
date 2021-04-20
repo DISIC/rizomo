@@ -247,11 +247,20 @@ class KeyCloakClient {
   }
 
   addGroup(name, callerId) {
+    const user = Meteor.users.findOne(callerId);
+    const keycloakId = user.services && user.services.keycloak ? user.services.keycloak.id : null;
     this._getToken().then((token) => {
-      this._addGroup(name, token).catch((error) => {
-        logServer(i18n.__('api.keycloak.groupAddError', { groupName: name }), 'error', callerId);
-        logServer(error.response && error.response.data ? error.response.data : error, 'error');
-      });
+      this._addGroup(name, token)
+        .then(() => {
+          if (keycloakId) {
+            return this._setRole(callerId, keycloakId, name);
+          }
+          return null;
+        })
+        .catch((error) => {
+          logServer(i18n.__('api.keycloak.groupAddError', { groupName: name }), 'error', callerId);
+          logServer(error.response && error.response.data ? error.response.data : error, 'error');
+        });
     });
   }
 
@@ -413,29 +422,31 @@ class KeyCloakClient {
     }
   }
 
+  _setRole(userId, keycloakId, roleName) {
+    return this._getToken().then((token) =>
+      this._getGroupId(roleName, token).then((groupId) =>
+        axios
+          .put(`${this.kcURL}/admin/realms/${this.kcRealm}/users/${keycloakId}/groups/${groupId}`, '', {
+            headers: {
+              Accept: 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then(() => {
+            logServer(i18n.__('api.keycloak.userGroupAdded', { groupName: roleName, userId }));
+          }),
+      ),
+    );
+  }
+
   setRole(userId, roleName, callerId) {
     const user = Meteor.users.findOne(userId);
     const keycloakId = user.services && user.services.keycloak ? user.services.keycloak.id : null;
     if (keycloakId) {
-      this._getToken()
-        .then((token) =>
-          this._getGroupId(roleName, token).then((groupId) =>
-            axios
-              .put(`${this.kcURL}/admin/realms/${this.kcRealm}/users/${keycloakId}/groups/${groupId}`, '', {
-                headers: {
-                  Accept: 'application/json',
-                  Authorization: `Bearer ${token}`,
-                },
-              })
-              .then(() => {
-                logServer(i18n.__('api.keycloak.userGroupAdded', { groupName: roleName, userId }));
-              }),
-          ),
-        )
-        .catch((error) => {
-          logServer(i18n.__('api.keycloak.userGroupAddError', { groupName: roleName, userId }), 'error', callerId);
-          logServer(error.response && error.response.data ? error.response.data : error, 'error');
-        });
+      this._setRole(userId, keycloakId, roleName).catch((error) => {
+        logServer(i18n.__('api.keycloak.userGroupAddError', { groupName: roleName, userId }), 'error', callerId);
+        logServer(error.response && error.response.data ? error.response.data : error, 'error');
+      });
     } else {
       logServer(i18n.__('api.keycloak.userNotFound', { userId }), 'error', callerId);
     }

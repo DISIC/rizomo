@@ -1,7 +1,7 @@
 import { Email } from 'meteor/email';
 import sanitizeHtml from 'sanitize-html';
 
-Meteor.startup(function () {
+Meteor.startup(function startSmtp() {
   process.env.MAIL_URL = Meteor.settings.smtp.url;
 });
 
