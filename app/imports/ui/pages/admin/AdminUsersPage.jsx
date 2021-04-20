@@ -294,7 +294,8 @@ const AdminUsersPage = () => {
                             ? classes.adminstructure
                             : classes.avatar
                         }
-                        user={user}
+                        userAvatar={user.avatar}
+                        userFirstName={user.firstName}
                       />
                     </ListItemAvatar>
                     <ListItemText

@@ -74,6 +74,7 @@ const defaultState = {
   username: '',
   structureSelect: '',
   logoutType: '',
+  avatar: '',
 };
 
 const logoutTypeLabels = {
@@ -108,6 +109,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (keycloakMode) setLabelLogoutTypeWidth(logoutTypeLabel.current.offsetWidth);
   }, []);
+  const [tempImageLoaded, setTempImageLoaded] = useState(false);
 
   const checkSubmitOk = () => {
     const errSum = Object.keys(errors).reduce((sum, name) => sum + errors[name], '');
@@ -125,6 +127,7 @@ const ProfilePage = () => {
       firstName: errors.firstName === '' || reset ? data.firstName || '' : userData.firstName,
       lastName: errors.lastName === '' || reset ? data.lastName || '' : userData.lastName,
       email: errors.email === '' || reset ? data.emails[0].address : userData.email,
+      avatar: userData.avatar === '' || reset ? data.avatar : userData.avatar,
     });
     if (reset === true) {
       setErrors(defaultState);
@@ -140,7 +143,8 @@ const ProfilePage = () => {
       userData.email === user.emails[0].address &&
       userData.username === user.username &&
       userData.structureSelect === user.structure &&
-      userData.logoutType === user.logoutType
+      userData.logoutType === user.logoutType &&
+      userData.avatar === user.avatar
     ) {
       msg.success(i18n.__('pages.ProfilePage.updateSuccess'));
       setSubmitted(false);
@@ -170,6 +174,15 @@ const ProfilePage = () => {
   const debouncedValidateName = debounce(validateName, 500);
 
   const resetForm = () => {
+    if (tempImageLoaded) {
+      // A temporary image has been loaded in minio with name "Avatar_TEMP"
+      // => delete it
+      Meteor.call('files.selectedRemove', {
+        path: `users/${Meteor.userId()}`,
+        toRemove: [`users/${Meteor.userId()}/Avatar_TEMP.png`],
+      });
+    }
+    setTempImageLoaded(false);
     setData(user, true);
   };
 
@@ -246,6 +259,36 @@ const ProfilePage = () => {
         },
       );
     }
+    if (userData.avatar !== user.avatar) {
+      modifications = true;
+      if (tempImageLoaded) {
+        // A temporary image has been loaded in minio with name "Avatar_TEMP"
+        if (userData.avatar.includes('Avatar_TEMP')) {
+          // This image will be the new user's avatar
+          Meteor.call('files.rename', {
+            path: `users/${Meteor.userId()}`,
+            oldName: 'Avatar_TEMP.png',
+            newName: 'Avatar.png',
+          });
+          Meteor.call(
+            'users.setAvatar',
+            { avatar: userData.avatar.replace('Avatar_TEMP.png', 'Avatar.png') },
+            (error) => {
+              if (error) {
+                msg.error(error.message);
+              }
+            },
+          );
+        }
+      } else {
+        Meteor.call('users.setAvatar', { avatar: userData.avatar }, (error) => {
+          if (error) {
+            msg.error(error.message);
+          }
+        });
+      }
+      setTempImageLoaded(false);
+    }
     if (modifications === false) msg.info(i18n.__('pages.ProfilePage.noModifications'));
   };
 
@@ -285,28 +328,20 @@ const ProfilePage = () => {
     reader.readAsText(files[0]);
   };
 
-  const SaveAvatarForUser = (avatarUrl) => {
-    Meteor.call('users.setAvatar', { avatar: avatarUrl }, (error) => {
-      if (error) {
-        msg.error(error.message);
-        console.log(error);
-      }
-    });
-  };
-
   const SendNewAvatarToMedia = (avImg) => {
     dispatch({
       type: 'uploads.add',
       data: {
-        name: 'Avatar',
-        fileName: 'Avatar',
+        name: 'Avatar_TEMP',
+        fileName: 'Avatar_TEMP',
         file: avImg,
         type: 'png',
         path: `users/${Meteor.userId()}`,
         storage: true,
         onFinish: (url) => {
           // Add time to url to avoid caching
-          SaveAvatarForUser(`${url}?${new Date().getTime()}`);
+          setUserData({ ...userData, avatar: `${url}?${new Date().getTime()}` });
+          setTempImageLoaded(true);
         },
       },
     });
@@ -317,7 +352,7 @@ const ProfilePage = () => {
     if (avatarObj.image) {
       SendNewAvatarToMedia(avatarObj.image);
     } else if (avatarObj.url !== user.avatar) {
-      SaveAvatarForUser(avatarObj.url);
+      setUserData({ ...userData, avatar: avatarObj.url });
     }
   };
 
@@ -421,7 +456,11 @@ const ProfilePage = () => {
                   ) : null}
                 </Grid>
                 <Grid item xs={6}>
-                  <AvatarPicker user={user} onAssignAvatar={onAssignAvatar} />
+                  <AvatarPicker
+                    userAvatar={userData.avatar || ''}
+                    userFirstName={userData.firstName || ''}
+                    onAssignAvatar={onAssignAvatar}
+                  />
                 </Grid>
               </Grid>
               <Grid item />

@@ -10,14 +10,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UserAvatar = ({ user, customClass }) => {
+const UserAvatar = ({ userAvatar, userFirstName, customClass }) => {
   const classes = useStyles();
   const getClasse = () => {
     if (customClass) return customClass;
-    if (user.avatar) return '';
+    if (userAvatar) return '';
     return classes.avatar;
   };
-  return <Avatar alt={user.firstName} src={user.avatar || user.firstName} className={getClasse()} />;
+  return <Avatar alt={userFirstName} src={userAvatar || userFirstName} className={getClasse()} />;
 };
 
 UserAvatar.defaultProps = {
@@ -26,7 +26,8 @@ UserAvatar.defaultProps = {
 
 UserAvatar.propTypes = {
   customClass: PropTypes.string,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  userAvatar: PropTypes.string.isRequired,
+  userFirstName: PropTypes.string.isRequired,
 };
 
 export default UserAvatar;
