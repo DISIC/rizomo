@@ -38,6 +38,10 @@
         "groupURL": "[URL]/apps/files/?dir=/[GROUPNAME]",
         "enableChangeName": false
       }
+    },
+    "services":{
+      "agendaUrl": "[URL]",
+      "sondagesUrl": "[URL]"
     }
   },
   "keycloak": {

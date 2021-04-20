@@ -860,12 +860,29 @@
       "stopAnimating": "Stop animating this group",
       "animationLeft": "You are no longer animator of this group",
       "apps": "Applications",
-      "resources": "Group resources"
+      "resources": "Group resources",
+      "EventsUsage": "Events list",
+      "Events": "Events",
+      "PollUsage": "Polls list",
+      "Polls": "Polls"
     },
     "AddressBook": {
       "sendEmail": "Send an email to",
       "back": "Back to the group",
       "searchText": "Which user are you looking for ?"
+    },
+    "Events": {
+      "seeEvent": "See event",
+      "back": "Back to the group",
+      "searchText": "Which event are you looking for ?",
+      "dayOf": "All day of",
+      "noEvents": "No current or upcoming polls were found for this group"
+    },
+    "Polls": {
+      "seePoll": "See poll",
+      "back": "Back to the group",
+      "searchText": "Which poll are you looking for ?",
+      "noPoll": "No current or upcoming polls were found for this group"
     },
     "ArticlesPage": {
       "title": "Your publications",

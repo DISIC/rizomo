@@ -22,6 +22,8 @@ const NotFound = lazy(() => import('../pages/system/NotFound'));
 const PersonalPage = lazy(() => import('../pages/PersonalPage'));
 const SingleGroupPage = lazy(() => import('../pages/groups/SingleGroupPage'));
 const AddressBook = lazy(() => import('../pages/groups/AddressBook'));
+const EventsPage = lazy(() => import('../pages/groups/EventsPage'));
+const PollPage = lazy(() => import('../pages/groups/PollPage'));
 const ProfilePage = lazy(() => import('../pages/system/ProfilePage'));
 const ArticlesPage = lazy(() => import('../pages/articles/ArticlesPage'));
 const EditArticlePage = lazy(() => import('../pages/articles/EditArticlePage'));
@@ -92,6 +94,8 @@ function MainLayout() {
                 <Route exact path="/groups" component={GroupsPage} />
                 <Route exact path="/groups/:slug" component={SingleGroupPage} />
                 <Route exact path="/groups/:slug/addressbook" component={AddressBook} />
+                <Route exact path="/groups/:slug/events" component={EventsPage} />
+                <Route exact path="/groups/:slug/poll" component={PollPage} />
                 <Route exact path="/admingroups" component={AdminGroupsPage} />
                 <Route exact path="/admingroups/new" component={AdminSingleGroupPage} />
                 <Route exact path="/admingroups/:_id" component={AdminSingleGroupPage} />
