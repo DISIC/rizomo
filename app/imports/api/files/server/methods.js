@@ -181,9 +181,10 @@ export const rename = new ValidatedMethod({
     newName: String,
   }).validator(),
   async run({ path, oldName, newName }) {
-    // check if current user has admin rights
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
-    if (!authorized) {
+    const isUserPath = path === `users/${this.userId}`;
+
+    if (!authorized && !isUserPath) {
       throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
     }
 
