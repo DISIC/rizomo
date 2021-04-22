@@ -324,6 +324,7 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { params } 
               name="description"
               label={i18n.__('pages.AdminSingleServicePage.description')}
               variant="outlined"
+              inputProps={{ maxLength: 64 }}
               fullWidth
               multiline
               margin="normal"

@@ -261,6 +261,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               value={groupData.description}
               name="description"
               label={i18n.__('pages.AdminSingleGroupPage.description')}
+              inputProps={{ maxLength: 64 }}
               variant="outlined"
               fullWidth
               multiline
