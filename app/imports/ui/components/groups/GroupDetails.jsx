@@ -10,18 +10,16 @@ import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
-import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
 import EditIcon from '@material-ui/icons/Edit';
 
 import i18n from 'meteor/universe:i18n';
+import GroupAvatar from './GroupAvatar';
 
 import { useAppContext } from '../../contexts/context';
 import Spinner from '../system/Spinner';
@@ -181,7 +179,6 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
   } else if (type === 10) {
     groupType = i18n.__('components.GroupDetails.closedGroup');
   }
-  const iconHeader = type === 0 ? <PeopleIcon /> : type === 10 ? <LockIcon /> : <SecurityIcon />;
 
   return (
     <Card className={classes.card} elevation={3}>
@@ -192,10 +189,10 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
           avatar={
             animator || admin ? (
               <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
-                <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+                <GroupAvatar type={type} avatar={group.avatar} />
               </GroupBadge>
             ) : (
-              <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+              <GroupAvatar type={type} />
             )
           }
           action={

@@ -76,6 +76,12 @@ Groups.schema = new SimpleSchema(
       allowedValues: [0, 5, 10], // 0 Ouvert, 5 Modéré, 10 Fermé
       label: getLabel('api.groups.labels.type'),
     },
+    avatar: {
+      type: String,
+      optional: true,
+      label: getLabel('api.users.labels.avatar'),
+      defaultValue: '',
+    },
     applications: {
       type: Array,
       optional: true,
@@ -160,6 +166,7 @@ Groups.publicFields = {
   groupPadID: 1,
   digest: 1,
   type: 1,
+  avatar: 1,
   owner: 1,
   numCandidates: 1,
   plugins: 1,

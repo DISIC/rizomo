@@ -347,7 +347,7 @@
     "MenuBar": {
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
-      "menuHelp" : "Help",
+      "menuHelp": "Help",
       "menuServices": "Applications",
       "menuGroupes": "All Groups",
       "menuGroupesMobile": "Groups",
@@ -566,6 +566,11 @@
     },
     "UserAvatarGallery": {
       "title": "Create your avatar",
+      "subtitle": "from image gallery",
+      "cancel": "Cancel"
+    },
+    "GroupAvatarGallery": {
+      "title": "Choose an image for your group",
       "subtitle": "from image gallery",
       "cancel": "Cancel"
     },
@@ -807,9 +812,9 @@
       "addZoneStartButton": "Add a new zone at start",
       "addZoneEndButton": "Add a new zone at the end",
       "toggleEdition": "Toggle edition mode",
-      "tutoTitle" : "Learn to custom this page"
+      "tutoTitle": "Learn to custom this page"
     },
-    "HelpPage":{
+    "HelpPage": {
       "title": "Find here every tuto to help you master LaBoite"
     },
     "AdminSingleServicePage": {

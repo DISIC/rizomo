@@ -347,7 +347,7 @@
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
-      "menuHelp" : "Aide",
+      "menuHelp": "Aide",
       "menuServices": "Applications",
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
@@ -568,6 +568,11 @@
     },
     "UserAvatarGallery": {
       "title": "Créez votre avatar",
+      "subtitle": "depuis la galerie d'images",
+      "cancel": "Annuler"
+    },
+    "GroupAvatarGallery": {
+      "title": "Choisissez l'image de votre groupe",
       "subtitle": "depuis la galerie d'images",
       "cancel": "Annuler"
     },
@@ -812,9 +817,9 @@
       "addZoneStartButton": "Ajouter une nouvelle zone au début",
       "addZoneEndButton": "Ajouter une nouvelle zone à la fin",
       "toggleEdition": "Activer/Désactiver le mode édition",
-      "tutoTitle" : "Apprenez à personnaliser cette page"
+      "tutoTitle": "Apprenez à personnaliser cette page"
     },
-    "HelpPage":{
+    "HelpPage": {
       "title": "Retrouvez ici tous les tutoriels nécessaires pour maitriser LaBoite"
     },
     "AdminSingleServicePage": {

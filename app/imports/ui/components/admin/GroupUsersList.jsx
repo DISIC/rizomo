@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import { Roles } from 'meteor/alanning:roles';
+import add from '@material-ui/icons/Add';
 import setMaterialTableLocalization from '../initMaterialTableLocalization';
 import UserFinder from './UserFinder';
 import Groups from '../../../api/groups/groups';
@@ -111,7 +112,7 @@ const GroupsUsersList = (props) => {
 
   const actions = [
     {
-      icon: 'add',
+      icon: add,
       tooltip: i18n.__('components.GroupUsersList.materialTableLocalization.body_addTooltip'),
       isFreeAction: true,
       onClick: () => setShowSearch(!showSearch),

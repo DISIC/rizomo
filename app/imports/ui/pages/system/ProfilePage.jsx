@@ -262,7 +262,7 @@ const ProfilePage = () => {
     if (userData.avatar !== user.avatar) {
       modifications = true;
       if (tempImageLoaded) {
-        // A temporary image has been loaded in minio with name "Avatar_TEMP"
+        // A temporary image has been loaded in user minio with name "Avatar_TEMP"
         if (userData.avatar.includes('Avatar_TEMP')) {
           // This image will be the new user's avatar
           Meteor.call('files.rename', {
@@ -270,24 +270,21 @@ const ProfilePage = () => {
             oldName: 'Avatar_TEMP.png',
             newName: 'Avatar.png',
           });
-          Meteor.call(
-            'users.setAvatar',
-            { avatar: userData.avatar.replace('Avatar_TEMP.png', 'Avatar.png') },
-            (error) => {
-              if (error) {
-                msg.error(error.message);
-              }
-            },
-          );
+        } else {
+          // the temporary image will not be used => delete it
+          Meteor.call('files.selectedRemove', {
+            path: `users/${Meteor.userId()}`,
+            toRemove: [`users/${Meteor.userId()}/Avatar_TEMP.png`],
+          });
         }
-      } else {
-        Meteor.call('users.setAvatar', { avatar: userData.avatar }, (error) => {
-          if (error) {
-            msg.error(error.message);
-          }
-        });
+        setTempImageLoaded(false);
       }
-      setTempImageLoaded(false);
+      // replace 'Avatar_TEMP.png' even if the image comes from gallery then the name will be unchanged
+      Meteor.call('users.setAvatar', { avatar: userData.avatar.replace('Avatar_TEMP.png', 'Avatar.png') }, (error) => {
+        if (error) {
+          msg.error(error.message);
+        }
+      });
     }
     if (modifications === false) msg.info(i18n.__('pages.ProfilePage.noModifications'));
   };
@@ -338,6 +335,7 @@ const ProfilePage = () => {
         type: 'png',
         path: `users/${Meteor.userId()}`,
         storage: true,
+        isUser: true,
         onFinish: (url) => {
           // Add time to url to avoid caching
           setUserData({ ...userData, avatar: `${url}?${new Date().getTime()}` });

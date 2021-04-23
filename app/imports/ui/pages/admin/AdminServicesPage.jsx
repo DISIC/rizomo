@@ -7,6 +7,7 @@ import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
 import Fade from '@material-ui/core/Fade';
 import { useHistory } from 'react-router-dom';
+import keyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Spinner from '../../components/system/Spinner';
 import Services from '../../../api/services/services';
 import { removeService } from '../../../api/services/methods';
@@ -80,7 +81,7 @@ function AdminServicesPage({ services, loading }) {
                   },
                 },
                 {
-                  icon: 'keyboard_arrow_right',
+                  icon: keyboardArrowRight,
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_goTooltip'),
                   onClick: (event, rowData) => {
                     history.push(`/services/${rowData.slug}`);

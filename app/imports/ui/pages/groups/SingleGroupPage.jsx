@@ -10,13 +10,11 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
 
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
@@ -36,6 +34,7 @@ import Groups from '../../../api/groups/groups';
 import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
 import ServiceDetails from '../../components/services/ServiceDetails';
+import GroupAvatar from '../../components/groups/GroupAvatar';
 
 const useStyles = (member, candidate, type) =>
   makeStyles((theme) => ({
@@ -237,9 +236,6 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     `components.GroupDetails.${type === 0 ? 'publicGroup' : type === 10 ? 'closedGroup' : 'moderateGroup'}`,
   );
 
-  const IconHeader = (props) =>
-    type === 0 ? <PeopleIcon {...props} /> : type === 10 ? <LockIcon {...props} /> : <SecurityIcon {...props} />;
-
   const icon = () => {
     if (member || animator) {
       return type === 0 ? <CheckIcon /> : <VerifiedUserIcon />;
@@ -322,10 +318,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.cardGrid}>
             <div className={classes.titleContainer}>
-              <Avatar className={classes.avatar}>
-                <IconHeader className={classes.icon} fontSize="large" />
-              </Avatar>
-
+              <GroupAvatar type={type || 0} avatar={group.avatar} />
               <div className={classes.title}>
                 <Typography variant="h5">{group.name}</Typography>
                 <Typography color={type === 0 ? 'primary' : 'secondary'} variant="h6">
