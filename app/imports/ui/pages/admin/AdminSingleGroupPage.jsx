@@ -19,6 +19,7 @@ import Tab from '@material-ui/core/Tab';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
 
 import PropTypes from 'prop-types';
 import slugify from 'slugify';
@@ -33,6 +34,7 @@ import Groups from '../../../api/groups/groups';
 import GroupsUsersList from '../../components/admin/GroupUsersList';
 import { useAppContext } from '../../contexts/context';
 import { CustomToolbar } from '../../components/system/CustomQuill';
+import GroupAvatarPicker from '../../components/groups/GroupAvatarPicker';
 import '../../utils/QuillVideo';
 
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +80,7 @@ const defaultState = {
   slug: '',
   description: '',
   content: '',
+  avatar: '',
   type: Number(Object.keys(Groups.typeLabels)[0]),
 };
 
@@ -91,6 +94,7 @@ const quillOptions = {
 };
 
 const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
+  const [, dispatch] = useAppContext();
   const [groupData, setGroupData] = useState(defaultState);
   const [loading, setLoading] = useState(!!params._id);
   const [tabId, setTabId] = React.useState(0);
@@ -116,7 +120,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const handleChangeTab = (event, newValue) => {
     setTabId(newValue);
   };
-
+  const [tempImageLoaded, setTempImageLoaded] = useState(false);
   const onUpdateField = (event) => {
     const { name, value } = event.target;
     if (name === 'name') {
@@ -136,14 +140,80 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
     }
   };
 
+  const SendNewAvatarToMedia = (avImg) => {
+    // if group is not yet created, the temp image goes to user minio
+    dispatch({
+      type: 'uploads.add',
+      data: {
+        name: params._id ? 'groupAvatar_TEMP' : 'groupAvatar',
+        fileName: params._id ? 'groupAvatar_TEMP' : 'groupAvatar',
+        file: avImg,
+        type: 'png',
+        path: params._id ? `groups/${group._id}` : `users/${Meteor.userId()}`,
+        storage: true,
+        isUser: false,
+        onFinish: (url) => {
+          setGroupData({ ...groupData, avatar: `${url}?${new Date().getTime()}` });
+          setTempImageLoaded(true);
+        },
+      },
+    });
+  };
+  const onAssignAvatar = (avatarObj, groupName) => {
+    // avatarObj = {image: base64... or url: http...}
+    if (avatarObj.image) {
+      SendNewAvatarToMedia(avatarObj.image, groupName);
+    } else if (avatarObj.url !== group.avatar) {
+      setGroupData({ ...groupData, avatar: avatarObj.url });
+    }
+  };
+
   const onUpdateRichText = (html) => {
     setContent(html);
   };
-
+  const cancelForm = () => {
+    if (tempImageLoaded) {
+      // A temporary image has been loaded in minio with name "groupAvatar_TEMP"
+      // => delete it
+      if (params._id) {
+        // on update
+        Meteor.call('files.selectedRemove', {
+          path: `groups/${group._id}`,
+          toRemove: [`groups/${group._id}/groupAvatar_TEMP.png`],
+          isUser: false,
+        });
+      } else {
+        // on create
+        Meteor.call('files.selectedRemove', {
+          path: `users/${Meteor.userId()}`,
+          toRemove: [`users/${Meteor.userId()}/groupAvatar.png`],
+        });
+      }
+    }
+    setTempImageLoaded(false);
+    history.goBack();
+  };
   const submitUpdateGroup = () => {
+    if (groupData.avatar !== group.avatar) {
+      if (tempImageLoaded) {
+        // A temporary image has been loaded in minio with name "groupAvatar_TEMP"
+        if (groupData.avatar.includes('groupAvatar_TEMP')) {
+          // This image will be the new group's avatar
+          if (params._id) {
+            // only on update
+            Meteor.call('files.rename', {
+              path: `groups/${group._id}`,
+              oldName: 'groupAvatar_TEMP.png',
+              newName: 'groupAvatar.png',
+            });
+            setTempImageLoaded(false);
+          }
+        }
+      }
+    }
     const method = params._id ? updateGroup : createGroup;
     setLoading(true);
-    const { _id, slug, ...rest } = groupData;
+    const { _id, slug, avatar, ...rest } = groupData;
     let args;
 
     if (params._id) {
@@ -153,6 +223,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
           ...rest,
           content,
           plugins,
+          avatar: avatar.replace('groupAvatar_TEMP.png', 'groupAvatar.png'),
         },
       };
     } else {
@@ -160,6 +231,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
         ...rest,
         content,
         plugins,
+        avatar,
       };
     }
     method.call(args, (error) => {
@@ -216,57 +288,70 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
             {i18n.__(`pages.AdminSingleGroupPage.${params._id ? 'edition' : 'creation'}`)} <b>{groupData.name}</b>
           </Typography>
           <form noValidate autoComplete="off">
-            <TextField
-              onChange={onUpdateField}
-              value={groupData.name}
-              name="name"
-              label={i18n.__('pages.AdminSingleGroupPage.name')}
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              disabled={(!isAdmin && !!params._id) || !groupEnableChangeName}
-            />
-            <TextField
-              onChange={onUpdateField}
-              value={groupData.slug}
-              name="slug"
-              label={i18n.__('pages.AdminSingleGroupPage.slug')}
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              disabled
-            />
-            {Object.keys(groupPlugins).map((p) => groupPluginsShow(p))}
-            <FormControl>
-              <InputLabel htmlFor="type" id="type-label">
-                {i18n.__('pages.AdminSingleGroupPage.type')}
-              </InputLabel>
-              <Select
-                labelId="type-label"
-                id="type"
-                name="type"
-                value={groupData.type}
-                onChange={onUpdateField}
-                disabled={!isAdmin && !!params._id}
-              >
-                {Object.keys(Groups.typeLabels).map((val) => (
-                  <MenuItem key={val} value={val}>
-                    {i18n.__(Groups.typeLabels[val])}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <TextField
-              onChange={onUpdateField}
-              value={groupData.description}
-              name="description"
-              label={i18n.__('pages.AdminSingleGroupPage.description')}
-              inputProps={{ maxLength: 64 }}
-              variant="outlined"
-              fullWidth
-              multiline
-              margin="normal"
-            />
+            <Grid container spacing={2} style={{ alignItems: 'center' }}>
+              <Grid item xs={6} style={{ paddingLeft: '18px' }}>
+                <TextField
+                  onChange={onUpdateField}
+                  value={groupData.name}
+                  name="name"
+                  label={i18n.__('pages.AdminSingleGroupPage.name')}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  disabled={(!isAdmin && !!params._id) || !groupEnableChangeName}
+                />
+                <TextField
+                  onChange={onUpdateField}
+                  value={groupData.slug}
+                  name="slug"
+                  label={i18n.__('pages.AdminSingleGroupPage.slug')}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  disabled
+                />
+                {Object.keys(groupPlugins).map((p) => groupPluginsShow(p))}
+                <FormControl>
+                  <InputLabel htmlFor="type" id="type-label">
+                    {i18n.__('pages.AdminSingleGroupPage.type')}
+                  </InputLabel>
+                  <Select
+                    labelId="type-label"
+                    id="type"
+                    name="type"
+                    value={groupData.type}
+                    onChange={onUpdateField}
+                    disabled={!isAdmin && !!params._id}
+                  >
+                    {Object.keys(Groups.typeLabels).map((val) => (
+                      <MenuItem key={val} value={val}>
+                        {i18n.__(Groups.typeLabels[val])}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  onChange={onUpdateField}
+                  value={groupData.description}
+                  name="description"
+                  label={i18n.__('pages.AdminSingleGroupPage.description')}
+                  variant="outlined"
+                  inputProps={{ maxLength: 64 }}
+                  fullWidth
+                  multiline
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <GroupAvatarPicker
+                  avatar={groupData.avatar || ''}
+                  type={groupData.type}
+                  group={groupData}
+                  onAssignAvatar={onAssignAvatar}
+                  profil="true"
+                />
+              </Grid>
+            </Grid>
             <div className={classes.wysiwyg}>
               <InputLabel htmlFor="content">{i18n.__('pages.AdminSingleGroupPage.content')}</InputLabel>
               <CustomToolbar />
@@ -292,7 +377,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                 {params._id ? i18n.__('pages.AdminSingleGroupPage.update') : i18n.__('pages.AdminSingleGroupPage.save')}
               </Button>
 
-              <Button variant="contained" onClick={() => history.goBack()}>
+              <Button variant="contained" onClick={cancelForm}>
                 {i18n.__('pages.AdminSingleGroupPage.cancel')}
               </Button>
             </div>

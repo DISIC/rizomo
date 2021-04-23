@@ -5,22 +5,12 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import { useHistory } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
-import SecurityIcon from '@material-ui/icons/Security';
-// import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-// import CheckIcon from '@material-ui/icons/Check';
-// import WatchLaterIcon from '@material-ui/icons/WatchLater';
-// import EditIcon from '@material-ui/icons/Edit';
-// import CardActions from '@material-ui/core/CardActions';
-// import Button from '@material-ui/core/Button';
-import PeopleIcon from '@material-ui/icons/People';
-import LockIcon from '@material-ui/icons/Lock';
-import Avatar from '@material-ui/core/Avatar';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from '@material-ui/core/CardHeader';
 import Zoom from '@material-ui/core/Zoom';
 
 import i18n from 'meteor/universe:i18n';
+import GroupAvatar from './GroupAvatar';
 import GroupBadge from './GroupBadge';
 
 const useStyles = ({ type }, admin, member, candidate) =>
@@ -96,7 +86,6 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
     }
     return i18n.__('components.GroupDetailsPersSpace.groupNone');
   };
-  const iconHeader = type === 0 ? <PeopleIcon /> : type === 10 ? <LockIcon /> : <SecurityIcon />;
   const hasAdmin = admin || globalAdmin;
 
   return (
@@ -130,10 +119,10 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
                     color="error"
                     badgeContent={group.numCandidates}
                   >
-                    <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+                    <GroupAvatar type={type} avatar={group.avatar} className={classes.avatar} />
                   </GroupBadge>
                 ) : (
-                  <Avatar className={classes.avatar}>{iconHeader}</Avatar>
+                  <GroupAvatar type={type} avatar={group.avatar} className={classes.avatar} />
                 )
               }
               title={

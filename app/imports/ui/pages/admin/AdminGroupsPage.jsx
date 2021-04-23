@@ -6,6 +6,8 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { useHistory } from 'react-router-dom';
 import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
+import edit from '@material-ui/icons/Edit';
+import add from '@material-ui/icons/Add';
 import Spinner from '../../components/system/Spinner';
 import Groups from '../../../api/groups/groups';
 import { removeGroup } from '../../../api/groups/methods';
@@ -49,7 +51,7 @@ function AdminGroupsPage({ groups, loading }) {
     pageSize: 10,
     pageSizeOptions: [10, 20, 50, 100],
     paginationType: 'stepped',
-    actionsColumnIndex: 5,
+    actionsColumnIndex: 6,
     addRowPosition: 'first',
     emptyRowsWhenPaging: false,
   };
@@ -69,14 +71,14 @@ function AdminGroupsPage({ groups, loading }) {
             localization={setMaterialTableLocalization('pages.AdminGroupsPage')}
             actions={[
               {
-                icon: 'edit',
+                icon: edit,
                 tooltip: i18n.__('pages.AdminGroupsPage.materialTableLocalization.body_editTooltip'),
                 onClick: (event, rowData) => {
                   history.push(`/admingroups/${rowData._id}`);
                 },
               },
               {
-                icon: 'add',
+                icon: add,
                 tooltip: i18n.__('pages.AdminGroupsPage.materialTableLocalization.body_addTooltip'),
                 isFreeAction: true,
                 onClick: () => history.push('/admingroups/new'),
