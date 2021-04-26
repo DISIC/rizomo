@@ -22,7 +22,7 @@ aldeed:collection2
 aldeed:schema-index
 mdg:validated-method
 universe:i18n
-hot-module-replacement
+hot-module-replacement@0.2.0
 
 accounts-password@1.7.0
 alanning:roles
