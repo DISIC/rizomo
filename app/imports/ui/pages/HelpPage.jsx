@@ -15,16 +15,8 @@ function HelpPage() {
   return (
     <Fade in>
       <Container>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={12} md={12}>
-            <Grid container spacing={2}>
-              <Grid item>
-                <Typography variant="h4">{i18n.__('pages.HelpPage.title')}</Typography>
-              </Grid>
-              <Screencast />
-            </Grid>
-          </Grid>
-        </Grid>
+        <Typography variant="h4">{i18n.__('pages.HelpPage.title')}</Typography>
+        <Screencast />
       </Container>
     </Fade>
   );
