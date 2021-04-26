@@ -52,7 +52,8 @@ const Notification = ({ notification, toast }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const handleRemove = () => {
+  const handleRemove = (e) => {
+    e.stopPropagation();
     Meteor.call('notifications.removeNotification', { notificationId: _id }, (err) => {
       if (err) {
         msg.error(err.reason);
@@ -86,7 +87,12 @@ const Notification = ({ notification, toast }) => {
   };
 
   return (
-    <ListItem alignItems="flex-start" className={read ? classes.isRead : null} button onClick={handleLink}>
+    <ListItem
+      alignItems="flex-start"
+      className={read ? classes.isRead : null}
+      button={notification.link !== undefined}
+      onClick={handleLink}
+    >
       <ListItemIcon className={classes.leftIcon}>
         <Badge
           invisible={read}
