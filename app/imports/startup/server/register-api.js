@@ -1,6 +1,7 @@
 import '../../api/users/server/methods';
 import '../../api/users/server/publications';
 import '../../api/groups/methods';
+import '../../api/groups/server/bbbMethods';
 import '../../api/groups/server/publications';
 import '../../api/services/methods';
 import '../../api/services/server/publications';
@@ -22,3 +23,7 @@ import '../../api/migrations';
 import '../../api/appclients/rocketChat';
 import '../../api/appclients/kcClient';
 import '../../api/appclients/nextcloud';
+import '../../api/smtp/methods';
+import '../../api/eventsAgenda/methods';
+import '../../api/eventsAgenda/server/publication';
+import '../../api/polls/server/publications';

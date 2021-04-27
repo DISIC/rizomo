@@ -8,7 +8,15 @@ import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
-import { Typography, Fade, IconButton, Button, Divider, Collapse, TextField, InputAdornment } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import Collapse from '@material-ui/core/Collapse';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 import Switch from '@material-ui/core/Switch';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
@@ -21,6 +29,7 @@ import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import PersonalZone from '../components/personalspace/PersonalZone';
+import Screencast from '../components/personalspace/Screencast';
 import { useAppContext } from '../contexts/context';
 
 const useStyles = (isMobile) =>
@@ -111,6 +120,13 @@ const useStyles = (isMobile) =>
     goIcon: {
       marginLeft: 8,
       verticalAlign: 'bottom',
+    },
+    castTuto: {
+      marginTop: 30,
+      marginBottom: 15,
+    },
+    screen: {
+      marginTop: 60,
     },
   }));
 
@@ -424,12 +440,16 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                 </Grid>
               </Grid>
               {localPS.unsorted.length === 0 && localPS.sorted.length === 0 ? (
-                <Typography>
-                  <Link to="/services">
-                    {i18n.__('pages.PersonalPage.noFavYet')}
-                    <NavigateNextIcon className={classes.goIcon} />
-                  </Link>
-                </Typography>
+                <Grid>
+                  <Typography className={classes.castTuto}>{i18n.__('pages.PersonalPage.tutoTitle')}</Typography>
+                  <Screencast />
+                  <div className={classes.screen}>
+                    <Link to="/services">
+                      {i18n.__('pages.PersonalPage.noFavYet')}
+                      <NavigateNextIcon className={classes.goIcon} />
+                    </Link>
+                  </div>
+                </Grid>
               ) : null}
             </Grid>
             {localPS.unsorted.length !== 0

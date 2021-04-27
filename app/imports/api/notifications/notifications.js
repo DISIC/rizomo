@@ -2,9 +2,6 @@ import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
-import { Factory } from 'meteor/dburles:factory';
-import { Random } from 'meteor/random';
-import faker from 'faker';
 import { getLabel } from '../utils';
 
 const Notifications = new Mongo.Collection('notifications');
@@ -64,13 +61,6 @@ Notifications.publicFields = {
   createdAt: 1,
   read: 1,
 };
-
-Factory.define('notification', Notifications, {
-  userId: () => Random.id(),
-  title: faker.lorem.words(),
-  content: faker.lorem.sentences(2),
-  type: 'info',
-});
 
 Notifications.attachSchema(Notifications.schema);
 

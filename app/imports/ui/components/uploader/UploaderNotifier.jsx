@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { Typography, Slide, CircularProgress } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import i18n from 'meteor/universe:i18n';
 import { useAppContext } from '../../contexts/context';
 import { fileUpload, storageToSize } from '../../utils/filesProcess';

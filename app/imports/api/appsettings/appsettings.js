@@ -1,8 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
-import { Factory } from 'meteor/dburles:factory';
-import faker from 'faker';
 import { getLabel } from '../utils';
 
 const AppSettings = new Mongo.Collection('appsettings');
@@ -124,39 +122,6 @@ AppSettings.personalData = {
   'personalData.external': 1,
   'personalData.content': 1,
 };
-
-Factory.define('appsettings', AppSettings, {
-  introduction: [
-    {
-      language: 'en',
-      content: faker.lorem.sentences(),
-    },
-    {
-      language: 'fr',
-      content: faker.lorem.sentences(),
-    },
-  ],
-  legal: {
-    external: Boolean(Math.random() * 2),
-    link: faker.lorem.slug(),
-    content: faker.lorem.sentences(),
-  },
-  accessibility: {
-    external: Boolean(Math.random() * 2),
-    link: faker.lorem.slug(),
-    content: faker.lorem.sentences(),
-  },
-  gcu: {
-    external: Boolean(Math.random() * 2),
-    link: faker.lorem.slug(),
-    content: faker.lorem.sentences(),
-  },
-  personalData: {
-    external: Boolean(Math.random() * 2),
-    link: faker.lorem.slug(),
-    content: faker.lorem.sentences(),
-  },
-});
 
 AppSettings.attachSchema(AppSettings.schema);
 

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { Grid, IconButton, Input, makeStyles, Tooltip } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import PublishIcon from '@material-ui/icons/Publish';
 import CameraEnhanceIcon from '@material-ui/icons/CameraEnhance';
 import FaceIcon from '@material-ui/icons/Face';
@@ -55,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AvatarPicker = ({ user, onAssignAvatar }) => {
+const AvatarPicker = ({ userAvatar, userFirstName, onAssignAvatar }) => {
   const classes = useStyles();
   const [imageAvatar, setImageAvatar] = useState('');
   const [openAvatarEdit, setOpenAvatarEdit] = useState(false);
@@ -81,7 +86,11 @@ const AvatarPicker = ({ user, onAssignAvatar }) => {
     <div>
       <Grid container>
         <Grid item xs={12} className={classes.buttonWrapper}>
-          <UserAvatar customClass={user.avatar ? classes.avatar : classes.avatarDefault} user={user} />
+          <UserAvatar
+            customClass={userAvatar ? classes.avatar : classes.avatarDefault}
+            userAvatar={userAvatar || ''}
+            userFirstName={userFirstName || ''}
+          />
         </Grid>
         <Grid item xs={12} className={classes.buttonWrapper}>
           <Tooltip title={i18n.__('pages.ProfilePage.uploadImg')} aria-label={i18n.__('pages.ProfilePage.uploadImg')}>
@@ -129,7 +138,8 @@ const AvatarPicker = ({ user, onAssignAvatar }) => {
 };
 
 AvatarPicker.propTypes = {
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  userAvatar: PropTypes.string.isRequired,
+  userFirstName: PropTypes.string.isRequired,
   onAssignAvatar: PropTypes.func.isRequired,
 };
 

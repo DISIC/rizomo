@@ -13,7 +13,13 @@ import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Grid, makeStyles, Typography, IconButton, Tooltip, Badge } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import Badge from '@material-ui/core/Badge';
+
 import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
 import Groups from '../../../api/groups/groups';

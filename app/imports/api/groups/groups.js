@@ -1,9 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { Factory } from 'meteor/dburles:factory';
 import SimpleSchema from 'simpl-schema';
-// import faker from "faker";
-import { Random } from 'meteor/random';
 import { Tracker } from 'meteor/tracker';
 import slugify from 'slugify';
 import { getLabel } from '../utils';
@@ -79,6 +76,12 @@ Groups.schema = new SimpleSchema(
       allowedValues: [0, 5, 10], // 0 Ouvert, 5 Modéré, 10 Fermé
       label: getLabel('api.groups.labels.type'),
     },
+    avatar: {
+      type: String,
+      optional: true,
+      label: getLabel('api.users.labels.avatar'),
+      defaultValue: '',
+    },
     applications: {
       type: Array,
       optional: true,
@@ -128,6 +131,15 @@ Groups.schema = new SimpleSchema(
       blackbox: true,
       label: getLabel('api.groups.labels.plugins'),
     },
+    meeting: {
+      // server-side only, do not publish
+      type: Object,
+      defaultValue: {},
+      label: getLabel('api.groups.labels.meetingParams'),
+    },
+    'meeting.attendeePW': { type: String, defaultValue: '' },
+    'meeting.moderatorPW': { type: String, defaultValue: '' },
+    'meeting.createTime': { type: String, defaultValue: '' },
   },
   { tracker: Tracker },
 );
@@ -154,6 +166,7 @@ Groups.publicFields = {
   groupPadID: 1,
   digest: 1,
   type: 1,
+  avatar: 1,
   owner: 1,
   numCandidates: 1,
   plugins: 1,
@@ -188,15 +201,5 @@ Groups.helpers({
 });
 
 Groups.attachSchema(Groups.schema);
-
-Factory.define('group', Groups, {
-  name: () => Random.id(),
-  active: true,
-  type: 0,
-  admins: [],
-  animators: [],
-  members: [],
-  candidates: [],
-});
 
 export default Groups;

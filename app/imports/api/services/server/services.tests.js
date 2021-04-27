@@ -15,8 +15,10 @@ import { Roles } from 'meteor/alanning:roles';
 import { createService, removeService, updateService, favService, unfavService } from '../methods';
 
 import './publications';
+import './factories';
 import Services from '../services';
 import Categories from '../../categories/categories';
+import '../../categories/server/factories';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 
 function pspaceHasService(user, id) {

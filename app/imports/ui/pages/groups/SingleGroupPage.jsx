@@ -5,26 +5,36 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { Link, useHistory } from 'react-router-dom';
-import { Container, makeStyles, Button, Typography, Grid, Avatar, Fade, Divider } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Fade from '@material-ui/core/Fade';
+import Divider from '@material-ui/core/Divider';
+
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import CheckIcon from '@material-ui/icons/Check';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import PeopleIcon from '@material-ui/icons/People';
+import TodayIcon from '@material-ui/icons/Today';
+import PollIcon from '@material-ui/icons/Poll';
 import LockIcon from '@material-ui/icons/Lock';
 import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import FolderIcon from '@material-ui/icons/Folder';
+import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useAppContext } from '../../contexts/context';
 import Groups from '../../../api/groups/groups';
 import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
 import ServiceDetails from '../../components/services/ServiceDetails';
+import GroupAvatar from '../../components/groups/GroupAvatar';
 
 const useStyles = (member, candidate, type) =>
   makeStyles((theme) => ({
@@ -147,7 +157,20 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
   const classes = useStyles(member || animator, candidate, type)();
   const history = useHistory();
 
-  const { groupPlugins } = Meteor.settings.public;
+  const { groupPlugins, enableBBB } = Meteor.settings.public;
+
+  // chekc if group resources are available and should be displayed
+  let showResources = false;
+  if (member || animator) {
+    if (
+      enableBBB ||
+      Object.keys(group.plugins || {}).filter(
+        (plug) => group.plugins[plug] === true && groupPlugins[plug].enable === true,
+      ).length > 0
+    ) {
+      showResources = true;
+    }
+  }
 
   const handleOpenedContent = () => {
     toggleOpenedContent(!openedContent);
@@ -213,9 +236,6 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     `components.GroupDetails.${type === 0 ? 'publicGroup' : type === 10 ? 'closedGroup' : 'moderateGroup'}`,
   );
 
-  const IconHeader = (props) =>
-    type === 0 ? <PeopleIcon {...props} /> : type === 10 ? <LockIcon {...props} /> : <SecurityIcon {...props} />;
-
   const icon = () => {
     if (member || animator) {
       return type === 0 ? <CheckIcon /> : <VerifiedUserIcon />;
@@ -249,6 +269,16 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     history.goBack();
   };
 
+  const openMeeting = () => {
+    Meteor.call('groups.getMeetingURL', { groupId: group._id }, (err, res) => {
+      if (err) {
+        msg.error(err.reason);
+      } else {
+        window.open(res, '_blank');
+      }
+    });
+  };
+
   const openGroupFolder = (plugin) => {
     const resourceURL = groupPlugins[plugin].groupURL
       .replace('[URL]', groupPlugins[plugin].URL)
@@ -258,7 +288,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
   };
 
   const groupPluginsShow = (plugin) => {
-    if (group.plugins[plugin] && (member || animator)) {
+    if (group.plugins[plugin]) {
       return (
         <Grid item key={`${plugin}_${group._id}`} className={classes.cardGrid}>
           <Button
@@ -288,10 +318,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.cardGrid}>
             <div className={classes.titleContainer}>
-              <Avatar className={classes.avatar}>
-                <IconHeader className={classes.icon} fontSize="large" />
-              </Avatar>
-
+              <GroupAvatar type={type || 0} avatar={group.avatar} />
               <div className={classes.title}>
                 <Typography variant="h5">{group.name}</Typography>
                 <Typography color={type === 0 ? 'primary' : 'secondary'} variant="h6">
@@ -336,7 +363,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
               )}
             </Grid>
           </Grid>
-          {Object.keys(group.plugins || {}).filter((plug) => group.plugins[plug] === true).length > 0 ? (
+          {showResources ? (
             <>
               <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
                 <Typography className={classes.smallTitle} variant="h5">
@@ -344,6 +371,19 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                 </Typography>
               </Grid>
               <Grid container className={classes.cardGrid} spacing={1}>
+                {enableBBB ? (
+                  <Grid item key={`meeting_${group._id}`} className={classes.cardGrid}>
+                    <Button
+                      startIcon={<VoiceChatIcon />}
+                      className={classes.buttonAdmin}
+                      size="large"
+                      variant="contained"
+                      onClick={() => openMeeting()}
+                    >
+                      {i18n.__(`api.bbb.joinMeeting`)}
+                    </Button>
+                  </Grid>
+                ) : null}
                 {Object.keys(groupPlugins)
                   .filter((p) => groupPlugins[p].enable === true)
                   .map((p) => {
@@ -352,6 +392,7 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
               </Grid>
             </>
           ) : null}
+
           <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
             <Typography className={classes.smallTitle} variant="h5">
               {i18n.__('pages.SingleGroupPage.apps')}
@@ -371,6 +412,34 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                   logo: <PeopleIcon className={classes.icon} color="primary" fontSize="large" />,
                   title: i18n.__('pages.SingleGroupPage.addressBook'),
                   url: `/groups/${group.slug}/addressbook`,
+                }}
+                isShort
+              />
+            </Grid>
+          )}
+          {(admin || member || animator || type === 0) && (
+            <Grid item xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
+              <ServiceDetails
+                service={{
+                  _id: 'events',
+                  usage: i18n.__('pages.SingleGroupPage.EventsUsage'),
+                  logo: <TodayIcon className={classes.icon} color="primary" fontSize="large" />,
+                  title: i18n.__('pages.SingleGroupPage.Events'),
+                  url: `/groups/${group.slug}/events`,
+                }}
+                isShort
+              />
+            </Grid>
+          )}
+          {(admin || member || animator || type === 0) && (
+            <Grid item xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
+              <ServiceDetails
+                service={{
+                  _id: 'polls',
+                  usage: i18n.__('pages.SingleGroupPage.PollUsage'),
+                  logo: <PollIcon className={classes.icon} color="primary" fontSize="large" />,
+                  title: i18n.__('pages.SingleGroupPage.Polls'),
+                  url: `/groups/${group.slug}/poll`,
                 }}
                 isShort
               />

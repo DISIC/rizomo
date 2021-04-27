@@ -4,16 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Button, CardHeader, IconButton } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import CardHeader from '@material-ui/core/CardHeader';
+import IconButton from '@material-ui/core/IconButton';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
-import SecurityIcon from '@material-ui/icons/Security';
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import CheckIcon from '@material-ui/icons/Check';
-import PeopleIcon from '@material-ui/icons/People';
-import WatchLaterIcon from '@material-ui/icons/WatchLater';
-import LockIcon from '@material-ui/icons/Lock';
-import GroupBadge from './GroupBadge';
+import GroupAvatar from './GroupAvatar';
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -45,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
-  const { type } = group;
+  const { type, avatar } = group;
   const classes = useStyles();
 
   const groupType = animator
@@ -60,21 +56,6 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
     ? i18n.__('components.GroupDetails.closedGroup')
     : i18n.__('components.GroupDetails.moderateGroup');
 
-  const iconHeader =
-    candidate && type === 5 ? (
-      <WatchLaterIcon fontSize="large" />
-    ) : (animator || member) && type === 0 ? (
-      <CheckIcon fontSize="large" />
-    ) : animator || member ? (
-      <VerifiedUserIcon fontSize="large" />
-    ) : type === 0 ? (
-      <PeopleIcon fontSize="large" />
-    ) : type === 10 ? (
-      <LockIcon fontSize="large" />
-    ) : (
-      <SecurityIcon fontSize="large" />
-    );
-
   const detailsButton = (
     <Tooltip
       title={i18n.__('components.GroupDetail.singleServiceButtonLabel')}
@@ -87,24 +68,23 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
       </Link>
     </Tooltip>
   );
+
   return (
     <Card className={classes.card} elevation={3}>
       <CardHeader
         classes={{ action: classes.action }}
         avatar={
           animator || admin ? (
-            <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
-              <Button
-                style={{
-                  color: 'white',
-                  backgroundColor: member || animator ? 'green' : null,
-                }}
-                color={type === 0 ? 'primary' : 'secondary'}
-                variant="contained"
-              >
-                {iconHeader}
-              </Button>
-            </GroupBadge>
+            <Button
+              style={{
+                color: 'white',
+                backgroundColor: member || animator ? 'green' : null,
+              }}
+              color={type === 0 ? 'primary' : 'secondary'}
+              variant="contained"
+            >
+              <GroupAvatar type={type} avatar={avatar} />
+            </Button>
           ) : (
             <Button
               style={{
@@ -114,7 +94,7 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
               color={type === 0 ? 'primary' : 'secondary'}
               variant="contained"
             >
-              {iconHeader}
+              <GroupAvatar type={type} avatar={avatar} />
             </Button>
           )
         }

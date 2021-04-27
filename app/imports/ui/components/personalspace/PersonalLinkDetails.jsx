@@ -7,17 +7,15 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
-import {
-  Avatar,
-  Tooltip,
-  IconButton,
-  TextField,
-  CardActionArea,
-  CardActions,
-  Typography,
-  CardHeader,
-  Zoom,
-} from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+import CardHeader from '@material-ui/core/CardHeader';
+import Zoom from '@material-ui/core/Zoom';
 import i18n from 'meteor/universe:i18n';
 import { useObjectState } from '../../utils/hooks';
 

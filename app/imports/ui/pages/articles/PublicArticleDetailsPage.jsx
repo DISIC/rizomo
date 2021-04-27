@@ -5,17 +5,15 @@ import { withTracker } from 'meteor/react-meteor-data';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
-import {
-  Typography,
-  Container,
-  Grid,
-  makeStyles,
-  Button,
-  Fade,
-  FormControlLabel,
-  Switch,
-  Chip,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Fade from '@material-ui/core/Fade';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import Chip from '@material-ui/core/Chip';
 import html2pdf from 'html2pdf.js';
 import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style

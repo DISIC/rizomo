@@ -7,16 +7,16 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import GroupIcon from '@material-ui/icons/Group';
 import CloseIcon from '@material-ui/icons/Close';
-import {
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  makeStyles,
-  IconButton,
-  Tooltip,
-  Badge,
-} from '@material-ui/core';
+
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import Badge from '@material-ui/core/Badge';
+
+import { makeStyles } from '@material-ui/core/styles';
 import i18n from 'meteor/universe:i18n';
 import { isUrlExternal } from '../../utils/utilsFuncs';
 
@@ -52,7 +52,8 @@ const Notification = ({ notification, toast }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const handleRemove = () => {
+  const handleRemove = (e) => {
+    e.stopPropagation();
     Meteor.call('notifications.removeNotification', { notificationId: _id }, (err) => {
       if (err) {
         msg.error(err.reason);
@@ -86,7 +87,12 @@ const Notification = ({ notification, toast }) => {
   };
 
   return (
-    <ListItem alignItems="flex-start" className={read ? classes.isRead : null} button onClick={handleLink}>
+    <ListItem
+      alignItems="flex-start"
+      className={read ? classes.isRead : null}
+      button={notification.link !== undefined}
+      onClick={handleLink}
+    >
       <ListItemIcon className={classes.leftIcon}>
         <Badge
           invisible={read}

@@ -12,14 +12,25 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@material-ui/icons/Check';
+import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import { makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+import Tooltip from '@material-ui/core/Tooltip';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
 import IconButton from '@material-ui/core/IconButton';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Pagination from '@material-ui/lab/Pagination';
+import { Roles } from 'meteor/alanning:roles';
+import { structures } from '../../../api/users/structures';
 import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
 import debounce from '../../utils/debounce';
@@ -43,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
   },
   admin: {
     backgroundColor: theme.palette.secondary.main,
+  },
+  adminstructure: {
+    backgroundColor: theme.palette.secondary.dark,
   },
   pagination: {
     display: 'flex',
@@ -74,7 +88,18 @@ const AdminUsersPage = () => {
       .find({ scope: null, 'role._id': 'admin' })
       .fetch()
       .map((assignment) => assignment.user._id);
-    return { isLoading: !roleshandlers.ready(), admins: adminsIds };
+
+    const roleshandlers2 = Meteor.subscribe('roles.adminStructureAll');
+    const adminsIds2 = Meteor.roleAssignment
+      .find({ scope: { $in: structures }, 'role._id': 'adminStructure' })
+      .fetch()
+      .map((assignment) => assignment.user._id);
+
+    return {
+      isLoading: !roleshandlers.ready() && !roleshandlers2.ready(),
+      admins: adminsIds,
+      adminStructure: adminsIds2,
+    };
   });
   const handleChangePage = (event, value) => {
     changePage(value);
@@ -101,6 +126,21 @@ const AdminUsersPage = () => {
           method === 'users.unsetAdmin'
             ? i18n.__('pages.AdminUsersPage.successUnsetAdmin')
             : i18n.__('pages.AdminUsersPage.successSetAdmin'),
+        );
+      }
+    });
+  };
+  const isStructureAdmin = (user) => Roles.userIsInRole(user._id, 'adminStructure', user.structure);
+
+  const changeAdminStructure = (user) => {
+    const method = isStructureAdmin(user) ? 'users.unsetAdminStructure' : 'users.setAdminStructure';
+    Meteor.call(method, { userId: user._id }, (error) => {
+      if (error) msg.error(error.reason);
+      else {
+        msg.success(
+          method === 'users.unsetAdminStructure'
+            ? i18n.__('pages.AdminUsersPage.successUnsetAdminStructure')
+            : i18n.__('pages.AdminUsersPage.successSetAdminStructure'),
         );
       }
     });
@@ -144,6 +184,22 @@ const AdminUsersPage = () => {
       </>
     ) : (
       <>
+        <Tooltip
+          title={
+            isStructureAdmin(user)
+              ? i18n.__('pages.AdminUsersPage.unsetAdminStructure')
+              : i18n.__('pages.AdminUsersPage.setAdminStructure')
+          }
+          aria-label="add"
+        >
+          <IconButton
+            edge="end"
+            aria-label={isStructureAdmin(user) ? 'noadminstructure' : 'adminstructure'}
+            onClick={() => changeAdminStructure(user)}
+          >
+            {isStructureAdmin(user) ? <PersonAddDisabled /> : <GroupAddIcon />}
+          </IconButton>
+        </Tooltip>
         <Tooltip
           title={isAdmin(user) ? i18n.__('pages.AdminUsersPage.unsetAdmin') : i18n.__('pages.AdminUsersPage.setAdmin')}
           aria-label="add"
@@ -230,11 +286,25 @@ const AdminUsersPage = () => {
                 {items.map((user, i) => [
                   <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
                     <ListItemAvatar>
-                      <UserAvatar customClass={isAdmin(user) ? classes.admin : classes.avatar} user={user} />
+                      <UserAvatar
+                        customClass={
+                          isAdmin(user)
+                            ? classes.admin
+                            : isStructureAdmin(user)
+                            ? classes.adminstructure
+                            : classes.avatar
+                        }
+                        userAvatar={user.avatar}
+                        userFirstName={user.firstName}
+                      />
                     </ListItemAvatar>
                     <ListItemText
                       primary={`${user.firstName} ${user.lastName}${
-                        isAdmin(user) ? ` (${i18n.__('pages.AdminUsersPage.admin')})` : ''
+                        isAdmin(user)
+                          ? ` (${i18n.__('pages.AdminUsersPage.admin')})`
+                          : isStructureAdmin(user)
+                          ? ` (${i18n.__('pages.AdminUsersPage.adminStructure')})`
+                          : ''
                       } ${loginInfo(user)}`}
                       secondary={
                         <>

@@ -4,7 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import i18n from 'meteor/universe:i18n';
-import { InputAdornment, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles(() => ({
   noRightBorderRadius: {

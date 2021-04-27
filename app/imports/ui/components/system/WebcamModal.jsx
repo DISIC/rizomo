@@ -1,17 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  Dialog,
-  makeStyles,
-  TextField,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Tooltip,
-  FormControl,
-  InputLabel,
-  Select,
-} from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 import { Random } from 'meteor/random';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';

@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
-import { Container, Fade } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import Fade from '@material-ui/core/Fade';
 import Spinner from '../../components/system/Spinner';
 import { createCategorie, updateCategorie, removeCategorie } from '../../../api/categories/methods';
 import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
@@ -66,7 +67,7 @@ const AdminCategoriesPage = ({ categories, loading }) => {
         <Spinner />
       ) : (
         <Fade in>
-          <Container>
+          <Container style={{ overflowX: 'auto' }}>
             <MaterialTable
               // other props
               title={i18n.__('pages.AdminCategoriesPage.title')}

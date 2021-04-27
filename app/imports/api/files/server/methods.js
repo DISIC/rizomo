@@ -28,9 +28,13 @@ export const filesupload = new ValidatedMethod({
       // check if current user has admin rights
       const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
       const isUserPath = path === `users/${this.userId}`;
-
-      if (!authorized && !isUserPath) {
-        throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+      let isGroupAdmin = false;
+      if (path.includes('groups/')) {
+        const groupID = path.slice(-17);
+        isGroupAdmin = Roles.userIsInRole(this.userId, ['animator', 'admin'], groupID);
+      }
+      if (!authorized && !isUserPath && !isGroupAdmin) {
+        throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
       }
       const fileArray = file.split(',');
       const [fileData, fileData2] = fileArray;
@@ -89,8 +93,12 @@ export const removeSelectedFiles = new ValidatedMethod({
     // check if current user has admin rights
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
     const isUserPath = path === `users/${this.userId}`;
-
-    if (!authorized && !isUserPath) {
+    let isGroupAdmin = false;
+    if (path.includes('groups/')) {
+      const groupID = path.slice(-17);
+      isGroupAdmin = Roles.userIsInRole(this.userId, ['animator', 'admin'], groupID);
+    }
+    if (!authorized && !isUserPath && !isGroupAdmin) {
       throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
     }
     if (toRemove.length) {
@@ -144,7 +152,13 @@ export const moveFiles = new ValidatedMethod({
   async run({ sourcePath, destinationPath, files }) {
     // check if current user has admin rights
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
-    if (!authorized) {
+    let isGroupAdmin = false;
+    if (destinationPath.includes('groups/')) {
+      // When create group, move temp image from user minio to group folder minio
+      const groupID = destinationPath.slice(-17);
+      isGroupAdmin = Roles.userIsInRole(this.userId, ['animator', 'admin'], groupID);
+    }
+    if (!authorized && !isGroupAdmin) {
       throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
     }
 
@@ -169,6 +183,36 @@ export const moveFiles = new ValidatedMethod({
           }
         },
       );
+    });
+  },
+});
+
+export const rename = new ValidatedMethod({
+  name: 'files.rename',
+  validate: new SimpleSchema({
+    path: String,
+    oldName: String,
+    newName: String,
+  }).validator(),
+  async run({ path, oldName, newName }) {
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    const isUserPath = path === `users/${this.userId}`;
+    let isGroupAdmin = false;
+    if (path.includes('groups/')) {
+      const groupID = path.slice(-17);
+      isGroupAdmin = Roles.userIsInRole(this.userId, ['animator', 'admin'], groupID);
+    }
+    if (!authorized && !isUserPath && !isGroupAdmin) {
+      throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+
+    const conds = new Minio.CopyConditions();
+    s3Client.copyObject(minioBucket, `${path}/${newName}`, `${minioBucket}/${path}/${oldName}`, conds, (err) => {
+      s3Client.removeObject(minioBucket, `${path}/${oldName}`);
+      if (err) {
+        logServer(`Error renaming ${minioBucket}/${path}/${oldName} to ${path}/${newName}`, 'error');
+        logServer(err, 'error');
+      }
     });
   },
 });
@@ -205,7 +249,7 @@ export const getFilesForCurrentUser = new ValidatedMethod({
 
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
-  [removeFilesFolder, filesupload, removeSelectedFiles, moveFiles, getFilesForCurrentUser],
+  [removeFilesFolder, filesupload, removeSelectedFiles, moveFiles, rename, getFilesForCurrentUser],
   'name',
 );
 

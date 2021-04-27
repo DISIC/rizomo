@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Button, Menu, MenuItem, Divider, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import AppVersion from '../system/AppVersion';
@@ -57,6 +62,13 @@ export const userMenu = [
   },
 ];
 
+export const structureMenu = [
+  {
+    path: '/adminstructureusers',
+    content: 'menuAdminStructureUsers',
+  },
+];
+
 const MainMenu = ({ user = {} }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -64,6 +76,7 @@ const MainMenu = ({ user = {} }) => {
   const history = useHistory();
   const { pathname } = useLocation();
   const isAdmin = Roles.userIsInRole(user._id, 'admin');
+  const isAdminStructure = Roles.userIsInRole(user._id, 'adminStructure', user.structure);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const handleMenuClick = (path) => {
@@ -72,7 +85,9 @@ const MainMenu = ({ user = {} }) => {
   };
   let menu;
   if (isAdmin) {
-    menu = [...userMenu, ...adminMenu];
+    menu = [...userMenu, ...structureMenu, ...adminMenu];
+  } else if (isAdminStructure) {
+    menu = [...userMenu, ...structureMenu];
   } else {
     menu = [...userMenu];
   }
@@ -119,7 +134,9 @@ const MainMenu = ({ user = {} }) => {
         endIcon={<ExpandMoreIcon />}
       >
         {user.firstName || ''}
-        {user.avatar ? <UserAvatar user={user} customClass={classes.avatar} /> : null}
+        {user.avatar ? (
+          <UserAvatar userAvatar={user.avatar} userFirstName={user.firstName || ''} customClass={classes.avatar} />
+        ) : null}
       </Button>
       <Menu
         id="main-menu"

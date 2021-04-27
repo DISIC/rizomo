@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { makeStyles, Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import VideocamIcon from '@material-ui/icons/Videocam';

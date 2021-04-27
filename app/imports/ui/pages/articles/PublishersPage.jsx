@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Fade from '@material-ui/core/Fade';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
@@ -12,7 +13,13 @@ import ClearIcon from '@material-ui/icons/Clear';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import { makeStyles, Divider, Tooltip, TextField, InputAdornment, FormControlLabel, Checkbox } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import Tooltip from '@material-ui/core/Tooltip';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
 import IconButton from '@material-ui/core/IconButton';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import Pagination from '@material-ui/lab/Pagination';
@@ -182,7 +189,7 @@ const PublishersPage = () => {
                     key={`user-${user._id}`}
                   >
                     <ListItemAvatar>
-                      <UserAvatar user={user} />
+                      <UserAvatar userAvatar={user.avatar} userFirstName={user.firstName} />
                     </ListItemAvatar>
                     <ListItemText
                       primary={`${user.firstName} ${user.lastName}`}

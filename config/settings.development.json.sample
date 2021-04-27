@@ -1,14 +1,15 @@
 {
   "public": {
-    "enableKeycloak": true,
-    "keycloakUrl": "https://auth.appseducation.fr/auth",
-    "keycloakRealm": "apps",
+    "enableKeycloak": false,
+    "keycloakUrl": "",
+    "keycloakRealm": "",
     "laboiteBlogURL": "",
+    "enableBBB": false,
+    "BBBUrl": "",
     "minioSSL": false,
     "minioPort": null,
-    "minioAccess": "Uhjm4KJ8MV",
-    "minioEndPoint": "minio.appseducation.fr",
-    "minioBucket": "laboite-dev",
+    "minioEndPoint": "",
+    "minioBucket": "",
     "imageFilesTypes": ["svg", "png", "jpg", "gif", "jpeg"],
     "audioFilesTypes": ["wav", "mp3", "ogg"],
     "videoFilesTypes": ["mp4", "webm", "avi", "wmv"],
@@ -37,10 +38,14 @@
         "groupURL": "[URL]/apps/files/?dir=/[GROUPNAME]",
         "enableChangeName": false
       }
+    },
+    "services":{
+      "agendaUrl": "[URL]",
+      "sondagesUrl": "[URL]"
     }
   },
   "keycloak": {
-    "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvyVtOgah8FjiXmFcnavID9b0lEhCl5k7jISPkPweOQtB1+hRAajcT7Y4v9babrUAXVL7bAb8nRTJVrks3Jl+o/nfZjfLxx7vIE1mMsRGVAqPg88UgyP79fFBvWdPnrIaIweNqlH5r1WoBOVjsoX0rFNijZqQ5llcC/uUYQW35urjGUJIZlHDSOdp34qnrrnohE3714PUuiKHhqFx15MpzmO/KQuIt0lJXuJ3NgAwt1OndksvP03Kkm0ls7IvveF0GiM2dki2xPRAHvv3jC1hLdHm0kGdrn+EndX0xFwBl9kL5zcjILGwm1gyfeJdfzOQrBUf6WL+FpgNseWq5MD+vwIDAQAB",
+    "pubkey": "",
     "client": "sso",
     "adminEmails": [],
     "adminUser": "",
@@ -55,12 +60,19 @@
     "rocketChatUser": "",
     "rocketChatPassword": ""
   },
+  "smtp":{
+    "url": "smtps://USERNAME:PASSWORD@HOST:PORT",
+    "fromEmail": "",
+    "toEmail": ""
+  },
   "private": {
-    "fillWithFakeData": true,
-    "minioSecret": "Pr6SvbtBkutUHmdlN2uYWi5g7oo5EZquMq9k2t00",
+    "fillWithFakeData": false,
+    "minioAccess": "",
+    "minioSecret": "",
     "apiKeys": [
-      "849b7648-14b8-4154-9ef2-8d1dc4c2b7e9"
+      ""
     ],
+    "BBBSecret": "",
     "whiteDomains": [
       "^ac-[a-z-]*\\.fr",
       "^[a-z-]*\\.gouv.fr"

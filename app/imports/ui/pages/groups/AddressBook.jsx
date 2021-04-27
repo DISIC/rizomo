@@ -14,7 +14,12 @@ import ClearIcon from '@material-ui/icons/Clear';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import { makeStyles, Divider, Tooltip, Button, TextField, InputAdornment } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 import Pagination from '@material-ui/lab/Pagination';
@@ -122,7 +127,7 @@ const AddressBook = ({
               {items.map((user, i) => [
                 <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
                   <ListItemAvatar>
-                    <UserAvatar user={user} />
+                    <UserAvatar userAvatar={user.avatar} userFirstName={user.firstName} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={`${user.firstName} ${user.lastName}`}
@@ -131,7 +136,7 @@ const AddressBook = ({
                         <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                           {user.emails[0].address}
                         </Typography>
-                        {` - ${user.structure}`}
+                        {user.structure ? ` - ${user.structure}` : null}
                       </>
                     }
                   />

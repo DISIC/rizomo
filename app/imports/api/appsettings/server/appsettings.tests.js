@@ -10,9 +10,10 @@ import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
+import AppSettings from '../appsettings';
 import { updateAppsettings, updateIntroductionLanguage, getAppSettingsLinks } from '../methods';
 import './publications';
-import AppSettings from '../appsettings';
+import './factories';
 
 describe('appsettings', function () {
   describe('mutators', function () {

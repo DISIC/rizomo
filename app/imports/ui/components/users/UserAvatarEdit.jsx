@@ -8,7 +8,13 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
-import { Button, Grid, Modal, Slider, Tooltip, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Modal from '@material-ui/core/Modal';
+import Slider from '@material-ui/core/Slider';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
 import PropTypes from 'prop-types';

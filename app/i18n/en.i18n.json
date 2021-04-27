@@ -51,6 +51,7 @@
       "notPermitted": "You don't have sufficient rights.",
       "lastAdminError": "Can not remove rights on last admin user",
       "managedByKeycloak": "This information must be managed in Keycloak",
+      "logWhiteDomains": "Users matching these domains will be activated when logging in: {$domains}",
       "labels": {
         "id": "User Id",
         "username": "User Name",
@@ -243,7 +244,10 @@
       "groupRemoved": "Nextcloud: group {$groupName} removed",
       "groupRemoveError": "Nextcloud: Error removing group {$groupName}",
       "enablePluginForGroup": "Create group in Nextcloud",
-      "buttonLinkPlugin": "Access shared files in Nextcloud"
+      "buttonLinkPlugin": "Access shared files in Nextcloud",
+      "checkConfig": "Checking access to Nextcloud API ({$URL})",
+      "badConfig": "Error accessing Nextcloud, check settings and make sure 'Group Folders' app is active",
+      "configOk": "connection to Nextcloud API successfull"
     },
     "rocketChat": {
       "initClient": "RocketChat: API client initialized",
@@ -272,6 +276,15 @@
       "moderator": "moderator",
       "enablePluginForGroup": "Create group in RocketChat",
       "buttonLinkPlugin": "Access shared files in RocketChat"
+    },
+    "bbb": {
+      "meetingName": "Meeting: {$name}",
+      "welcomeMsg": "Welcome to {$name}",
+      "joinMeeting": "Access to meeting",
+      "createError": "Error encountered while creating meeting",
+      "checkConfig": "Checking access to BigBlueButton API ({$URL})",
+      "badConfig": "Error accessing BigBlueButton, please check settings",
+      "configOk": "connection to BigBlueButton API successfull"
     },
     "logging": {
       "unknownLogLevel": "Specified log level does not exist",
@@ -305,7 +318,8 @@
       "personalData": "Personal Data",
       "gcu": "G.C.U",
       "accessibility": "Accessibility",
-      "legal": "Legal notice"
+      "legal": "Legal notice",
+      "contact": "Contact"
     },
     "LegalComponent": {
       "title_introduction": "Introduction",
@@ -333,6 +347,7 @@
     "MenuBar": {
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
+      "menuHelp": "Help",
       "menuServices": "Applications",
       "menuGroupes": "All Groups",
       "menuGroupesMobile": "Groups",
@@ -366,7 +381,8 @@
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
       "menuMedias": "Medias Storage",
-      "menuAdminAppSettings": "Admin Settings"
+      "menuAdminAppSettings": "Admin Settings",
+      "menuAdminStructureUsers": "Structure Management"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
@@ -553,6 +569,11 @@
       "subtitle": "from image gallery",
       "cancel": "Cancel"
     },
+    "GroupAvatarGallery": {
+      "title": "Choose an image for your group",
+      "subtitle": "from image gallery",
+      "cancel": "Cancel"
+    },
     "UserAvatarCamCapture": {
       "title": "Create your avatar",
       "subtitle": "from the webcam",
@@ -612,6 +633,19 @@
       "structureLabel": "Connection structure",
       "submitButtonLabel": "Sign Up",
       "createError": "Error: impossible to create this account"
+    },
+    "ContactForm": {
+      "appDescription": "Send contact formular",
+      "firstNameLabel": "First name",
+      "nameLabel": "Last name",
+      "emailLabel": "Email",
+      "structureLabel": "Connection structure",
+      "submitButtonLabel": "Send",
+      "createError": "Error: an error as occured",
+      "textLabel": "Text",
+      "captchaInfo": "Indicate the result of the operation",
+      "redirectMsg": "Your request has been sent. Redirection in progress...",
+      "redirectTime": "seconds"
     },
     "ProfilePage": {
       "title": "My settings",
@@ -735,7 +769,12 @@
       "loginInfo": "last login",
       "neverConnected": "Never connected",
       "undefined": "Not defined",
-      "sortByLastLogin": "Sort by last login date"
+      "sortByLastLogin": "Sort by last login date",
+      "setAdminStructure": "Give structure admin rights",
+      "unsetAdminStructure": "Remove structure admin rights",
+      "successSetAdminStructure": "structure admin rights have been granted",
+      "successUnsetAdminStructure": "structure admin rights have been revoked",
+      "adminStructure": "Structure administrator"
     },
     "AdminUserValidationPage": {
       "title": "User validation",
@@ -772,7 +811,11 @@
       "typeLink": "Link",
       "addZoneStartButton": "Add a new zone at start",
       "addZoneEndButton": "Add a new zone at the end",
-      "toggleEdition": "Toggle edition mode"
+      "toggleEdition": "Toggle edition mode",
+      "tutoTitle": "Learn to custom this page"
+    },
+    "HelpPage": {
+      "title": "Find here every tuto to help you master LaBoite"
     },
     "AdminSingleServicePage": {
       "edition": "Edition of the service",
@@ -822,12 +865,29 @@
       "stopAnimating": "Stop animating this group",
       "animationLeft": "You are no longer animator of this group",
       "apps": "Applications",
-      "resources": "Group resources"
+      "resources": "Group resources",
+      "EventsUsage": "Events list",
+      "Events": "Events",
+      "PollUsage": "Polls list",
+      "Polls": "Polls"
     },
     "AddressBook": {
       "sendEmail": "Send an email to",
       "back": "Back to the group",
       "searchText": "Which user are you looking for ?"
+    },
+    "Events": {
+      "seeEvent": "See event",
+      "back": "Back to the group",
+      "searchText": "Which event are you looking for ?",
+      "dayOf": "All day of",
+      "noEvents": "No current or upcoming polls were found for this group"
+    },
+    "Polls": {
+      "seePoll": "See poll",
+      "back": "Back to the group",
+      "searchText": "Which poll are you looking for ?",
+      "noPoll": "No current or upcoming polls were found for this group"
     },
     "ArticlesPage": {
       "title": "Your publications",
@@ -885,6 +945,20 @@
       "delete": "Delete",
       "confirmDelete": "Confirm delete",
       "objectUsedText": "This file is used in a publication (title under this text), if you delete it, it will result as an empty link in your article. If you click again on delete, be aware that it will not be possible to restore it."
+    },
+    "AdminStructureUsersPage": {
+      "title": "Structure Users Management",
+      "searchText": "Which user are you looking for ?",
+      "structureAdmin": "Structure Administrator",
+      "setStructureAdmin": "Give structure admin rights",
+      "unsetStructureAdmin": "Remove structure admin rights",
+      "successSetStructureAdmin": "structure admin rights have been granted",
+      "successUnsetStructureAdmin": "structure admin rights have been revoked",
+      "successDeleteUser": "User deleted",
+      "loginInfo": "last login",
+      "neverConnected": "Never connected",
+      "undefined": "Not defined",
+      "sortByLastLogin": "Sort by last login date"
     }
   },
   "layouts": {

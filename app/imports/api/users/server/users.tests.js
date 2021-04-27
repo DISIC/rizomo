@@ -14,6 +14,8 @@ import '../../../../i18n/en.i18n.json';
 import {
   setAdmin,
   unsetAdmin,
+  setAdminStructure,
+  unsetAdminStructure,
   setStructure,
   setUsername,
   setName,
@@ -48,6 +50,7 @@ describe('users', function () {
       Meteor.roles.remove({});
       Roles.createRole('admin');
       Roles.createRole('member');
+      Roles.createRole('adminStructure');
       _.times(3, () => {
         // prefix email with 'test' to make sure it won't match
         // with 'user@ac-test.fr' when testing filtered search
@@ -103,6 +106,26 @@ describe('users', function () {
           done();
         });
         Roles.removeUsersFromRoles(userId, 'admin');
+      });
+    });
+    describe('users.byStructure', function () {
+      it('does not send data to non adminStructure users', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.byStructure', { page: 1, itemPerPage: 5, search: '' }, (collections) => {
+          assert.equal(collections.users, undefined);
+          done();
+        });
+      });
+      it('sends users with same structure to adminStructure user', function (done) {
+        Roles.addUsersToRoles(userId, 'adminStructure', 'Struct');
+        Meteor.users.update(userId, { $set: { structure: 'Struct' } });
+        Meteor.users.update(otherUserId, { $set: { structure: 'Struct' } });
+        const collector = new PublicationCollector({ userId });
+        collector.collect('users.byStructure', { page: 1, itemPerPage: 5, search: '' }, (collections) => {
+          assert.equal(collections.users.length, 2);
+          done();
+        });
+        Roles.removeUsersFromRoles(userId, 'adminStructure', 'Struct');
       });
     });
     describe('userData', function () {
@@ -164,6 +187,40 @@ describe('users', function () {
           assert.equal(assignment.role._id, 'admin');
           done();
         });
+        Roles.removeUsersFromRoles(userId, 'admin');
+      });
+    });
+    describe('roles.adminStructure', function () {
+      it('sends all structure admin users', function (done) {
+        Meteor.users.update(userId, { $set: { structure: 'toto' } });
+        Roles.addUsersToRoles(userId, 'adminStructure', 'toto');
+        const collector = new PublicationCollector({ userId });
+        collector.collect('roles.adminStructure', (collections) => {
+          assert.equal(collections['role-assignment'].length, 1);
+          const assignment = collections['role-assignment'][0];
+          assert.equal(assignment.user._id, userId);
+          assert.equal(assignment.role._id, 'adminStructure');
+          done();
+        });
+        Roles.removeUsersFromRoles(userId, 'adminStructure', 'toto');
+      });
+    });
+    describe('roles.adminStructureAll', function () {
+      it('sends all structure admin users', function (done) {
+        Meteor.users.update(userId, { $set: { structure: 'Occitanie' } });
+        Roles.addUsersToRoles(userId, 'adminStructure', 'Occitanie');
+        Meteor.users.update(otherUserId, { $set: { structure: 'Normandie' } });
+        Roles.addUsersToRoles(otherUserId, 'adminStructure', 'Normandie');
+        const collector = new PublicationCollector({ userId });
+        collector.collect('roles.adminStructureAll', (collections) => {
+          assert.equal(collections['role-assignment'].length, 2);
+          const assignment = collections['role-assignment'][0];
+          assert.equal(assignment.user._id, userId);
+          assert.equal(assignment.role._id, 'adminStructure');
+          done();
+        });
+        Roles.removeUsersFromRoles(userId, 'adminStructure', 'Occitanie');
+        Roles.removeUsersFromRoles(otherUserId, 'adminStructure', 'Normandie');
       });
     });
     describe('users.group', function () {
@@ -255,6 +312,7 @@ describe('users', function () {
       Groups.remove({});
       PersonalSpaces.remove({});
       Roles.createRole('admin');
+      Roles.createRole('adminStructure');
       Roles.createRole('member');
       // Generate 'users'
       email = faker.internet.email();
@@ -333,6 +391,71 @@ describe('users', function () {
         );
       });
     });
+    describe('(un)setAdminStructure', function () {
+      it('global admin can set/unset a user as structure admin', function () {
+        Meteor.users.update(userId, { $set: { structure: 'test' } });
+        assert.equal(Roles.userIsInRole(userId, 'adminStructure', 'test'), false);
+        setAdminStructure._execute({ userId: adminId }, { userId });
+        assert.equal(Roles.userIsInRole(userId, 'adminStructure', 'test'), true);
+        unsetAdminStructure._execute({ userId: adminId }, { userId });
+        assert.equal(Roles.userIsInRole(userId, 'adminStructure', 'test'), false);
+      });
+      it('structure admin can set/unset a user as structure admin', function () {
+        const email2 = faker.internet.email();
+        const userId2 = Accounts.createUser({
+          email2,
+          username: email2,
+          password: 'toto',
+          structure: 'test',
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        });
+
+        Meteor.users.update(userId, { $set: { structure: 'test' } });
+        assert.equal(Roles.userIsInRole(userId, 'adminStructure', 'test'), false);
+        setAdminStructure._execute({ userId: adminId }, { userId });
+        assert.equal(Roles.userIsInRole(userId, 'adminStructure', 'test'), true);
+
+        assert.equal(Roles.userIsInRole(userId2, 'adminStructure', 'test'), false);
+        setAdminStructure._execute({ userId }, { userId: userId2 });
+        assert.equal(Roles.userIsInRole(userId2, 'adminStructure', 'test'), true);
+        unsetAdminStructure._execute({ userId }, { userId: userId2 });
+        assert.equal(Roles.userIsInRole(userId2, 'adminStructure', 'test'), false);
+        Roles.removeUsersFromRoles(userId, 'adminStructure', 'test');
+      });
+      it('only admin and structure admin can set/unset a user as admin structure', function () {
+        // Throws if non admin user, or logged out user
+        assert.throws(
+          () => {
+            setAdminStructure._execute({ userId }, { userId });
+          },
+          Meteor.Error,
+          /api.users.setAdminStructure.notPermitted/,
+        );
+        assert.throws(
+          () => {
+            unsetAdminStructure._execute({ userId }, { userId });
+          },
+          Meteor.Error,
+          /api.users.unsetAdminStructure.notPermitted/,
+        );
+        assert.throws(
+          () => {
+            setAdminStructure._execute({}, { userId });
+          },
+          Meteor.Error,
+          /api.users.setAdminStructure.notPermitted/,
+        );
+        assert.throws(
+          () => {
+            unsetAdminStructure._execute({}, { userId });
+          },
+          Meteor.Error,
+          /api.users.unsetAdminStructure.notPermitted/,
+        );
+      });
+    });
+
     describe('setUsername', function () {
       it('users can set their username', function () {
         setUsername._execute({ userId }, { username: 'moi' });
@@ -383,6 +506,18 @@ describe('users', function () {
           Meteor.Error,
           /api.users.setStructure.notLoggedIn/,
         );
+      });
+      it('users loses structure admin role when structure changes', function () {
+        const newStructure = structures[0];
+        setStructure._execute({ userId }, { structure: newStructure });
+        const user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.structure, newStructure);
+        setAdminStructure._execute({ userId: adminId }, { userId });
+        assert.equal(Roles.userIsInRole(userId, 'adminStructure', structures[0]), true);
+        setStructure._execute({ userId }, { structure: structures[0] });
+        assert.equal(Roles.userIsInRole(userId, 'adminStructure', structures[0]), true);
+        setStructure._execute({ userId }, { structure: structures[1] });
+        assert.equal(Roles.userIsInRole(userId, 'adminStructure', structures[1]), false);
       });
     });
     describe('setName', function () {

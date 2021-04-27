@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill'; // ES6
-import { makeStyles, InputLabel, Button, Typography, FormControl, MenuItem, Select } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import 'react-quill/dist/quill.snow.css';
+import Select from '@material-ui/core/Select';
+
 import i18n from 'meteor/universe:i18n';
 import { updateIntroductionLanguage } from '../../../api/appsettings/methods';
 import Spinner from '../system/Spinner';
@@ -107,7 +115,9 @@ const IntroductionEdition = ({ data = [] }) => {
         <InputLabel id="language-selector-label">{i18n.__('components.IntroductionEdition.language')}</InputLabel>
         <Select labelId="language-selector-label" id="language-selector" value={language} onChange={handleChange}>
           {translations.map((tra) => (
-            <MenuItem value={tra}>{i18n.__(`components.IntroductionEdition.language_${tra}`)}</MenuItem>
+            <MenuItem value={tra} key={`components.IntroductionEdition.language_${tra}`}>
+              {i18n.__(`components.IntroductionEdition.language_${tra}`)}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

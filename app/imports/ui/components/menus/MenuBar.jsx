@@ -1,7 +1,9 @@
 import React from 'react';
 import i18n from 'meteor/universe:i18n';
 import { useLocation, useHistory } from 'react-router-dom';
-import { Tabs, Tab, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import { PropTypes } from 'prop-types';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
@@ -26,6 +28,12 @@ export const links = [
     path: '/services',
     content: 'menuServices',
     icon: <SearchIcon />,
+    admin: false,
+  },
+  {
+    path: '/help',
+    content: 'menuHelp',
+    icon: <HomeIcon />,
     admin: false,
   },
 ];

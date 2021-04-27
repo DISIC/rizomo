@@ -51,6 +51,7 @@
       "notPermitted": "Vous n'avez pas les droits suffisants.",
       "lastAdminError": "Impossible de supprimer les droits du dernier administrateur",
       "managedByKeycloak": "Cette information doit être gérée dans Keycloak",
+      "logWhiteDomains": "Les utilisateurs correspondant à ces domaines seront activés à leur connexion: {$domains}",
       "labels": {
         "id": "Id Utilisateur",
         "username": "Pseudonyme",
@@ -243,7 +244,10 @@
       "groupRemoved": "Nextcloud: groupe {$groupName} supprimé",
       "groupRemoveError": "Nextcloud: Erreur lors de la suppression du groupe {$groupName}",
       "enablePluginForGroup": "Créer le groupe dans Nextcloud",
-      "buttonLinkPlugin": "Accéder au partage Nextcloud"
+      "buttonLinkPlugin": "Accéder au partage Nextcloud",
+      "checkConfig": "Vérification de l'accès à l'API Nextcloud ({$URL})",
+      "badConfig": "Erreur d'accès à Nextcloud, veuillez vérifier la configuration et l'activation de l'application 'Group Folders'",
+      "configOk": "connecté avec succès à l'API Nextcloud"
     },
     "rocketChat": {
       "initClient": "RocketChat: client API initialisé",
@@ -272,6 +276,15 @@
       "moderator": "modérateur",
       "enablePluginForGroup": "Créer le groupe dans RocketChat",
       "buttonLinkPlugin": "Discuter dans RocketChat"
+    },
+    "bbb": {
+      "meetingName": "Conférence: {$name}",
+      "welcomeMsg": "Bienvenue à {$name}",
+      "joinMeeting": "Accéder à la conférence",
+      "createError": "Erreur lors de la création de la conférence",
+      "checkConfig": "Vérification de l'accès à l'API BigBlueButton ({$URL})",
+      "badConfig": "Erreur d'accès à BigBlueButton, veuillez vérifier la configuration",
+      "configOk": "Connecté avec succès à l'API BigBlueButton"
     },
     "logging": {
       "unknownLogLevel": "Le niveau de log spécifié n'existe pas",
@@ -305,7 +318,8 @@
       "personalData": "Données Personnelles",
       "gcu": "Conditions générales d'utilisation",
       "accessibility": "Accessibilité",
-      "legal": "Mentions légales"
+      "legal": "Mentions légales",
+      "contact": "Contact"
     },
     "LegalComponent": {
       "title_introduction": "Introduction",
@@ -333,6 +347,7 @@
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
+      "menuHelp": "Aide",
       "menuServices": "Applications",
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
@@ -366,7 +381,8 @@
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
       "menuMedias": "Stockage de Médias",
-      "menuAdminAppSettings": "Réglages Administrateurs"
+      "menuAdminAppSettings": "Réglages Administrateurs",
+      "menuAdminStructureUsers": "Gestion de la structure"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
@@ -555,6 +571,11 @@
       "subtitle": "depuis la galerie d'images",
       "cancel": "Annuler"
     },
+    "GroupAvatarGallery": {
+      "title": "Choisissez l'image de votre groupe",
+      "subtitle": "depuis la galerie d'images",
+      "cancel": "Annuler"
+    },
     "UserAvatarCamCapture": {
       "title": "Créez votre avatar",
       "subtitle": "à partir de la webcam",
@@ -614,6 +635,19 @@
       "structureLabel": "Structure de rattachement",
       "submitButtonLabel": "Inscription",
       "createError": "Erreur: problème lors de la création du compte"
+    },
+    "ContactForm": {
+      "appDescription": "Formulaire de contact",
+      "firstNameLabel": "Prénom",
+      "nameLabel": "Nom",
+      "emailLabel": "Courriel",
+      "structureLabel": "Structure de rattachement",
+      "submitButtonLabel": "Envoyer",
+      "createError": "Erreur: problème lors de l'envoi du formulaire",
+      "textLabel": "Texte",
+      "captchaInfo": "Indiquez le résultat de l'opération",
+      "redirectMsg": "Formulaire envoyé. Redirection automatique en cours...",
+      "redirectTime": "secondes"
     },
     "ProfilePage": {
       "title": "Mes préférences",
@@ -740,7 +774,12 @@
       "loginInfo": "Dernière connexion",
       "neverConnected": "Jamais connecté",
       "undefined": "Non renseigné",
-      "sortByLastLogin": "Trier par date de dernière connexion"
+      "sortByLastLogin": "Trier par date de dernière connexion",
+      "setAdminStructure": "Donner les droits d'administrateur de structure",
+      "unsetAdminStructure": "Enlever les droits d'administrateur de structure",
+      "successSetAdminStructure": "Droits d'administrateur de structure donnés",
+      "successUnsetAdminStructure": "Droits d'administrateur de structure révoqués",
+      "adminStructure": "Administrateur de structure"
     },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",
@@ -777,7 +816,11 @@
       "typeLink": "Lien",
       "addZoneStartButton": "Ajouter une nouvelle zone au début",
       "addZoneEndButton": "Ajouter une nouvelle zone à la fin",
-      "toggleEdition": "Activer/Désactiver le mode édition"
+      "toggleEdition": "Activer/Désactiver le mode édition",
+      "tutoTitle": "Apprenez à personnaliser cette page"
+    },
+    "HelpPage": {
+      "title": "Retrouvez ici tous les tutoriels nécessaires pour maitriser LaBoite"
     },
     "AdminSingleServicePage": {
       "edition": "Edition du service",
@@ -826,12 +869,29 @@
       "stopAnimating": "Arrêter d'animer ce groupe",
       "animationLeft": "Vous n'êtes plus animateur de ce groupe",
       "apps": "Applications",
-      "resources": "Ressources du groupe"
+      "resources": "Ressources du groupe",
+      "EventsUsage": "Liste des événements",
+      "Events": "Evénements",
+      "PollUsage": "Liste des sondages",
+      "Polls": "Sondages"
     },
     "AddressBook": {
       "sendEmail": "Envoyer un email à",
       "back": "Retour au groupe",
       "searchText": "Quel utilisateur cherchez-vous ?"
+    },
+    "Events": {
+      "seeEvent": "Voir l'événement",
+      "back": "Retour au groupe",
+      "searchText": "Quel événement cherchez-vous ?",
+      "dayOf": "Sur la journée du",
+      "noEvents": "Il n'y a actuellement aucun événement en cours ou à venir pour ce groupe."
+    },
+    "Polls": {
+      "seePoll": "Voir le sondage",
+      "back": "Retour au groupe",
+      "searchText": "Quel sondage cherchez-vous ?",
+      "noPoll": "Il n'y a actuellement aucun sondage en cours ou à venir pour ce groupe."
     },
     "ArticlesPage": {
       "title": "Vos publications",
@@ -889,6 +949,20 @@
       "delete": "Supprimer",
       "confirmDelete": "Confirmer la suppression",
       "objectUsedText": "Ce fichier est utilisé dans un article (titre ci dessous), si vous le supprimer, vos lecteurs tomberont sur un lien vide dans cet article. Si vous confirmez la suppression en cliquant une fois de plus sur le bouton, prenez note que cela ne sera pas réversible."
+    },
+    "AdminStructureUsersPage": {
+      "title": "Gestion des utilisateurs de la structure",
+      "searchText": "Quel utilisateur cherchez-vous ?",
+      "structureAdmin": "Administrateur de la structure",
+      "setStructureAdmin": "Donner les droits d'administrateur de structure",
+      "unsetStructureAdmin": "Enlever les droits d'administrateur de structure",
+      "cancelDelete": "Annuler la suppression",
+      "successSetStructureAdmin": "Droits d'administrateur de structure donnés",
+      "successUnsetStructureAdmin": "Droits d'administateur de structure révoqués",
+      "loginInfo": "Dernière connexion",
+      "neverConnected": "Jamais connecté",
+      "undefined": "Non renseigné",
+      "sortByLastLogin": "Trier par date de dernière connexion"
     }
   },
   "layouts": {

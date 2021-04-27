@@ -1,6 +1,11 @@
 import React from 'react';
 import i18n from 'meteor/universe:i18n';
-import { makeStyles, Menu, Button, MenuItem, IconButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+
 import PropTypes from 'prop-types';
 import { useAppContext } from '../../contexts/context';
 

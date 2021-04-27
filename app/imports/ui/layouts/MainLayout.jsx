@@ -7,25 +7,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import TopBar from '../components/menus/TopBar';
 import Spinner from '../components/system/Spinner';
 import AdminRoute from '../components/system/AdminRoute';
+import StructureAdminRoute from '../components/system/StructureAdminRoute';
 import MobileMenu from '../components/menus/MobileMenu';
 import NotValidatedMessage from '../components/system/NotValidatedMessage';
 import CustomToast from '../components/system/CustomToast';
 import { useAppContext } from '../contexts/context';
 
 // pages
-import ServicesPage from '../pages/services/ServicesPage';
-import SingleServicePage from '../pages/services/SingleServicePage';
-import GroupsPage from '../pages/groups/GroupsPage';
-import NotFound from '../pages/system/NotFound';
-import PersonalPage from '../pages/PersonalPage';
-import SingleGroupPage from '../pages/groups/SingleGroupPage';
-import AddressBook from '../pages/groups/AddressBook';
-import ProfilePage from '../pages/system/ProfilePage';
-import ArticlesPage from '../pages/articles/ArticlesPage';
-import EditArticlePage from '../pages/articles/EditArticlePage';
-import MediaStoragePage from '../pages/MediaStoragePage';
-import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
-import NotificationsDisplay from '../components/notifications/NotificationsDisplay';
+const ServicesPage = lazy(() => import('../pages/services/ServicesPage'));
+const HelpPage = lazy(() => import('../pages/HelpPage'));
+const SingleServicePage = lazy(() => import('../pages/services/SingleServicePage'));
+const GroupsPage = lazy(() => import('../pages/groups/GroupsPage'));
+const NotFound = lazy(() => import('../pages/system/NotFound'));
+const PersonalPage = lazy(() => import('../pages/PersonalPage'));
+const SingleGroupPage = lazy(() => import('../pages/groups/SingleGroupPage'));
+const AddressBook = lazy(() => import('../pages/groups/AddressBook'));
+const EventsPage = lazy(() => import('../pages/groups/EventsPage'));
+const PollPage = lazy(() => import('../pages/groups/PollPage'));
+const ProfilePage = lazy(() => import('../pages/system/ProfilePage'));
+const ArticlesPage = lazy(() => import('../pages/articles/ArticlesPage'));
+const EditArticlePage = lazy(() => import('../pages/articles/EditArticlePage'));
+const MediaStoragePage = lazy(() => import('../pages/MediaStoragePage'));
+const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'));
+const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -36,6 +40,7 @@ const AdminUserValidationPage = lazy(() => import('../pages/admin/AdminUserValid
 const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
 const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupPage'));
 const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage'));
+const AdminStructureUsersPage = lazy(() => import('../pages/structure/AdminStructureUsersPage'));
 
 // CSS
 const useStyles = (isMobile) =>
@@ -51,6 +56,7 @@ const useStyles = (isMobile) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
+      overflowX: 'hidden',
       marginTop: 60,
       marginBottom: isMobile ? 100 : 50,
     },
@@ -81,16 +87,26 @@ function MainLayout() {
                 <Route exact path="/profile" component={ProfilePage} />
                 <Route exact path="/services" component={ServicesPage} />
                 <Route exact path="/publications" component={ArticlesPage} />
+                <Route exact path="/help" component={HelpPage} />
                 <Route exact path="/publications/new" component={EditArticlePage} />
                 <Route exact path="/publications/:slug" component={EditArticlePage} />
                 <Route exact path="/services/:slug" component={SingleServicePage} />
                 <Route exact path="/groups" component={GroupsPage} />
                 <Route exact path="/groups/:slug" component={SingleGroupPage} />
                 <Route exact path="/groups/:slug/addressbook" component={AddressBook} />
+                <Route exact path="/groups/:slug/events" component={EventsPage} />
+                <Route exact path="/groups/:slug/poll" component={PollPage} />
                 <Route exact path="/admingroups" component={AdminGroupsPage} />
                 <Route exact path="/admingroups/new" component={AdminSingleGroupPage} />
                 <Route exact path="/admingroups/:_id" component={AdminSingleGroupPage} />
                 <Route exact path="/medias" component={MediaStoragePage} />
+                <StructureAdminRoute
+                  exact
+                  path="/adminstructureusers"
+                  component={AdminStructureUsersPage}
+                  user={user}
+                  loadingUser={loadingUser}
+                />
                 <AdminRoute
                   exact
                   path="/adminservices"

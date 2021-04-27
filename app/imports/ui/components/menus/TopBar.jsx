@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import { IconButton } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import NotificationsBell from '../notifications/NotificationsBell';
 import MenuBar from './MenuBar';
 import MainMenu from './MainMenu';

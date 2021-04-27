@@ -12,7 +12,9 @@ import RemoveIcon from '@material-ui/icons/Remove';
 // import OpenWithIcon from '@material-ui/icons/OpenWith';
 
 import Tooltip from '@material-ui/core/Tooltip';
-import { Button, CardHeader, IconButton } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import CardHeader from '@material-ui/core/CardHeader';
+import IconButton from '@material-ui/core/IconButton';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 
@@ -108,6 +110,8 @@ function ServiceDetails({ service, favAction, isShort }) {
   const classes = useStyles();
   const favorite = favAction === 'fav';
   const isAddressBook = service._id === 'addressbook';
+  const isEvents = service._id === 'events';
+  const isPoll = service._id === 'polls';
 
   const handleFavorite = () => {
     if (!favorite) {
@@ -167,11 +171,18 @@ function ServiceDetails({ service, favAction, isShort }) {
           </IconButton>
         )}
       /> */}
-      <Link to={isAddressBook ? service.url : `/services/${service.slug}`} className={classes.noUnderline}>
+      <Link
+        to={isAddressBook ? service.url : isEvents ? service.url : isPoll ? service.url : `/services/${service.slug}`}
+        className={classes.noUnderline}
+      >
         <CardHeader
           className={classes.cardHeader}
           avatar={
             isAddressBook ? (
+              service.logo
+            ) : isEvents ? (
+              service.logo
+            ) : isPoll ? (
               service.logo
             ) : (
               <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
@@ -215,7 +226,7 @@ function ServiceDetails({ service, favAction, isShort }) {
             );
           })}
         </Paper> */}
-        {!isAddressBook && (
+        {!isAddressBook && !isEvents && !isPoll && (
           <div className={isShort ? classes.cardActionShort : classes.cardActions}>
             {service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
 

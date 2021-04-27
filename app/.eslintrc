@@ -28,6 +28,12 @@
   },
   "plugins": ["meteor", "import", "prettier", "i18n", "react", "jsx"],
   "rules": {
+    "no-restricted-imports": [
+      "error", 
+      "@material-ui/core",
+      "@material-ui/icons",
+      "@material-ui/lab"
+    ],
     "no-underscore-dangle": "off",
     "react/jsx-props-no-spreading": "off",
     "no-nested-ternary": "off",

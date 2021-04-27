@@ -10,7 +10,11 @@ import validate from 'validate.js';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Fade, FormGroup, Checkbox, FormControlLabel } from '@material-ui/core';
+import Fade from '@material-ui/core/Fade';
+import FormGroup from '@material-ui/core/FormGroup';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 import Spinner from '../../components/system/Spinner';
 import AppVersion from '../../components/system/AppVersion';
 import AppSettings from '../../../api/appsettings/appsettings';
@@ -243,7 +247,9 @@ export default withTracker(() => {
   const subSettings = Meteor.subscribe('appsettings.introduction');
   const appsettings = AppSettings.findOne() || {};
   const ready = subSettings.ready();
-  const language = i18n._locale;
+  // locale may be fr-FR, en-EN, etc...
+  // laboite only manages fr, en, ...
+  const language = i18n.getLocale().split('-')[0];
   const { introduction = [] } = appsettings;
   const currentEntry = introduction.find((entry) => entry.language === language) || {};
   const defaultContent = introduction.find((entry) => !!entry.content.length);

@@ -6,7 +6,12 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
-import { Button, CardContent, Grid, Modal, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import Modal from '@material-ui/core/Modal';
+import Typography from '@material-ui/core/Typography';
+
 import PropTypes from 'prop-types';
 import { useAppContext } from '../../contexts/context';
 

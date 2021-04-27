@@ -63,20 +63,39 @@ export const unfavGroup = new ValidatedMethod({
   },
 });
 
-function _createGroup({ name, type, content, description, plugins, userId }) {
+function _createGroup({ name, type, content, description, avatar, plugins, userId }) {
   try {
     const groupId = Groups.insert({
       name,
       type,
       content,
       description,
+      avatar,
       owner: userId,
+      animators: [userId],
       admins: [userId],
       active: true,
       plugins,
     });
-    Roles.addUsersToRoles(userId, 'admin', groupId);
+    Roles.addUsersToRoles(userId, ['admin', 'animator'], groupId);
+
     favGroup._execute({ userId }, { groupId });
+
+    // move group temp avatar from user minio to group minio and update avatar link
+    if (avatar !== '' && avatar.includes('groupAvatar.png')) {
+      Meteor.call('files.move', {
+        sourcePath: `users/${userId}`,
+        destinationPath: `groups/${groupId}`,
+        files: ['groupAvatar.png'],
+      });
+
+      const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
+      const avatarLink = `http${minioSSL ? 's' : ''}://${minioEndPoint}${
+        minioPort ? `:${minioPort}` : ''
+      }/${minioBucket}/groups/${groupId}/groupAvatar.png?${new Date().getTime()}`;
+
+      Groups.update({ _id: groupId }, { $set: { avatar: avatarLink } });
+    }
   } catch (error) {
     if (error.code === 11000) {
       throw new Meteor.Error('api.groups.createGroup.duplicateName', i18n.__('api.groups.groupAlreadyExist'));
@@ -93,14 +112,15 @@ export const createGroup = new ValidatedMethod({
     type: { type: SimpleSchema.Integer, min: 0, label: getLabel('api.groups.labels.type') },
     description: { type: String, label: getLabel('api.groups.labels.description') },
     content: { type: String, defaultValue: '', label: getLabel('api.groups.labels.content') },
+    avatar: { type: String, defaultValue: '', label: getLabel('api.groups.labels.avatar') },
     plugins: { type: Object, optional: true, blackbox: true, label: getLabel('api.groups.labels.plugins') },
   }).validator({ clean: true }),
 
-  run({ name, type, content, description, plugins }) {
+  run({ name, type, content, description, avatar, plugins }) {
     if (!isActive(this.userId)) {
       throw new Meteor.Error('api.groups.createGroup.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
     }
-    return _createGroup({ name, type, content, description, plugins, userId: this.userId });
+    return _createGroup({ name, type, content, description, plugins, avatar, userId: this.userId });
   },
 });
 
@@ -165,6 +185,7 @@ export const updateGroup = new ValidatedMethod({
     },
     'data.description': { type: String, optional: true, label: getLabel('api.groups.labels.description') },
     'data.content': { type: String, optional: true, label: getLabel('api.groups.labels.content') },
+    'data.avatar': { type: String, optional: true, label: getLabel('api.groups.labels.avatar') },
     'data.active': { type: Boolean, optional: true, label: getLabel('api.groups.labels.active') },
     'data.groupPadId': { type: String, optional: true, label: getLabel('api.groups.labels.groupPadId') },
     'data.digest': { type: String, optional: true, label: getLabel('api.groups.labels.digest') },
@@ -188,6 +209,7 @@ export const updateGroup = new ValidatedMethod({
       // animator can only update description and content
       if (data.description) groupData.description = data.description;
       if (data.content) groupData.content = data.content;
+      if (data.avatar) groupData.avatar = data.avatar;
     } else {
       groupData = { ...data };
     }
@@ -195,10 +217,9 @@ export const updateGroup = new ValidatedMethod({
   },
 });
 
-// Get list of all method names on User
-const LISTS_METHODS = _.pluck([favGroup, unfavGroup, createGroup, removeGroup, updateGroup], 'name');
-
 if (Meteor.isServer) {
+  // Get list of all method names on User
+  const LISTS_METHODS = _.pluck([favGroup, unfavGroup, createGroup, removeGroup, updateGroup], 'name');
   // Only allow 5 list operations per connection per second
   DDPRateLimiter.addRule(
     {

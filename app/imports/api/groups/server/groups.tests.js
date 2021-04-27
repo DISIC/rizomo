@@ -18,6 +18,7 @@ import Groups from '../groups';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 import { createGroup, removeGroup, updateGroup, favGroup, unfavGroup } from '../methods';
 import './publications';
+import './factories';
 import {
   setAdminOf,
   unsetAdminOf,
@@ -531,6 +532,7 @@ describe('groups', function () {
         assert.equal(group.active, true);
         assert.equal(group.owner, userId);
         assert.equal(Roles.userIsInRole(userId, 'admin', group._id), true);
+        assert.equal(Roles.userIsInRole(userId, 'animator', group._id), true);
         assert.equal(pspaceHasGroup(userId, group._id), true, 'group is in personal space');
       });
       it('does fail to create a group if name already taken', function () {
