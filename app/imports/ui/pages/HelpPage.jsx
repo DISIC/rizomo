@@ -1,8 +1,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
+import Fade from '@material-ui/core/Fade';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
@@ -10,10 +12,12 @@ import Screencast from '../components/personalspace/Screencast';
 
 function HelpPage() {
   return (
-    <Grid>
-      <h3>{i18n.__('pages.HelpPage.title')}</h3>
-      <Screencast />
-    </Grid>
+    <Fade in>
+      <Container>
+        <Typography variant="h4">{i18n.__('pages.HelpPage.title')}</Typography>
+        <Screencast />
+      </Container>
+    </Fade>
   );
 }
 
