@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 import Fade from '@material-ui/core/Fade';
 import Container from '@material-ui/core/Container';
