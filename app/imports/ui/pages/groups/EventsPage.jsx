@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Fade from '@material-ui/core/Fade';
@@ -96,8 +97,8 @@ const EventsPage = ({
   };
 
   const formatDate = (event) => {
-    const newDateStart = event.start.replace('T', ' ');
-    const newDateEnd = event.end.replace('T', ' ');
+    const newDateStart = moment(event.start).format('DD/MM/YYYY hh:mm');
+    const newDateEnd = moment(event.end).format('DD/MM/YYYY hh:mm');
 
     const newDateOnly = newDateStart.split(' ');
     const dateFinal = event.allDay
