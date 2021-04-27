@@ -120,7 +120,7 @@ const useStyles = ({ type }, member, candidate, isShort) =>
   }));
 
 function GroupDetails({ group = {}, isShort, member, candidate, admin, animator }) {
-  const { type } = group;
+  const { type, avatar } = group;
   const [{ userId }] = useAppContext();
   const [loading, setLoading] = useState(false);
 
@@ -189,10 +189,10 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
           avatar={
             animator || admin ? (
               <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
-                <GroupAvatar type={type} avatar={group.avatar} />
+                <GroupAvatar type={type} avatar={avatar} />
               </GroupBadge>
             ) : (
-              <GroupAvatar type={type} />
+              <GroupAvatar type={type} avatar={avatar} />
             )
           }
           action={
