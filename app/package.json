@@ -45,6 +45,7 @@
     "meteor-node-stubs": "^1.0.3",
     "mic-recorder-to-mp3": "^2.2.2",
     "minio": "^7.0.17",
+    "moment": "^2.29.1",
     "node-fetch": "^2.6.1",
     "prop-types": "^15.7.2",
     "quill-image-resize-module": "^3.0.0",
