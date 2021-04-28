@@ -72,7 +72,9 @@
         "language": "Langage Préféré",
         "logoutType": "Méthode De Déconnexion",
         "lastLogin": "Date de dernière connexion",
-        "avatar": "URL de l'avatar"
+        "avatar": "URL de l'avatar",
+        "groupCount": "Nombre de groupes créés",
+        "groupQuota": "Nombre de groupes créable"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -86,6 +88,7 @@
       "moderatedGroupOnly": "Cette action est possible seulement sur un groupe modéré.",
       "userNotFound": "Utilisateur non retrouvé",
       "groupAlreadyExist": "Un groupe avec le même nom existe déjà",
+      "toManyGroup": "Vous avez déjà trop de groupe créé",
       "types": {
         "open": "ouvert",
         "moderated": "modéré",

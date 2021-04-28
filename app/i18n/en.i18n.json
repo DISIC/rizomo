@@ -72,7 +72,9 @@
         "language": "Preferred Language",
         "logoutType": "Logout Method",
         "lastLogin": "Last login date",
-        "avatar": "avatar URL"
+        "avatar": "avatar URL",
+        "groupCount": "Amount of created groups",
+        "groupQuota": "Amount of groups creatable"
       },
       "logoutTypes": {
         "ask": "Ask at logout",
@@ -86,6 +88,7 @@
       "moderatedGroupOnly": "This action is available for moderated group only.",
       "userNotFound": "User not found",
       "groupAlreadyExist": "A group with the same name already exists",
+      "toManyGroup": "To many groups already created",
       "types": {
         "open": "open",
         "moderated": "moderated",
