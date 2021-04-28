@@ -30,6 +30,7 @@ const EditArticlePage = lazy(() => import('../pages/articles/EditArticlePage'));
 const MediaStoragePage = lazy(() => import('../pages/MediaStoragePage'));
 const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'));
 const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
+const AdminUserManagement = lazy(() => import('../pages/admin/AdminUserManagement'));
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -104,6 +105,13 @@ function MainLayout() {
                   exact
                   path="/adminstructureusers"
                   component={AdminStructureUsersPage}
+                  user={user}
+                  loadingUser={loadingUser}
+                />
+                <AdminRoute
+                  exact
+                  path="/adminusers/:_id"
+                  component={AdminUserManagement}
                   user={user}
                   loadingUser={loadingUser}
                 />

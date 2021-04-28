@@ -777,7 +777,8 @@
       "unsetAdminStructure": "Remove structure admin rights",
       "successSetAdminStructure": "structure admin rights have been granted",
       "successUnsetAdminStructure": "structure admin rights have been revoked",
-      "adminStructure": "Structure administrator"
+      "adminStructure": "Structure administrator",
+      "manageUser": "Manager user"
     },
     "AdminUserValidationPage": {
       "title": "User validation",

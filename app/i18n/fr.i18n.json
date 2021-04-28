@@ -782,7 +782,8 @@
       "unsetAdminStructure": "Enlever les droits d'administrateur de structure",
       "successSetAdminStructure": "Droits d'administrateur de structure donnés",
       "successUnsetAdminStructure": "Droits d'administrateur de structure révoqués",
-      "adminStructure": "Administrateur de structure"
+      "adminStructure": "Administrateur de structure",
+      "manageUser": "Gérer l'utilisateur"
     },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",

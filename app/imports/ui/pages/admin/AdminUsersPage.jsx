@@ -25,11 +25,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import IconButton from '@material-ui/core/IconButton';
+import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Pagination from '@material-ui/lab/Pagination';
 import { Roles } from 'meteor/alanning:roles';
+import { useHistory } from 'react-router-dom';
 import { structures } from '../../../api/users/structures';
 import { usePagination } from '../../utils/hooks';
 import Spinner from '../../components/system/Spinner';
@@ -68,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
 const ITEM_PER_PAGE = 10;
 
 const AdminUsersPage = () => {
+  const history = useHistory();
   const classes = useStyles();
   const [{ isMobile }] = useAppContext();
   const [search, setSearch] = useState('');
@@ -211,6 +214,15 @@ const AdminUsersPage = () => {
         <Tooltip title={i18n.__('pages.AdminUsersPage.deleteUser')} aria-label="del">
           <IconButton edge="end" aria-label="delete" onClick={() => setVerifyDelete(true)}>
             <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={i18n.__('pages.AdminUsersPage.manageUser')} aria-label="add">
+          <IconButton
+            edge="end"
+            aria-label={i18n.__('pages.AdminUsersPage.manageUser')}
+            onClick={() => history.push(`/adminusers/${user._id}`)}
+          >
+            <SettingsApplicationsIcon />
           </IconButton>
         </Tooltip>
       </>
