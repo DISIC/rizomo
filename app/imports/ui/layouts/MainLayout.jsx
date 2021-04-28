@@ -112,7 +112,7 @@ function MainLayout() {
                   exact
                   path="/adminusers/:_id"
                   component={AdminUserManagement}
-                  user={user}
+                  userId={userId}
                   loadingUser={loadingUser}
                 />
                 <AdminRoute
