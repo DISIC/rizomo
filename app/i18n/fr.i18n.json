@@ -88,7 +88,7 @@
       "moderatedGroupOnly": "Cette action est possible seulement sur un groupe modéré.",
       "userNotFound": "Utilisateur non retrouvé",
       "groupAlreadyExist": "Un groupe avec le même nom existe déjà",
-      "toManyGroup": "Vous avez déjà trop de groupe créé",
+      "toManyGroup": "Vous avez déjà trop de groupes créés",
       "types": {
         "open": "ouvert",
         "moderated": "modéré",
