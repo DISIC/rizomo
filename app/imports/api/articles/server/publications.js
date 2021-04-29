@@ -8,9 +8,9 @@ import { checkPaginationParams, getLabel } from '../../utils';
 import Articles from '../articles';
 
 // build query for all articles
-const queryAllArticles = ({ search, userId }) => {
+const queryAllArticles = ({ nodrafts, search, userId }) => {
   const regex = new RegExp(search, 'i');
-  return {
+  const query = {
     userId,
     $or: [
       {
@@ -21,17 +21,21 @@ const queryAllArticles = ({ search, userId }) => {
       },
     ],
   };
+  if (nodrafts) {
+    query.draft = { $ne: true };
+  }
+  return query;
 };
 
 Meteor.methods({
-  'get_articles.all_count': function getArticlesAllCount({ search, userId }) {
-    const query = queryAllArticles({ search, userId: userId || this.userId });
+  'get_articles.all_count': function getArticlesAllCount({ nodrafts, search, userId }) {
+    const query = queryAllArticles({ nodrafts, search, userId: userId || this.userId });
     return Articles.find(query).count();
   },
 });
 
 // publish all existing articles
-FindFromPublication.publish('articles.all', function articlesAll({ page, search, itemPerPage, userId, ...rest }) {
+FindFromPublication.publish('articles.all', function articlesAll({ nodrafts, page, search, itemPerPage, userId, ...rest }) {
   try {
     new SimpleSchema({
       userId: {
@@ -47,7 +51,7 @@ FindFromPublication.publish('articles.all', function articlesAll({ page, search,
     logServer(`publish articles.all : ${err}`);
     this.error(err);
   }
-  const query = queryAllArticles({ search, userId: userId || this.userId });
+  const query = queryAllArticles({ nodrafts, search, userId: userId || this.userId });
 
   return Articles.find(query, {
     fields: Articles.publicFields,

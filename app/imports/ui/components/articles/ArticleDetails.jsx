@@ -17,6 +17,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -115,7 +116,20 @@ export default function ArticleDetails({ article, publicPage }) {
       }}
       subheader={
         <>
-          {i18n.__('components.ArticleDetails.publishedOn')} {article.createdAt.toLocaleString()}{' '}
+          {article.draft ? null : `${i18n.__('components.ArticleDetails.publishedOn')} ${article.createdAt.toLocaleString()}` }
+          { article.draft ? 
+          <Button
+            color="primary"
+            className={classes.visitCounter}
+            startIcon={<CreateIcon />}
+            disableElevation
+            disableRipple
+            disableFocusRipple
+            title={i18n.__('pages.PublicArticleDetailsPage.draft')}
+          >
+            {i18n.__('pages.PublicArticleDetailsPage.draft')}
+          </Button>
+        :
           <Button
             color="primary"
             className={classes.visitCounter}
@@ -127,6 +141,7 @@ export default function ArticleDetails({ article, publicPage }) {
           >
             {article.visits}
           </Button>
+        }
         </>
       }
       subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}

@@ -48,6 +48,12 @@ Articles.schema = new SimpleSchema(
       type: String,
       label: getLabel('api.articles.labels.userId'),
     },
+    draft: {
+      type: Boolean,
+      label: getLabel('api.articles.labels.draft'),
+      defaultValue: false,
+      optional: true,
+    },
     structure: {
       type: String,
       label: getLabel('api.articles.labels.structure'),
@@ -60,8 +66,9 @@ Articles.schema = new SimpleSchema(
     createdAt: {
       type: Date,
       label: getLabel('api.articles.labels.createdAt'),
+      optional: true,
       autoValue() {
-        if (this.isInsert) {
+        if (this.isInsert && this.field("draft") === false || !this.isInsert && !this.value) {
           return new Date();
         }
         return this.value;
@@ -86,6 +93,7 @@ Articles.publicFields = {
   title: 1,
   slug: 1,
   userId: 1,
+  draft: 1,
   content: 1,
   createdAt: 1,
   updatedAt: 1,

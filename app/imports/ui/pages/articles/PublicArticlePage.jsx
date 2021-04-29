@@ -76,7 +76,7 @@ function PublicArticlePage({
   const [user, setUser] = useState({});
   const { changePage, page, items, total, loading } = usePagination(
     'articles.all',
-    { search, userId },
+    { search, userId, nodrafts: true },
     Articles,
     {},
     { sort: { createdAt: -1 } },
