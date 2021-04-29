@@ -68,7 +68,7 @@ Articles.schema = new SimpleSchema(
       label: getLabel('api.articles.labels.createdAt'),
       optional: true,
       autoValue() {
-        if (this.isInsert && this.field("draft") === false || !this.isInsert && !this.value) {
+        if ((this.isInsert && this.field('draft') === false) || (!this.isInsert && !this.value)) {
           return new Date();
         }
         return this.value;

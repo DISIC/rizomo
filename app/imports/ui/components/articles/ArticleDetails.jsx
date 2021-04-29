@@ -116,32 +116,34 @@ export default function ArticleDetails({ article, publicPage }) {
       }}
       subheader={
         <>
-          {article.draft ? null : `${i18n.__('components.ArticleDetails.publishedOn')} ${article.createdAt.toLocaleString()}` }
-          { article.draft ? 
-          <Button
-            color="primary"
-            className={classes.visitCounter}
-            startIcon={<CreateIcon />}
-            disableElevation
-            disableRipple
-            disableFocusRipple
-            title={i18n.__('pages.PublicArticleDetailsPage.draft')}
-          >
-            {i18n.__('pages.PublicArticleDetailsPage.draft')}
-          </Button>
-        :
-          <Button
-            color="primary"
-            className={classes.visitCounter}
-            startIcon={<VisibilityIcon />}
-            disableElevation
-            disableRipple
-            disableFocusRipple
-            title={i18n.__('pages.PublicArticleDetailsPage.views')}
-          >
-            {article.visits}
-          </Button>
-        }
+          {article.draft
+            ? null
+            : `${i18n.__('components.ArticleDetails.publishedOn')} ${article.createdAt.toLocaleString()}`}
+          {article.draft ? (
+            <Button
+              color="primary"
+              className={classes.visitCounter}
+              startIcon={<CreateIcon />}
+              disableElevation
+              disableRipple
+              disableFocusRipple
+              title={i18n.__('pages.PublicArticleDetailsPage.draft')}
+            >
+              {i18n.__('pages.PublicArticleDetailsPage.draft')}
+            </Button>
+          ) : (
+            <Button
+              color="primary"
+              className={classes.visitCounter}
+              startIcon={<VisibilityIcon />}
+              disableElevation
+              disableRipple
+              disableFocusRipple
+              title={i18n.__('pages.PublicArticleDetailsPage.views')}
+            >
+              {article.visits}
+            </Button>
+          )}
         </>
       }
       subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}

@@ -436,11 +436,11 @@ function EditArticlePage({
 
   const submitUpdateArticlePublished = () => {
     submitUpdateArticle(false);
-  }
+  };
 
   const submitUpdateArticleDraft = () => {
     submitUpdateArticle(true);
-  }
+  };
 
   const addTag = () => {
     if (newTag._id === null) {
@@ -494,7 +494,8 @@ function EditArticlePage({
       <Grid container spacing={4}>
         <Grid item xs={12} className={isMobile ? null : classes.flex}>
           <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
-            {i18n.__(`pages.EditArticlePage.${slug ? 'title' : 'creationTitle'}`)} {article.draft ? ` - ${i18n.__(`pages.EditArticlePage.draft`)}` : null}
+            {i18n.__(`pages.EditArticlePage.${slug ? 'title' : 'creationTitle'}`)}{' '}
+            {article.draft ? ` - ${i18n.__(`pages.EditArticlePage.draft`)}` : null}
           </Typography>
         </Grid>
       </Grid>
@@ -629,15 +630,11 @@ function EditArticlePage({
               {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
               {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
             </Button>
-            {(!slug || article.draft) && 
-              <Button 
-                variant="contained" 
-                color="link" 
-                onClick={submitUpdateArticleDraft}
-              >
+            {(!slug || article.draft) && (
+              <Button variant="contained" color="link" onClick={submitUpdateArticleDraft}>
                 {i18n.__('pages.EditArticlePage.save_draf')}
               </Button>
-            }
+            )}
           </div>
 
           <Button variant="contained" onClick={() => history.push('/publications')}>

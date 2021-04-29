@@ -35,32 +35,35 @@ Meteor.methods({
 });
 
 // publish all existing articles
-FindFromPublication.publish('articles.all', function articlesAll({ nodrafts, page, search, itemPerPage, userId, ...rest }) {
-  try {
-    new SimpleSchema({
-      userId: {
-        optional: true,
-        type: String,
-        regEx: SimpleSchema.RegEx.Id,
-        label: getLabel('api.users.labels.id'),
-      },
-    })
-      .extend(checkPaginationParams)
-      .validate({ page, itemPerPage, userId, search });
-  } catch (err) {
-    logServer(`publish articles.all : ${err}`);
-    this.error(err);
-  }
-  const query = queryAllArticles({ nodrafts, search, userId: userId || this.userId });
+FindFromPublication.publish(
+  'articles.all',
+  function articlesAll({ nodrafts, page, search, itemPerPage, userId, ...rest }) {
+    try {
+      new SimpleSchema({
+        userId: {
+          optional: true,
+          type: String,
+          regEx: SimpleSchema.RegEx.Id,
+          label: getLabel('api.users.labels.id'),
+        },
+      })
+        .extend(checkPaginationParams)
+        .validate({ page, itemPerPage, userId, search });
+    } catch (err) {
+      logServer(`publish articles.all : ${err}`);
+      this.error(err);
+    }
+    const query = queryAllArticles({ nodrafts, search, userId: userId || this.userId });
 
-  return Articles.find(query, {
-    fields: Articles.publicFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    sort: { createdAt: -1 },
-    ...rest,
-  });
-});
+    return Articles.find(query, {
+      fields: Articles.publicFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { createdAt: -1 },
+      ...rest,
+    });
+  },
+);
 
 // publish one article based on its slug
 FindFromPublication.publish('articles.one.admin', ({ slug }) => {
