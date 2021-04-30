@@ -582,6 +582,13 @@
       "subtitle": "from the webcam",
       "takePicture": "Take a picture",
       "cancel": "Cancel"
+    },
+    "AdminGroupQuota": {
+      "title": "Edit user's parameters",
+      "subtitle": "Editing ",
+      "cancel": "Cancel",
+      "mainText": "The max amount of group the user can create",
+      "createdGroup": "groups created bu user"
     }
   },
   "validatejs": {
