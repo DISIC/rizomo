@@ -422,12 +422,22 @@
     "TagFinder": {
       "addTag": "Add ",
       "noTag": "No tag found",
-      "tagLabel": "Mot clé",
+      "tagLabel": "Tag",
       "placeholder": "Type to search a tag",
       "clear": "Clear",
       "loading": "Loading...",
       "open": "Open",
-      "close": "Fermer"
+      "close": "Close"
+    },
+    "GroupFinder": {
+      "addGroup": "Add ",
+      "noGroup": "No group found",
+      "groupLabel": "Group",
+      "placeholder": "Type to search a group",
+      "clear": "Clear",
+      "loading": "Loading...",
+      "open": "Open",
+      "close": "Close"
     },
     "GroupDetails": {
       "favButtonLabelNoFav": "Remove from your personal space",

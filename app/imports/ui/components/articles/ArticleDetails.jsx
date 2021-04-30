@@ -18,6 +18,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CreateIcon from '@material-ui/icons/Create';
+import { Chip } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -35,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiCardHeader-root': {
       padding: 8,
     },
+  },
+  tags: {
+    marginTop: 10,
+  },
+  tag: {
+    margin: 2,
   },
   buttonText: {
     color: theme.palette.tertiary.main,
@@ -143,6 +150,13 @@ export default function ArticleDetails({ article, publicPage }) {
             >
               {article.visits}
             </Button>
+          )}
+          {article.groups && (
+            <div className={classes.tags}>
+              {article.groups.map((group) => {
+                return <Chip className={classes.tag} key={group._id} label={group.name} color="secondary" />;
+              })}
+            </div>
           )}
         </>
       }

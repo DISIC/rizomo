@@ -63,12 +63,26 @@ Articles.schema = new SimpleSchema(
     description: { type: String, label: getLabel('api.articles.labels.description'), max: 400 },
     tags: { type: Array, defaultValue: [], label: getLabel('api.articles.labels.tag') },
     'tags.$': { type: String, min: 1 },
+    groups: {
+      type: Array,
+      defaultValue: [],
+      label: getLabel('api.articles.labels.groups'),
+    },
+    'groups.$': {
+      type: { type: Object },
+    },
+    'groups.$._id': {
+      type: { type: String, regEx: SimpleSchema.RegEx.Id },
+    },
+    'groups.$.name': {
+      type: { type: String },
+    },
     createdAt: {
       type: Date,
       label: getLabel('api.articles.labels.createdAt'),
       optional: true,
       autoValue() {
-        if ((this.isInsert && this.field('draft') === false) || (!this.isInsert && !this.value)) {
+        if ((this.isInsert && this.field('draft').value === false) || (!this.isInsert && !this.value)) {
           return new Date();
         }
         return this.value;
@@ -98,6 +112,7 @@ Articles.publicFields = {
   createdAt: 1,
   updatedAt: 1,
   description: 1,
+  groups: 1,
   markdown: 1,
   visits: 1,
   tags: 1,

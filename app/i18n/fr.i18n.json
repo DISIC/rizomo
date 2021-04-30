@@ -424,7 +424,16 @@
     },
     "TagFinder": {
       "noTag": "Aucun utilisateur trouvé",
-      "TagLabel": "Mot clé",
+      "tagLabel": "Mot clé",
+      "placeholder": "Saisir pour rechercher",
+      "clear": "Effacer",
+      "loading": "Chargement...",
+      "open": "Ouvrir",
+      "close": "Fermer"
+    },
+    "GroupFinder": {
+      "noTag": "Aucun groupe trouvé",
+      "groupLabel": "Groupe",
       "placeholder": "Saisir pour rechercher",
       "clear": "Effacer",
       "loading": "Chargement...",
