@@ -15,6 +15,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Chip from '@material-ui/core/Chip';
 import html2pdf from 'html2pdf.js';
+import 'react-quill/dist/quill.snow.css';
 import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
 import { Viewer } from '@toast-ui/react-editor';
@@ -226,7 +227,7 @@ function PublicArticleDetailsPage({
                   plugins={[chart, codeSyntaxHighlight, colorSyntax, tableMergedCell, uml]}
                 />
               ) : (
-                <div className={classes.content} dangerouslySetInnerHTML={{ __html: article.content }} />
+                <div className={`ql-editor ${classes.content}`} dangerouslySetInnerHTML={{ __html: article.content }} />
               )}
             </Grid>
           </Grid>
