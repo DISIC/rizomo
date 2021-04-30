@@ -908,7 +908,7 @@
       "structureMessage": "Reattach to my current structure ({$structure})",
       "contentLabel": "Content of the publication",
       "update": "Update",
-      "save": "Create",
+      "save": "Publish",
       "cancel": "Cancel",
       "delete": "Delete",
       "copyPublicURL": "copy public URL",
@@ -916,6 +916,8 @@
       "switchToHtml": "Classic editor",
       "switchToMarkdown": "Markdown editor",
       "selectTag": "Select",
+      "save_draf": "Draft",
+      "draft": "Draft",
       "createTag": "Create"
     },
     "PublicArticlePage": {
@@ -929,6 +931,7 @@
       "views": "views",
       "exportPDF": "Export to PDF",
       "exportLandscape": "Landscape",
+      "draft": "Draft",
       "exportPortrait": "Portrait"
     },
     "PublishersPage": {

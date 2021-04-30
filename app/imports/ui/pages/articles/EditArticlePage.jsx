@@ -412,7 +412,7 @@ function EditArticlePage({
     });
   };
 
-  const submitUpdateArticle = () => {
+  const submitUpdateArticle = (draft) => {
     setLoading(true);
     const method = slug ? updateArticle : createArticle;
     data.content = content;
@@ -422,6 +422,7 @@ function EditArticlePage({
       payload.articleId = article._id;
       payload.updateStructure = updateStructure;
     }
+    payload.data.draft = draft;
     method.call(payload, (err) => {
       setLoading(false);
       if (err) {
@@ -431,6 +432,14 @@ function EditArticlePage({
         history.push('/publications');
       }
     });
+  };
+
+  const submitUpdateArticlePublished = () => {
+    submitUpdateArticle(false);
+  };
+
+  const submitUpdateArticleDraft = () => {
+    submitUpdateArticle(true);
   };
 
   const addTag = () => {
@@ -485,7 +494,8 @@ function EditArticlePage({
       <Grid container spacing={4}>
         <Grid item xs={12} className={isMobile ? null : classes.flex}>
           <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
-            {i18n.__(`pages.EditArticlePage.${slug ? 'title' : 'creationTitle'}`)}
+            {i18n.__(`pages.EditArticlePage.${slug ? 'title' : 'creationTitle'}`)}{' '}
+            {article.draft ? ` - ${i18n.__(`pages.EditArticlePage.draft`)}` : null}
           </Typography>
         </Grid>
       </Grid>
@@ -615,9 +625,17 @@ function EditArticlePage({
         </div>
 
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary" onClick={submitUpdateArticle}>
-            {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
-          </Button>
+          <div>
+            <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
+              {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
+              {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
+            </Button>
+            {(!slug || article.draft) && (
+              <Button variant="contained" color="link" onClick={submitUpdateArticleDraft}>
+                {i18n.__('pages.EditArticlePage.save_draf')}
+              </Button>
+            )}
+          </div>
 
           <Button variant="contained" onClick={() => history.push('/publications')}>
             {i18n.__('pages.EditArticlePage.cancel')}

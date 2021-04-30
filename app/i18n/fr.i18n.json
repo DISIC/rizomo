@@ -912,7 +912,7 @@
       "structureMessage": "Rattacher à ma structure actuelle ({$structure})",
       "contentLabel": "Contenu de cette publication",
       "update": "Mettre à jour",
-      "save": "Créer",
+      "save": "Publier",
       "cancel": "Annuler",
       "delete": "Supprimer",
       "copyPublicURL": "Copier l'URL publique",
@@ -920,6 +920,8 @@
       "switchToHtml": "Éditeur Classic",
       "switchToMarkdown": "Éditeur Markdown",
       "selectTag": "Sélectionner",
+      "save_draf": "Brouillon",
+      "draft": "Brouillon",
       "createTag": "Créer"
     },
     "PublicArticlePage": {
@@ -933,6 +935,7 @@
       "views": "consultations",
       "exportPDF": "Export PDF",
       "exportLandscape": "Paysage",
+      "draft": "Brouillon",
       "exportPortrait": "Portrait"
     },
     "PublishersPage": {
