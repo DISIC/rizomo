@@ -590,7 +590,8 @@
       "subtitle": "Modification de ",
       "cancel": "Annuler",
       "mainText": "Nombre maximale de groupe que peux créer l'utilisateur",
-      "createdGroup": "groupes crées par l'utilisateur"
+      "createdGroup": "groupes crées par l'utilisateur",
+      "ValidateForm": "Valider"
     }
   },
   "validatejs": {

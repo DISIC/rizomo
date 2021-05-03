@@ -588,7 +588,8 @@
       "subtitle": "Editing ",
       "cancel": "Cancel",
       "mainText": "The max amount of group the user can create",
-      "createdGroup": "groups created bu user"
+      "createdGroup": "groups created bu user",
+      "ValidateForm": "Validate"
     }
   },
   "validatejs": {

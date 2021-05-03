@@ -55,11 +55,21 @@ const AdminGroupQuota = ({ data, open, onClose }) => {
   const classes = useStyles(isMobile)();
   const changeQuota = () => {
     const quotaInt = parseInt(quota, 10);
-    console.log(typeof quotaInt, data._id);
-    Meteor.call('users.setQuota', {
-      quota: quotaInt,
-      userId: data._id,
-    });
+    Meteor.call(
+      'users.setQuota',
+      {
+        quota: quotaInt,
+        userId: data._id,
+      },
+      function (error) {
+        if (error) {
+          msg.error(error.message);
+        } else {
+          console.log('teokoek');
+          msg.success(i18n.__('api.methods.operationSuccessMsg'));
+        }
+      },
+    );
     onClose();
   };
 
@@ -88,7 +98,7 @@ const AdminGroupQuota = ({ data, open, onClose }) => {
           </CardContent>
           <CardActions className={classes.actions}>
             <Button onClick={changeQuota} variant="contained" color="primary">
-              {i18n.__('components.UserAvatarCamCapture.takePicture')}
+              {i18n.__('components.AdminGroupQuota.ValidateForm')}
             </Button>
             <Button onClick={onClose}>{i18n.__('components.AdminGroupQuota.cancel')}</Button>
           </CardActions>
