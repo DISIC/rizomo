@@ -92,7 +92,16 @@ const AdminGroupQuota = ({ data, open, onClose }) => {
           />
           <CardContent>
             <Typography>{i18n.__('components.AdminGroupQuota.mainText')}</Typography>
-            <TextField defaultValue={data.groupQuota} type="number" onChange={updateQuota} />
+            <TextField
+              defaultValue={data.groupQuota}
+              type="number"
+              onChange={updateQuota}
+              InputProps={{
+                inputProps: {
+                  max: 9999,
+                  min: data.groupCount || 0,
+                },
+    }}/>
             <Typography>{i18n.__('components.AdminGroupQuota.createdGroup')}</Typography>
             <TextField value={data.groupCount || '0'} />
           </CardContent>
