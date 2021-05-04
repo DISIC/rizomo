@@ -474,8 +474,8 @@ function EditArticlePage({
     setData({ ...data, tags: newTags });
   };
 
-  const removeGroup = (groupId) => {
-    const groups = data.groups.filter(({ _id }) => _id !== groupId);
+  const removeGroup = (group) => {
+    const groups = data.groups.filter(({ _id }) => _id !== group._id);
     setData({ ...data, groups });
   };
 
