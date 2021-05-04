@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import PublishIcon from '@material-ui/icons/Publish';
 import CameraEnhanceIcon from '@material-ui/icons/CameraEnhance';
 import FaceIcon from '@material-ui/icons/Face';
+import { useAppContext } from '../../contexts/context';
 import UserAvatarEdit from './UserAvatarEdit';
 import UserAvatarCamCapture from './UserAvatarCamCapture';
 import UserAvatarGallery from './UserAvatarGallery';
@@ -53,6 +54,15 @@ const useStyles = makeStyles((theme) => ({
     width: 250,
     height: 250,
   },
+  avatarMobile: {
+    width: 100,
+    height: 100,
+  },
+  avatarMobileDefault: {
+    width: 100,
+    height: 100,
+    backgroundColor: theme.palette.primary.main,
+  },
   avatarDefault: {
     width: 250,
     height: 250,
@@ -62,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AvatarPicker = ({ userAvatar, userFirstName, onAssignAvatar }) => {
   const classes = useStyles();
+  const [{ isMobile }] = useAppContext();
   const [imageAvatar, setImageAvatar] = useState('');
   const [openAvatarEdit, setOpenAvatarEdit] = useState(false);
   const [openCamCapture, setOpenCamCapture] = useState(false);
@@ -86,11 +97,19 @@ const AvatarPicker = ({ userAvatar, userFirstName, onAssignAvatar }) => {
     <div>
       <Grid container>
         <Grid item xs={12} className={classes.buttonWrapper}>
-          <UserAvatar
-            customClass={userAvatar ? classes.avatar : classes.avatarDefault}
-            userAvatar={userAvatar || ''}
-            userFirstName={userFirstName || ''}
-          />
+          {isMobile ? (
+            <UserAvatar
+              customClass={userAvatar ? classes.avatarMobile : classes.avatarMobileDefault}
+              userAvatar={userAvatar || ''}
+              userFirstName={userFirstName || ''}
+            />
+          ) : (
+            <UserAvatar
+              customClass={userAvatar ? classes.avatar : classes.avatarDefault}
+              userAvatar={userAvatar || ''}
+              userFirstName={userFirstName || ''}
+            />
+          )}
         </Grid>
         <Grid item xs={12} className={classes.buttonWrapper}>
           <Tooltip title={i18n.__('pages.ProfilePage.uploadImg')} aria-label={i18n.__('pages.ProfilePage.uploadImg')}>
