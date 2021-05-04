@@ -46,7 +46,6 @@ import ToastUIEditor from '../../components/system/ToastUIEditor';
 import Tags from '../../../api/tags/tags';
 import TagFinder from '../../components/articles/TagFinder';
 import GroupFinder from '../../components/articles/GroupFinder';
-import Groups from '../../../api/groups/groups';
 
 Quill.register('modules/ImageResize', ImageResize);
 
