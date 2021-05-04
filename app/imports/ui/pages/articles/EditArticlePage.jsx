@@ -45,6 +45,7 @@ import { PICTURES_TYPES, VIDEO_TYPES, SOUND_TYPES } from '../../components/media
 import ToastUIEditor from '../../components/system/ToastUIEditor';
 import Tags from '../../../api/tags/tags';
 import TagFinder from '../../components/articles/TagFinder';
+import GroupFinder from '../../components/articles/GroupFinder';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -88,7 +89,12 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(1),
-    alignItems: 'center',
+  },
+  tags: {
+    marginTop: 10,
+  },
+  tag: {
+    margin: 2,
   },
   buttonsContainer: {
     display: 'flex',
@@ -102,9 +108,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     marginBottom: theme.spacing(1),
-  },
-  tag: {
-    marginLeft: theme.spacing(1),
   },
   smallTitle: {
     marginRigt: theme.spacing(1),
@@ -458,9 +461,22 @@ function EditArticlePage({
     setTagsKey(new Date().toISOString());
   };
 
+  const addGroupToArticle = (event, group) => {
+    if (group && group._id) {
+      const { _id, name } = group;
+      const groups = [...(data.groups || []), { _id, name }];
+      setData({ ...data, groups });
+    }
+  };
+
   const removeTag = (tagName) => {
     const newTags = data.tags.filter((tag) => tag !== tagName);
     setData({ ...data, tags: newTags });
+  };
+
+  const removeGroup = (groupId) => {
+    const groups = data.groups.filter(({ _id }) => _id !== groupId);
+    setData({ ...data, groups });
   };
 
   const newTagChanged = (evt, newValue) => {
@@ -565,7 +581,7 @@ function EditArticlePage({
           </div>
         ) : null}
         <Grid container className={classes.tagInputs}>
-          <Grid item>
+          <Grid item xs={6}>
             <ButtonGroup>
               <TagFinder resetKey={tagsKey} tags={tags} exclude={data.tags} onSelected={newTagChanged} />
               <Button variant="contained" disabled={newTag.name === ''} color="primary" onClick={addTag}>
@@ -576,20 +592,40 @@ function EditArticlePage({
                 )}
               </Button>
             </ButtonGroup>
+            <div className={classes.tags}>
+              {data.tags.map((tagName) => {
+                // const tagName = Tags.findOne(tagId).name;
+                return (
+                  <Chip
+                    className={classes.tag}
+                    key={tagName}
+                    label={tagName}
+                    color="secondary"
+                    onDelete={() => removeTag(tagName)}
+                  />
+                );
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <GroupFinder exclude={data.groups || []} onSelected={addGroupToArticle} />
+            <div className={classes.tags}>
+              {data.groups &&
+                data.groups.map((group) => {
+                  return (
+                    <Chip
+                      className={classes.tag}
+                      key={group._id}
+                      label={group.name}
+                      color="secondary"
+                      onDelete={() => removeGroup(group)}
+                    />
+                  );
+                })}
+            </div>
           </Grid>
         </Grid>
-        {data.tags.map((tagName) => {
-          // const tagName = Tags.findOne(tagId).name;
-          return (
-            <Chip
-              className={classes.tag}
-              key={tagName}
-              label={tagName}
-              color="secondary"
-              onDelete={() => removeTag(tagName)}
-            />
-          );
-        })}
+
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
 

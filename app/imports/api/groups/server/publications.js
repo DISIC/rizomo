@@ -41,6 +41,29 @@ publishComposite('groups.adminof', function groupsAdminOf() {
   };
 });
 
+// publish groups that user is admin/animator/member of
+publishComposite('groups.member', function groupsAdminOf() {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  return {
+    find() {
+      return Meteor.roleAssignment.find({
+        'user._id': this.userId,
+        'role._id': { $in: ['admin', 'animator', 'member'] },
+        scope: { $ne: null },
+      });
+    },
+    children: [
+      {
+        find(role) {
+          return Groups.find(role.scope, { fields: Groups.adminFields });
+        },
+      },
+    ],
+  };
+});
+
 FindFromPublication.publish('groups.one.admin', function GroupsOne({ _id }) {
   if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, ['admin', 'animator'], _id)) {
     return this.ready();
