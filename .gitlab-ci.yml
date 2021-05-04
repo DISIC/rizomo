@@ -13,7 +13,7 @@ cache:
     - app/node_modules/
 
 variables:
-  METEOR_ALLOW_SUPERUSER: 'true'
+  METEOR_ALLOW_SUPERUSER: "true"
 
 Deps:
   stage: deps
@@ -22,14 +22,20 @@ Deps:
   artifacts:
     paths:
       - app/node_modules/
+  rules:
+    - if: '$CI_COMMIT_MESSAGE  !~ /^(\[Draft\]|\(Draft\)|Draft:|\[WIP\]|WIP:)/'
 
 Lint:
   stage: lint
   script:
     - meteor npm install --only=dev
     - meteor npm run lint
+  rules:
+    - if: '$CI_COMMIT_MESSAGE  !~ /^(\[Draft\]|\(Draft\)|Draft:|\[WIP\]|WIP:)/'
 
 Test:
   stage: test
   script:
     - meteor npm test
+  rules:
+    - if: '$CI_COMMIT_MESSAGE  !~ /^(\[Draft\]|\(Draft\)|Draft:|\[WIP\]|WIP:)/'
