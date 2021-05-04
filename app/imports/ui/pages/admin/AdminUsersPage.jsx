@@ -25,6 +25,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import IconButton from '@material-ui/core/IconButton';
+import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -36,7 +37,9 @@ import Spinner from '../../components/system/Spinner';
 import debounce from '../../utils/debounce';
 import { useAppContext } from '../../contexts/context';
 import UserAvatar from '../../components/users/UserAvatar';
+import AdminGroupQuota from '../../components/users/AdminGroupQuota';
 
+let userData = {};
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -68,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
 const ITEM_PER_PAGE = 10;
 
 const AdminUsersPage = () => {
+  const [openQuota, setOpenQuota] = useState(false);
   const classes = useStyles();
   const [{ isMobile }] = useAppContext();
   const [search, setSearch] = useState('');
@@ -208,6 +212,18 @@ const AdminUsersPage = () => {
             {isAdmin(user) ? <ClearIcon /> : <VerifiedUserIcon />}
           </IconButton>
         </Tooltip>
+        <Tooltip title={i18n.__('pages.AdminUsersPage.manageUser')} aria-label="add">
+          <IconButton
+            edge="end"
+            aria-label={i18n.__('pages.AdminUsersPage.manageUser')}
+            onClick={() => {
+              userData = user;
+              setOpenQuota(true);
+            }}
+          >
+            <SettingsApplicationsIcon />
+          </IconButton>
+        </Tooltip>
         <Tooltip title={i18n.__('pages.AdminUsersPage.deleteUser')} aria-label="del">
           <IconButton edge="end" aria-label="delete" onClick={() => setVerifyDelete(true)}>
             <DeleteIcon />
@@ -216,123 +232,124 @@ const AdminUsersPage = () => {
       </>
     );
   };
-
   UserActions.propTypes = {
     user: PropTypes.objectOf(PropTypes.any).isRequired,
   };
-
   return (
     <Fade in>
-      <Container className={classes.root}>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <Grid container spacing={4}>
-            <Grid item md={12}>
-              <Typography variant={isMobile ? 'h6' : 'h4'}>{i18n.__('pages.AdminUsersPage.title')}</Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={6}>
-              <TextField
-                margin="normal"
-                id="search"
-                label={i18n.__('pages.AdminUsersPage.searchText')}
-                name="search"
-                fullWidth
-                onChange={updateSearch}
-                type="text"
-                variant="outlined"
-                inputRef={searchRef}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: search ? (
-                    <InputAdornment position="end">
-                      <IconButton onClick={resetSearch}>
-                        <ClearIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} md={6} lg={6} className={classes.pagination}>
-              <Grid>
-                <Grid item>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={sortByDate}
-                        onChange={() => setSortByDate(!sortByDate)}
-                        name="checkSortByDate"
-                        color="primary"
-                      />
-                    }
-                    label={i18n.__('pages.AdminUsersPage.sortByLastLogin')}
-                    aria-label={i18n.__('pages.AdminUsersPage.sortByLastLogin')}
-                  />
-                </Grid>
-                {total > ITEM_PER_PAGE && (
+      <div>
+        <Container className={classes.root}>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <Grid container spacing={4}>
+              <Grid item md={12}>
+                <Typography variant={isMobile ? 'h6' : 'h4'}>{i18n.__('pages.AdminUsersPage.title')}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                <TextField
+                  margin="normal"
+                  id="search"
+                  label={i18n.__('pages.AdminUsersPage.searchText')}
+                  name="search"
+                  fullWidth
+                  onChange={updateSearch}
+                  type="text"
+                  variant="outlined"
+                  inputRef={searchRef}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment: search ? (
+                      <InputAdornment position="end">
+                        <IconButton onClick={resetSearch}>
+                          <ClearIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} className={classes.pagination}>
+                <Grid>
                   <Grid item>
-                    <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
-                  </Grid>
-                )}
-              </Grid>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <List className={classes.list} disablePadding>
-                {items.map((user, i) => [
-                  <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
-                    <ListItemAvatar>
-                      <UserAvatar
-                        customClass={
-                          isAdmin(user)
-                            ? classes.admin
-                            : isStructureAdmin(user)
-                            ? classes.adminstructure
-                            : classes.avatar
-                        }
-                        userAvatar={user.avatar}
-                        userFirstName={user.firstName}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={`${user.firstName} ${user.lastName}${
-                        isAdmin(user)
-                          ? ` (${i18n.__('pages.AdminUsersPage.admin')})`
-                          : isStructureAdmin(user)
-                          ? ` (${i18n.__('pages.AdminUsersPage.adminStructure')})`
-                          : ''
-                      } ${loginInfo(user)}`}
-                      secondary={
-                        <>
-                          <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
-                            {user.emails[0].address}
-                          </Typography>
-                          {` - ${user.structure ? user.structure : i18n.__('pages.AdminUsersPage.undefined')}`}
-                        </>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={sortByDate}
+                          onChange={() => setSortByDate(!sortByDate)}
+                          name="checkSortByDate"
+                          color="primary"
+                        />
                       }
+                      label={i18n.__('pages.AdminUsersPage.sortByLastLogin')}
+                      aria-label={i18n.__('pages.AdminUsersPage.sortByLastLogin')}
                     />
-                    <ListItemSecondaryAction>
-                      <UserActions user={user} />
-                    </ListItemSecondaryAction>
-                  </ListItem>,
-                  i < ITEM_PER_PAGE - 1 && i < total - 1 && (
-                    <Divider variant="inset" component="li" key={`divider-${user.emails[0].address}`} />
-                  ),
-                ])}
-              </List>
-            </Grid>
-            {total > ITEM_PER_PAGE && (
-              <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
-                <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+                  </Grid>
+                  {total > ITEM_PER_PAGE && (
+                    <Grid item>
+                      <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+                    </Grid>
+                  )}
+                </Grid>
               </Grid>
-            )}
-          </Grid>
-        )}
-      </Container>
+              <Grid item xs={12} sm={12} md={12}>
+                <List className={classes.list} disablePadding>
+                  {items.map((user, i) => [
+                    <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
+                      <ListItemAvatar>
+                        <UserAvatar
+                          customClass={
+                            isAdmin(user)
+                              ? classes.admin
+                              : isStructureAdmin(user)
+                              ? classes.adminstructure
+                              : classes.avatar
+                          }
+                          userAvatar={user.avatar || user.username}
+                          userFirstName={user.firstName}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={`${user.firstName} ${user.lastName}${
+                          isAdmin(user)
+                            ? ` (${i18n.__('pages.AdminUsersPage.admin')})`
+                            : isStructureAdmin(user)
+                            ? ` (${i18n.__('pages.AdminUsersPage.adminStructure')})`
+                            : ''
+                        } ${loginInfo(user)}`}
+                        secondary={
+                          <>
+                            <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+                              {user.emails[0].address}
+                            </Typography>
+                            {` - ${user.structure ? user.structure : i18n.__('pages.AdminUsersPage.undefined')}`}
+                          </>
+                        }
+                      />
+                      <ListItemSecondaryAction>
+                        <UserActions user={user} />
+                      </ListItemSecondaryAction>
+                    </ListItem>,
+                    i < ITEM_PER_PAGE - 1 && i < total - 1 && (
+                      <Divider variant="inset" component="li" key={`divider-${user.emails[0].address}`} />
+                    ),
+                  ])}
+                </List>
+              </Grid>
+              {total > ITEM_PER_PAGE && (
+                <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
+                  <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+                </Grid>
+              )}
+            </Grid>
+          )}
+        </Container>
+        {openQuota ? <AdminGroupQuota data={userData} open={openQuota} onClose={() => setOpenQuota(false)} /> : null}
+      </div>
     </Fade>
   );
 };

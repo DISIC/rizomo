@@ -13,7 +13,7 @@ import Groups from '../../../api/groups/groups';
 import { removeGroup } from '../../../api/groups/methods';
 import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
 
-function AdminGroupsPage({ groups, loading }) {
+function AdminGroupsPage({ groups, loading, user }) {
   const history = useHistory();
   const columns = [
     {
@@ -47,6 +47,14 @@ function AdminGroupsPage({ groups, loading }) {
     },
   ];
 
+  const createNewGoup = () => {
+    if (user.groupCount < user.groupQuota) {
+      history.push('/admingroups/new');
+    } else {
+      msg.error(i18n.__('api.groups.toManyGroup'));
+    }
+  };
+
   const options = {
     pageSize: 10,
     pageSizeOptions: [10, 20, 50, 100],
@@ -64,7 +72,7 @@ function AdminGroupsPage({ groups, loading }) {
         <Container style={{ overflowX: 'auto' }}>
           <MaterialTable
             // other props
-            title={i18n.__('pages.AdminGroupsPage.title')}
+            title={`${i18n.__('pages.AdminGroupsPage.title')} (${user.groupCount}/${user.groupQuota})`}
             columns={columns}
             data={groups}
             options={options}
@@ -81,7 +89,9 @@ function AdminGroupsPage({ groups, loading }) {
                 icon: add,
                 tooltip: i18n.__('pages.AdminGroupsPage.materialTableLocalization.body_addTooltip'),
                 isFreeAction: true,
-                onClick: () => history.push('/admingroups/new'),
+                onClick: () => {
+                  createNewGoup();
+                },
               },
             ]}
             editable={{
@@ -113,14 +123,17 @@ function AdminGroupsPage({ groups, loading }) {
 AdminGroupsPage.propTypes = {
   groups: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default withTracker(() => {
   const groupsHandle = Meteor.subscribe('groups.adminof');
   const loading = !groupsHandle.ready();
+  const user = Meteor.users.findOne({ userId: this.userId });
   const groups = Groups.find({}, { sort: { name: 1 } }).fetch();
   return {
     groups,
     loading,
+    user,
   };
 })(AdminGroupsPage);

@@ -72,7 +72,9 @@
         "language": "Langage Préféré",
         "logoutType": "Méthode De Déconnexion",
         "lastLogin": "Date de dernière connexion",
-        "avatar": "URL de l'avatar"
+        "avatar": "URL de l'avatar",
+        "groupCount": "Nombre de groupes créés",
+        "groupQuota": "Nombre de groupes créable"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -86,6 +88,7 @@
       "moderatedGroupOnly": "Cette action est possible seulement sur un groupe modéré.",
       "userNotFound": "Utilisateur non retrouvé",
       "groupAlreadyExist": "Un groupe avec le même nom existe déjà",
+      "toManyGroup": "Vous avez déjà trop de groupes créés",
       "types": {
         "open": "ouvert",
         "moderated": "modéré",
@@ -590,6 +593,14 @@
       "subtitle": "à partir de la webcam",
       "takePicture": "Prendre une photo",
       "cancel": "Annuler"
+    },
+    "AdminGroupQuota": {
+      "title": "Modifier les paramètres d'un utilisateur",
+      "subtitle": "Modification de ",
+      "cancel": "Annuler",
+      "mainText": "Nombre maximale de groupe que peux créer l'utilisateur",
+      "createdGroup": "groupes crées par l'utilisateur",
+      "ValidateForm": "Valider"
     }
   },
   "validatejs": {
@@ -788,7 +799,8 @@
       "unsetAdminStructure": "Enlever les droits d'administrateur de structure",
       "successSetAdminStructure": "Droits d'administrateur de structure donnés",
       "successUnsetAdminStructure": "Droits d'administrateur de structure révoqués",
-      "adminStructure": "Administrateur de structure"
+      "adminStructure": "Administrateur de structure",
+      "manageUser": "Gérer l'utilisateur"
     },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",

@@ -65,36 +65,46 @@ export const unfavGroup = new ValidatedMethod({
 
 function _createGroup({ name, type, content, description, avatar, plugins, userId }) {
   try {
-    const groupId = Groups.insert({
-      name,
-      type,
-      content,
-      description,
-      avatar,
-      owner: userId,
-      animators: [userId],
-      admins: [userId],
-      active: true,
-      plugins,
-    });
-    Roles.addUsersToRoles(userId, ['admin', 'animator'], groupId);
+    const user = Meteor.users.findOne(userId);
+    if (user.groupCount < user.groupQuota) {
+      const groupId = Groups.insert({
+        name,
+        type,
+        content,
+        description,
+        avatar,
+        owner: userId,
+        animators: [userId],
+        admins: [userId],
+        active: true,
+        plugins,
+      });
+      Roles.addUsersToRoles(userId, ['admin', 'animator'], groupId);
 
-    favGroup._execute({ userId }, { groupId });
+      favGroup._execute({ userId }, { groupId });
 
-    // move group temp avatar from user minio to group minio and update avatar link
-    if (avatar !== '' && avatar.includes('groupAvatar.png')) {
-      Meteor.call('files.move', {
-        sourcePath: `users/${userId}`,
-        destinationPath: `groups/${groupId}`,
-        files: ['groupAvatar.png'],
+      user.groupCount += 1;
+      Meteor.users.update(userId, {
+        $set: { groupCount: user.groupCount },
       });
 
-      const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
-      const avatarLink = `http${minioSSL ? 's' : ''}://${minioEndPoint}${
-        minioPort ? `:${minioPort}` : ''
-      }/${minioBucket}/groups/${groupId}/groupAvatar.png?${new Date().getTime()}`;
+      // move group temp avatar from user minio to group minio and update avatar link
+      if (avatar !== '' && avatar.includes('groupAvatar.png')) {
+        Meteor.call('files.move', {
+          sourcePath: `users/${userId}`,
+          destinationPath: `groups/${groupId}`,
+          files: ['groupAvatar.png'],
+        });
 
-      Groups.update({ _id: groupId }, { $set: { avatar: avatarLink } });
+        const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
+        const avatarLink = `http${minioSSL ? 's' : ''}://${minioEndPoint}${
+          minioPort ? `:${minioPort}` : ''
+        }/${minioBucket}/groups/${groupId}/groupAvatar.png?${new Date().getTime()}`;
+
+        Groups.update({ _id: groupId }, { $set: { avatar: avatarLink } });
+      }
+    } else {
+      throw new Meteor.Error('api.groups.createGroup.toManyGroup', i18n.__('api.groups.toManyGroup'));
     }
   } catch (error) {
     if (error.code === 11000) {
@@ -143,6 +153,19 @@ export const removeGroup = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.groups.removeGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
+
+    // Update group quota for owner
+    const owner = Meteor.users.findOne({ _id: group.owner });
+    if (owner !== undefined) {
+      owner.groupCount -= 1;
+      if (owner.groupCount <= 0) {
+        owner.groupCount = 0;
+      }
+      Meteor.users.update(group.owner, {
+        $set: { groupCount: owner.groupCount },
+      });
+    }
+
     // remove all roles set on this group
     Roles.removeScope(groupId);
     Groups.remove(groupId);

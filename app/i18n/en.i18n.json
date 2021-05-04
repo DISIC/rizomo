@@ -72,7 +72,9 @@
         "language": "Preferred Language",
         "logoutType": "Logout Method",
         "lastLogin": "Last login date",
-        "avatar": "avatar URL"
+        "avatar": "avatar URL",
+        "groupCount": "Amount of created groups",
+        "groupQuota": "Amount of groups creatable"
       },
       "logoutTypes": {
         "ask": "Ask at logout",
@@ -86,6 +88,7 @@
       "moderatedGroupOnly": "This action is available for moderated group only.",
       "userNotFound": "User not found",
       "groupAlreadyExist": "A group with the same name already exists",
+      "toManyGroup": "To many groups already created",
       "types": {
         "open": "open",
         "moderated": "moderated",
@@ -589,6 +592,14 @@
       "subtitle": "from the webcam",
       "takePicture": "Take a picture",
       "cancel": "Cancel"
+    },
+    "AdminGroupQuota": {
+      "title": "Edit user's parameters",
+      "subtitle": "Editing ",
+      "cancel": "Cancel",
+      "mainText": "The max amount of group the user can create",
+      "createdGroup": "groups created bu user",
+      "ValidateForm": "Validate"
     }
   },
   "validatejs": {
@@ -784,7 +795,8 @@
       "unsetAdminStructure": "Remove structure admin rights",
       "successSetAdminStructure": "structure admin rights have been granted",
       "successUnsetAdminStructure": "structure admin rights have been revoked",
-      "adminStructure": "Structure administrator"
+      "adminStructure": "Structure administrator",
+      "manageUser": "Manager user"
     },
     "AdminUserValidationPage": {
       "title": "User validation",

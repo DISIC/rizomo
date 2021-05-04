@@ -134,6 +134,18 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
       label: getLabel('api.users.labels.avatar'),
     },
+    groupCount: {
+      type: SimpleSchema.Integer,
+      optional: true,
+      defaultValue: 0,
+      label: getLabel('api.users.labels.groupCount'),
+    },
+    groupQuota: {
+      type: SimpleSchema.Integer,
+      optional: true,
+      defaultValue: 10,
+      label: getLabel('api.users.labels.groupQuota'),
+    },
   },
   { tracker: Tracker },
 );
@@ -249,6 +261,8 @@ Meteor.users.selfFields = {
   logoutType: 1,
   lastLogin: 1,
   avatar: 1,
+  groupCount: 1,
+  groupQuota: 1,
 };
 
 Meteor.users.adminFields = {
@@ -262,6 +276,8 @@ Meteor.users.adminFields = {
   structure: 1,
   lastLogin: 1,
   avatar: 1,
+  groupCount: 1,
+  groupQuota: 1,
 };
 
 Meteor.users.publicFields = {
@@ -275,6 +291,8 @@ Meteor.users.publicFields = {
   articlesCount: 1,
   lastArticle: 1,
   avatar: 1,
+  groupCount: 1,
+  groupQuota: 1,
 };
 
 Meteor.users.deny({

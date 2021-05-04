@@ -848,6 +848,31 @@ export const userUpdated = new ValidatedMethod({
   },
 });
 
+export const setQuota = new ValidatedMethod({
+  name: 'users.setQuota',
+  validate: new SimpleSchema({
+    quota: { type: Number },
+    userId: { type: String },
+  }).validator(),
+
+  run({ quota, userId }) {
+    // this function is used to provide hooks when user data is updated
+    // (currently when logging in with keycloak)
+    if (!Meteor.isServer) {
+      // this should be run by server side code only
+      throw new Meteor.Error('api.users.userUpdated.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    Meteor.users.update(
+      { _id: userId },
+      {
+        $set: {
+          groupQuota: quota,
+        },
+      },
+    );
+  },
+});
+
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
   [
