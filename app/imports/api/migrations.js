@@ -187,3 +187,19 @@ Migrations.add({
       });
   },
 });
+
+Migrations.add({
+  version: 10,
+  name: 'Add articles boolean to groups with articles',
+  up: () => {
+    const articles = Articles.find({ groups: { $exists: true } }).fetch();
+    articles.forEach(({ groups }) => {
+      groups.forEach(({ _id }) => {
+        Groups.update({ _id }, { $set: { articles: true } });
+      });
+    });
+  },
+  down: () => {
+    Groups.rawCollection().updateMany({}, { $unset: { articles: true } });
+  },
+});
