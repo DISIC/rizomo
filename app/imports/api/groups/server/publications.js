@@ -144,6 +144,27 @@ const queryAllGroups = ({ search }) => {
   };
 };
 
+// build query for groups where user is member of
+const queryAllGroupsMemberOf = ({ search, groups }) => {
+  const regex = new RegExp(search, 'i');
+  const fieldsToSearch = ['name', 'type', 'description', 'slug', 'avatar', 'content'];
+  const searchQuery = fieldsToSearch.map((field) => ({
+    [field]: { $regex: regex },
+    _id: { $in: groups },
+  }));
+  return {
+    $or: searchQuery,
+  };
+};
+
+Meteor.methods({
+  'get_groups.memberOf_count': ({ search, userId }) => {
+    const groups = Meteor.users.findOne({ _id: userId }).favGroups;
+    const query = queryAllGroupsMemberOf({ search, groups });
+    return Groups.find(query, { fields: Groups.publicFields, sort: { name: 1 } }).count();
+  },
+});
+
 Meteor.methods({
   'get_groups.all_count': ({ search }) => {
     const query = queryAllGroups({ search });
@@ -163,6 +184,30 @@ FindFromPublication.publish('groups.all', function groupsAll({ page, search, ite
     this.error(err);
   }
   const query = queryAllGroups({ search });
+
+  return Groups.find(query, {
+    fields: Groups.publicFields,
+    skip: itemPerPage * (page - 1),
+    limit: itemPerPage,
+    sort: { name: 1 },
+    ...rest,
+  });
+});
+
+// publish all existing groups where user is member
+FindFromPublication.publish('groups.memberOf', function groupsMemberOf({ page, search, itemPerPage, ...rest }) {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  try {
+    checkPaginationParams.validate({ page, itemPerPage, search });
+  } catch (err) {
+    logServer(`publish groups.memberOf : ${err}`);
+    this.error(err);
+  }
+
+  const groups = Meteor.users.findOne({ _id: this.userId }).favGroups;
+  const query = queryAllGroupsMemberOf({ search, groups });
 
   return Groups.find(query, {
     fields: Groups.publicFields,
