@@ -29,7 +29,7 @@ import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import PersonalZone from '../components/personalspace/PersonalZone';
-import Screencast from '../components/personalspace/Screencast';
+import Screencast from '../components/screencast/Screencast';
 import { useAppContext } from '../contexts/context';
 
 const useStyles = (isMobile) =>
