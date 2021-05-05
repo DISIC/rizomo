@@ -711,7 +711,9 @@
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view",
-      "endOfList": "End of the list"
+      "endOfList": "End of the list",
+      "filterGroup": "Show only joined groups",
+      "disableFilterGroup": "Show all groups"
     },
     "AdminServicesPage": {
       "title": "Service Management",

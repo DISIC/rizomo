@@ -715,7 +715,9 @@
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste",
-      "endOfList": "Fin de la liste"
+      "endOfList": "Fin de la liste",
+      "filterGroup": "Afficher uniquement les groupes rejoints",
+      "disableFilterGroup": "Afficher tous les groupes"
     },
     "AdminServicesPage": {
       "title": "Gestion des Services",

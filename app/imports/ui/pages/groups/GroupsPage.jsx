@@ -19,7 +19,6 @@ import Pagination from '@material-ui/lab/Pagination';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
 import { useTracker } from 'meteor/react-meteor-data';
-
 // components
 import Groups from '../../../api/groups/groups';
 import GroupDetails from '../../components/groups/GroupDetails';
@@ -55,26 +54,36 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  filterButton: {
+    color: 'black',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  checkedButton: {
+    color: 'black',
+    display: 'flex',
+    margin: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 }));
 
 const ITEM_PER_PAGE = 9;
 
 function GroupsPage() {
   const [{ isMobile, groupPage, userId }, dispatch] = useAppContext();
+  const [filterChecked, setFilterChecked] = React.useState(false);
   const classes = useStyles();
   const {
     search = '',
     searchToggle = false,
     viewMode = 'card', // Possible values : "card" or "list"
   } = groupPage;
-  const { changePage, page, items, total } = usePagination(
-    'groups.all',
-    { search },
-    Groups,
-    {},
-    { sort: { name: 1 } },
-    ITEM_PER_PAGE,
-  );
+  const { changePage, page, items, total } = !filterChecked
+    ? usePagination('groups.all', { search }, Groups, {}, { sort: { name: 1 } }, ITEM_PER_PAGE)
+    : usePagination('groups.memberOf', { search, userId }, Groups, {}, { sort: { name: 1 } }, ITEM_PER_PAGE);
+
   const animatorGroups = useTracker(() => Roles.getScopesForUser(userId, 'animator'));
   const memberGroups = useTracker(() => Roles.getScopesForUser(userId, 'member'));
   const candidateGroups = useTracker(() => Roles.getScopesForUser(userId, ['candidate']));
@@ -198,6 +207,23 @@ function GroupsPage() {
               </IconButton>
             </Typography>
             <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>
+          </Grid>
+          <Grid>
+            <ToggleButton
+              value="check"
+              selected={filterChecked}
+              className={classes.filterButton}
+              onChange={() => {
+                setFilterChecked(!filterChecked);
+                changePage(1);
+              }}
+            >
+              {filterChecked ? (
+                <div>{`${i18n.__('pages.GroupsPage.disableFilterGroup')}`}</div>
+              ) : (
+                <div>{`${i18n.__('pages.GroupsPage.filterGroup')}`}</div>
+              )}
+            </ToggleButton>
           </Grid>
         </Grid>
         <Grid container spacing={4}>
