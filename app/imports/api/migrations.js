@@ -195,11 +195,11 @@ Migrations.add({
     const articles = Articles.find({ groups: { $exists: true } }).fetch();
     articles.forEach(({ groups }) => {
       groups.forEach(({ _id }) => {
-        Groups.update({ _id }, { $set: { articles: true } })
-      })
-    })
+        Groups.update({ _id }, { $set: { articles: true } });
+      });
+    });
   },
   down: () => {
-    Groups.update({}, { $unset: { articles: true } });
+    Groups.rawCollection().updateMany({}, { $unset: { articles: true } });
   },
 });

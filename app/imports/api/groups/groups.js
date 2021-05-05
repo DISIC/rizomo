@@ -175,6 +175,7 @@ Groups.publicFields = {
   owner: 1,
   numCandidates: 1,
   plugins: 1,
+  articles: 1,
 };
 Groups.allPublicFields = {
   content: 1,

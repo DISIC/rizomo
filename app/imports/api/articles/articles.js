@@ -141,7 +141,6 @@ if (Meteor.isServer) {
   Articles.after.insert(updateGroupWithArticles);
   Articles.after.update(updateGroupWithArticles);
   Articles.after.remove(updateGroupWithArticles, true);
-};
-
+}
 
 export default Articles;
