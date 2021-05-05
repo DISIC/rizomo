@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import slugy from '../../ui/utils/slugy';
 import { getLabel } from '../utils';
+import Groups from '../groups/groups';
 
 const Articles = new Mongo.Collection('articles');
 
@@ -120,5 +121,27 @@ Articles.publicFields = {
 };
 
 Articles.attachSchema(Articles.schema);
+
+if (Meteor.isServer) {
+  const updateGroupWithArticles = (userId, doc, remove) => {
+    if (doc.groups) {
+      doc.groups.forEach(({ _id }) => {
+        if (remove) {
+          const isThereStillArticles = Articles.findOne({ 'groups._id': _id });
+          if (!isThereStillArticles) {
+            Groups.update({ _id }, { $set: { articles: false } });
+          }
+        } else {
+          Groups.update({ _id }, { $set: { articles: true } });
+        }
+      });
+    }
+  };
+
+  Articles.after.insert(updateGroupWithArticles);
+  Articles.after.update(updateGroupWithArticles);
+  Articles.after.remove(updateGroupWithArticles, true);
+};
+
 
 export default Articles;

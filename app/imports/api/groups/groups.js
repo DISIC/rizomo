@@ -131,6 +131,11 @@ Groups.schema = new SimpleSchema(
       blackbox: true,
       label: getLabel('api.groups.labels.plugins'),
     },
+    articles: {
+      type: Boolean,
+      defaultValue: false,
+      label: getLabel('api.groups.labels.articles'),
+    },
     meeting: {
       // server-side only, do not publish
       type: Object,
