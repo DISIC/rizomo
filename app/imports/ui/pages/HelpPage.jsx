@@ -10,13 +10,10 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import { makeStyles } from '@material-ui/core/styles';
-<<<<<<< HEAD
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
-=======
->>>>>>> Adding card with screencast 2
 import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
@@ -24,34 +21,21 @@ import Screencast from '../components/screencast/Screencast';
 import ScreencastGroup from '../components/screencast/ScreencastGroup';
 
 function HelpPage() {
-<<<<<<< HEAD
   const [openScreencast, setScreencast] = useState(false);
   const [openScreencastGroup, setScreencastGroup] = useState(false);
 
   const useStyles = makeStyles((theme) => ({
     card: {
       margin: 10,
-=======
-  const useStyles = makeStyles(() => ({
-    card: {
-      padding: 10,
->>>>>>> Adding card with screencast 2
       height: '100%',
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
     },
-<<<<<<< HEAD
-=======
-    cardContent: {
-      padding: 10,
-    },
->>>>>>> Adding card with screencast 2
     grid: {
       display: 'flex',
       padding: 1,
     },
-<<<<<<< HEAD
     buttonText: {
       textTransform: 'none',
       backgroundColor: theme.palette.primary.main,
@@ -83,8 +67,6 @@ function HelpPage() {
     modal: {
       display: 'grid',
     },
-=======
->>>>>>> Adding card with screencast 2
   }));
 
   const classes = useStyles();
