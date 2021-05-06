@@ -815,7 +815,10 @@
       "tutoTitle": "Learn to custom this page"
     },
     "HelpPage": {
-      "title": "Find here every tuto to help you master LaBoite"
+      "title": "Find here every tuto to help you master LaBoite",
+      "titleCardStart": "Starting with LaBoite",
+      "titleCardGroup": "Create and administrate a group",
+      "tutoLabel": "Go to tutorial"
     },
     "AdminSingleServicePage": {
       "edition": "Edition of the service",
