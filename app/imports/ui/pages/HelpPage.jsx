@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import i18n from 'meteor/universe:i18n';
@@ -10,27 +10,41 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import Screencast from '../components/screencast/Screencast';
 import ScreencastGroup from '../components/screencast/ScreencastGroup';
 
+
 function HelpPage() {
-  const useStyles = makeStyles(() => ({
+  const [openScreencast, setScreencast] = useState(false);
+  const [openScreencastGroup, setScreencastGroup] = useState(false);
+
+  const useStyles = makeStyles((theme) => ({
     card: {
-      padding: 10,
+      margin: 10,
       height: '100%',
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
     },
-    cardContent: {
-      padding: 10,
-    },
     grid: {
       display: 'flex',
       padding: 1,
+    },
+    buttonText: {
+      textTransform: 'none',
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.tertiary.main,
+      fontWeight: 'bold',
+      '&:hover': {
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.tertiary.main,
+      },
     },
   }));
 
@@ -41,18 +55,39 @@ function HelpPage() {
       <Container>
         <Typography variant="h4">{i18n.__('pages.HelpPage.title')}</Typography>
         <Grid xs={12} className={classes.grid}>
-          <Card xs={6} className={classes.card}>
-            <CardHeader />
+          <Card xs={12} sm={4} md={4} className={classes.card}>
+            <CardHeader title={i18n.__('pages.HelpPage.titleCardStart')} />
             <CardContent>
-              <Screencast className={classes.cardContent} />
+              <Button
+                startIcon={<ExitToAppIcon />}
+                className={classes.buttonText}
+                size="large"
+                onClick={() => setScreencast(true)}
+              >
+                {i18n.__('pages.HelpPage.tutoLabel')}
+              </Button>
             </CardContent>
           </Card>
-          <Card xs={6} className={classes.card}>
+          <Card xs={12} sm={4} md={4} className={classes.card}>
+            <CardHeader title={i18n.__('pages.HelpPage.titleCardGroup')} />
             <CardContent>
-              <ScreencastGroup className={classes.cardContent} />
+              <Button
+                startIcon={<ExitToAppIcon />}
+                className={classes.buttonText}
+                size="large"
+                onClick={() => setScreencast(true)}
+              >
+                {i18n.__('pages.HelpPage.tutoLabel')}
+              </Button>
             </CardContent>
           </Card>
         </Grid>
+        <Modal open={openScreencast} onClose={() => setScreencast(false)}>
+          <Screencast />
+        </Modal>
+        <Modal open={openScreencastGroup} onClose={() => setScreencastGroup(false)}>
+          <ScreencastGroup />
+        </Modal>
       </Container>
     </Fade>
   );

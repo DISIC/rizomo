@@ -849,7 +849,10 @@
       "tutoTitle": "Apprenez à personnaliser cette page"
     },
     "HelpPage": {
-      "title": "Retrouvez ici tous les tutoriels nécessaires pour maitriser LaBoite"
+      "title": "Retrouvez ici tous les tutoriels nécessaires pour maitriser LaBoite",
+      "titleCardStart": "Commencer avec LaBoite",
+      "titleCardGroup": "Créer et administrer un groupe",
+      "tutoLabel": "Voir le tutoriel"
     },
     "AdminSingleServicePage": {
       "edition": "Edition du service",
