@@ -21,20 +21,20 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const NotValidatedMessage = () => {
+const NoStructureSelected = () => {
   const classes = useStyle();
   return (
     <>
       <Typography className={classes.title} variant="h5" color="inherit">
-        {i18n.__('components.NotValidatedMessage.inactiveAccount')}
+        {i18n.__('components.NoStructureSelected.noStructure')}
       </Typography>
       <Link className={classes.link} to="/profile">
         <Typography className={classes.paragraph} paragraph color="inherit">
-          {i18n.__('components.NotValidatedMessage.waitAccount')}
+          {i18n.__('components.NoStructureSelected.selectStructure')}
         </Typography>
       </Link>
     </>
   );
 };
 
-export default NotValidatedMessage;
+export default NoStructureSelected;

@@ -391,6 +391,10 @@
       "inactiveAccount": "Votre compte n'a pas été activé",
       "waitAccount": "Un administrateur va bientôt valider votre compte"
     },
+    "NoStructureSelected": {
+      "noStructure": "Vous n'avez pas de structure de rattachement",
+      "selectStructure": "Sélectionnez une structure dans votre profil."
+    },
     "GroupUsersList": {
       "title": "",
       "loadingTitle": "Chargement en cours ...",

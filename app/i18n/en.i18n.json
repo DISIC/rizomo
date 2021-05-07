@@ -391,6 +391,10 @@
       "inactiveAccount": "Your account has not been activated",
       "waitAccount": "Wait for an administrator to validate your account"
     },
+    "NoStructureSelected": {
+      "noStructure": "You have not Attachment Structure",
+      "selectStructure": "Choose a structure in your profile."
+    },
     "GroupUsersList": {
       "title": "",
       "loadingTitle": "Loading ...",
