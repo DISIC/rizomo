@@ -13,12 +13,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CancelIcon from '@material-ui/icons/Cancel';
 import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import Screencast from '../components/screencast/Screencast';
 import ScreencastGroup from '../components/screencast/ScreencastGroup';
-
 
 function HelpPage() {
   const [openScreencast, setScreencast] = useState(false);
@@ -45,6 +45,20 @@ function HelpPage() {
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.tertiary.main,
       },
+    },
+    closeButton: {
+      color: '#ffa8a8',
+      width: '50px',
+      height: '50px',
+      display: 'flex',
+      justifyContent: 'right',
+    },
+    button: {
+      display: 'flex',
+      justifyContent: 'right',
+      marginBottom: 50,
+      marginRight: 50,
+      marginTop: 50,
     },
   }));
 
@@ -83,10 +97,20 @@ function HelpPage() {
           </Card>
         </Grid>
         <Modal open={openScreencast} onClose={() => setScreencast(false)}>
-          <Screencast />
+          <Grid>
+            <Grid className={classes.button}>
+              <CancelIcon className={classes.closeButton} onClick={() => setScreencast(false)} />
+            </Grid>
+            <Screencast />
+          </Grid>
         </Modal>
         <Modal open={openScreencastGroup} onClose={() => setScreencastGroup(false)}>
-          <ScreencastGroup />
+          <Grid>
+            <Grid className={classes.button}>
+              <CancelIcon className={classes.closeButton} onClick={() => setScreencastGroup(false)} />
+            </Grid>
+            <ScreencastGroup />
+          </Grid>
         </Modal>
       </Container>
     </Fade>
