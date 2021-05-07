@@ -47,16 +47,23 @@ function HelpPage() {
       },
     },
     closeButton: {
+<<<<<<< HEAD
       margin: '10px',
       marginBottom: '0px',
       width: '30px',
       height: '30px',
+=======
+      color: '#ffa8a8',
+      width: '50px',
+      height: '50px',
+>>>>>>> Add close button + display
       display: 'flex',
       justifyContent: 'right',
     },
     button: {
       display: 'flex',
       justifyContent: 'right',
+<<<<<<< HEAD
       marginTop: 75,
     },
     gridModal: {
@@ -66,6 +73,11 @@ function HelpPage() {
     },
     modal: {
       display: 'grid',
+=======
+      marginBottom: 50,
+      marginRight: 50,
+      marginTop: 50,
+>>>>>>> Add close button + display
     },
   }));
 
@@ -104,7 +116,11 @@ function HelpPage() {
           </Card>
         </Grid>
         <Modal open={openScreencast} onClose={() => setScreencast(false)}>
+<<<<<<< HEAD
           <Grid className={classes.gridModal}>
+=======
+          <Grid>
+>>>>>>> Add close button + display
             <Grid className={classes.button}>
               <CancelIcon className={classes.closeButton} onClick={() => setScreencast(false)} />
             </Grid>
@@ -112,7 +128,11 @@ function HelpPage() {
           </Grid>
         </Modal>
         <Modal open={openScreencastGroup} onClose={() => setScreencastGroup(false)}>
+<<<<<<< HEAD
           <Grid className={classes.gridModal}>
+=======
+          <Grid>
+>>>>>>> Add close button + display
             <Grid className={classes.button}>
               <CancelIcon className={classes.closeButton} onClick={() => setScreencastGroup(false)} />
             </Grid>
