@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '200px',
     border: `2px dashed ${theme.palette.primary.main}`,
     borderRadius: theme.shape.borderRadius,
-    marginTop: '5px',
+    margin: 'auto',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -110,6 +110,7 @@ const useStyles = makeStyles((theme) => ({
     '&::after': {
       position: 'absolute',
       content: '"∅"',
+      fontFamily: 'monospace',
       fontSize: '80px',
       marginTop: '6px',
       color: theme.palette.primary.main,

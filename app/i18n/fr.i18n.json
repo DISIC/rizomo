@@ -837,6 +837,8 @@
       "noFavYet": "Ajoutez ici des éléments depuis l'onglet Applications",
       "unsorted": "À trier",
       "unsortedFav": "Mes Favoris",
+      "unsortedGroup": "Mes groupes",
+      "unsortedService": "Mes applications",
       "newZone": "Nouvelle Zone",
       "typeApplication": "Application",
       "typeGroup": "Groupe",

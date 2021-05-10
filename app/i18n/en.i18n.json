@@ -833,6 +833,8 @@
       "noFavYet": "Add here some elements from Applications tab",
       "unsorted": "To be sorted",
       "unsortedFav": "My Favorites",
+      "unsortedGroup": "My groups",
+      "unsortedService": "My applications",
       "newZone": "New Zone",
       "typeApplication": "Application",
       "typeGroup": "Group",
