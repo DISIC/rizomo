@@ -7,6 +7,7 @@ export default function Screencast() {
     iframe: {
       display: 'grid',
       justifyContent: 'center',
+      padding: '20px',
     },
   });
   const classes = useStyles();
