@@ -19,10 +19,12 @@ import Services from '../../api/services/services';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import Screencast from '../components/screencast/Screencast';
 import ScreencastGroup from '../components/screencast/ScreencastGroup';
+import ScreencastMezig from '../components/screencast/ScreencastMezig';
 
 function HelpPage() {
   const [openScreencast, setScreencast] = useState(false);
   const [openScreencastGroup, setScreencastGroup] = useState(false);
+  const [openScreencastMezig, setScreencastMezig] = useState(false);
 
   const useStyles = makeStyles((theme) => ({
     card: {
@@ -96,7 +98,20 @@ function HelpPage() {
                 startIcon={<ExitToAppIcon />}
                 className={classes.buttonText}
                 size="large"
-                onClick={() => setScreencast(true)}
+                onClick={() => setScreencastGroup(true)}
+              >
+                {i18n.__('pages.HelpPage.tutoLabel')}
+              </Button>
+            </CardContent>
+          </Card>
+          <Card xs={12} sm={4} md={4} className={classes.card}>
+            <CardHeader title={i18n.__('pages.HelpPage.titleCardMezig')} />
+            <CardContent>
+              <Button
+                startIcon={<ExitToAppIcon />}
+                className={classes.buttonText}
+                size="large"
+                onClick={() => setScreencastMezig(true)}
               >
                 {i18n.__('pages.HelpPage.tutoLabel')}
               </Button>
@@ -117,6 +132,14 @@ function HelpPage() {
               <CancelIcon className={classes.closeButton} onClick={() => setScreencastGroup(false)} />
             </Grid>
             <ScreencastGroup />
+          </Grid>
+        </Modal>
+        <Modal open={openScreencastMezig} onClose={() => setScreencastMezig(false)}>
+          <Grid className={classes.gridModal}>
+            <Grid className={classes.button}>
+              <CancelIcon className={classes.closeButton} onClick={() => setScreencastMezig(false)} />
+            </Grid>
+            <ScreencastMezig />
           </Grid>
         </Modal>
       </Container>

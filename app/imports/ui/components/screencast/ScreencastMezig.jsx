@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-export default function Screencast() {
+export default function ScreencastMezig() {
   const useStyles = makeStyles({
     iframe: {
       display: 'grid',
@@ -19,7 +19,7 @@ export default function Screencast() {
         height="473"
         title="screencast_frame"
         sandbox="allow-same-origin allow-scripts allow-popups"
-        src="https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478"
+        src="https://tube-dijon.beta.education.fr/videos/embed/d024f709-8b65-4f69-b058-22569f2b881d"
         frameBorder="0"
         allowFullScreen
       />
