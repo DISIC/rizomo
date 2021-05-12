@@ -132,7 +132,8 @@
         "description": "Description",
         "logo": "Logo",
         "categories": "Catégories",
-        "screenshots": "Captures d'écran"
+        "screenshots": "Captures d'écran",
+        "structure": "Structure d'exploitation"
       }
     },
     "events": {
@@ -352,6 +353,7 @@
       "menuMyspaceMobile": "Mon Espace",
       "menuHelp": "Aide",
       "menuServices": "Applications",
+      "menuStructure": "Ma Structure",
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
       "menuAdminServices": "Gestion des Services",
@@ -385,7 +387,8 @@
       "menuLogoutLabel": "Se déconnecter",
       "menuMedias": "Stockage de Médias",
       "menuAdminAppSettings": "Réglages Administrateurs",
-      "menuAdminStructureUsers": "Gestion de la structure"
+      "menuAdminStructureUsers": "Utilisateurs de la structure",
+      "menuAdminStructureServices": "Services de la structure"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",

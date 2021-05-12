@@ -89,11 +89,13 @@ function MainLayout() {
                   <Route exact path="/" component={PersonalPage} />
                   <Route exact path="/profile" component={ProfilePage} />
                   <Route exact path="/services" component={ServicesPage} />
+                  <Route exact path="/structure" component={ServicesPage} />
                   <Route exact path="/publications" component={ArticlesPage} />
                   <Route exact path="/help" component={HelpPage} />
                   <Route exact path="/publications/new" component={EditArticlePage} />
                   <Route exact path="/publications/:slug" component={EditArticlePage} />
                   <Route exact path="/services/:slug" component={SingleServicePage} />
+                  <Route exact path="/structure/:slug" component={SingleServicePage} />
                   <Route exact path="/groups" component={GroupsPage} />
                   <Route exact path="/groups/:slug" component={SingleGroupPage} />
                   <Route exact path="/groups/:slug/addressbook" component={AddressBook} />
@@ -107,6 +109,27 @@ function MainLayout() {
                     exact
                     path="/adminstructureusers"
                     component={AdminStructureUsersPage}
+                    user={user}
+                    loadingUser={loadingUser}
+                  />
+                  <StructureAdminRoute
+                    exact
+                    path="/adminstructureservices"
+                    component={AdminServicesPage}
+                    user={user}
+                    loadingUser={loadingUser}
+                  />
+                  <StructureAdminRoute
+                    exact
+                    path="/adminstructureservices/new"
+                    component={AdminSingleServicePage}
+                    user={user}
+                    loadingUser={loadingUser}
+                  />
+                  <StructureAdminRoute
+                    exact
+                    path="/adminstructureservices/:_id"
+                    component={AdminSingleServicePage}
                     user={user}
                     loadingUser={loadingUser}
                   />

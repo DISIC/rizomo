@@ -9,12 +9,27 @@ import Services from '../services';
 import Categories from '../../categories/categories';
 import logServer from '../../logging';
 
-// publish additional fields for users
+// publish available services not attached to a structure
 Meteor.publish('services.all', function servicesAll() {
   if (!isActive(this.userId)) {
     return this.ready();
   }
-  return Services.find({}, { fields: Services.publicFields, sort: { title: 1 }, limit: 1000 });
+  return Services.find({ structure: '' }, { fields: Services.publicFields, sort: { title: 1 }, limit: 1000 });
+});
+
+// publish available sergices attached to current user structure
+Meteor.publish('services.structure', function servicesStructure() {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  const userStructure = Meteor.users.findOne(this.userId).structure;
+  if (userStructure) {
+    return Services.find(
+      { structure: userStructure },
+      { fields: Services.publicFields, sort: { title: 1 }, limit: 1000 },
+    );
+  }
+  return this.ready();
 });
 
 FindFromPublication.publish('services.one.admin', function servicesOne({ _id }) {
@@ -29,10 +44,12 @@ FindFromPublication.publish('services.one.admin', function servicesOne({ _id }) 
     logServer(`publish services.one.admin : ${err}`);
     this.error(err);
   }
-  if (!isActive(this.userId) || !Roles.userIsInRole(this.userId, 'admin')) {
-    return this.ready();
+  const service = Services.findOne(_id);
+  const isStructureAdmin = service.structure && Roles.userIsInRole(this.userId, 'adminStructure', service.structure);
+  if (isActive(this.userId) && (Roles.userIsInRole(this.userId, 'admin') || isStructureAdmin)) {
+    return Services.find({ _id }, { fields: Services.allPublicFields, sort: { title: 1 }, limit: 1 });
   }
-  return Services.find({ _id }, { fields: Services.allPublicFields, sort: { title: 1 }, limit: 1 });
+  return this.ready();
 });
 
 FindFromPublication.publish('services.group', function servicesGroup({ ids }) {

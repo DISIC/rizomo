@@ -203,3 +203,14 @@ Migrations.add({
     Groups.rawCollection().updateMany({}, { $unset: { articles: true } });
   },
 });
+
+Migrations.add({
+  version: 11,
+  name: 'Add structure to services',
+  up: () => {
+    Services.update({}, { $set: { structure: '' } }, { multi: true });
+  },
+  down: () => {
+    Services.rawCollection().updateMany({}, { $unset: { structure: true } });
+  },
+});

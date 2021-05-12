@@ -260,7 +260,7 @@ FindFromPublication.publish('users.byStructure', function usersStructure({ page,
 });
 // count structure users
 Meteor.methods({
-  'get_users.byStructure_count': function ({ search }) {
+  'get_users.byStructure_count': function queryUsersStructureCount({ search }) {
     const currentUser = Meteor.users.findOne(this.userId);
     const query = queryUsersByStructure({ search }, currentUser.structure);
 

@@ -31,6 +31,12 @@ export const links = [
     admin: false,
   },
   {
+    path: '/structure',
+    content: 'menuStructure',
+    icon: <SearchIcon />,
+    admin: false,
+  },
+  {
     path: '/help',
     content: 'menuHelp',
     icon: <HomeIcon />,

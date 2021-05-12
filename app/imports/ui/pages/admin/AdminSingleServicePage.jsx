@@ -31,6 +31,7 @@ import slugy from '../../utils/slugy';
 import ImageAdminUploader from '../../components/uploader/ImageAdminUploader';
 import { CustomToolbar } from '../../components/system/CustomQuill';
 import '../../utils/QuillVideo';
+import { useAppContext } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -118,12 +119,14 @@ const quillOptions = {
   },
 };
 
-const AdminSingleServicePage = ({ categories, service, ready, match: { params } }) => {
+const AdminSingleServicePage = ({ categories, service, ready, match: { path, params } }) => {
   const [serviceData, setServiceData] = useState({ ...defaultState });
   const [loading, setLoading] = useState(!!params._id);
   const [content, setContent] = useState('');
   const history = useHistory();
   const classes = useStyles();
+  const structureMode = path.startsWith('/adminstructureservices');
+  const [{ user }] = useAppContext();
 
   const removeUndefined = () => {
     let args;
@@ -143,7 +146,7 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { params } 
 
   const onCancel = () => {
     removeUndefined();
-    history.push('/adminservices');
+    history.push(structureMode ? '/adminstructureservices' : '/adminservices');
   };
 
   // useEffect(() => removeUndefined, []); // TO UNDERSTAND :)
@@ -230,6 +233,7 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { params } 
       args = {
         ...rest,
         content,
+        structure: structureMode ? user.structure : '',
       };
     }
 
@@ -239,7 +243,7 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { params } 
         setLoading(false);
       } else {
         msg.success(i18n.__('api.methods.operationSuccessMsg'));
-        history.push('/adminservices');
+        history.push(structureMode ? '/adminstructureservices' : '/adminservices');
       }
     });
   };
@@ -253,7 +257,8 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { params } 
       <Container>
         <Paper className={classes.root}>
           <Typography component="h1">
-            {i18n.__(`pages.AdminSingleServicePage.${params._id ? 'edition' : 'creation'}`)} <b>{serviceData.title}</b>
+            {i18n.__(`pages.AdminSingleServicePage.${params._id ? 'edition' : 'creation'}`)}
+            <b> {serviceData.title}</b> {`${structureMode ? `(${user.structure})` : ''}`}
           </Typography>
           <form noValidate autoComplete="off">
             <TextField

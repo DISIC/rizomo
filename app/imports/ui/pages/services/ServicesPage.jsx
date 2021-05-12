@@ -424,8 +424,9 @@ ServicesPage.propTypes = {
   ready: PropTypes.bool.isRequired,
 };
 
-export default withTracker(() => {
-  const servicesHandle = Meteor.subscribe('services.all');
+export default withTracker(({ match: { path } }) => {
+  const subName = path === '/structure' ? 'services.structure' : 'services.all';
+  const servicesHandle = Meteor.subscribe(subName);
   const services = Services.find({ state: { $ne: 10 } }, { sort: { title: 1 } }).fetch();
   const categoriesHandle = Meteor.subscribe('categories.all');
   const cats = Categories.find({}, { sort: { name: 1 } }).fetch();
