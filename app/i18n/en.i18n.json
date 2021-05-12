@@ -717,7 +717,8 @@
       "viewList": "List view",
       "endOfList": "End of the list",
       "filterGroup": "Show only joined groups",
-      "disableFilterGroup": "Show all groups"
+      "disableFilterGroup": "Show all groups",
+      "noGroup": "There is no group to display."
     },
     "AdminServicesPage": {
       "title": "Service Management",

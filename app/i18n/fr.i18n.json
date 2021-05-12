@@ -721,7 +721,8 @@
       "viewList": "Mode liste",
       "endOfList": "Fin de la liste",
       "filterGroup": "Afficher uniquement les groupes rejoints",
-      "disableFilterGroup": "Afficher tous les groupes"
+      "disableFilterGroup": "Afficher tous les groupes",
+      "noGroup": "Il n'y a aucun groupe à afficher."
     },
     "AdminServicesPage": {
       "title": "Gestion des Services",
