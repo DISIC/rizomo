@@ -12,10 +12,13 @@ import { addService, removeElement } from '../personalspaces/methods';
 
 export const createService = new ValidatedMethod({
   name: 'services.createService',
-  validate: Services.schema.omit('slug').validator(),
+  validate: Services.schema.omit('slug').validator({ clean: true }),
 
   run(args) {
-    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    const isStructureAdmin = args.structure && Roles.userIsInRole(this.userId, 'adminStructure', args.structure);
+    // admins can create structure services only for their structure if they have adminStructure permissions
+    const isAdmin = Roles.userIsInRole(this.userId, 'admin');
+    const authorized = isActive(this.userId) && (isAdmin || isStructureAdmin);
     if (!authorized) {
       throw new Meteor.Error('api.services.createService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
@@ -54,17 +57,17 @@ export const removeService = new ValidatedMethod({
     if (service === undefined) {
       throw new Meteor.Error('api.services.removeService.unknownService', i18n.__('api.services.unknownService'));
     }
-    // check if current user has admin rights
-    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    const isStructureAdmin = service.structure && Roles.userIsInRole(this.userId, 'adminStructure', service.structure);
+    const authorized = isActive(this.userId) && (Roles.userIsInRole(this.userId, 'admin') || isStructureAdmin);
     if (!authorized) {
       throw new Meteor.Error('api.services.removeService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    Services.remove(serviceId);
     // remove service from users favorites
     Meteor.users.update({ favServices: { $all: [serviceId] } }, { $pull: { favServices: serviceId } }, { multi: true });
     if (Meteor.isServer && !Meteor.isTest) {
       Meteor.call('files.removeFolder', { path: `services/${service._id}` });
     }
+    Services.remove(serviceId);
   },
 });
 
@@ -72,8 +75,8 @@ export const updateService = new ValidatedMethod({
   name: 'services.updateService',
   validate: new SimpleSchema({
     serviceId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.services.labels.id') },
-    data: Services.schema.omit('slug'),
-  }).validator(),
+    data: Services.schema.omit('slug', 'structure'),
+  }).validator({ clean: true }),
 
   run({ data, serviceId }) {
     // check service existence
@@ -81,12 +84,15 @@ export const updateService = new ValidatedMethod({
     if (currentService === undefined) {
       throw new Meteor.Error('api.services.updateService.unknownGroup', i18n.__('api.services.unknownService'));
     }
-    // check if current user has admin rights
-    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    // check if current user has admin or structureAdmin rights (structure can not be changed)
+    const isStructureAdmin =
+      currentService.structure && Roles.userIsInRole(this.userId, 'adminStructure', currentService.structure);
+    const authorized = isActive(this.userId) && (Roles.userIsInRole(this.userId, 'admin') || isStructureAdmin);
     if (!authorized) {
       throw new Meteor.Error('api.services.updateService.notPermitted', i18n.__('api.users.adminNeeded'));
     }
-    Services.update({ _id: serviceId }, { $set: data });
+    // update service data, making sure that structure is not modified
+    Services.update({ _id: serviceId }, { $set: { ...data, structure: currentService.structure } });
 
     if (Meteor.isServer && !Meteor.isTest) {
       const files = [data.logo, ...data.screenshots];

@@ -61,7 +61,7 @@ const AdminGroupQuota = ({ data, open, onClose }) => {
         quota: quotaInt,
         userId: data._id,
       },
-      function (error) {
+      function callbackQuota(error) {
         if (error) {
           msg.error(error.message);
         } else {

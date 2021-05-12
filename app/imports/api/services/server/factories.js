@@ -15,4 +15,5 @@ Factory.define('service', Services, {
   content: faker.lorem.sentence(),
   categories: [],
   state: 0,
+  structure: '',
 });

@@ -6,7 +6,7 @@ import logServer from '../../../api/logging';
 function createService(service) {
   const { title } = service;
   logServer(`  Creating service ${title}.`);
-  Services.insert(service);
+  Services.insert({ ...service, structure: '' });
 }
 
 /** When running app for first time, pass a settings file to set up a default user account. */
