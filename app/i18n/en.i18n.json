@@ -841,8 +841,7 @@
       "typeLink": "Link",
       "addZoneStartButton": "Add a new zone at start",
       "addZoneEndButton": "Add a new zone at the end",
-      "toggleEdition": "Toggle edition mode",
-      "tutoTitle": "Learn to custom this page"
+      "toggleEdition": "Toggle edition mode"
     },
     "HelpPage": {
       "title": "Find here every tuto to help you master LaBoite",
