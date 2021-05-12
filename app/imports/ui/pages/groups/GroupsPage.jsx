@@ -8,12 +8,14 @@ import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import SearchIcon from '@material-ui/icons/Search';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
+import Switch from '@material-ui/core/Switch';
 import ClearIcon from '@material-ui/icons/Clear';
 import Pagination from '@material-ui/lab/Pagination';
 import i18n from 'meteor/universe:i18n';
@@ -116,6 +118,11 @@ function GroupsPage() {
       },
     });
 
+  const updateFilterCheck = () => {
+    setFilterChecked(!filterChecked);
+    changePage(1);
+  };
+
   const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
   const updateSearch = (e) => updateGlobalState('search', e.target.value);
   const resetSearch = () => updateGlobalState('search', '');
@@ -205,25 +212,21 @@ function GroupsPage() {
               <IconButton onClick={toggleSearch}>
                 <SearchIcon fontSize="large" />
               </IconButton>
+              <Tooltip
+                title={
+                  filterChecked
+                    ? `${i18n.__('pages.GroupsPage.disableFilterGroup')}`
+                    : `${i18n.__('pages.GroupsPage.filterGroup')}`
+                }
+              >
+                <Switch
+                  color={filterChecked ? 'primary' : 'default'}
+                  inputProps={{ 'aria-label': 'checkbox with default color' }}
+                  onChange={updateFilterCheck}
+                />
+              </Tooltip>
             </Typography>
             <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>
-          </Grid>
-          <Grid>
-            <ToggleButton
-              value="check"
-              selected={filterChecked}
-              className={classes.filterButton}
-              onChange={() => {
-                setFilterChecked(!filterChecked);
-                changePage(1);
-              }}
-            >
-              {filterChecked ? (
-                <div>{`${i18n.__('pages.GroupsPage.disableFilterGroup')}`}</div>
-              ) : (
-                <div>{`${i18n.__('pages.GroupsPage.filterGroup')}`}</div>
-              )}
-            </ToggleButton>
           </Grid>
         </Grid>
         <Grid container spacing={4}>
@@ -235,44 +238,48 @@ function GroupsPage() {
             </Grid>
           )}
         </Grid>
-        <Grid container spacing={isMobile ? 2 : 4}>
-          {total > ITEM_PER_PAGE && (
-            <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
-              <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
-            </Grid>
-          )}
-          {isMobile && viewMode === 'list'
-            ? mapList((group) => (
-                <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
-                  <GroupDetailsList
-                    key={group.name}
-                    group={group}
-                    candidate={candidateGroups.includes(group._id)}
-                    member={memberGroups.includes(group._id)}
-                    animator={animatorGroups.includes(group._id)}
-                    admin={isAdmin || managedGroups.includes(group._id)}
-                  />
-                </Grid>
-              ))
-            : mapList((group) => (
-                <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
-                  <GroupDetails
-                    key={group.name}
-                    group={group}
-                    isShort={!isMobile && viewMode === 'list'}
-                    candidate={candidateGroups.includes(group._id)}
-                    member={memberGroups.includes(group._id)}
-                    animator={animatorGroups.includes(group._id)}
-                    admin={isAdmin || managedGroups.includes(group._id)}
-                  />
-                </Grid>
-              ))}
-          {total > ITEM_PER_PAGE && (
-            <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
-              <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
-            </Grid>
-          )}
-        </Grid>
+        {total > 0 ? (
+          <Grid container spacing={isMobile ? 2 : 4}>
+            {total > ITEM_PER_PAGE && (
+              <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
+                <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+              </Grid>
+            )}
+            {isMobile && viewMode === 'list'
+              ? mapList((group) => (
+                  <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
+                    <GroupDetailsList
+                      key={group.name}
+                      group={group}
+                      candidate={candidateGroups.includes(group._id)}
+                      member={memberGroups.includes(group._id)}
+                      animator={animatorGroups.includes(group._id)}
+                      admin={isAdmin || managedGroups.includes(group._id)}
+                    />
+                  </Grid>
+                ))
+              : mapList((group) => (
+                  <Grid className={classes.gridItem} item key={group._id} xs={12} sm={12} md={6} lg={4}>
+                    <GroupDetails
+                      key={group.name}
+                      group={group}
+                      isShort={!isMobile && viewMode === 'list'}
+                      candidate={candidateGroups.includes(group._id)}
+                      member={memberGroups.includes(group._id)}
+                      animator={animatorGroups.includes(group._id)}
+                      admin={isAdmin || managedGroups.includes(group._id)}
+                    />
+                  </Grid>
+                ))}
+            {total > ITEM_PER_PAGE && (
+              <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
+                <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
+              </Grid>
+            )}
+          </Grid>
+        ) : (
+          <p>{i18n.__('pages.GroupsPage.noGroup')}</p>
+        )}
       </Container>
     </Fade>
   );
