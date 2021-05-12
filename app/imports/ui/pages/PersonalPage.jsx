@@ -450,7 +450,6 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
               </Grid>
               {localPS.unsorted.length === 0 && localPS.sorted.length === 0 ? (
                 <Grid>
-                  <Typography className={classes.castTuto}>{i18n.__('pages.PersonalPage.tutoTitle')}</Typography>
                   <Animation />
                   <div className={classes.screen}>
                     <Link to="/services">
