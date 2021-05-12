@@ -127,7 +127,7 @@ const AddressBook = ({
               {items.map((user, i) => [
                 <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
                   <ListItemAvatar>
-                    <UserAvatar userAvatar={user.avatar} userFirstName={user.firstName} />
+                    <UserAvatar userAvatar={user.avatar || ''} userFirstName={user.firstName} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={`${user.firstName} ${user.lastName}`}

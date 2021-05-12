@@ -154,7 +154,7 @@ const MainMenu = ({ user = {} }) => {
         endIcon={<ExpandMoreIcon />}
       >
         {user.firstName || ''}
-        <UserAvatar userAvatar={user.avatar} userFirstName={user.firstName || ''} customClass={classes.avatar} />
+        <UserAvatar userAvatar={user.avatar || ''} userFirstName={user.firstName || ''} customClass={classes.avatar} />
       </Button>
       <Menu
         id="main-menu"
