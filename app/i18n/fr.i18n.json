@@ -357,7 +357,9 @@
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
       "menuAdminServices": "Gestion des Services",
-      "menuAdminUserValidation": "Validation des utilisateurs"
+      "menuAdminUserValidation": "Validation des utilisateurs",
+      "tooltipServices": "Services Numériques Partagés",
+      "tooltipStructure": "Ressources de votre structure"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Ouvrir l'application",
@@ -703,7 +705,8 @@
       "message": "Page inexistante !"
     },
     "ServicesPage": {
-      "title": "Découvrez les applications",
+      "titleServices": "Découvrez les Services Numériques Partagés",
+      "titleStructure": "Découvrez les ressources de votre structure",
       "categories": "Filtrer par catégories",
       "reset": "Réinitialiser",
       "validate": "Valider",
@@ -714,7 +717,9 @@
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste",
-      "filter": "Filtrer"
+      "filter": "Filtrer",
+      "NoStructureServices": "Aucun service n'a été déclaré pour votre structure",
+      "NoServices": "Aucun service déclaré"
     },
     "GroupsPage": {
       "title": "Explorer les groupes",

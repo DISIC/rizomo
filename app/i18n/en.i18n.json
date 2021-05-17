@@ -357,7 +357,9 @@
       "menuGroupes": "All Groups",
       "menuGroupesMobile": "Groups",
       "menuAdminServices": "Service Management",
-      "menuAdminUserValidation": "User validation"
+      "menuAdminUserValidation": "User validation",
+      "tooltipServices": "SNP apps",
+      "tooltipStructure": "Resources from your structure"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Run this service",
@@ -699,7 +701,8 @@
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
-      "title": "Discover the apps",
+      "titleServices": "Discover the SNP apps",
+      "titleStructure": "Discover your structure's resources",
       "categories": "Filter by categories",
       "reset": "Reset filter",
       "validate": "Validate",
@@ -710,7 +713,9 @@
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view",
-      "filter": "Filter"
+      "filter": "Filter",
+      "NoStructureServices": "No service defined for your structure",
+      "NoServices": "No services defined"
     },
     "GroupsPage": {
       "title": "Explore the groups",

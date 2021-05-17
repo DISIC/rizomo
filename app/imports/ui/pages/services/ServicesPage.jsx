@@ -119,11 +119,15 @@ const useStyles = (isMobile) =>
     toolbarBottom: {
       justifyContent: 'space-between',
     },
+    emptyMsg: {
+      marginTop: 30,
+      marginBottom: 15,
+    },
   }));
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-function ServicesPage({ services, categories, ready }) {
+function ServicesPage({ services, categories, ready, structureMode }) {
   const [{ user, loadingUser, isMobile, servicePage }, dispatch] = useAppContext();
   const classes = useStyles(isMobile)();
   const {
@@ -289,7 +293,7 @@ function ServicesPage({ services, categories, ready }) {
             <Grid container spacing={4}>
               <Grid item xs={12} className={isMobile ? null : classes.flex}>
                 <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
-                  {i18n.__('pages.ServicesPage.title')}
+                  {i18n.__(structureMode ? 'pages.ServicesPage.titleStructure' : 'pages.ServicesPage.titleServices')}
                   {searchButton}
                 </Typography>
                 <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>
@@ -336,25 +340,31 @@ function ServicesPage({ services, categories, ready }) {
               </Grid>
             </Grid>
             <Grid container spacing={isMobile ? 2 : 4}>
-              {viewMode === 'list' && isMobile
-                ? mapList((service) => (
-                    <Grid className={classes.gridItem} item xs={12} md={6} key={service._id}>
-                      <ServiceDetailsList service={service} />
-                      {/* favAction={favAction(service._id)} // PROPS FOR SERVICEDETAILSLIST */}
-                    </Grid>
-                  ))
-                : mapList((service) => (
-                    <Grid className={classes.gridItem} item key={service._id} xs={12} sm={12} md={6} lg={4}>
-                      <ServiceDetails
-                        service={service}
-                        favAction={favAction(service._id)}
-                        updateCategories={updateCatList}
-                        catList={catList}
-                        categories={categories}
-                        isShort={!isMobile && viewMode === 'list'}
-                      />
-                    </Grid>
-                  ))}
+              {services.length === 0 ? (
+                <Typography className={classes.emptyMsg}>
+                  {i18n.__(`pages.ServicesPage.${structureMode ? 'NoStructureServices' : 'NoServices'}`)}
+                </Typography>
+              ) : viewMode === 'list' && isMobile ? (
+                mapList((service) => (
+                  <Grid className={classes.gridItem} item xs={12} md={6} key={service._id}>
+                    <ServiceDetailsList service={service} />
+                    {/* favAction={favAction(service._id)} // PROPS FOR SERVICEDETAILSLIST */}
+                  </Grid>
+                ))
+              ) : (
+                mapList((service) => (
+                  <Grid className={classes.gridItem} item key={service._id} xs={12} sm={12} md={6} lg={4}>
+                    <ServiceDetails
+                      service={service}
+                      favAction={favAction(service._id)}
+                      updateCategories={updateCatList}
+                      catList={catList}
+                      categories={categories}
+                      isShort={!isMobile && viewMode === 'list'}
+                    />
+                  </Grid>
+                ))
+              )}
             </Grid>
             <Dialog fullScreen open={filterToggle && isMobile} TransitionComponent={Transition}>
               <AppBar className={classes.appBar}>
@@ -422,10 +432,12 @@ ServicesPage.propTypes = {
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   ready: PropTypes.bool.isRequired,
+  structureMode: PropTypes.bool.isRequired,
 };
 
 export default withTracker(({ match: { path } }) => {
-  const subName = path === '/structure' ? 'services.structure' : 'services.all';
+  const structureMode = path === '/structure';
+  const subName = structureMode ? 'services.structure' : 'services.all';
   const servicesHandle = Meteor.subscribe(subName);
   const services = Services.find({ state: { $ne: 10 } }, { sort: { title: 1 } }).fetch();
   const categoriesHandle = Meteor.subscribe('categories.all');
@@ -436,5 +448,6 @@ export default withTracker(({ match: { path } }) => {
     services,
     categories,
     ready,
+    structureMode,
   };
 })(ServicesPage);
