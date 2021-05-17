@@ -8,6 +8,8 @@ export default function Screencast() {
       display: 'grid',
       justifyContent: 'center',
       padding: '20px',
+      width: '55vw',
+      height: '55vh',
     },
   });
   const classes = useStyles();
@@ -15,8 +17,6 @@ export default function Screencast() {
   return (
     <Grid className={classes.iframe}>
       <iframe
-        width="840"
-        height="473"
         title="screencast_frame"
         sandbox="allow-same-origin allow-scripts allow-popups"
         src="https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478"

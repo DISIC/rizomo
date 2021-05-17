@@ -10,9 +10,10 @@ export default function Animation() {
       padding: '20px',
       maxWidth: '70vw',
     },
-    ifram: {
-      minWidth: '45vw',
-    }
+    iframe: {
+      width: '55vw',
+      height: '55vh',
+    },
   });
   const classes = useStyles();
 
@@ -20,8 +21,6 @@ export default function Animation() {
     <Grid className={classes.grid}>
       <iframe
         className={classes.iframe}
-        width="auto"
-        height="auto"
         title="screencast_frame"
         sandbox="allow-same-origin allow-scripts allow-popups"
         src="https://tube-dijon.beta.education.fr/videos/embed/940b6b1f-09b6-4995-a86a-a1901cd8ae21"
