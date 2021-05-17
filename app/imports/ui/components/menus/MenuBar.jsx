@@ -7,7 +7,9 @@ import Tab from '@material-ui/core/Tab';
 import { PropTypes } from 'prop-types';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
-import SearchIcon from '@material-ui/icons/Search';
+import HelpIcon from '@material-ui/icons/Help';
+import BusinessIcon from '@material-ui/icons/Business';
+import AppsIcon from '@material-ui/icons/Apps';
 
 export const links = [
   {
@@ -27,19 +29,21 @@ export const links = [
   {
     path: '/services',
     content: 'menuServices',
-    icon: <SearchIcon />,
+    icon: <AppsIcon />,
     admin: false,
+    tooltip: 'tooltipServices',
   },
   {
     path: '/structure',
     content: 'menuStructure',
-    icon: <SearchIcon />,
+    icon: <BusinessIcon />,
     admin: false,
+    tooltip: 'tooltipStructure',
   },
   {
     path: '/help',
     content: 'menuHelp',
-    icon: <HomeIcon />,
+    icon: <HelpIcon />,
     admin: false,
   },
 ];
@@ -96,6 +100,7 @@ const MenuBar = ({ mobile }) => {
         <Tab
           key={link.path}
           value={link.path}
+          title={link.tooltip ? i18n.__(`components.MenuBar.${link.tooltip}`) : ''}
           disableFocusRipple={mobile}
           disableRipple={mobile}
           className={mobile ? classes.mobileTabs : null}
