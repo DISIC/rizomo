@@ -4,19 +4,24 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default function Animation() {
   const useStyles = makeStyles({
-    iframe: {
+    grid: {
       display: 'grid',
       justifyContent: 'center',
       padding: '20px',
+      maxWidth: '70vw',
     },
+    ifram: {
+      minWidth: '45vw',
+    }
   });
   const classes = useStyles();
 
   return (
-    <Grid className={classes.iframe}>
+    <Grid className={classes.grid}>
       <iframe
-        width="840"
-        height="473"
+        className={classes.iframe}
+        width="auto"
+        height="auto"
         title="screencast_frame"
         sandbox="allow-same-origin allow-scripts allow-popups"
         src="https://tube-dijon.beta.education.fr/videos/embed/940b6b1f-09b6-4995-a86a-a1901cd8ae21"
