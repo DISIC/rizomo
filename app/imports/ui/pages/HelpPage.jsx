@@ -22,9 +22,7 @@ import ScreencastGroup from '../components/screencast/ScreencastGroup';
 import ScreencastMezig from '../components/screencast/ScreencastMezig';
 
 function HelpPage() {
-  const [openScreencast, setScreencast] = useState(false);
-  const [openScreencastGroup, setScreencastGroup] = useState(false);
-  const [openScreencastMezig, setScreencastMezig] = useState(false);
+  const [openScreencast, setScreencastModal] = useState(false);
 
   const useStyles = makeStyles((theme) => ({
     card: {
@@ -72,6 +70,21 @@ function HelpPage() {
   }));
 
   const classes = useStyles();
+  const [screencast, setScreencast] = useState('screencast');
+
+  const ifram = () => {
+    console.log(screencast);
+    switch (screencast) {
+      case 'screencast':
+        return <Screencast />;
+      case 'group':
+        return <ScreencastGroup />;
+      case 'mezig':
+        return <ScreencastMezig />;
+      default:
+        return <ScreencastMezig />;
+    }
+  };
 
   return (
     <Fade in>
@@ -85,7 +98,10 @@ function HelpPage() {
                 startIcon={<ExitToAppIcon />}
                 className={classes.buttonText}
                 size="large"
-                onClick={() => setScreencast(true)}
+                onClick={() => {
+                  setScreencast('screencast');
+                  setScreencastModal(true);
+                }}
               >
                 {i18n.__('pages.HelpPage.tutoLabel')}
               </Button>
@@ -98,7 +114,10 @@ function HelpPage() {
                 startIcon={<ExitToAppIcon />}
                 className={classes.buttonText}
                 size="large"
-                onClick={() => setScreencastGroup(true)}
+                onClick={() => {
+                  setScreencast('group');
+                  setScreencastModal(true);
+                }}
               >
                 {i18n.__('pages.HelpPage.tutoLabel')}
               </Button>
@@ -111,35 +130,22 @@ function HelpPage() {
                 startIcon={<ExitToAppIcon />}
                 className={classes.buttonText}
                 size="large"
-                onClick={() => setScreencastMezig(true)}
+                onClick={() => {
+                  setScreencast('mezig');
+                  setScreencastModal(true);
+                }}
               >
                 {i18n.__('pages.HelpPage.tutoLabel')}
               </Button>
             </CardContent>
           </Card>
         </Grid>
-        <Modal open={openScreencast} onClose={() => setScreencast(false)}>
+        <Modal open={openScreencast} onClose={() => setScreencastModal(false)}>
           <Grid className={classes.gridModal}>
             <Grid className={classes.button}>
-              <CancelIcon className={classes.closeButton} onClick={() => setScreencast(false)} />
+              <CancelIcon className={classes.closeButton} onClick={() => setScreencastModal(false)} />
             </Grid>
-            <Screencast />
-          </Grid>
-        </Modal>
-        <Modal open={openScreencastGroup} onClose={() => setScreencastGroup(false)}>
-          <Grid className={classes.gridModal}>
-            <Grid className={classes.button}>
-              <CancelIcon className={classes.closeButton} onClick={() => setScreencastGroup(false)} />
-            </Grid>
-            <ScreencastGroup />
-          </Grid>
-        </Modal>
-        <Modal open={openScreencastMezig} onClose={() => setScreencastMezig(false)}>
-          <Grid className={classes.gridModal}>
-            <Grid className={classes.button}>
-              <CancelIcon className={classes.closeButton} onClick={() => setScreencastMezig(false)} />
-            </Grid>
-            <ScreencastMezig />
+            {ifram()}
           </Grid>
         </Modal>
       </Container>
