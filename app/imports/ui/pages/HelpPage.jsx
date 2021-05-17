@@ -62,6 +62,7 @@ function HelpPage() {
     gridModal: {
       backgroundColor: 'white',
       width: 'fit-content',
+      height: 'fit-content',
       margin: 'auto',
     },
     modal: {
