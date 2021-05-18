@@ -1,18 +1,22 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { useAppContext } from '../../contexts/context';
 
 export default function Animation() {
+  const [{ isMobile }] = useAppContext();
+
   const useStyles = makeStyles({
     grid: {
       display: 'grid',
       justifyContent: 'center',
       padding: '20px',
+      marginLeft: isMobile ? '15%' : '0px',
       maxWidth: '70vw',
     },
     iframe: {
-      width: '55vw',
-      height: '55vh',
+      width: isMobile ? '90vw' : '55vw',
+      height: isMobile ? '50vmin' : '55vh',
     },
   });
   const classes = useStyles();

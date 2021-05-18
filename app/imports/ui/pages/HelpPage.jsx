@@ -20,9 +20,11 @@ import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import Screencast from '../components/screencast/Screencast';
 import ScreencastGroup from '../components/screencast/ScreencastGroup';
 import ScreencastMezig from '../components/screencast/ScreencastMezig';
+import { useAppContext } from '../contexts/context';
 
 function HelpPage() {
   const [openScreencast, setScreencastModal] = useState(false);
+  const [{ isMobile }] = useAppContext();
 
   const useStyles = makeStyles((theme) => ({
     card: {
@@ -74,7 +76,6 @@ function HelpPage() {
   const [screencast, setScreencast] = useState('screencast');
 
   const ifram = () => {
-    console.log(screencast);
     switch (screencast) {
       case 'screencast':
         return <Screencast />;
@@ -91,8 +92,8 @@ function HelpPage() {
     <Fade in>
       <Container>
         <Typography variant="h4">{i18n.__('pages.HelpPage.title')}</Typography>
-        <Grid xs={12} className={classes.grid}>
-          <Card xs={12} sm={4} md={4} className={classes.card}>
+        <Grid direction={isMobile ? 'column' : 'row'} xs={12} className={classes.grid}>
+          <Card className={classes.card}>
             <CardHeader title={i18n.__('pages.HelpPage.titleCardStart')} />
             <CardContent>
               <Button
@@ -108,7 +109,7 @@ function HelpPage() {
               </Button>
             </CardContent>
           </Card>
-          <Card xs={12} sm={4} md={4} className={classes.card}>
+          <Card className={classes.card}>
             <CardHeader title={i18n.__('pages.HelpPage.titleCardGroup')} />
             <CardContent>
               <Button
@@ -124,7 +125,7 @@ function HelpPage() {
               </Button>
             </CardContent>
           </Card>
-          <Card xs={12} sm={4} md={4} className={classes.card}>
+          <Card className={classes.card}>
             <CardHeader title={i18n.__('pages.HelpPage.titleCardMezig')} />
             <CardContent>
               <Button

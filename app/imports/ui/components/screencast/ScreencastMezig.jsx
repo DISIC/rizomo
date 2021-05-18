@@ -1,8 +1,10 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { useAppContext } from '../../contexts/context';
 
 export default function ScreencastMezig() {
+  const [{ isMobile }] = useAppContext();
   const useStyles = makeStyles({
     grid: {
       display: 'grid',
@@ -10,8 +12,8 @@ export default function ScreencastMezig() {
       padding: '20px',
     },
     iframe: {
-      width: '55vw',
-      height: '55vh',
+      width: isMobile ? '90vw' : '55vw',
+      height: isMobile ? '50vmin' : '55vh',
     },
   });
   const classes = useStyles();
