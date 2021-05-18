@@ -3,8 +3,11 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppContext } from '../../contexts/context';
 
-export default function Screencast() {
+export default function Screencast(link) {
   const [{ isMobile }] = useAppContext();
+  const url = link;
+  console.log(url === 'https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478');
+
   const useStyles = makeStyles({
     grid: {
       display: 'grid',
@@ -24,7 +27,7 @@ export default function Screencast() {
         className={classes.iframe}
         title="screencast_frame"
         sandbox="allow-same-origin allow-scripts allow-popups"
-        src="https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478"
+        src={url}
         frameBorder="0"
         allowFullScreen
       />

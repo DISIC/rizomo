@@ -18,8 +18,6 @@ import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import Screencast from '../components/screencast/Screencast';
-import ScreencastGroup from '../components/screencast/ScreencastGroup';
-import ScreencastMezig from '../components/screencast/ScreencastMezig';
 import { useAppContext } from '../contexts/context';
 
 function HelpPage() {
@@ -73,20 +71,7 @@ function HelpPage() {
   }));
 
   const classes = useStyles();
-  const [screencast, setScreencast] = useState('screencast');
-
-  const ifram = () => {
-    switch (screencast) {
-      case 'screencast':
-        return <Screencast />;
-      case 'group':
-        return <ScreencastGroup />;
-      case 'mezig':
-        return <ScreencastMezig />;
-      default:
-        return <ScreencastMezig />;
-    }
-  };
+  const [link, setLink] = useState('https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478');
 
   return (
     <Fade in>
@@ -101,7 +86,7 @@ function HelpPage() {
                 className={classes.buttonText}
                 size="large"
                 onClick={() => {
-                  setScreencast('screencast');
+                  setLink('https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478');
                   setScreencastModal(true);
                 }}
               >
@@ -117,7 +102,7 @@ function HelpPage() {
                 className={classes.buttonText}
                 size="large"
                 onClick={() => {
-                  setScreencast('group');
+                  setLink('https://tube-dijon.beta.education.fr/videos/embed/57752b90-5b36-4b3f-9b83-1b7464e41a5f');
                   setScreencastModal(true);
                 }}
               >
@@ -133,7 +118,7 @@ function HelpPage() {
                 className={classes.buttonText}
                 size="large"
                 onClick={() => {
-                  setScreencast('mezig');
+                  setLink('https://tube-dijon.beta.education.fr/videos/embed/d024f709-8b65-4f69-b058-22569f2b881d');
                   setScreencastModal(true);
                 }}
               >
@@ -147,7 +132,7 @@ function HelpPage() {
             <Grid className={classes.button}>
               <CancelIcon className={classes.closeButton} onClick={() => setScreencastModal(false)} />
             </Grid>
-            {ifram()}
+            <Screencast link="https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478" />
           </Grid>
         </Modal>
       </Container>
