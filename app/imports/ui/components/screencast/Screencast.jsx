@@ -1,12 +1,11 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import { useAppContext } from '../../contexts/context';
 
-export default function Screencast(link) {
+export default function Screencast({ link }) {
   const [{ isMobile }] = useAppContext();
-  const url = link;
-  console.log(url === 'https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478');
 
   const useStyles = makeStyles({
     grid: {
@@ -27,10 +26,14 @@ export default function Screencast(link) {
         className={classes.iframe}
         title="screencast_frame"
         sandbox="allow-same-origin allow-scripts allow-popups"
-        src={url}
+        src={link}
         frameBorder="0"
         allowFullScreen
       />
     </Grid>
   );
 }
+
+Screencast.propTypes = {
+  link: PropTypes.string.isRequired,
+};
