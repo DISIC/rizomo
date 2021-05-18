@@ -132,7 +132,7 @@ function HelpPage() {
             <Grid className={classes.button}>
               <CancelIcon className={classes.closeButton} onClick={() => setScreencastModal(false)} />
             </Grid>
-            <Screencast link="https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478" />
+            <Screencast link={link} />
           </Grid>
         </Modal>
       </Container>
