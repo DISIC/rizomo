@@ -858,11 +858,14 @@
       "typeLink": "Lien",
       "addZoneStartButton": "Ajouter une nouvelle zone au début",
       "addZoneEndButton": "Ajouter une nouvelle zone à la fin",
-      "toggleEdition": "Activer/Désactiver le mode édition",
-      "tutoTitle": "Apprenez à personnaliser cette page"
+      "toggleEdition": "Activer/Désactiver le mode édition"
     },
     "HelpPage": {
-      "title": "Retrouvez ici tous les tutoriels nécessaires pour maitriser LaBoite"
+      "title": "Retrouvez ici tous les tutoriels nécessaires pour maitriser LaBoite",
+      "titleCardStart": "Commencer avec LaBoite",
+      "titleCardGroup": "Créer et administrer un groupe",
+      "titleCardMezig": "Comment utiliser Mézig",
+      "tutoLabel": "Voir le tutoriel"
     },
     "AdminSingleServicePage": {
       "edition": "Edition du service",

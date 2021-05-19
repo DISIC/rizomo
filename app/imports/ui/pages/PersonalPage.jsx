@@ -29,7 +29,7 @@ import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import PersonalZone from '../components/personalspace/PersonalZone';
-import Screencast from '../components/personalspace/Screencast';
+import Animation from '../components/screencast/Animation';
 import { useAppContext } from '../contexts/context';
 
 const useStyles = (isMobile) =>
@@ -450,8 +450,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
               </Grid>
               {localPS.unsorted.length === 0 && localPS.sorted.length === 0 ? (
                 <Grid>
-                  <Typography className={classes.castTuto}>{i18n.__('pages.PersonalPage.tutoTitle')}</Typography>
-                  <Screencast />
+                  <Animation />
                   <div className={classes.screen}>
                     <Link to="/services">
                       {i18n.__('pages.PersonalPage.noFavYet')}
