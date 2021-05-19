@@ -27,7 +27,7 @@ function HelpPage() {
   const useStyles = makeStyles((theme) => ({
     card: {
       margin: 10,
-      height: '100%',
+      height: '18vh',
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
