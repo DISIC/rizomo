@@ -80,7 +80,7 @@ function HelpPage() {
   return (
     <Fade in>
       <Container>
-        <Typography variant="h4">{i18n.__('pages.HelpPage.title')}</Typography>
+        <Typography variant={isMobile ? 'h5' : 'h4'}>{i18n.__('pages.HelpPage.title')}</Typography>
         <Grid direction={isMobile ? 'column' : 'row'} xs={12} className={classes.grid}>
           <Card className={classes.card}>
             <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardStart')} />
