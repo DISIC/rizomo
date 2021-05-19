@@ -68,6 +68,9 @@ function HelpPage() {
     modal: {
       display: 'grid',
     },
+    header: {
+      height: '87px',
+    }
   }));
 
   const classes = useStyles();
@@ -79,7 +82,7 @@ function HelpPage() {
         <Typography variant="h4">{i18n.__('pages.HelpPage.title')}</Typography>
         <Grid direction={isMobile ? 'column' : 'row'} xs={12} className={classes.grid}>
           <Card className={classes.card}>
-            <CardHeader title={i18n.__('pages.HelpPage.titleCardStart')} />
+            <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardStart')} />
             <CardContent>
               <Button
                 startIcon={<ExitToAppIcon />}
@@ -95,7 +98,7 @@ function HelpPage() {
             </CardContent>
           </Card>
           <Card className={classes.card}>
-            <CardHeader title={i18n.__('pages.HelpPage.titleCardGroup')} />
+            <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardGroup')} />
             <CardContent>
               <Button
                 startIcon={<ExitToAppIcon />}
@@ -111,7 +114,7 @@ function HelpPage() {
             </CardContent>
           </Card>
           <Card className={classes.card}>
-            <CardHeader title={i18n.__('pages.HelpPage.titleCardMezig')} />
+            <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardMezig')} />
             <CardContent>
               <Button
                 startIcon={<ExitToAppIcon />}
