@@ -410,7 +410,10 @@
       "validate_tooltip": "Accept this candidate",
       "memberAdded": "User set as member",
       "userAdded": "Successfully added user",
+      "groupAdded": "users of selectioned group has been added",
+      "groupAddedButNoMember": "All members of selectioned group are already in your group",
       "addUserButton": "Add",
+      "addGroupButton": "Import members",
       "userRemoved": "User removed from group",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a user",
@@ -419,7 +422,8 @@
         "body_addTooltip": "Add a user",
         "body_editTooltip": "Modify this user",
         "body_deleteTooltip": "Remove this user",
-        "body_editRow_deleteText": "Do you really want to remove this user?"
+        "body_editRow_deleteText": "Do you really want to remove this user?",
+        "body_addGroupTooltip": "Add members of another group"
       }
     },
     "UserFinder": {

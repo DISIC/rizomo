@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import MaterialTable from 'material-table';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import i18n from 'meteor/universe:i18n';
@@ -13,6 +14,7 @@ import { Roles } from 'meteor/alanning:roles';
 import add from '@material-ui/icons/Add';
 import setMaterialTableLocalization from '../initMaterialTableLocalization';
 import UserFinder from './UserFinder';
+import GroupFinder from './GroupFinder';
 import Groups from '../../../api/groups/groups';
 import { useAppContext } from '../../contexts/context';
 
@@ -73,7 +75,9 @@ const GroupsUsersList = (props) => {
   const [data, setData] = useState([]);
   const [title, setTitle] = useState('');
   const [user, setUser] = useState(null);
+  const [groupAdd, setGroupAdd] = useState(null);
   const [showSearch, setShowSearch] = useState(false);
+  const [showSearchGroup, setShowSearchGroup] = useState(false);
   const [finderId, setFinderId] = useState(new Date().getTime());
   const classes = useStyles();
 
@@ -96,6 +100,19 @@ const GroupsUsersList = (props) => {
     return true;
   }
 
+  const addGroup = () => {
+    Meteor.call('groups.addGroupMembersToGroup', { groupId, otherGroupId: groupAdd._id }, (err, nb) => {
+      if (err) {
+        msg.error(err.reason);
+      } else if (nb === 0) {
+        msg.error(i18n.__('components.GroupUsersList.groupAddedButNoMember'));
+      } else {
+        msg.success(`${nb} ${i18n.__('components.GroupUsersList.groupAdded')}`);
+      }
+    });
+    setFinderId(new Date().getTime());
+  };
+
   useEffect(() => {
     if (ready === true) {
       const usersField = `${userRole}s`;
@@ -116,6 +133,12 @@ const GroupsUsersList = (props) => {
       tooltip: i18n.__('components.GroupUsersList.materialTableLocalization.body_addTooltip'),
       isFreeAction: true,
       onClick: () => setShowSearch(!showSearch),
+    },
+    {
+      icon: GroupAddIcon,
+      tooltip: i18n.__('components.GroupUsersList.materialTableLocalization.body_addGroupTooltip'),
+      isFreeAction: true,
+      onClick: () => setShowSearchGroup(!showSearchGroup),
     },
   ];
   if (userRole === 'candidate') {
@@ -149,6 +172,23 @@ const GroupsUsersList = (props) => {
             {i18n.__('components.GroupUsersList.addUserButton')}
           </Button>
           <IconButton onClick={() => setShowSearch(!showSearch)}>
+            <ExpandLessIcon />
+          </IconButton>
+        </div>
+      </Collapse>
+      <Collapse in={showSearchGroup} collapsedHeight={0}>
+        <div className={classes.adduser}>
+          <GroupFinder
+            onSelected={setGroupAdd}
+            key={finderId}
+            hidden={!showSearchGroup}
+            exclude={{ groupId, role: userRole }}
+            opened={showSearchGroup}
+          />
+          <Button variant="contained" disabled={!groupAdd} color="primary" onClick={addGroup}>
+            {i18n.__('components.GroupUsersList.addGroupButton')}
+          </Button>
+          <IconButton onClick={() => setShowSearch(!showSearchGroup)}>
             <ExpandLessIcon />
           </IconButton>
         </div>
