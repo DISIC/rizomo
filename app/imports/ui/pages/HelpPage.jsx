@@ -37,7 +37,8 @@ function HelpPage() {
       padding: 1,
     },
     buttonText: {
-      boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)',
+      boxShadow:
+        '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)',
       textTransform: 'none',
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.tertiary.main,
@@ -71,11 +72,13 @@ function HelpPage() {
     },
     header: {
       height: '87px',
-    }
+    },
   }));
 
   const classes = useStyles();
-  const [link, setLink] = useState('https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478');
+  const [link, setLink] = useState(
+    'https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478',
+  );
 
   return (
     <Fade in>
