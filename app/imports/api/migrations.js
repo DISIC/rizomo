@@ -214,3 +214,37 @@ Migrations.add({
     Services.rawCollection().updateMany({}, { $unset: { structure: true } });
   },
 });
+
+Migrations.add({
+  version: 12,
+  name: 'Update group count and quota on users',
+  up: () => {
+    let updateInfos = {};
+    Meteor.users
+      .find()
+      .fetch()
+      .forEach((user) => {
+        updateInfos = {
+          groupCount: Groups.find({ owner: user._id }).count(),
+        };
+        if (user.groupQuota === undefined) {
+          updateInfos.groupQuota = Meteor.users.schema._schema.groupQuota.defaultValue;
+        }
+        Meteor.users.update({ _id: user._id }, { $set: updateInfos });
+      });
+  },
+  down: () => {
+    Meteor.users.rawCollection().updateMany({}, { $unset: { groupQuota: true, groupCount: true } });
+  },
+});
+
+Migrations.add({
+  version: 13,
+  name: 'Update articles boolean on groups if not set in step 10',
+  up: () => {
+    Groups.update({ articles: null }, { $set: { articles: false } }, { multi: true });
+  },
+  down: () => {
+    // no rollback on this step
+  },
+});
