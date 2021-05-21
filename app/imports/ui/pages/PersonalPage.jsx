@@ -374,7 +374,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
               <Grid item xs={12} sm={12} md={12} className={classes.flex}>
                 <Grid container alignItems="center" spacing={1}>
                   <Grid item>
-                    <Typography variant="h4">{i18n.__('pages.PersonalPage.welcome')}</Typography>
+                    <Typography variant={isMobile ? 'h5' : 'h4'}>{i18n.__('pages.PersonalPage.welcome')}</Typography>
                   </Grid>
                   <Grid item>
                     <IconButton onClick={toggleSearch} disabled={customDrag}>
