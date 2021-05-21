@@ -44,7 +44,7 @@ function GroupFinder({ onSelected, exclude = [], opened }) {
           if (!existingTags.includes(params.inputValue.toLowerCase())) {
             filtered.push({
               inputValue: params.inputValue,
-              name: `${i18n.__('components.GroupFinder.addGroup')} "${params.inputValue.toLowerCase()}"`,
+              name: `"${params.inputValue.toLowerCase()}" : ${i18n.__('components.GroupFinder.noTag')} `,
             });
           }
         }

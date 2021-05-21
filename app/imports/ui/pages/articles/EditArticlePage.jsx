@@ -608,7 +608,7 @@ function EditArticlePage({
             </div>
           </Grid>
           <Grid item xs={6}>
-            <GroupFinder exclude={data.groups || []} onSelected={addGroupToArticle} />
+            <GroupFinder exclude={data.groups ? data.groups.map((g) => g._id) : []} onSelected={addGroupToArticle} />
             <div className={classes.tags}>
               {data.groups &&
                 data.groups.map((group) => {
@@ -667,7 +667,7 @@ function EditArticlePage({
               {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
             </Button>
             {(!slug || article.draft) && (
-              <Button variant="contained" color="link" onClick={submitUpdateArticleDraft}>
+              <Button variant="contained" onClick={submitUpdateArticleDraft}>
                 {i18n.__('pages.EditArticlePage.save_draf')}
               </Button>
             )}

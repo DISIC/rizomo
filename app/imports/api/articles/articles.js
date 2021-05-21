@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
@@ -123,7 +124,7 @@ Articles.publicFields = {
 Articles.attachSchema(Articles.schema);
 
 if (Meteor.isServer) {
-  const updateGroupWithArticles = (userId, doc, remove) => {
+  const updateGroupWithArticles = (doc, remove) => {
     if (doc.groups) {
       doc.groups.forEach(({ _id }) => {
         if (remove) {
@@ -138,9 +139,15 @@ if (Meteor.isServer) {
     }
   };
 
-  Articles.after.insert(updateGroupWithArticles);
-  Articles.after.update(updateGroupWithArticles);
-  Articles.after.remove(updateGroupWithArticles, true);
+  Articles.after.insert(function (userId, doc) {
+    updateGroupWithArticles(doc, false);
+  });
+  Articles.after.update(function (userId, doc) {
+    updateGroupWithArticles(doc, false);
+  });
+  Articles.after.remove(function (userId, doc) {
+    updateGroupWithArticles(doc, true);
+  });
 }
 
 export default Articles;
