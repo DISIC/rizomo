@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function TagFinder({ tags, onSelected, exclude, opened, resetKey }) {
+function TagFinder({ tags, onSelected, exclude, opened, resetKey, inputWidth }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState(tags.filter((tag) => !exclude.includes(tag.name)));
@@ -38,7 +38,6 @@ function TagFinder({ tags, onSelected, exclude, opened, resetKey }) {
     <Autocomplete
       key={resetKey}
       id="tag-select"
-      style={{ width: 350 }}
       open={open}
       onOpen={() => {
         setOpen(true);
@@ -91,6 +90,7 @@ function TagFinder({ tags, onSelected, exclude, opened, resetKey }) {
         return (
           <TextField
             {...params}
+            style={{ width: inputWidth }}
             label={i18n.__('components.TagFinder.tagLabel')}
             variant="outlined"
             placeholder={i18n.__('components.TagFinder.placeholder')}
@@ -117,6 +117,7 @@ TagFinder.defaultProps = {
   resetKey: new Date().toISOString(),
   exclude: null,
   opened: false,
+  inputWidth: 285,
 };
 
 TagFinder.propTypes = {
@@ -125,6 +126,7 @@ TagFinder.propTypes = {
   onSelected: PropTypes.func.isRequired,
   exclude: PropTypes.arrayOf(PropTypes.string),
   opened: PropTypes.bool,
+  inputWidth: PropTypes.number,
 };
 
 export default TagFinder;

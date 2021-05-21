@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
   },
   wysiwyg: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(3),
     '& label': {
       marginBottom: theme.spacing(1),
@@ -92,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tags: {
     marginTop: 10,
+    marginBottom: 10,
   },
   tag: {
     margin: 2,
@@ -581,9 +582,15 @@ function EditArticlePage({
           </div>
         ) : null}
         <Grid container className={classes.tagInputs}>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <ButtonGroup>
-              <TagFinder resetKey={tagsKey} tags={tags} exclude={data.tags} onSelected={newTagChanged} />
+              <TagFinder
+                resetKey={tagsKey}
+                tags={tags}
+                exclude={data.tags}
+                onSelected={newTagChanged}
+                inputWidth={isMobile ? 200 : 285}
+              />
               <Button variant="contained" disabled={newTag.name === ''} color="primary" onClick={addTag}>
                 {i18n.__(
                   newTag._id === null && newTag.name
@@ -607,7 +614,7 @@ function EditArticlePage({
               })}
             </div>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <GroupFinder exclude={data.groups ? data.groups.map((g) => g._id) : []} onSelected={addGroupToArticle} />
             <div className={classes.tags}>
               {data.groups &&
@@ -625,7 +632,6 @@ function EditArticlePage({
             </div>
           </Grid>
         </Grid>
-
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
 
@@ -659,7 +665,6 @@ function EditArticlePage({
             )
           ) : null}
         </div>
-
         <div className={classes.buttonGroup}>
           <div>
             <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
