@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState } from 'react';
 import i18n from 'meteor/universe:i18n';
 import { makeStyles } from '@material-ui/core/styles';
@@ -44,6 +43,9 @@ const useStyles = (isMobile) =>
       display: 'flex',
       justifyContent: 'center',
     },
+    groupCountInfo: {
+      marginTop: 30,
+    },
     alert: {
       margin: 8,
     },
@@ -65,7 +67,6 @@ const AdminGroupQuota = ({ data, open, onClose }) => {
         if (error) {
           msg.error(error.message);
         } else {
-          console.log('teokoek');
           msg.success(i18n.__('api.methods.operationSuccessMsg'));
         }
       },
@@ -78,12 +79,11 @@ const AdminGroupQuota = ({ data, open, onClose }) => {
   };
 
   return (
-    <Modal data open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose}>
       <div className={classes.paper}>
         <Card className={classes.root}>
           <CardHeader
-            title={i18n.__('components.AdminGroupQuota.title')}
-            subheader={i18n.__('components.AdminGroupQuota.subtitle') + data.username}
+            title={i18n.__('components.AdminGroupQuota.subtitle') + data.username}
             action={
               <IconButton onClick={onClose}>
                 <ClearIcon />
@@ -103,8 +103,9 @@ const AdminGroupQuota = ({ data, open, onClose }) => {
                 },
               }}
             />
-            <Typography>{i18n.__('components.AdminGroupQuota.createdGroup')}</Typography>
-            <TextField value={data.groupCount || '0'} />
+            <Typography className={classes.groupCountInfo}>
+              {data.groupCount} {i18n.__('components.AdminGroupQuota.createdGroup')}
+            </Typography>
           </CardContent>
           <CardActions className={classes.actions}>
             <Button onClick={changeQuota} variant="contained" color="primary">
