@@ -65,9 +65,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
   },
-  maxWidth:{
+  maxWidth: {
     maxWidth: '88vw',
-  }
+  },
 }));
 
 const defaultState = {
