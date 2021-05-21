@@ -74,7 +74,7 @@
         "lastLogin": "Date de dernière connexion",
         "avatar": "URL de l'avatar",
         "groupCount": "Nombre de groupes créés",
-        "groupQuota": "Nombre de groupes créable"
+        "groupQuota": "Quota de groupes"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -88,7 +88,7 @@
       "moderatedGroupOnly": "Cette action est possible seulement sur un groupe modéré.",
       "userNotFound": "Utilisateur non retrouvé",
       "groupAlreadyExist": "Un groupe avec le même nom existe déjà",
-      "toManyGroup": "Vous avez déjà trop de groupes créés",
+      "toManyGroup": "Vous avez atteint votre quota de groupes créés",
       "types": {
         "open": "ouvert",
         "moderated": "modéré",
@@ -609,10 +609,10 @@
     },
     "AdminGroupQuota": {
       "title": "Modifier les paramètres d'un utilisateur",
-      "subtitle": "Modification de ",
+      "subtitle": "Paramètres de ",
       "cancel": "Annuler",
-      "mainText": "Nombre maximale de groupe que peux créer l'utilisateur",
-      "createdGroup": "groupes crées par l'utilisateur",
+      "mainText": "Nombre maximal de groupes que peut créer l'utilisateur",
+      "createdGroup": "groupe(s) créé(s) par l'utilisateur",
       "ValidateForm": "Valider"
     }
   },
