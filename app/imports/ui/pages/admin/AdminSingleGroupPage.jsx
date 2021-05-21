@@ -101,6 +101,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const [content, setContent] = useState('');
 
   const [plugins, setPlugins] = useState({}); // { nextcloud: false, rocketChat: true}
+  const [{ isMobile }] = useAppContext();
   const { groupPlugins } = Meteor.settings.public;
   const history = useHistory();
   const classes = useStyles();
@@ -289,7 +290,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
           </Typography>
           <form noValidate autoComplete="off">
             <Grid container spacing={2} style={{ alignItems: 'center' }}>
-              <Grid item xs={6} style={{ paddingLeft: '18px' }}>
+              <Grid item xs={isMobile ? '12' : '6'} style={{ paddingLeft: '18px' }}>
                 <TextField
                   onChange={onUpdateField}
                   value={groupData.name}
@@ -342,7 +343,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                   margin="normal"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={isMobile ? '12' : '6'}>
                 <GroupAvatarPicker
                   avatar={groupData.avatar || ''}
                   type={groupData.type}
