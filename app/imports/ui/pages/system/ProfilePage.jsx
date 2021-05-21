@@ -65,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
   },
+  maxWidth:{
+    maxWidth: '88vw',
+  }
 }));
 
 const defaultState = {
@@ -462,7 +465,7 @@ const ProfilePage = () => {
                 </Grid>
               </Grid>
               <Grid item />
-              <Grid item>
+              <Grid item className={classes.maxWidth}>
                 <FormControl variant="outlined" className={classes.formControl} fullWidth>
                   <InputLabel htmlFor="structure" id="structure-label" ref={structureLabel}>
                     {i18n.__('api.users.labels.structure')}
