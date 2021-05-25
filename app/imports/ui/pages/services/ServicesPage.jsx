@@ -135,7 +135,7 @@ function ServicesPage({ services, categories, ready, structureMode }) {
     search = '',
     searchToggle = false,
     filterToggle = false,
-    viewMode = 'card', // Possible values : "card" or "list"
+    viewMode = 'list', // Possible values : "card" or "list"
   } = servicePage;
   const inputRef = useRef(null);
 

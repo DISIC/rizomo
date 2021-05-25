@@ -80,7 +80,7 @@ function GroupsPage() {
   const {
     search = '',
     searchToggle = false,
-    viewMode = 'card', // Possible values : "card" or "list"
+    viewMode = 'list', // Possible values : "card" or "list"
   } = groupPage;
   const { changePage, page, items, total } = !filterChecked
     ? usePagination('groups.all', { search }, Groups, {}, { sort: { name: 1 } }, ITEM_PER_PAGE)
