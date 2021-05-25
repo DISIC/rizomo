@@ -83,6 +83,13 @@ const MenuBar = ({ mobile }) => {
     return false;
   });
 
+  function a11yProps(index) {
+    return {
+      id: `scrollable-force-tab-${index}`,
+      'aria-controls': `scrollable-force-tabpanel-${index}`,
+    };
+  }
+
   return (
     <Tabs
       className={classes.tabs}
@@ -95,9 +102,12 @@ const MenuBar = ({ mobile }) => {
       textColor="primary"
       aria-label="menu links"
       centered
+      variant="scrollable"
+      scrollButtons="on"
     >
-      {links.map((link) => (
+      {links.map((link, index) => (
         <Tab
+          {...a11yProps(index)}
           key={link.path}
           value={link.path}
           title={link.tooltip ? i18n.__(`components.MenuBar.${link.tooltip}`) : ''}
