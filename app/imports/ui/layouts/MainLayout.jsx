@@ -58,7 +58,7 @@ const useStyles = (isMobile) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      overflowX: 'hidden',
+      overflow: 'hidden',
       marginTop: 60,
       marginBottom: isMobile ? 100 : 50,
     },
