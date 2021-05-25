@@ -61,11 +61,9 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
       title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
       aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
     >
-      <Link to={`/groups/${group.slug}`}>
-        <IconButton color="primary">
-          <ChevronRightIcon fontSize="large" />
-        </IconButton>
-      </Link>
+      <IconButton color="primary">
+        <ChevronRightIcon fontSize="large" />
+      </IconButton>
     </Tooltip>
   );
 
