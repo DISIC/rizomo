@@ -58,7 +58,6 @@ const useStyles = (mobile) =>
     },
     flexContainer: {
       display: 'flex',
-      justifyContent: 'space-around',
       alignItems: 'center',
     },
     indicator: {
@@ -101,7 +100,6 @@ const MenuBar = ({ mobile }) => {
       indicatorColor="secondary"
       textColor="primary"
       aria-label="menu links"
-      centered
       variant="scrollable"
       scrollButtons="on"
     >
