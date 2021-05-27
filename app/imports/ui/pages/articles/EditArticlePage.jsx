@@ -45,6 +45,7 @@ import { PICTURES_TYPES, VIDEO_TYPES, SOUND_TYPES } from '../../components/media
 import ToastUIEditor from '../../components/system/ToastUIEditor';
 import Tags from '../../../api/tags/tags';
 import TagFinder from '../../components/articles/TagFinder';
+import GroupFinder from '../../components/articles/GroupFinder';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -72,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
   },
   wysiwyg: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(3),
     '& label': {
       marginBottom: theme.spacing(1),
@@ -88,7 +89,13 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(1),
-    alignItems: 'center',
+  },
+  tags: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  tag: {
+    margin: 2,
   },
   buttonsContainer: {
     display: 'flex',
@@ -102,9 +109,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     marginBottom: theme.spacing(1),
-  },
-  tag: {
-    marginLeft: theme.spacing(1),
   },
   smallTitle: {
     marginRigt: theme.spacing(1),
@@ -412,7 +416,7 @@ function EditArticlePage({
     });
   };
 
-  const submitUpdateArticle = () => {
+  const submitUpdateArticle = (draft) => {
     setLoading(true);
     const method = slug ? updateArticle : createArticle;
     data.content = content;
@@ -422,6 +426,7 @@ function EditArticlePage({
       payload.articleId = article._id;
       payload.updateStructure = updateStructure;
     }
+    payload.data.draft = draft;
     method.call(payload, (err) => {
       setLoading(false);
       if (err) {
@@ -431,6 +436,14 @@ function EditArticlePage({
         history.push('/publications');
       }
     });
+  };
+
+  const submitUpdateArticlePublished = () => {
+    submitUpdateArticle(false);
+  };
+
+  const submitUpdateArticleDraft = () => {
+    submitUpdateArticle(true);
   };
 
   const addTag = () => {
@@ -449,9 +462,22 @@ function EditArticlePage({
     setTagsKey(new Date().toISOString());
   };
 
+  const addGroupToArticle = (event, group) => {
+    if (group && group._id) {
+      const { _id, name } = group;
+      const groups = [...(data.groups || []), { _id, name }];
+      setData({ ...data, groups });
+    }
+  };
+
   const removeTag = (tagName) => {
     const newTags = data.tags.filter((tag) => tag !== tagName);
     setData({ ...data, tags: newTags });
+  };
+
+  const removeGroup = (group) => {
+    const groups = data.groups.filter(({ _id }) => _id !== group._id);
+    setData({ ...data, groups });
   };
 
   const newTagChanged = (evt, newValue) => {
@@ -485,7 +511,8 @@ function EditArticlePage({
       <Grid container spacing={4}>
         <Grid item xs={12} className={isMobile ? null : classes.flex}>
           <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
-            {i18n.__(`pages.EditArticlePage.${slug ? 'title' : 'creationTitle'}`)}
+            {i18n.__(`pages.EditArticlePage.${slug ? 'title' : 'creationTitle'}`)}{' '}
+            {article.draft ? ` - ${i18n.__(`pages.EditArticlePage.draft`)}` : null}
           </Typography>
         </Grid>
       </Grid>
@@ -555,9 +582,15 @@ function EditArticlePage({
           </div>
         ) : null}
         <Grid container className={classes.tagInputs}>
-          <Grid item>
+          <Grid item xs={12} md={6}>
             <ButtonGroup>
-              <TagFinder resetKey={tagsKey} tags={tags} exclude={data.tags} onSelected={newTagChanged} />
+              <TagFinder
+                resetKey={tagsKey}
+                tags={tags}
+                exclude={data.tags}
+                onSelected={newTagChanged}
+                inputWidth={isMobile ? 200 : 285}
+              />
               <Button variant="contained" disabled={newTag.name === ''} color="primary" onClick={addTag}>
                 {i18n.__(
                   newTag._id === null && newTag.name
@@ -566,20 +599,39 @@ function EditArticlePage({
                 )}
               </Button>
             </ButtonGroup>
+            <div className={classes.tags}>
+              {data.tags.map((tagName) => {
+                // const tagName = Tags.findOne(tagId).name;
+                return (
+                  <Chip
+                    className={classes.tag}
+                    key={tagName}
+                    label={tagName}
+                    color="secondary"
+                    onDelete={() => removeTag(tagName)}
+                  />
+                );
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <GroupFinder exclude={data.groups ? data.groups.map((g) => g._id) : []} onSelected={addGroupToArticle} />
+            <div className={classes.tags}>
+              {data.groups &&
+                data.groups.map((group) => {
+                  return (
+                    <Chip
+                      className={classes.tag}
+                      key={group._id}
+                      label={group.name}
+                      color="secondary"
+                      onDelete={() => removeGroup(group)}
+                    />
+                  );
+                })}
+            </div>
           </Grid>
         </Grid>
-        {data.tags.map((tagName) => {
-          // const tagName = Tags.findOne(tagId).name;
-          return (
-            <Chip
-              className={classes.tag}
-              key={tagName}
-              label={tagName}
-              color="secondary"
-              onDelete={() => removeTag(tagName)}
-            />
-          );
-        })}
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
 
@@ -613,11 +665,18 @@ function EditArticlePage({
             )
           ) : null}
         </div>
-
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary" onClick={submitUpdateArticle}>
-            {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
-          </Button>
+          <div>
+            <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
+              {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
+              {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
+            </Button>
+            {(!slug || article.draft) && (
+              <Button variant="contained" onClick={submitUpdateArticleDraft}>
+                {i18n.__('pages.EditArticlePage.save_draf')}
+              </Button>
+            )}
+          </div>
 
           <Button variant="contained" onClick={() => history.push('/publications')}>
             {i18n.__('pages.EditArticlePage.cancel')}

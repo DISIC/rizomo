@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import i18n from 'meteor/universe:i18n';
@@ -40,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// eslint-disable-next-line no-unused-vars
 const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
   const { type, avatar } = group;
   const classes = useStyles();
@@ -58,59 +58,35 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
 
   const detailsButton = (
     <Tooltip
-      title={i18n.__('components.GroupDetail.singleServiceButtonLabel')}
-      aria-label={i18n.__('components.GroupDetail.singleServiceButtonLabel')}
+      title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
+      aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
     >
-      <Link to={`/groups/${group.slug}`}>
-        <IconButton color="primary">
-          <ChevronRightIcon fontSize="large" />
-        </IconButton>
-      </Link>
+      <IconButton color="primary">
+        <ChevronRightIcon fontSize="large" />
+      </IconButton>
     </Tooltip>
   );
 
   return (
     <Card className={classes.card} elevation={3}>
-      <CardHeader
-        classes={{ action: classes.action }}
-        avatar={
-          animator || admin ? (
-            <Button
-              style={{
-                color: 'white',
-                backgroundColor: member || animator ? 'green' : null,
-              }}
-              color={type === 0 ? 'primary' : 'secondary'}
-              variant="contained"
-            >
-              <GroupAvatar type={type} avatar={avatar} />
-            </Button>
-          ) : (
-            <Button
-              style={{
-                color: 'white',
-                backgroundColor: member || animator ? 'green' : null,
-              }}
-              color={type === 0 ? 'primary' : 'secondary'}
-              variant="contained"
-            >
-              <GroupAvatar type={type} avatar={avatar} />
-            </Button>
-          )
-        }
-        action={detailsButton}
-        title={group.name}
-        titleTypographyProps={{
-          variant: 'h6',
-          color: 'primary',
-        }}
-        subheader={groupType}
-        subheaderTypographyProps={{
-          variant: 'body2',
-          color: type === 0 ? 'primary' : 'secondary',
-          style: { color: member || animator ? 'green' : null },
-        }}
-      />
+      <Link to={`/groups/${group.slug}`} className={classes.noUnderline}>
+        <CardHeader
+          classes={{ action: classes.action }}
+          avatar={<GroupAvatar type={type} avatar={avatar} />}
+          action={detailsButton}
+          title={group.name}
+          titleTypographyProps={{
+            variant: 'h6',
+            color: 'primary',
+          }}
+          subheader={groupType}
+          subheaderTypographyProps={{
+            variant: 'body2',
+            color: type === 0 ? 'primary' : 'secondary',
+            style: { color: member || animator ? 'green' : null },
+          }}
+        />
+      </Link>
     </Card>
   );
 };

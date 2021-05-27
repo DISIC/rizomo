@@ -215,7 +215,7 @@ const AdminStructureUsersPage = () => {
                     <ListItemAvatar>
                       <UserAvatar
                         customClass={isStructureAdmin(user) ? classes.structureAdmin : classes.avatar}
-                        userAvatar={user.avatar}
+                        userAvatar={user.avatar || ''}
                         userFirstName={user.firstName}
                       />
                     </ListItemAvatar>

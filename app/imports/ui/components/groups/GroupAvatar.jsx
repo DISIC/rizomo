@@ -7,6 +7,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import LockIcon from '@material-ui/icons/Lock';
 import SecurityIcon from '@material-ui/icons/Security';
 import Badge from '@material-ui/core/Badge';
+import { useAppContext } from '../../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   badge: {
@@ -28,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     width: 250,
     height: 250,
   },
+  avatarMobile: {
+    width: 120,
+    height: 120,
+  },
   iconProfil: {
     fontSize: 100,
   },
@@ -35,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const GroupAvatar = ({ type, avatar, profil }) => {
   const classes = useStyles();
+  const [{ isMobile }] = useAppContext();
   const getClasse = () => {
     const typeClasse = type === 0 ? 'public' : type === 10 ? 'private' : 'moderate';
     if (avatar === '') {
@@ -55,7 +61,11 @@ const GroupAvatar = ({ type, avatar, profil }) => {
     );
 
   return avatar === '' || undefined ? (
-    <Avatar className={`${getClasse()} ${classes[`${profil === 'true' ? 'avatar' : ''}`]}`}>{avatarIcon}</Avatar>
+    <Avatar
+      className={`${getClasse()} ${classes[`${profil === 'true' ? (isMobile ? 'avatarMobile' : 'avatar') : ''}`]}`}
+    >
+      {avatarIcon}
+    </Avatar>
   ) : (
     <Badge
       overlap="circle"
@@ -65,7 +75,11 @@ const GroupAvatar = ({ type, avatar, profil }) => {
       }}
       badgeContent={avatarIcon}
     >
-      <Avatar alt="group" src={avatar} className={classes[`${profil === 'true' ? 'avatar' : ''}`]} />
+      <Avatar
+        alt="group"
+        src={avatar}
+        className={classes[`${profil === 'true' ? (isMobile ? 'avatarMobile' : 'avatar') : ''}`]}
+      />
     </Badge>
   );
 };

@@ -17,6 +17,8 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import CreateIcon from '@material-ui/icons/Create';
+import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -34,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiCardHeader-root': {
       padding: 8,
     },
+  },
+  tags: {
+    marginTop: 10,
+  },
+  tag: {
+    margin: 2,
   },
   buttonText: {
     color: theme.palette.tertiary.main,
@@ -115,18 +123,41 @@ export default function ArticleDetails({ article, publicPage }) {
       }}
       subheader={
         <>
-          {i18n.__('components.ArticleDetails.publishedOn')} {article.createdAt.toLocaleString()}{' '}
-          <Button
-            color="primary"
-            className={classes.visitCounter}
-            startIcon={<VisibilityIcon />}
-            disableElevation
-            disableRipple
-            disableFocusRipple
-            title={i18n.__('pages.PublicArticleDetailsPage.views')}
-          >
-            {article.visits}
-          </Button>
+          {article.draft
+            ? null
+            : `${i18n.__('components.ArticleDetails.publishedOn')} ${article.createdAt.toLocaleString()}`}
+          {article.draft ? (
+            <Button
+              color="primary"
+              className={classes.visitCounter}
+              startIcon={<CreateIcon />}
+              disableElevation
+              disableRipple
+              disableFocusRipple
+              title={i18n.__('pages.PublicArticleDetailsPage.draft')}
+            >
+              {i18n.__('pages.PublicArticleDetailsPage.draft')}
+            </Button>
+          ) : (
+            <Button
+              color="primary"
+              className={classes.visitCounter}
+              startIcon={<VisibilityIcon />}
+              disableElevation
+              disableRipple
+              disableFocusRipple
+              title={i18n.__('pages.PublicArticleDetailsPage.views')}
+            >
+              {article.visits}
+            </Button>
+          )}
+          {article.groups && (
+            <div className={classes.tags}>
+              {article.groups.map((group) => {
+                return <Chip className={classes.tag} key={group._id} label={group.name} color="secondary" />;
+              })}
+            </div>
+          )}
         </>
       }
       subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}

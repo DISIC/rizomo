@@ -22,6 +22,14 @@ const useStyles = makeStyles((theme) => ({
 
 export const adminMenu = [
   {
+    path: 'adminDivider',
+    content: 'Divider',
+  },
+  {
+    path: '/admingroups',
+    content: 'menuAdminGroups',
+  },
+  {
     path: '/adminservices',
     content: 'menuAdminServices',
   },
@@ -56,6 +64,10 @@ export const userMenu = [
     path: '/publications',
     content: 'menuPublications',
   },
+];
+
+export const userGroups = [
+  // for admin users, group management is in admin section
   {
     path: '/admingroups',
     content: 'menuAdminGroups',
@@ -63,6 +75,14 @@ export const userMenu = [
 ];
 
 export const structureMenu = [
+  {
+    path: 'structDivider',
+    content: 'Divider',
+  },
+  {
+    path: '/adminstructureservices',
+    content: 'menuAdminStructureServices',
+  },
   {
     path: '/adminstructureusers',
     content: 'menuAdminStructureUsers',
@@ -85,11 +105,11 @@ const MainMenu = ({ user = {} }) => {
   };
   let menu;
   if (isAdmin) {
-    menu = [...userMenu, ...structureMenu, ...adminMenu];
+    menu = [...userMenu, ...adminMenu, ...structureMenu];
   } else if (isAdminStructure) {
-    menu = [...userMenu, ...structureMenu];
+    menu = [...userMenu, ...userGroups, ...structureMenu];
   } else {
-    menu = [...userMenu];
+    menu = [...userMenu, ...userGroups];
   }
   const T = i18n.createComponent('components.MainMenu');
   const currentLink = menu.find((link) => {
@@ -134,7 +154,7 @@ const MainMenu = ({ user = {} }) => {
         endIcon={<ExpandMoreIcon />}
       >
         {user.firstName || ''}
-        <UserAvatar userAvatar={user.avatar} userFirstName={user.firstName || ''} customClass={classes.avatar} />
+        <UserAvatar userAvatar={user.avatar || ''} userFirstName={user.firstName || ''} customClass={classes.avatar} />
       </Button>
       <Menu
         id="main-menu"
@@ -160,15 +180,19 @@ const MainMenu = ({ user = {} }) => {
           <T>menuLogoutLabel</T>
         </MenuItem>
         <Divider />
-        {menu.map((item) => (
-          <MenuItem
-            key={item.path}
-            onClick={() => handleMenuClick(item.path)}
-            selected={currentLink ? currentLink.path === item.path : false}
-          >
-            <T>{item.content}</T>
-          </MenuItem>
-        ))}
+        {menu.map((item) => {
+          return item.content === 'Divider' ? (
+            <Divider key={item.path} />
+          ) : (
+            <MenuItem
+              key={item.path}
+              onClick={() => handleMenuClick(item.path)}
+              selected={currentLink ? currentLink.path === item.path : false}
+            >
+              <T>{item.content}</T>
+            </MenuItem>
+          );
+        })}
         <Divider />
         <MenuItem>
           <AppVersion />

@@ -1,5 +1,5 @@
 # The tag here should match the Meteor version of your app, per .meteor/release
-FROM hub.eole.education/proxyhub/geoffreybooth/meteor-base:2.1.1
+FROM hub.eole.education/proxyhub/geoffreybooth/meteor-base:2.2
 
 # Copy app package.json and package-lock.json into container
 COPY ./app/package*.json $APP_SOURCE_FOLDER/

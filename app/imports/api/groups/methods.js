@@ -5,7 +5,6 @@ import SimpleSchema from 'simpl-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
-
 import { isActive, getLabel } from '../utils';
 import Groups from './groups';
 import { addGroup, removeElement } from '../personalspaces/methods';
@@ -63,38 +62,155 @@ export const unfavGroup = new ValidatedMethod({
   },
 });
 
+export const findGroups = new ValidatedMethod({
+  name: 'groups.findGroups',
+  validate: new SimpleSchema({
+    page: {
+      type: SimpleSchema.Integer,
+      min: 1,
+      defaultValue: 1,
+      optional: true,
+      label: getLabel('api.methods.labels.page'),
+    },
+    pageSize: {
+      type: SimpleSchema.Integer,
+      min: 1,
+      defaultValue: 10,
+      optional: true,
+      label: getLabel('api.methods.labels.pageSize'),
+    },
+    sortColumn: {
+      type: String,
+      defaultValue: 'name',
+      optional: true,
+      label: getLabel('api.methods.labels.sortColumn'),
+    },
+    sortOrder: {
+      type: SimpleSchema.Integer,
+      allowedValues: [1, -1],
+      defaultValue: 1,
+      optional: true,
+      label: getLabel('api.methods.labels.sortOrder'),
+    },
+    groupId: {
+      type: String,
+      optional: true,
+    },
+  }).validator({ clean: true }),
+  run({ page, pageSize, sortColumn, sortOrder, groupId }) {
+    const isAdmin = Roles.userIsInRole(this.userId, 'admin');
+    const user = Meteor.users.findOne({ _id: this.userId });
+    // calculate number of entries to skip
+    const skip = (page - 1) * pageSize;
+    const myGroups = user.favGroups;
+    const sort = {};
+    sort[sortColumn] = sortOrder;
+    const totalCount = Groups.find({ _id: { $in: myGroups, $ne: groupId } }).count();
+    const data = Groups.find(
+      { _id: { $in: myGroups, $ne: groupId } },
+      {
+        fields: isAdmin ? Groups.adminFields : Groups.publicFields,
+        limit: pageSize,
+        skip,
+        sort,
+      },
+    ).fetch();
+    return { data, page, totalCount };
+  },
+});
+
+export const addGroupMembersToGroup = new ValidatedMethod({
+  name: 'groups.addGroupMembersToGroup',
+  validate: new SimpleSchema({
+    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
+    otherGroupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
+  }).validator(),
+
+  run({ groupId, otherGroupId }) {
+    // check group and user existence
+    const group = Groups.findOne({ _id: groupId });
+    const group2 = Groups.findOne({ _id: otherGroupId });
+    if (group === undefined || group2 === undefined) {
+      throw new Meteor.Error('api.groups.addGroupMemberToGroup.unknownGroup', i18n.__('api.groups.unknownGroup'));
+    }
+    // check if current user has admin rights on group (or global admin)
+    const authorized =
+      (isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin', groupId)) ||
+      (this.userId === group.owner && this.userId === group2.owner);
+    if (!authorized) {
+      throw new Meteor.Error('api.groups.addGroupMemberToGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
+    }
+
+    const usersGroup = group2.members;
+
+    let nb = 0;
+    let i;
+    for (i = 0; i < usersGroup.length; i += 1) {
+      // add role to user collection
+      if (!Roles.userIsInRole(usersGroup[i], 'member', groupId)) {
+        Roles.addUsersToRoles(usersGroup[i], 'member', groupId);
+        // remove candidate Role if present
+        if (Roles.userIsInRole(usersGroup[i], 'candidate', groupId)) {
+          Roles.removeUsersFromRoles(usersGroup[i], 'candidate', groupId);
+        }
+        // store info in group collection
+        if (group.members.indexOf(usersGroup[i]) === -1) {
+          Groups.update(groupId, {
+            $push: { members: usersGroup[i] },
+            $pull: { candidates: usersGroup[i] },
+          });
+        }
+        // update user personalSpace
+        favGroup._execute({ userId: usersGroup[nb] }, { groupId });
+        nb += 1;
+      }
+    }
+    return nb;
+  },
+});
+
 function _createGroup({ name, type, content, description, avatar, plugins, userId }) {
   try {
-    const groupId = Groups.insert({
-      name,
-      type,
-      content,
-      description,
-      avatar,
-      owner: userId,
-      animators: [userId],
-      admins: [userId],
-      active: true,
-      plugins,
-    });
-    Roles.addUsersToRoles(userId, ['admin', 'animator'], groupId);
+    const user = Meteor.users.findOne(userId);
+    if (user.groupCount < user.groupQuota) {
+      const groupId = Groups.insert({
+        name,
+        type,
+        content,
+        description,
+        avatar,
+        owner: userId,
+        animators: [userId],
+        admins: [userId],
+        active: true,
+        plugins,
+      });
+      Roles.addUsersToRoles(userId, ['admin', 'animator'], groupId);
 
-    favGroup._execute({ userId }, { groupId });
+      favGroup._execute({ userId }, { groupId });
 
-    // move group temp avatar from user minio to group minio and update avatar link
-    if (avatar !== '' && avatar.includes('groupAvatar.png')) {
-      Meteor.call('files.move', {
-        sourcePath: `users/${userId}`,
-        destinationPath: `groups/${groupId}`,
-        files: ['groupAvatar.png'],
+      user.groupCount += 1;
+      Meteor.users.update(userId, {
+        $set: { groupCount: user.groupCount },
       });
 
-      const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
-      const avatarLink = `http${minioSSL ? 's' : ''}://${minioEndPoint}${
-        minioPort ? `:${minioPort}` : ''
-      }/${minioBucket}/groups/${groupId}/groupAvatar.png?${new Date().getTime()}`;
+      // move group temp avatar from user minio to group minio and update avatar link
+      if (avatar !== '' && avatar.includes('groupAvatar.png')) {
+        Meteor.call('files.move', {
+          sourcePath: `users/${userId}`,
+          destinationPath: `groups/${groupId}`,
+          files: ['groupAvatar.png'],
+        });
 
-      Groups.update({ _id: groupId }, { $set: { avatar: avatarLink } });
+        const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
+        const avatarLink = `http${minioSSL ? 's' : ''}://${minioEndPoint}${
+          minioPort ? `:${minioPort}` : ''
+        }/${minioBucket}/groups/${groupId}/groupAvatar.png?${new Date().getTime()}`;
+
+        Groups.update({ _id: groupId }, { $set: { avatar: avatarLink } });
+      }
+    } else {
+      throw new Meteor.Error('api.groups.createGroup.toManyGroup', i18n.__('api.groups.toManyGroup'));
     }
   } catch (error) {
     if (error.code === 11000) {
@@ -143,6 +259,19 @@ export const removeGroup = new ValidatedMethod({
     if (!authorized) {
       throw new Meteor.Error('api.groups.removeGroup.notPermitted', i18n.__('api.groups.adminGroupNeeded'));
     }
+
+    // Update group quota for owner
+    const owner = Meteor.users.findOne({ _id: group.owner });
+    if (owner !== undefined) {
+      owner.groupCount -= 1;
+      if (owner.groupCount <= 0) {
+        owner.groupCount = 0;
+      }
+      Meteor.users.update(group.owner, {
+        $set: { groupCount: owner.groupCount },
+      });
+    }
+
     // remove all roles set on this group
     Roles.removeScope(groupId);
     Groups.remove(groupId);

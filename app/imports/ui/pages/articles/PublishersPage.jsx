@@ -189,7 +189,7 @@ const PublishersPage = () => {
                     key={`user-${user._id}`}
                   >
                     <ListItemAvatar>
-                      <UserAvatar userAvatar={user.avatar} userFirstName={user.firstName} />
+                      <UserAvatar userAvatar={user.avatar || ''} userFirstName={user.firstName} />
                     </ListItemAvatar>
                     <ListItemText
                       primary={`${user.firstName} ${user.lastName}`}

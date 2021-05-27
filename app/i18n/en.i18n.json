@@ -72,7 +72,9 @@
         "language": "Preferred Language",
         "logoutType": "Logout Method",
         "lastLogin": "Last login date",
-        "avatar": "avatar URL"
+        "avatar": "avatar URL",
+        "groupCount": "Amount of created groups",
+        "groupQuota": "Amount of groups creatable"
       },
       "logoutTypes": {
         "ask": "Ask at logout",
@@ -86,6 +88,7 @@
       "moderatedGroupOnly": "This action is available for moderated group only.",
       "userNotFound": "User not found",
       "groupAlreadyExist": "A group with the same name already exists",
+      "toManyGroup": "To many groups already created",
       "types": {
         "open": "open",
         "moderated": "moderated",
@@ -129,7 +132,8 @@
         "description": "Description",
         "logo": "Logo",
         "categories": "Categories",
-        "screenshots": "Screenshots"
+        "screenshots": "Screenshots",
+        "structure": "Service Structure"
       }
     },
     "events": {
@@ -349,10 +353,13 @@
       "menuMyspaceMobile": "Dashboard",
       "menuHelp": "Help",
       "menuServices": "Applications",
+      "menuStructure": "My Structure",
       "menuGroupes": "All Groups",
       "menuGroupesMobile": "Groups",
       "menuAdminServices": "Service Management",
-      "menuAdminUserValidation": "User validation"
+      "menuAdminUserValidation": "User validation",
+      "tooltipServices": "SNP apps",
+      "tooltipStructure": "Resources from your structure"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Run this service",
@@ -382,11 +389,16 @@
       "menuLogoutLabel": "Logout",
       "menuMedias": "Medias Storage",
       "menuAdminAppSettings": "Admin Settings",
-      "menuAdminStructureUsers": "Structure Management"
+      "menuAdminStructureUsers": "Structure Users",
+      "menuAdminStructureServices": "Structure Services"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
       "waitAccount": "Wait for an administrator to validate your account"
+    },
+    "NoStructureSelected": {
+      "noStructure": "You have not Attachment Structure",
+      "selectStructure": "Choose a structure in your profile."
     },
     "GroupUsersList": {
       "title": "",
@@ -398,7 +410,10 @@
       "validate_tooltip": "Accept this candidate",
       "memberAdded": "User set as member",
       "userAdded": "Successfully added user",
+      "groupAdded": "users of selectioned group has been added",
+      "groupAddedButNoMember": "All members of selectioned group are already in your group",
       "addUserButton": "Add",
+      "addGroupButton": "Import members",
       "userRemoved": "User removed from group",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Find a user",
@@ -407,7 +422,8 @@
         "body_addTooltip": "Add a user",
         "body_editTooltip": "Modify this user",
         "body_deleteTooltip": "Remove this user",
-        "body_editRow_deleteText": "Do you really want to remove this user?"
+        "body_editRow_deleteText": "Do you really want to remove this user?",
+        "body_addGroupTooltip": "Add members of another group"
       }
     },
     "UserFinder": {
@@ -422,12 +438,22 @@
     "TagFinder": {
       "addTag": "Add ",
       "noTag": "No tag found",
-      "tagLabel": "Mot clé",
+      "tagLabel": "Tag",
       "placeholder": "Type to search a tag",
       "clear": "Clear",
       "loading": "Loading...",
       "open": "Open",
-      "close": "Fermer"
+      "close": "Close"
+    },
+    "GroupFinder": {
+      "addGroup": "Add ",
+      "noGroup": "No group found",
+      "groupLabel": "Group",
+      "placeholder": "Type to search a group",
+      "clear": "Clear",
+      "loading": "Loading...",
+      "open": "Open",
+      "close": "Close"
     },
     "GroupDetails": {
       "favButtonLabelNoFav": "Remove from your personal space",
@@ -579,6 +605,14 @@
       "subtitle": "from the webcam",
       "takePicture": "Take a picture",
       "cancel": "Cancel"
+    },
+    "AdminGroupQuota": {
+      "title": "Edit user's parameters",
+      "subtitle": "Editing ",
+      "cancel": "Cancel",
+      "mainText": "The max amount of group the user can create",
+      "createdGroup": "group(s) created by user",
+      "ValidateForm": "Validate"
     }
   },
   "validatejs": {
@@ -671,7 +705,8 @@
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
-      "title": "Discover the apps",
+      "titleServices": "Discover the SNP apps",
+      "titleStructure": "Discover your structure's resources",
       "categories": "Filter by categories",
       "reset": "Reset filter",
       "validate": "Validate",
@@ -682,7 +717,9 @@
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view",
-      "filter": "Filter"
+      "filter": "Filter",
+      "NoStructureServices": "No service defined for your structure",
+      "NoServices": "No services defined"
     },
     "GroupsPage": {
       "title": "Explore the groups",
@@ -690,7 +727,10 @@
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view",
-      "endOfList": "End of the list"
+      "endOfList": "End of the list",
+      "filterGroup": "Show only joined groups",
+      "disableFilterGroup": "Show all groups",
+      "noGroup": "There is no group to display."
     },
     "AdminServicesPage": {
       "title": "Service Management",
@@ -774,7 +814,8 @@
       "unsetAdminStructure": "Remove structure admin rights",
       "successSetAdminStructure": "structure admin rights have been granted",
       "successUnsetAdminStructure": "structure admin rights have been revoked",
-      "adminStructure": "Structure administrator"
+      "adminStructure": "Structure administrator",
+      "manageUser": "Manager user"
     },
     "AdminUserValidationPage": {
       "title": "User validation",
@@ -805,17 +846,22 @@
       "noFavYet": "Add here some elements from Applications tab",
       "unsorted": "To be sorted",
       "unsortedFav": "My Favorites",
+      "unsortedGroup": "My groups",
+      "unsortedService": "My applications",
       "newZone": "New Zone",
       "typeApplication": "Application",
       "typeGroup": "Group",
       "typeLink": "Link",
       "addZoneStartButton": "Add a new zone at start",
       "addZoneEndButton": "Add a new zone at the end",
-      "toggleEdition": "Toggle edition mode",
-      "tutoTitle": "Learn to custom this page"
+      "toggleEdition": "Toggle edition mode"
     },
     "HelpPage": {
-      "title": "Find here every tuto to help you master LaBoite"
+      "title": "Find here every tuto to help you master LaBoite",
+      "titleCardStart": "Starting with LaBoite",
+      "titleCardGroup": "Create and administrate a group",
+      "titleCardMezig": "How to use Mézig",
+      "tutoLabel": "Go to tutorial"
     },
     "AdminSingleServicePage": {
       "edition": "Edition of the service",
@@ -908,7 +954,7 @@
       "structureMessage": "Reattach to my current structure ({$structure})",
       "contentLabel": "Content of the publication",
       "update": "Update",
-      "save": "Create",
+      "save": "Publish",
       "cancel": "Cancel",
       "delete": "Delete",
       "copyPublicURL": "copy public URL",
@@ -916,6 +962,8 @@
       "switchToHtml": "Classic editor",
       "switchToMarkdown": "Markdown editor",
       "selectTag": "Select",
+      "save_draf": "Draft",
+      "draft": "Draft",
       "createTag": "Create"
     },
     "PublicArticlePage": {
@@ -929,6 +977,7 @@
       "views": "views",
       "exportPDF": "Export to PDF",
       "exportLandscape": "Landscape",
+      "draft": "Draft",
       "exportPortrait": "Portrait"
     },
     "PublishersPage": {

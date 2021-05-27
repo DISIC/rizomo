@@ -4,40 +4,27 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import i18n from 'meteor/universe:i18n';
-import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { useTracker } from 'meteor/react-meteor-data';
+import Groups from '../../../api/groups/groups';
 
-const useStyles = makeStyles(() => ({
-  noRightBorderRadius: {
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-  },
-}));
-
-function TagFinder({ tags, onSelected, exclude, opened, resetKey, inputWidth }) {
-  const classes = useStyles();
+function GroupFinder({ onSelected, exclude = [], opened }) {
+  const options = useTracker(() => {
+    Meteor.subscribe('groups.member');
+    return Groups.find({ _id: { $nin: exclude } }).fetch();
+  });
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState(tags.filter((tag) => !exclude.includes(tag.name)));
-  let existingTags = tags.map((tag) => tag.name.toLowerCase());
+  const existingTags = options.map((group) => group.name.toLowerCase());
 
   React.useEffect(() => {
     setOpen(opened);
   }, [opened]);
 
-  React.useEffect(() => {
-    setOptions(tags.filter((tag) => !exclude.includes(tag.name)));
-  }, [tags, exclude]);
-
-  React.useEffect(() => {
-    existingTags = tags.map((tag) => tag.name.toLowerCase());
-  }, [tags]);
-
   const filter = createFilterOptions();
 
   return (
     <Autocomplete
-      key={resetKey}
-      id="tag-select"
+      id="group-select"
       open={open}
       onOpen={() => {
         setOpen(true);
@@ -57,7 +44,7 @@ function TagFinder({ tags, onSelected, exclude, opened, resetKey, inputWidth }) 
           if (!existingTags.includes(params.inputValue.toLowerCase())) {
             filtered.push({
               inputValue: params.inputValue,
-              name: `${i18n.__('components.TagFinder.addTag')} "${params.inputValue.toLowerCase()}"`,
+              name: `"${params.inputValue.toLowerCase()}" : ${i18n.__('components.GroupFinder.noTag')} `,
             });
           }
         }
@@ -79,26 +66,22 @@ function TagFinder({ tags, onSelected, exclude, opened, resetKey, inputWidth }) 
         return option.name;
       }}
       renderOption={(option) => option.name}
-      noOptionsText={i18n.__('components.TagFinder.noTag')}
-      clearText={i18n.__('components.TagFinder.clear')}
-      loadingText={i18n.__('components.TagFinder.loading')}
-      openText={i18n.__('components.TagFinder.open')}
-      closeText={i18n.__('components.TagFinder.close')}
+      noOptionsText={i18n.__('components.GroupFinder.noGroup')}
+      clearText={i18n.__('components.GroupFinder.clear')}
+      loadingText={i18n.__('components.GroupFinder.loading')}
+      openText={i18n.__('components.GroupFinder.open')}
+      closeText={i18n.__('components.GroupFinder.close')}
       onChange={onSelected}
       options={options}
       renderInput={(params) => {
         return (
           <TextField
             {...params}
-            style={{ width: inputWidth }}
-            label={i18n.__('components.TagFinder.tagLabel')}
+            label={i18n.__('components.GroupFinder.groupLabel')}
             variant="outlined"
-            placeholder={i18n.__('components.TagFinder.placeholder')}
+            placeholder={i18n.__('components.GroupFinder.placeholder')}
             InputProps={{
               ...params.InputProps,
-              classes: {
-                root: classes.noRightBorderRadius,
-              },
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchIcon />
@@ -112,21 +95,15 @@ function TagFinder({ tags, onSelected, exclude, opened, resetKey, inputWidth }) 
   );
 }
 
-TagFinder.defaultProps = {
-  tags: [],
-  resetKey: new Date().toISOString(),
+GroupFinder.defaultProps = {
   exclude: null,
   opened: false,
-  inputWidth: 285,
 };
 
-TagFinder.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.any),
-  resetKey: PropTypes.string,
+GroupFinder.propTypes = {
   onSelected: PropTypes.func.isRequired,
   exclude: PropTypes.arrayOf(PropTypes.string),
   opened: PropTypes.bool,
-  inputWidth: PropTypes.number,
 };
 
-export default TagFinder;
+export default GroupFinder;

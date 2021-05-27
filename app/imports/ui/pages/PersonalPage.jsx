@@ -29,7 +29,7 @@ import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
 import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import PersonalZone from '../components/personalspace/PersonalZone';
-import Screencast from '../components/personalspace/Screencast';
+import Animation from '../components/screencast/Animation';
 import { useAppContext } from '../contexts/context';
 
 const useStyles = (isMobile) =>
@@ -178,6 +178,13 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     return searchText.indexOf(search.toLowerCase()) > -1;
   };
 
+  const filterGroup = (element) => {
+    return element.type === 'group';
+  };
+
+  const filterService = (element) => {
+    return element.type === 'service';
+  };
   // focus on search input when it appears
   useEffect(() => {
     if (inputRef.current && searchToggle) {
@@ -250,15 +257,17 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     }
   };
 
-  const setZoneList = (index) => (list) => {
+  const setZoneList = (type) => (index) => (list) => {
     if (typeof index === 'number') {
       const { sorted } = localPS;
       if (list) {
         sorted[index].elements = list;
         setLocalPS({ ...localPS, sorted });
       }
+    } else if (type === 'service') {
+      setLocalPS({ ...localPS, unsorted: [...list, ...localPS.unsorted.filter(filterGroup)] });
     } else {
-      setLocalPS({ ...localPS, unsorted: list });
+      setLocalPS({ ...localPS, unsorted: [...list, ...localPS.unsorted.filter(filterService)] });
     }
   };
 
@@ -365,7 +374,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
               <Grid item xs={12} sm={12} md={12} className={classes.flex}>
                 <Grid container alignItems="center" spacing={1}>
                   <Grid item>
-                    <Typography variant="h4">{i18n.__('pages.PersonalPage.welcome')}</Typography>
+                    <Typography variant={isMobile ? 'h5' : 'h4'}>{i18n.__('pages.PersonalPage.welcome')}</Typography>
                   </Grid>
                   <Grid item>
                     <IconButton onClick={toggleSearch} disabled={customDrag}>
@@ -441,8 +450,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
               </Grid>
               {localPS.unsorted.length === 0 && localPS.sorted.length === 0 ? (
                 <Grid>
-                  <Typography className={classes.castTuto}>{i18n.__('pages.PersonalPage.tutoTitle')}</Typography>
-                  <Screencast />
+                  <Animation />
                   <div className={classes.screen}>
                     <Link to="/services">
                       {i18n.__('pages.PersonalPage.noFavYet')}
@@ -452,24 +460,33 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                 </Grid>
               ) : null}
             </Grid>
-            {localPS.unsorted.length !== 0
+            {localPS.unsorted.filter(filterGroup).length !== 0
               ? [
                   <PersonalZone
-                    key="zone-000000000000"
-                    elements={localPS.unsorted.filter(filterSearch)}
-                    title={
-                      localPS.sorted.length === 0
-                        ? i18n.__('pages.PersonalPage.unsortedFav')
-                        : i18n.__('pages.PersonalPage.unsorted')
-                    }
-                    setList={setZoneList}
+                    key="zone-favGroup-000000000000"
+                    elements={localPS.unsorted.filter(filterSearch).filter(filterGroup)}
+                    title={i18n.__('pages.PersonalPage.unsortedGroup')}
+                    setList={setZoneList('group')}
                     suspendUpdate={suspendUpdate}
                     updateList={updateList}
                     customDrag={customDrag}
                   />,
-                  <Divider key="div-000000000000" className={classes.divider} />,
                 ]
               : null}
+            {localPS.unsorted.filter(filterService).length !== 0
+              ? [
+                  <PersonalZone
+                    key="zone-favService-000000000000"
+                    elements={localPS.unsorted.filter(filterSearch).filter(filterService)}
+                    title={i18n.__('pages.PersonalPage.unsortedService')}
+                    setList={setZoneList('service')}
+                    suspendUpdate={suspendUpdate}
+                    updateList={updateList}
+                    customDrag={customDrag}
+                  />,
+                ]
+              : null}
+            {localPS.unsorted.length !== 0 ? [<Divider key="div-000000000000" className={classes.divider} />] : null}
             {localPS.sorted.map(({ zone_id: zoneId, elements, name, isExpanded }, index) => [
               <PersonalZone
                 key={`zone-${zoneId}`}
@@ -477,7 +494,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                 index={index}
                 title={name}
                 setTitle={setZoneTitle}
-                setList={setZoneList}
+                setList={setZoneList('')}
                 suspendUpdate={suspendUpdate}
                 updateList={updateList}
                 delZone={delZone}

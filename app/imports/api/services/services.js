@@ -62,8 +62,14 @@ Services.schema = new SimpleSchema(
     'categories.$': { type: String, regEx: SimpleSchema.RegEx.Id },
     screenshots: { type: Array, defaultValue: [], label: getLabel('api.services.labels.screenshots') },
     'screenshots.$': { type: String },
+    structure: {
+      type: String,
+      index: true,
+      label: getLabel('api.services.labels.structure'),
+      defaultValue: '',
+    },
   },
-  { tracker: Tracker },
+  { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
 
 Services.stateLabels = {
@@ -82,6 +88,7 @@ Services.publicFields = {
   team: 1,
   slug: 1,
   state: 1,
+  structure: 1,
 };
 
 Services.allPublicFields = {

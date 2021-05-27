@@ -65,6 +65,8 @@ describe('groups', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
+        groupCount: 0,
+        groupQuota: 10,
       });
       Meteor.users.update(userId, { $set: { isActive: true } });
       Groups.remove({});
@@ -204,6 +206,8 @@ describe('groups', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
+        groupCount: 0,
+        groupQuota: 10,
       });
       const emailAdmin = faker.internet.email();
       adminId = Accounts.createUser({
@@ -213,6 +217,8 @@ describe('groups', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
+        groupCount: 0,
+        groupQuota: 10,
       });
       const emailOtherUser = faker.internet.email();
       otherUserId = Accounts.createUser({
@@ -222,6 +228,8 @@ describe('groups', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
+        groupCount: 0,
+        groupQuota: 10,
       });
       // set this user as global admin
       Roles.addUsersToRoles(adminId, 'admin');
@@ -527,12 +535,14 @@ describe('groups', function () {
             content: 'une note',
           },
         );
+        const user = Meteor.users.findOne(userId);
         const group = Groups.findOne({ name: 'mongroupe' });
         assert.typeOf(group, 'object');
         assert.equal(group.active, true);
         assert.equal(group.owner, userId);
         assert.equal(Roles.userIsInRole(userId, 'admin', group._id), true);
         assert.equal(Roles.userIsInRole(userId, 'animator', group._id), true);
+        assert.equal(user.groupCount, 1);
         assert.equal(pspaceHasGroup(userId, group._id), true, 'group is in personal space');
       });
       it('does fail to create a group if name already taken', function () {

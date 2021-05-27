@@ -10,6 +10,7 @@ import Minio from 'minio';
 import s3Client from './config';
 import { isActive } from '../../utils';
 import logServer from '../../logging';
+import Services from '../../services/services';
 
 const { minioSSL, minioEndPoint, minioBucket, minioPort } = Meteor.settings.public;
 
@@ -33,7 +34,23 @@ export const filesupload = new ValidatedMethod({
         const groupID = path.slice(-17);
         isGroupAdmin = Roles.userIsInRole(this.userId, ['animator', 'admin'], groupID);
       }
-      if (!authorized && !isUserPath && !isGroupAdmin) {
+      let isStructureAdmin = false;
+      if (path.startsWith('services/')) {
+        const serviceID = path.split('/')[1];
+        const user = Meteor.users.findOne(this.userId);
+        if (Roles.userIsInRole(this.userId, ['adminStructure'], user.structure)) {
+          // creating new service
+          if (serviceID === 'undefined') isStructureAdmin = true;
+          else {
+            // editing existing service as adminStructure user
+            const service = Services.findOne(serviceID);
+            if (service.structure && service.structure === user.structure) {
+              isStructureAdmin = true;
+            }
+          }
+        }
+      }
+      if (!authorized && !isUserPath && !isGroupAdmin && !isStructureAdmin) {
         throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
       }
       const fileArray = file.split(',');
@@ -55,7 +72,23 @@ export const removeFilesFolder = new ValidatedMethod({
   async run({ path }) {
     // check if current user has admin rights
     const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
-    if (!authorized) {
+    let isStructureAdmin = false;
+    if (path.startsWith('services/')) {
+      const serviceID = path.split('/')[1];
+      const user = Meteor.users.findOne(this.userId);
+      if (Roles.userIsInRole(this.userId, ['adminStructure'], user.structure)) {
+        // creating new service
+        if (serviceID === 'undefined') isStructureAdmin = true;
+        else {
+          // editing existing service as adminStructure user
+          const service = Services.findOne(serviceID);
+          if (service.structure && service.structure === user.structure) {
+            isStructureAdmin = true;
+          }
+        }
+      }
+    }
+    if (!authorized && !isStructureAdmin) {
       throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
     }
     const results = new Promise((resolve, reject) => {
@@ -98,7 +131,23 @@ export const removeSelectedFiles = new ValidatedMethod({
       const groupID = path.slice(-17);
       isGroupAdmin = Roles.userIsInRole(this.userId, ['animator', 'admin'], groupID);
     }
-    if (!authorized && !isUserPath && !isGroupAdmin) {
+    let isStructureAdmin = false;
+    if (path.startsWith('services/')) {
+      const serviceID = path.split('/')[1];
+      const user = Meteor.users.findOne(this.userId);
+      if (Roles.userIsInRole(this.userId, ['adminStructure'], user.structure)) {
+        // creating new service
+        if (serviceID === 'undefined') isStructureAdmin = true;
+        else {
+          // editing existing service as adminStructure user
+          const service = Services.findOne(serviceID);
+          if (service.structure && service.structure === user.structure) {
+            isStructureAdmin = true;
+          }
+        }
+      }
+    }
+    if (!authorized && !isUserPath && !isGroupAdmin && !isStructureAdmin) {
       throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
     }
     if (toRemove.length) {
@@ -158,7 +207,23 @@ export const moveFiles = new ValidatedMethod({
       const groupID = destinationPath.slice(-17);
       isGroupAdmin = Roles.userIsInRole(this.userId, ['animator', 'admin'], groupID);
     }
-    if (!authorized && !isGroupAdmin) {
+    let isStructureAdmin = false;
+    if (destinationPath.startsWith('services/')) {
+      const serviceID = destinationPath.split('/')[1];
+      const user = Meteor.users.findOne(this.userId);
+      if (Roles.userIsInRole(this.userId, ['adminStructure'], user.structure)) {
+        // creating new service
+        if (serviceID === 'undefined') isStructureAdmin = true;
+        else {
+          // editing existing service as adminStructure user
+          const service = Services.findOne(serviceID);
+          if (service.structure && service.structure === user.structure) {
+            isStructureAdmin = true;
+          }
+        }
+      }
+    }
+    if (!authorized && !isGroupAdmin && !isStructureAdmin) {
       throw new Meteor.Error('api.users.notPermitted', i18n.__('api.users.adminNeeded'));
     }
 

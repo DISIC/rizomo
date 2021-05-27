@@ -72,7 +72,9 @@
         "language": "Langage Préféré",
         "logoutType": "Méthode De Déconnexion",
         "lastLogin": "Date de dernière connexion",
-        "avatar": "URL de l'avatar"
+        "avatar": "URL de l'avatar",
+        "groupCount": "Nombre de groupes créés",
+        "groupQuota": "Quota de groupes"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -86,6 +88,7 @@
       "moderatedGroupOnly": "Cette action est possible seulement sur un groupe modéré.",
       "userNotFound": "Utilisateur non retrouvé",
       "groupAlreadyExist": "Un groupe avec le même nom existe déjà",
+      "toManyGroup": "Vous avez atteint votre quota de groupes créés",
       "types": {
         "open": "ouvert",
         "moderated": "modéré",
@@ -129,7 +132,8 @@
         "description": "Description",
         "logo": "Logo",
         "categories": "Catégories",
-        "screenshots": "Captures d'écran"
+        "screenshots": "Captures d'écran",
+        "structure": "Structure d'exploitation"
       }
     },
     "events": {
@@ -349,10 +353,13 @@
       "menuMyspaceMobile": "Mon Espace",
       "menuHelp": "Aide",
       "menuServices": "Applications",
+      "menuStructure": "Ma Structure",
       "menuGroupes": "Les Groupes",
       "menuGroupesMobile": "Groupes",
       "menuAdminServices": "Gestion des Services",
-      "menuAdminUserValidation": "Validation des utilisateurs"
+      "menuAdminUserValidation": "Validation des utilisateurs",
+      "tooltipServices": "Services Numériques Partagés",
+      "tooltipStructure": "Ressources de votre structure"
     },
     "ServiceDetails": {
       "runServiceButtonLabel": "Ouvrir l'application",
@@ -382,11 +389,16 @@
       "menuLogoutLabel": "Se déconnecter",
       "menuMedias": "Stockage de Médias",
       "menuAdminAppSettings": "Réglages Administrateurs",
-      "menuAdminStructureUsers": "Gestion de la structure"
+      "menuAdminStructureUsers": "Utilisateurs de la structure",
+      "menuAdminStructureServices": "Services de la structure"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
       "waitAccount": "Un administrateur va bientôt valider votre compte"
+    },
+    "NoStructureSelected": {
+      "noStructure": "Vous n'avez pas de structure de rattachement",
+      "selectStructure": "Sélectionnez une structure dans votre profil."
     },
     "GroupUsersList": {
       "title": "",
@@ -398,7 +410,10 @@
       "validate_tooltip": "Accepter ce candidat",
       "memberAdded": "Utilisateur promu comme membre",
       "userAdded": "Utilisateur ajouté avec succès",
+      "groupAdded": "utilisateurs du groupe sélectionné ont été ajoutés avec succès",
+      "groupAddedButNoMember": "Tous les membres du groupe sélectionné sont déjà dans votre groupe",
       "addUserButton": "Ajouter",
+      "addGroupButton": "Importer les membres",
       "userRemoved": "Utilisateur supprimé du groupe",
       "materialTableLocalization": {
         "toolbar_searchPlaceholder": "Trouver un utilisateur",
@@ -407,7 +422,8 @@
         "body_addTooltip": "Ajouter un utilisateur",
         "body_editTooltip": "Modifier cet utilisateur",
         "body_deleteTooltip": "Enlever cet utilisateur",
-        "body_editRow_deleteText": "Enlever vraiment cet utilisateur ?"
+        "body_editRow_deleteText": "Enlever vraiment cet utilisateur ?",
+        "body_addGroupTooltip": "Ajouter les membres d'un autre groupe"
       }
     },
     "UserFinder": {
@@ -424,7 +440,16 @@
     },
     "TagFinder": {
       "noTag": "Aucun utilisateur trouvé",
-      "TagLabel": "Mot clé",
+      "tagLabel": "Mot clé",
+      "placeholder": "Saisir pour rechercher",
+      "clear": "Effacer",
+      "loading": "Chargement...",
+      "open": "Ouvrir",
+      "close": "Fermer"
+    },
+    "GroupFinder": {
+      "noTag": "Aucun groupe trouvé",
+      "groupLabel": "Groupe",
       "placeholder": "Saisir pour rechercher",
       "clear": "Effacer",
       "loading": "Chargement...",
@@ -581,6 +606,14 @@
       "subtitle": "à partir de la webcam",
       "takePicture": "Prendre une photo",
       "cancel": "Annuler"
+    },
+    "AdminGroupQuota": {
+      "title": "Modifier les paramètres d'un utilisateur",
+      "subtitle": "Paramètres de ",
+      "cancel": "Annuler",
+      "mainText": "Nombre maximal de groupes que peut créer l'utilisateur",
+      "createdGroup": "groupe(s) créé(s) par l'utilisateur",
+      "ValidateForm": "Valider"
     }
   },
   "validatejs": {
@@ -676,7 +709,8 @@
       "message": "Page inexistante !"
     },
     "ServicesPage": {
-      "title": "Découvrez les applications",
+      "titleServices": "Découvrez les Services Numériques Partagés",
+      "titleStructure": "Découvrez les ressources de votre structure",
       "categories": "Filtrer par catégories",
       "reset": "Réinitialiser",
       "validate": "Valider",
@@ -687,7 +721,9 @@
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste",
-      "filter": "Filtrer"
+      "filter": "Filtrer",
+      "NoStructureServices": "Aucun service n'a été déclaré pour votre structure",
+      "NoServices": "Aucun service déclaré"
     },
     "GroupsPage": {
       "title": "Explorer les groupes",
@@ -695,7 +731,10 @@
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste",
-      "endOfList": "Fin de la liste"
+      "endOfList": "Fin de la liste",
+      "filterGroup": "Afficher uniquement les groupes rejoints",
+      "disableFilterGroup": "Afficher tous les groupes",
+      "noGroup": "Il n'y a aucun groupe à afficher."
     },
     "AdminServicesPage": {
       "title": "Gestion des Services",
@@ -779,7 +818,8 @@
       "unsetAdminStructure": "Enlever les droits d'administrateur de structure",
       "successSetAdminStructure": "Droits d'administrateur de structure donnés",
       "successUnsetAdminStructure": "Droits d'administrateur de structure révoqués",
-      "adminStructure": "Administrateur de structure"
+      "adminStructure": "Administrateur de structure",
+      "manageUser": "Gérer l'utilisateur"
     },
     "AdminUserValidationPage": {
       "title": "Utilisateurs en attente de validation",
@@ -810,17 +850,22 @@
       "noFavYet": "Ajoutez ici des éléments depuis l'onglet Applications",
       "unsorted": "À trier",
       "unsortedFav": "Mes Favoris",
+      "unsortedGroup": "Mes groupes",
+      "unsortedService": "Mes applications",
       "newZone": "Nouvelle Zone",
       "typeApplication": "Application",
       "typeGroup": "Groupe",
       "typeLink": "Lien",
       "addZoneStartButton": "Ajouter une nouvelle zone au début",
       "addZoneEndButton": "Ajouter une nouvelle zone à la fin",
-      "toggleEdition": "Activer/Désactiver le mode édition",
-      "tutoTitle": "Apprenez à personnaliser cette page"
+      "toggleEdition": "Activer/Désactiver le mode édition"
     },
     "HelpPage": {
-      "title": "Retrouvez ici tous les tutoriels nécessaires pour maitriser LaBoite"
+      "title": "Retrouvez ici tous les tutoriels nécessaires pour maitriser LaBoite",
+      "titleCardStart": "Commencer avec LaBoite",
+      "titleCardGroup": "Créer et administrer un groupe",
+      "titleCardMezig": "Comment utiliser Mézig",
+      "tutoLabel": "Voir le tutoriel"
     },
     "AdminSingleServicePage": {
       "edition": "Edition du service",
@@ -912,7 +957,7 @@
       "structureMessage": "Rattacher à ma structure actuelle ({$structure})",
       "contentLabel": "Contenu de cette publication",
       "update": "Mettre à jour",
-      "save": "Créer",
+      "save": "Publier",
       "cancel": "Annuler",
       "delete": "Supprimer",
       "copyPublicURL": "Copier l'URL publique",
@@ -920,6 +965,8 @@
       "switchToHtml": "Éditeur Classic",
       "switchToMarkdown": "Éditeur Markdown",
       "selectTag": "Sélectionner",
+      "save_draf": "Brouillon",
+      "draft": "Brouillon",
       "createTag": "Créer"
     },
     "PublicArticlePage": {
@@ -933,6 +980,7 @@
       "views": "consultations",
       "exportPDF": "Export PDF",
       "exportLandscape": "Paysage",
+      "draft": "Brouillon",
       "exportPortrait": "Portrait"
     },
     "PublishersPage": {

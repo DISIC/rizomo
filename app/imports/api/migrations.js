@@ -187,3 +187,64 @@ Migrations.add({
       });
   },
 });
+
+Migrations.add({
+  version: 10,
+  name: 'Add articles boolean to groups with articles',
+  up: () => {
+    const articles = Articles.find({ groups: { $exists: true } }).fetch();
+    articles.forEach(({ groups }) => {
+      groups.forEach(({ _id }) => {
+        Groups.update({ _id }, { $set: { articles: true } });
+      });
+    });
+  },
+  down: () => {
+    Groups.rawCollection().updateMany({}, { $unset: { articles: true } });
+  },
+});
+
+Migrations.add({
+  version: 11,
+  name: 'Add structure to services',
+  up: () => {
+    Services.update({}, { $set: { structure: '' } }, { multi: true });
+  },
+  down: () => {
+    Services.rawCollection().updateMany({}, { $unset: { structure: true } });
+  },
+});
+
+Migrations.add({
+  version: 12,
+  name: 'Update group count and quota on users',
+  up: () => {
+    let updateInfos = {};
+    Meteor.users
+      .find()
+      .fetch()
+      .forEach((user) => {
+        updateInfos = {
+          groupCount: Groups.find({ owner: user._id }).count(),
+        };
+        if (user.groupQuota === undefined) {
+          updateInfos.groupQuota = Meteor.users.schema._schema.groupQuota.defaultValue;
+        }
+        Meteor.users.update({ _id: user._id }, { $set: updateInfos });
+      });
+  },
+  down: () => {
+    Meteor.users.rawCollection().updateMany({}, { $unset: { groupQuota: true, groupCount: true } });
+  },
+});
+
+Migrations.add({
+  version: 13,
+  name: 'Update articles boolean on groups if not set in step 10',
+  up: () => {
+    Groups.update({ articles: null }, { $set: { articles: false } }, { multi: true });
+  },
+  down: () => {
+    // no rollback on this step
+  },
+});

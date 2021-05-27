@@ -12,9 +12,13 @@ import Spinner from '../../components/system/Spinner';
 import Services from '../../../api/services/services';
 import { removeService } from '../../../api/services/methods';
 import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
+import { useAppContext } from '../../contexts/context';
 
-function AdminServicesPage({ services, loading }) {
+function AdminServicesPage({ services, loading, structureMode }) {
   const history = useHistory();
+  // used to help generate url in structure mode
+  const urlStruct = structureMode ? 'structure' : '';
+  const [{ user }] = useAppContext();
   const columns = [
     {
       title: i18n.__('pages.AdminServicesPage.columnLogo'),
@@ -67,7 +71,7 @@ function AdminServicesPage({ services, loading }) {
           <Container style={{ overflowX: 'auto' }}>
             <MaterialTable
               // other props
-              title={i18n.__('pages.AdminServicesPage.title')}
+              title={`${i18n.__('pages.AdminServicesPage.title')} ${structureMode ? `(${user.structure})` : ''}`}
               columns={columns}
               data={services}
               options={options}
@@ -77,21 +81,21 @@ function AdminServicesPage({ services, loading }) {
                   icon: 'edit',
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
                   onClick: (event, rowData) => {
-                    history.push(`/adminservices/${rowData._id}`);
+                    history.push(`/admin${urlStruct}services/${rowData._id}`);
                   },
                 },
                 {
                   icon: keyboardArrowRight,
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_goTooltip'),
                   onClick: (event, rowData) => {
-                    history.push(`/services/${rowData.slug}`);
+                    history.push(`/${structureMode ? urlStruct : 'services'}/${rowData.slug}`);
                   },
                 },
                 {
                   icon: 'add',
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_addTooltip'),
                   isFreeAction: true,
-                  onClick: () => history.push('/adminservices/new'),
+                  onClick: () => history.push(`/admin${urlStruct}services/new`),
                 },
               ]}
               editable={{
@@ -124,14 +128,17 @@ function AdminServicesPage({ services, loading }) {
 AdminServicesPage.propTypes = {
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
+  structureMode: PropTypes.bool.isRequired,
 };
 
-export default withTracker(() => {
-  const servicesHandle = Meteor.subscribe('services.all');
+export default withTracker(({ match: { path } }) => {
+  const structureMode = path === '/adminstructureservices';
+  const servicesHandle = Meteor.subscribe(structureMode ? 'services.structure' : 'services.all');
   const loading = !servicesHandle.ready();
   const services = Services.find({}, { sort: { title: 1 } }).fetch();
   return {
     services,
     loading,
+    structureMode,
   };
 })(AdminServicesPage);

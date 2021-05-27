@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
-import i18n from 'meteor/universe:i18n';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import { Link } from 'react-router-dom';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import { isUrlExternal } from '../../utils/utilsFuncs';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,109 +36,38 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
 export default function ServiceDetails({ service }) {
   const classes = useStyles();
+  const history = useHistory();
 
-  // const handleFavorite = () => {
-  //   if (favAction === 'unfav') {
-  //     Meteor.call('users.unfavService', { serviceId: service._id }, (err) => {
-  //       if (err) {
-  //         msg.error(err.reason);
-  //       } else {
-  //         msg.success(i18n.__('components.ServiceDetails.unfavSuccessMsg'));
-  //       }
-  //     });
-  //   } else {
-  //     Meteor.call('users.favService', { serviceId: service._id }, (err) => {
-  //       if (err) {
-  //         msg.error(err.reason);
-  //       } else {
-  //         msg.success(i18n.__('components.ServiceDetails.favSuccessMsg'));
-  //       }
-  //     });
-  //   }
-  // };
-
-  // const favButtonLabel = favAction === 'unfav'
-  //   ? i18n.__('components.ServiceDetails.favButtonLabelNoFav')
-  //   : i18n.__('components.ServiceDetails.favButtonLabelFav');
-
-  const detailsButton = (
-    <Tooltip
-      title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-      aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-    >
-      <Link to={`/services/${service.slug}`}>
-        <IconButton color="primary">
-          <ChevronRightIcon fontSize="large" />
-        </IconButton>
-      </Link>
-    </Tooltip>
-  );
-  // const actionButtons = (
-  //   <div style={{ display: 'flex' }}>
-  //     <Tooltip
-  //       title={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-  //       aria-label={i18n.__('components.ServiceDetails.runServiceButtonLabel')}
-  //     >
-  //       <Button
-  //         className={classes.buttonText}
-  //         variant="outlined"
-  //         color="primary"
-  //         onClick={() => window.open(service.url, '_blank')}
-  //       >
-  //         {i18n.__('components.ServiceDetails.open')}
-  //       </Button>
-  //     </Tooltip>
-  //     <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
-  //       <Button variant="text" color="primary" className={classes.fab} onClick={handleFavorite}>
-  //         {favAction === 'fav' ? <FavoriteBorderIcon /> : <FavoriteIcon />}
-  //       </Button>
-  //     </Tooltip>
-  //   </div>
-  // );
   const isExternal = isUrlExternal(service.url);
-  const openButton = (
-    <Button
-      color="primary"
-      variant="contained"
-      onClick={() => window.open(service.url, '_blank', 'noreferrer,noopener')}
-    >
-      <OpenInNewIcon fontSize="large" />
-    </Button>
-  );
-  const linkButton = (
-    <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>
-      <Button color="primary" variant="contained">
-        <OpenInNewIcon fontSize="large" />
-      </Button>
-    </Link>
-  );
-  const inactiveButton = (
-    <Button color="primary" variant="contained" disabled>
-      <OpenInNewIcon fontSize="large" />
-    </Button>
-  );
+  const launchService = () => {
+    if (isExternal) {
+      window.open(service.url, '_blank', 'noreferrer,noopener');
+    } else {
+      history.push(service.url.replace(Meteor.absoluteUrl(), '/'));
+    }
+  };
+
   return (
     <Card className={classes.card} elevation={3}>
-      <CardHeader
-        classes={{ action: classes.action }}
-        avatar={service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
-        action={detailsButton}
-        title={service.title}
-        titleTypographyProps={{
-          variant: 'h6',
-          color: 'primary',
-        }}
-        subheader={service.usage}
-        subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
-      />
+      <CardActionArea onClick={launchService} disabled={service.state === 5}>
+        <CardHeader
+          classes={{ action: classes.action }}
+          avatar={<CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />}
+          title={service.title}
+          titleTypographyProps={{
+            variant: 'h6',
+            color: service.state === 5 ? 'textSecondary' : 'primary',
+          }}
+          subheader={service.usage}
+          subheaderTypographyProps={{ variant: 'body2', color: service.state === 5 ? 'textSecondary' : 'primary' }}
+        />
+      </CardActionArea>
     </Card>
   );
 }
 
 ServiceDetails.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
-  // favAction: PropTypes.string.isRequired,
 };
