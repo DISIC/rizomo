@@ -47,6 +47,9 @@ const useStyles = (isMobile) =>
       justifyContent: 'space-between',
       alignItems: 'center',
     },
+    cardGrid: {
+      marginBottom: '0px',
+    },
     chip: {
       margin: theme.spacing(1),
     },
@@ -339,7 +342,7 @@ function ServicesPage({ services, categories, ready, structureMode }) {
                 </Collapse>
               </Grid>
             </Grid>
-            <Grid container spacing={isMobile ? 2 : 4}>
+            <Grid container className={classes.cardGrid} spacing={isMobile ? 2 : 4}>
               {services.length === 0 ? (
                 <Typography className={classes.emptyMsg}>
                   {i18n.__(`pages.ServicesPage.${structureMode ? 'NoStructureServices' : 'NoServices'}`)}
