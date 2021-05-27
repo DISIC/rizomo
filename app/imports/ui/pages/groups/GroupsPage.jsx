@@ -38,6 +38,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  cardGrid: {
+    marginBottom: '0px',
+  },
   mobileButtonContainer: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -239,7 +242,7 @@ function GroupsPage() {
           )}
         </Grid>
         {total > 0 ? (
-          <Grid container spacing={isMobile ? 2 : 4}>
+          <Grid container className={classes.cardGrid} spacing={isMobile ? 2 : 4}>
             {total > ITEM_PER_PAGE && (
               <Grid item xs={12} sm={12} md={12} lg={12} className={classes.pagination}>
                 <Pagination count={Math.ceil(total / ITEM_PER_PAGE)} page={page} onChange={handleChangePage} />
