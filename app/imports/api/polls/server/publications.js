@@ -9,7 +9,11 @@ import logServer from '../../logging';
 const queryGroupPolls = ({ search, group }) => {
   const regex = new RegExp(search, 'i');
   const fieldsToSearch = ['title', 'description'];
-  const searchQuery = fieldsToSearch.map((field) => ({ [field]: { $regex: regex }, groups: { $in: [group._id] } }));
+  const searchQuery = fieldsToSearch.map((field) => ({
+    [field]: { $regex: regex },
+    groups: { $in: [group._id] },
+    active: true,
+  }));
   return {
     $or: searchQuery,
   };
