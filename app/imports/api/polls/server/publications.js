@@ -38,16 +38,18 @@ FindFromPublication.publish('groups.polls', function groupsPolls({ page, search,
       sort: { name: -1 },
     },
   );
+  try {
+    const query = queryGroupPolls({ search, group });
 
-  const query = queryGroupPolls({ search, group });
-
-  const res = Polls.find(query, {
-    fields: Polls.publicFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    sort: { title: -1 },
-    ...rest,
-  });
-
-  return res;
+    const res = Polls.find(query, {
+      fields: Polls.publicFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { title: -1 },
+      ...rest,
+    });
+    return res;
+  } catch (error) {
+    return this.ready();
+  }
 });

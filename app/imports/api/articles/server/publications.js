@@ -29,8 +29,12 @@ const queryAllArticles = ({ nodrafts, search, userId }) => {
 
 Meteor.methods({
   'get_articles.all_count': function getArticlesAllCount({ nodrafts, search, userId }) {
-    const query = queryAllArticles({ nodrafts, search, userId: userId || this.userId });
-    return Articles.find(query).count();
+    try {
+      const query = queryAllArticles({ nodrafts, search, userId: userId || this.userId });
+      return Articles.find(query).count();
+    } catch (error) {
+      return 0;
+    }
   },
 });
 
@@ -53,15 +57,20 @@ FindFromPublication.publish(
       logServer(`publish articles.all : ${err}`);
       this.error(err);
     }
-    const query = queryAllArticles({ nodrafts, search, userId: userId || this.userId });
 
-    return Articles.find(query, {
-      fields: Articles.publicFields,
-      skip: itemPerPage * (page - 1),
-      limit: itemPerPage,
-      sort: { createdAt: -1 },
-      ...rest,
-    });
+    try {
+      const query = queryAllArticles({ nodrafts, search, userId: userId || this.userId });
+
+      return Articles.find(query, {
+        fields: Articles.publicFields,
+        skip: itemPerPage * (page - 1),
+        limit: itemPerPage,
+        sort: { createdAt: -1 },
+        ...rest,
+      });
+    } catch (error) {
+      return this.ready();
+    }
   },
 );
 
