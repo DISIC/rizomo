@@ -369,7 +369,7 @@ const ProfilePage = () => {
           <form noValidate autoComplete="off">
             <Grid container className={classes.form} spacing={2}>
               <Grid container spacing={2} style={{ alignItems: 'center' }}>
-                <Grid item xs={isMobile ? '12' : '6'} style={{ paddingLeft: '18px' }}>
+                <Grid item xs={isMobile ? 12 : 6} style={{ paddingLeft: '18px' }}>
                   <TextField
                     disabled={keycloakMode}
                     margin="normal"
@@ -456,7 +456,7 @@ const ProfilePage = () => {
                     </Paper>
                   ) : null}
                 </Grid>
-                <Grid item xs={isMobile ? '12' : '6'}>
+                <Grid item xs={isMobile ? 12 : 6}>
                   <AvatarPicker
                     userAvatar={userData.avatar || ''}
                     userFirstName={userData.firstName || ''}

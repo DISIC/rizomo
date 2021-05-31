@@ -37,14 +37,18 @@ FindFromPublication.publish('groups.events', function groupsEvents({ page, searc
     },
   );
 
-  const query = queryGroupEvents({ search, group });
-  const res = EventsAgenda.find(query, {
-    fields: EventsAgenda.publicFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    sort: { name: -1 },
-    ...rest,
-  });
+  try {
+    const query = queryGroupEvents({ search, group });
+    const res = EventsAgenda.find(query, {
+      fields: EventsAgenda.publicFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { name: -1 },
+      ...rest,
+    });
 
-  return res;
+    return res;
+  } catch (error) {
+    return this.ready();
+  }
 });

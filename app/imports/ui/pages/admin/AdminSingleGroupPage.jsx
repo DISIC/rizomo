@@ -290,7 +290,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
           </Typography>
           <form noValidate autoComplete="off">
             <Grid container spacing={2} style={{ alignItems: 'center' }}>
-              <Grid item xs={isMobile ? '12' : '6'} style={{ paddingLeft: '18px' }}>
+              <Grid item xs={isMobile ? 12 : 6} style={{ paddingLeft: '18px' }}>
                 <TextField
                   onChange={onUpdateField}
                   value={groupData.name}
@@ -343,7 +343,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                   margin="normal"
                 />
               </Grid>
-              <Grid item xs={isMobile ? '12' : '6'}>
+              <Grid item xs={isMobile ? 12 : 6}>
                 <GroupAvatarPicker
                   avatar={groupData.avatar || ''}
                   type={groupData.type}
