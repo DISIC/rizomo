@@ -112,15 +112,20 @@ FindFromPublication.publish('users.group', function usersFromGroup({ page, itemP
     logServer(`publish users.group: ${err}`);
     this.error(err);
   }
-  const query = queryUsersFromGroup({ slug, search });
 
-  return Meteor.users.find(query, {
-    fields: Meteor.users.publicFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    sort: { lastName: 1 },
-    ...rest,
-  });
+  try {
+    const query = queryUsersFromGroup({ slug, search });
+
+    return Meteor.users.find(query, {
+      fields: Meteor.users.publicFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { lastName: 1 },
+      ...rest,
+    });
+  } catch (error) {
+    return this.ready();
+  }
 });
 
 // build query for all users who published articles
@@ -146,35 +151,48 @@ FindFromPublication.publish('users.publishers', ({ page, itemPerPage, search, ..
   // do not leak email adresses on public page
   delete pubFields.emails;
   delete pubFields.username;
-  const query = queryUsersPublishers({ search });
-  return Meteor.users.find(query, {
-    fields: pubFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    ...rest,
-  });
+
+  try {
+    const query = queryUsersPublishers({ search });
+    return Meteor.users.find(query, {
+      fields: pubFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      ...rest,
+    });
+  } catch (error) {
+    return this.ready();
+  }
 });
 
 Meteor.methods({
   // count all users from a group
   'get_users.group_count': ({ search, slug }) => {
-    const query = queryUsersFromGroup({ slug, search });
+    try {
+      const query = queryUsersFromGroup({ slug, search });
 
-    return Meteor.users
-      .find(query, {
-        sort: { lastName: 1 },
-      })
-      .count();
+      return Meteor.users
+        .find(query, {
+          sort: { lastName: 1 },
+        })
+        .count();
+    } catch (error) {
+      return 0;
+    }
   },
   // count all users who published
   'get_users.publishers_count': ({ search }) => {
-    const query = queryUsersPublishers({ search });
+    try {
+      const query = queryUsersPublishers({ search });
 
-    return Meteor.users
-      .find(query, {
-        sort: { lastname: 1 },
-      })
-      .count();
+      return Meteor.users
+        .find(query, {
+          sort: { lastname: 1 },
+        })
+        .count();
+    } catch (error) {
+      return 0;
+    }
   },
 });
 
@@ -199,26 +217,35 @@ FindFromPublication.publish('users.admin', function usersAdmin({ page, itemPerPa
     logServer(`publish users.admin : ${err}`);
     this.error(err);
   }
-  const query = queryUsersAdmin({ search });
 
-  return Meteor.users.find(query, {
-    fields: Meteor.users.adminFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    sort: { lastName: 1, firstName: 1 },
-    ...rest,
-  });
+  try {
+    const query = queryUsersAdmin({ search });
+
+    return Meteor.users.find(query, {
+      fields: Meteor.users.adminFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { lastName: 1, firstName: 1 },
+      ...rest,
+    });
+  } catch (error) {
+    return this.ready();
+  }
 });
 // count all users
 Meteor.methods({
   'get_users.admin_count': ({ search }) => {
-    const query = queryUsersAdmin({ search });
+    try {
+      const query = queryUsersAdmin({ search });
 
-    return Meteor.users
-      .find(query, {
-        sort: { lastName: 1 },
-      })
-      .count();
+      return Meteor.users
+        .find(query, {
+          sort: { lastName: 1 },
+        })
+        .count();
+    } catch (error) {
+      return 0;
+    }
   },
 });
 
@@ -249,25 +276,34 @@ FindFromPublication.publish('users.byStructure', function usersStructure({ page,
     logServer(`publish users.byStructure : ${err}`);
     this.error(err);
   }
-  const query = queryUsersByStructure({ search }, currentUser.structure);
-  return Meteor.users.find(query, {
-    fields: Meteor.users.adminFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    sort: { lastName: 1, firstName: 1 },
-    ...rest,
-  });
+
+  try {
+    const query = queryUsersByStructure({ search }, currentUser.structure);
+    return Meteor.users.find(query, {
+      fields: Meteor.users.adminFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { lastName: 1, firstName: 1 },
+      ...rest,
+    });
+  } catch (error) {
+    return this.ready();
+  }
 });
 // count structure users
 Meteor.methods({
   'get_users.byStructure_count': function queryUsersStructureCount({ search }) {
     const currentUser = Meteor.users.findOne(this.userId);
-    const query = queryUsersByStructure({ search }, currentUser.structure);
+    try {
+      const query = queryUsersByStructure({ search }, currentUser.structure);
 
-    return Meteor.users
-      .find(query, {
-        sort: { lastName: 1 },
-      })
-      .count();
+      return Meteor.users
+        .find(query, {
+          sort: { lastName: 1 },
+        })
+        .count();
+    } catch (error) {
+      return 0;
+    }
   },
 });

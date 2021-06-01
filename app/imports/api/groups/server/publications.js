@@ -160,15 +160,24 @@ const queryAllGroupsMemberOf = ({ search, groups }) => {
 Meteor.methods({
   'get_groups.memberOf_count': ({ search, userId }) => {
     const groups = Meteor.users.findOne({ _id: userId }).favGroups;
-    const query = queryAllGroupsMemberOf({ search, groups });
-    return Groups.find(query, { fields: Groups.publicFields, sort: { name: 1 } }).count();
+
+    try {
+      const query = queryAllGroupsMemberOf({ search, groups });
+      return Groups.find(query, { fields: Groups.publicFields, sort: { name: 1 } }).count();
+    } catch (error) {
+      return 0;
+    }
   },
 });
 
 Meteor.methods({
   'get_groups.all_count': ({ search }) => {
-    const query = queryAllGroups({ search });
-    return Groups.find(query, { fields: Groups.publicFields, sort: { name: 1 } }).count();
+    try {
+      const query = queryAllGroups({ search });
+      return Groups.find(query, { fields: Groups.publicFields, sort: { name: 1 } }).count();
+    } catch (error) {
+      return 0;
+    }
   },
 });
 
@@ -183,15 +192,20 @@ FindFromPublication.publish('groups.all', function groupsAll({ page, search, ite
     logServer(`publish groups.all : ${err}`);
     this.error(err);
   }
-  const query = queryAllGroups({ search });
 
-  return Groups.find(query, {
-    fields: Groups.publicFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    sort: { name: 1 },
-    ...rest,
-  });
+  try {
+    const query = queryAllGroups({ search });
+
+    return Groups.find(query, {
+      fields: Groups.publicFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { name: 1 },
+      ...rest,
+    });
+  } catch (error) {
+    return this.ready();
+  }
 });
 
 // publish all existing groups where user is member
@@ -207,15 +221,20 @@ FindFromPublication.publish('groups.memberOf', function groupsMemberOf({ page, s
   }
 
   const groups = Meteor.users.findOne({ _id: this.userId }).favGroups;
-  const query = queryAllGroupsMemberOf({ search, groups });
 
-  return Groups.find(query, {
-    fields: Groups.publicFields,
-    skip: itemPerPage * (page - 1),
-    limit: itemPerPage,
-    sort: { name: 1 },
-    ...rest,
-  });
+  try {
+    const query = queryAllGroupsMemberOf({ search, groups });
+
+    return Groups.find(query, {
+      fields: Groups.publicFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { name: 1 },
+      ...rest,
+    });
+  } catch (error) {
+    return this.ready();
+  }
 });
 
 // publish one group based on its slug

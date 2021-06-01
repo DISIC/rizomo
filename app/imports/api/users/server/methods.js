@@ -118,15 +118,22 @@ export const findUsers = new ValidatedMethod({
     }
     const sort = {};
     sort[sortColumn] = sortOrder;
-    const totalCount = Meteor.users.find(query).count();
-    const data = Meteor.users
-      .find(query, {
-        fields: isAdmin ? Meteor.users.adminFields : Meteor.users.publicFields,
-        limit: pageSize,
-        skip,
-        sort,
-      })
-      .fetch();
+    let data;
+    let totalCount;
+    try {
+      totalCount = Meteor.users.find(query).count();
+      data = Meteor.users
+        .find(query, {
+          fields: isAdmin ? Meteor.users.adminFields : Meteor.users.publicFields,
+          limit: pageSize,
+          skip,
+          sort,
+        })
+        .fetch();
+    } catch {
+      totalCount = 0;
+      data = [];
+    }
     return { data, page, totalCount };
   },
 });

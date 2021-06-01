@@ -26,8 +26,8 @@ function HelpPage() {
 
   const useStyles = makeStyles((theme) => ({
     card: {
-      margin: 10,
-      height: '18vh',
+      // margin: 10,
+      // height: '18vh',
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
@@ -84,59 +84,65 @@ function HelpPage() {
     <Fade in>
       <Container>
         <Typography variant={isMobile ? 'h5' : 'h4'}>{i18n.__('pages.HelpPage.title')}</Typography>
-        <Grid direction={isMobile ? 'column' : 'row'} xs={12} className={classes.grid}>
-          <Card className={classes.card}>
-            <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardStart')} />
-            <CardContent>
-              <Button
-                startIcon={<ExitToAppIcon />}
-                className={classes.buttonText}
-                size="large"
-                onClick={() => {
-                  setLink('https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478');
-                  setScreencastModal(true);
-                }}
-              >
-                {i18n.__('pages.HelpPage.tutoLabel')}
-              </Button>
-            </CardContent>
-          </Card>
-          <Card className={classes.card}>
-            <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardGroup')} />
-            <CardContent>
-              <Button
-                startIcon={<ExitToAppIcon />}
-                className={classes.buttonText}
-                size="large"
-                onClick={() => {
-                  setLink('https://tube-dijon.beta.education.fr/videos/embed/57752b90-5b36-4b3f-9b83-1b7464e41a5f');
-                  setScreencastModal(true);
-                }}
-              >
-                {i18n.__('pages.HelpPage.tutoLabel')}
-              </Button>
-            </CardContent>
-          </Card>
-          <Card className={classes.card}>
-            <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardMezig')} />
-            <CardContent>
-              <Button
-                startIcon={<ExitToAppIcon />}
-                className={classes.buttonText}
-                size="large"
-                onClick={() => {
-                  setLink('https://tube-dijon.beta.education.fr/videos/embed/d024f709-8b65-4f69-b058-22569f2b881d');
-                  setScreencastModal(true);
-                }}
-              >
-                {i18n.__('pages.HelpPage.tutoLabel')}
-              </Button>
-            </CardContent>
-          </Card>
+        <Grid container spacing={2} direction={isMobile ? 'column' : 'row'} className={classes.grid}>
+          <Grid item xs={12} md={6} lg={4}>
+            <Card className={classes.card}>
+              <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardStart')} />
+              <CardContent>
+                <Button
+                  startIcon={<ExitToAppIcon />}
+                  className={classes.buttonText}
+                  size="large"
+                  onClick={() => {
+                    setLink('https://tube-dijon.beta.education.fr/videos/embed/d72319ee-1f67-41ac-aa4d-ece4f8ad1478');
+                    setScreencastModal(true);
+                  }}
+                >
+                  {i18n.__('pages.HelpPage.tutoLabel')}
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Card className={classes.card}>
+              <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardGroup')} />
+              <CardContent>
+                <Button
+                  startIcon={<ExitToAppIcon />}
+                  className={classes.buttonText}
+                  size="large"
+                  onClick={() => {
+                    setLink('https://tube-dijon.beta.education.fr/videos/embed/57752b90-5b36-4b3f-9b83-1b7464e41a5f');
+                    setScreencastModal(true);
+                  }}
+                >
+                  {i18n.__('pages.HelpPage.tutoLabel')}
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Card className={classes.card}>
+              <CardHeader className={classes.header} title={i18n.__('pages.HelpPage.titleCardMezig')} />
+              <CardContent>
+                <Button
+                  startIcon={<ExitToAppIcon />}
+                  className={classes.buttonText}
+                  size="large"
+                  onClick={() => {
+                    setLink('https://tube-dijon.beta.education.fr/videos/embed/d024f709-8b65-4f69-b058-22569f2b881d');
+                    setScreencastModal(true);
+                  }}
+                >
+                  {i18n.__('pages.HelpPage.tutoLabel')}
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
         <Modal open={openScreencast} onClose={() => setScreencastModal(false)}>
-          <Grid className={classes.gridModal}>
-            <Grid className={classes.button}>
+          <Grid container className={classes.gridModal}>
+            <Grid item className={classes.button}>
               <CancelIcon className={classes.closeButton} onClick={() => setScreencastModal(false)} />
             </Grid>
             <Screencast link={link} />
