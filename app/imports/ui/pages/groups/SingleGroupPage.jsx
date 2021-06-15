@@ -35,6 +35,8 @@ import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
 import ServiceDetails from '../../components/services/ServiceDetails';
 import GroupAvatar from '../../components/groups/GroupAvatar';
+import { Polls } from '../../../api/polls/polls';
+import { EventsAgenda } from '../../../api/eventsAgenda/eventsAgenda';
 
 const useStyles = (member, candidate, type) =>
   makeStyles((theme) => ({
@@ -144,7 +146,7 @@ const useStyles = (member, candidate, type) =>
     },
   }));
 
-const SingleGroupPage = ({ group = {}, ready, services }) => {
+const SingleGroupPage = ({ group = {}, ready, services, polls, events }) => {
   const { type } = group;
   const [{ userId, user }] = useAppContext();
   const [loading, setLoading] = useState(false);
@@ -156,7 +158,6 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
   const favorite = user.favGroups.includes(group._id);
   const classes = useStyles(member || animator, candidate, type)();
   const history = useHistory();
-
   const { groupPlugins, enableBBB } = Meteor.settings.public;
 
   // chekc if group resources are available and should be displayed
@@ -424,7 +425,10 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                   _id: 'events',
                   usage: i18n.__('pages.SingleGroupPage.EventsUsage'),
                   logo: <TodayIcon className={classes.icon} color="primary" fontSize="large" />,
-                  title: i18n.__('pages.SingleGroupPage.Events'),
+                  title:
+                    events === undefined
+                      ? `${i18n.__('pages.SingleGroupPage.Events')}`
+                      : `${i18n.__('pages.SingleGroupPage.Events')} (${events})`,
                   url: `/groups/${group.slug}/events`,
                 }}
                 isShort
@@ -438,7 +442,10 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                   _id: 'polls',
                   usage: i18n.__('pages.SingleGroupPage.PollUsage'),
                   logo: <PollIcon className={classes.icon} color="primary" fontSize="large" />,
-                  title: i18n.__('pages.SingleGroupPage.Polls'),
+                  title:
+                    polls === undefined
+                      ? `${i18n.__('pages.SingleGroupPage.Polls')}`
+                      : `${i18n.__('pages.SingleGroupPage.Polls')} (${polls})`,
                   url: `/groups/${group.slug}/poll`,
                 }}
                 isShort
@@ -487,8 +494,10 @@ export default withTracker(
       params: { slug },
     },
   }) => {
-    const subGroup = Meteor.subscribe('groups.one', { slug });
-    const group = Groups.findOneFromPublication('groups.one', {}) || {};
+    const subGroup = Meteor.subscribe('groups.single', { slug });
+    const group = Groups.findOne({ slug }) || {};
+    const polls = Polls.find({}).count();
+    const events = EventsAgenda.find({}).count();
     const subServices = Meteor.subscribe('services.group', { ids: group.applications });
     const services = Services.findFromPublication('services.group', {}, { sort: { name: 1 } }).fetch() || [];
     const ready = subGroup.ready() && subServices.ready();
@@ -496,6 +505,8 @@ export default withTracker(
       group,
       ready,
       services,
+      polls,
+      events,
     };
   },
 )(SingleGroupPage);
@@ -503,10 +514,14 @@ export default withTracker(
 SingleGroupPage.defaultProps = {
   group: {},
   services: [],
+  polls: undefined,
+  events: undefined,
 };
 
 SingleGroupPage.propTypes = {
   group: PropTypes.objectOf(PropTypes.any),
   ready: PropTypes.bool.isRequired,
   services: PropTypes.arrayOf(PropTypes.any),
+  polls: PropTypes.number,
+  events: PropTypes.number,
 };
