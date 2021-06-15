@@ -26,4 +26,5 @@ import '../../api/appclients/nextcloud';
 import '../../api/smtp/methods';
 import '../../api/eventsAgenda/methods';
 import '../../api/eventsAgenda/server/publication';
+import '../../api/polls/methods';
 import '../../api/polls/server/publications';
