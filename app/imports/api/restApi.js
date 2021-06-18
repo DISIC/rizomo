@@ -5,6 +5,7 @@ import cors from 'cors';
 import Rest from 'connect-rest';
 
 import addNotification from './notifications/server/rest';
+import getStats from './stats/server/rest';
 
 WebApp.connectHandlers.use(bodyParser.urlencoded({ extended: false }));
 WebApp.connectHandlers.use(bodyParser.json());
@@ -28,3 +29,4 @@ WebApp.connectHandlers.use(rest.processRequest());
 
 // rest.get('/notifications/?userid', Meteor.bindEnvironment(getNotifications));
 rest.post({ path: '/notifications', version: '>=1.0.0' }, Meteor.bindEnvironment(addNotification));
+rest.get({ path: '/stats', version: '>=1.0.0' }, Meteor.bindEnvironment(getStats));
