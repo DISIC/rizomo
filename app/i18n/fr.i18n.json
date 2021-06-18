@@ -922,6 +922,8 @@
     },
     "AddressBook": {
       "sendEmail": "Envoyer un email à",
+      "goToMezig": "Voir la page Mezig de",
+      "goToBlog": "Voir la page Blog de",
       "back": "Retour au groupe",
       "searchText": "Quel utilisateur cherchez-vous ?"
     },
