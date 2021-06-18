@@ -40,8 +40,9 @@
       }
     },
     "services":{
-      "agendaUrl": "[URL]",
-      "sondagesUrl": "[URL]"
+      "agendaUrl": "",
+      "sondagesUrl": "",
+      "mezigUrl": "",
     }
   },
   "keycloak": {

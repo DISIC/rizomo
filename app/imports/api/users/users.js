@@ -146,6 +146,11 @@ Meteor.users.schema = new SimpleSchema(
       defaultValue: 10,
       label: getLabel('api.users.labels.groupQuota'),
     },
+    mezigName: {
+      type: String,
+      optional: true,
+      label: getLabel('api.users.labels.primaryEmail'),
+    },
   },
   { tracker: Tracker },
 );
@@ -293,6 +298,7 @@ Meteor.users.publicFields = {
   avatar: 1,
   groupCount: 1,
   groupQuota: 1,
+  mezigName: 1,
 };
 
 Meteor.users.deny({
