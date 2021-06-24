@@ -8,7 +8,7 @@ Meteor.methods({
     check(startDate, String);
     check(endDate, String);
     check(author, String);
-    return EventsAgenda.find({ title: _title, start: startDate, end: endDate, authorId: author }).fetch();
+    return EventsAgenda.find({ title: _title, start: startDate, end: endDate, userId: author }).fetch();
   },
 
   'eventsAgenda.getEventById': (id) => {
