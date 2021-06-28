@@ -695,7 +695,7 @@
       "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
       "logoutType": "Portée de la déconnexion",
       "backupTitle": "Téléchargez vos données de publication",
-      "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous également possible de charger des données que vous auriez téléchargé d'une autre instance de la boite",
+      "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous est également possible de charger des données que vous auriez téléchargées d'une autre instance de la boite.",
       "downloadPublicationBackup": "Télécharger les données",
       "UploadPublicationBackup": "Charger des données",
       "uploadSuccess": "Chargement des données réussi",

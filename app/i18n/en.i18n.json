@@ -694,7 +694,7 @@
       "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data.",
       "logoutType": "Logout perimeter",
       "backupTitle": "Backup your publications",
-      "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance",
+      "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance.",
       "downloadPublicationBackup": "Download data",
       "UploadPublicationBackup": "Upload datas",
       "uploadSuccess": "Datas uploaded with success",
