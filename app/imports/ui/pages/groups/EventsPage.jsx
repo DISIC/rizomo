@@ -90,8 +90,8 @@ const EventsPage = ({
   }, [search]);
 
   const checkDate = (e) => {
-    const dateEvent = Date.parse(e.end);
-    const dateNow = Date.now();
+    const dateEvent = e.end;
+    const dateNow = new Date();
 
     return dateEvent >= dateNow;
   };

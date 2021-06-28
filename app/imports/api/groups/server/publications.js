@@ -303,9 +303,9 @@ publishComposite('groups.single', function groupSingle({ slug }) {
       {
         find(group) {
           const groupId = group._id;
-          const date = new Date().toISOString();
+          const date = new Date();
           return EventsAgenda.find(
-            { groups: { $elemMatch: { id: groupId } }, end: { $gte: date } },
+            { groups: { $elemMatch: { _id: groupId } }, end: { $gte: date } },
             {
               fields: {
                 _id: 1,
