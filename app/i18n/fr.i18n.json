@@ -228,7 +228,7 @@
       "userGroupRemoveError": "Keycloak : ERREUR lors de la suppression du groupe {$groupName} pour l'utilisateur {$userId}"
     },
     "nextcloud": {
-      "labels":{
+      "labels": {
         "url": "url",
         "active": "actif",
         "count": "compteur"
@@ -358,7 +358,7 @@
       "update": "Mettre à jour",
       "cancel": "Annuler"
     },
-    "AdminNextCloudUrlEdit":{
+    "AdminNextCloudUrlEdit": {
       "subtitle": "Ajout et édition d'URL Nextcloud",
       "labelUrl": "URL",
       "cancel": "Annuler",
@@ -825,7 +825,7 @@
       "updateAll": "Attribuer une URL à tous les utilisateurs",
       "methodEmpty": "Tous les utilisateurs possèdent déjà une URL",
       "methodSuccess": "Opération réussie. Nombre d'URL attribuées: ",
-      "materialTableLocalization":{
+      "materialTableLocalization": {
         "body_activeTooltip": "Activer/Désactiver cette URL",
         "body_addTooltip": "Ajouter une URL",
         "body_emptyDataSourceMessage": "Aucune URL présente",
@@ -958,7 +958,8 @@
       "EventsUsage": "Liste des événements",
       "Events": "Evénements",
       "PollUsage": "Liste des sondages",
-      "Polls": "Sondages"
+      "Polls": "Sondages",
+      "groupArticles": "Publications"
     },
     "AddressBook": {
       "sendEmail": "Envoyer un email à",

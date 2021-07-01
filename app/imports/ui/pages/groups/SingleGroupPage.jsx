@@ -28,6 +28,7 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import FolderIcon from '@material-ui/icons/Folder';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useAppContext } from '../../contexts/context';
 import Groups from '../../../api/groups/groups';
@@ -280,6 +281,10 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events }) => {
     });
   };
 
+  const openBlog = () => {
+    window.open(`${Meteor.settings.public.laboiteBlogURL}/groups/${group.slug}`, '_blank');
+  };
+
   const openGroupFolder = (plugin) => {
     const resourceURL = groupPlugins[plugin].groupURL
       .replace('[URL]', groupPlugins[plugin].URL)
@@ -382,6 +387,19 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events }) => {
                       onClick={() => openMeeting()}
                     >
                       {i18n.__(`api.bbb.joinMeeting`)}
+                    </Button>
+                  </Grid>
+                ) : null}
+                {Meteor.settings.public.laboiteBlogURL !== '' ? (
+                  <Grid item key={`groupblog_${group._id}`} className={classes.cardGrid}>
+                    <Button
+                      startIcon={<LibraryBooksIcon />}
+                      className={classes.buttonAdmin}
+                      size="large"
+                      variant="contained"
+                      onClick={() => openBlog()}
+                    >
+                      {i18n.__(`pages.SingleGroupPage.groupArticles`)}
                     </Button>
                   </Grid>
                 ) : null}
