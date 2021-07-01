@@ -50,6 +50,10 @@ export const adminMenu = [
     content: 'menuAdminUserValidation',
   },
   {
+    path: '/adminextcloudurl',
+    content: 'menuAdminNextcloudUrl',
+  },
+  {
     path: '/settings',
     content: 'menuAdminAppSettings',
   },

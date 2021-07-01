@@ -32,6 +32,7 @@ const MediaStoragePage = lazy(() => import('../pages/MediaStoragePage'));
 const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'));
 const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
 const AdminUserManagement = lazy(() => import('../pages/admin/AdminUserManagement'));
+const AdminNextcloudUrlPage = lazy(() => import('../pages/admin/AdminNextcloudUrlPage'));
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -131,6 +132,13 @@ function MainLayout() {
                     path="/adminstructureservices/:_id"
                     component={AdminSingleServicePage}
                     user={user}
+                    loadingUser={loadingUser}
+                  />
+                  <AdminRoute
+                    exact
+                    path="/adminextcloudurl"
+                    component={AdminNextcloudUrlPage}
+                    userId={userId}
                     loadingUser={loadingUser}
                   />
                   <AdminRoute

@@ -16,6 +16,7 @@ import { favGroup, unfavGroup } from '../../groups/methods';
 import PersonalSpaces from '../../personalspaces/personalspaces';
 import { createRoleNotification, createRequestNotification } from '../../notifications/server/notifsutils';
 import logServer from '../../logging';
+import { getRandomNCloudURL } from '../../nextcloud/methods';
 
 if (Meteor.settings.public.enableKeycloak === true) {
   const { whiteDomains } = Meteor.settings.private;
@@ -240,6 +241,35 @@ export const setStructure = new ValidatedMethod({
     }
     // will throw error if username already taken
     Meteor.users.update({ _id: this.userId }, { $set: { structure } });
+  },
+});
+
+export const setNcloudUrlAll = new ValidatedMethod({
+  name: 'users.setNCloudAll',
+  validate: new SimpleSchema().validator(),
+
+  run() {
+    // check that user is logged in
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.setNcloudUrlAll.notLoggedIn', i18n.__('api.users.mustBeLoggedIn'));
+    }
+
+    const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+    if (!authorized) {
+      throw new Meteor.Error('api.users.setNcloudUrlAll.notPermitted', i18n.__('api.users.adminNeeded'));
+    }
+
+    const users = Meteor.users.find({ ncloud: '' }).fetch();
+
+    let cpt = 0;
+
+    for (let i = 0; i < users.length; i += 1) {
+      users[i].ncloud = getRandomNCloudURL();
+      Meteor.users.update({ _id: users[i]._id }, { $set: { ncloud: users[i].ncloud } });
+      cpt += 1;
+    }
+
+    return cpt;
   },
 });
 
