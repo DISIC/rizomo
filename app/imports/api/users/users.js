@@ -6,6 +6,7 @@ import i18n from 'meteor/universe:i18n';
 import { getLabel } from '../utils';
 import checkDomain from '../domains';
 import logServer from '../logging';
+import { getRandomNCloudURL } from '../nextcloud/methods';
 
 const AppRoles = ['candidate', 'member', 'animator', 'admin', 'adminStructure'];
 
@@ -151,8 +152,18 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
       label: getLabel('api.users.labels.primaryEmail'),
     },
+    ncloud: {
+      type: String,
+      autoValue() {
+        if (this.isInsert) {
+          return getRandomNCloudURL();
+        }
+        return this.value;
+      },
+      label: getLabel('api.users.labels.ncloud'),
+    },
   },
-  { tracker: Tracker },
+  { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
 
 if (Meteor.isServer) {
@@ -170,6 +181,7 @@ if (Meteor.isServer) {
     if (options.lastName) newUser.lastName = options.lastName;
     if (options.structure) newUser.structure = options.structure;
     if (options.profile) newUser.profile = options.profile;
+
     return newUser;
   });
   // server side login hook
@@ -268,6 +280,7 @@ Meteor.users.selfFields = {
   avatar: 1,
   groupCount: 1,
   groupQuota: 1,
+  ncloud: 1,
 };
 
 Meteor.users.adminFields = {
@@ -283,6 +296,7 @@ Meteor.users.adminFields = {
   avatar: 1,
   groupCount: 1,
   groupQuota: 1,
+  ncloud: 1,
 };
 
 Meteor.users.publicFields = {
@@ -299,6 +313,7 @@ Meteor.users.publicFields = {
   groupCount: 1,
   groupQuota: 1,
   mezigName: 1,
+  ncloud: 1,
 };
 
 Meteor.users.deny({

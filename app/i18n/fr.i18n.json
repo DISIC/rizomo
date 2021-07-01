@@ -74,7 +74,8 @@
         "lastLogin": "Date de dernière connexion",
         "avatar": "URL de l'avatar",
         "groupCount": "Nombre de groupes créés",
-        "groupQuota": "Quota de groupes"
+        "groupQuota": "Quota de groupes",
+        "ncloud": "URL Nextcloud"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -227,6 +228,15 @@
       "userGroupRemoveError": "Keycloak : ERREUR lors de la suppression du groupe {$groupName} pour l'utilisateur {$userId}"
     },
     "nextcloud": {
+      "labels":{
+        "url": "url",
+        "active": "actif",
+        "count": "compteur"
+      },
+      "notPermitted": "Vous n'avez pas les droits suffisants",
+      "adminRankNeeded": "Vous devez être administrateur",
+      "unknownURL": "URL introuvable.",
+      "urlAlreadyExists": "L'url existe déjà",
       "groupExists": "Ce groupe existe déjà dans Nextcloud",
       "addGroupError": "Erreur lors de la création du groupe dans Nextcloud",
       "addGroupFolderError": "Erreur lors de la création du partage dans Nextcloud",
@@ -348,6 +358,13 @@
       "update": "Mettre à jour",
       "cancel": "Annuler"
     },
+    "AdminNextCloudUrlEdit":{
+      "subtitle": "Ajout et édition d'URL Nextcloud",
+      "labelUrl": "URL",
+      "cancel": "Annuler",
+      "mainText": "Saisissez l'URL à créer",
+      "ValidateForm": "Valider"
+    },
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
@@ -380,6 +397,7 @@
     "MainMenu": {
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs",
+      "menuAdminNextcloudUrl": "Gestion des URL Nextcloud",
       "menuAdminCategories": "Gestion des categories",
       "menuAdminTags": "Gestion des mots clé",
       "menuAdminGroups": "Gestion des Groupes",
@@ -613,7 +631,9 @@
       "cancel": "Annuler",
       "mainText": "Nombre maximal de groupes que peut créer l'utilisateur",
       "createdGroup": "groupe(s) créé(s) par l'utilisateur",
-      "ValidateForm": "Valider"
+      "ValidateForm": "Valider",
+      "ncloudURL": "URL Nextcloud",
+      "changeURL": "Renouveller"
     }
   },
   "validatejs": {
@@ -795,6 +815,26 @@
         "body_editTooltip": "Modifier ce groupe",
         "body_deleteTooltip": "Supprimer ce groupe",
         "body_editRow_deleteText": "Supprimer vraiment ce groupe ?"
+      }
+    },
+    "AdminNextcloudUrlPage": {
+      "title": "Gestion des URL Nextcloud",
+      "columnUrl": "URL",
+      "columnActive": "Actif",
+      "columnCount": "Nombre d'utilisations",
+      "updateAll": "Attribuer une URL à tous les utilisateurs",
+      "methodEmpty": "Tous les utilisateurs possèdent déjà une URL",
+      "methodSuccess": "Opération réussie. Nombre d'URL attribuées: ",
+      "materialTableLocalization":{
+        "body_activeTooltip": "Activer/Désactiver cette URL",
+        "body_addTooltip": "Ajouter une URL",
+        "body_emptyDataSourceMessage": "Aucune URL présente",
+        "pagination_labelRowsSelect": "URL par page",
+        "toolbar_searchPlaceholder": "Rechercher une URL",
+        "body_editRow_deleteText": "Supprimer vraiment cette URL ?",
+        "body_deleteTooltip": "Supprimer cette URL",
+        "activated": "Oui",
+        "deactivated": "Non"
       }
     },
     "AdminUsersPage": {

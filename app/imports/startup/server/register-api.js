@@ -1,3 +1,5 @@
+import '../../api/nextcloud/methods';
+import '../../api/nextcloud/server/publications';
 import '../../api/users/server/methods';
 import '../../api/users/server/publications';
 import '../../api/groups/methods';
