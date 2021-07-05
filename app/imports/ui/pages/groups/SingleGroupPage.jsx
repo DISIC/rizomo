@@ -22,6 +22,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import TodayIcon from '@material-ui/icons/Today';
 import PollIcon from '@material-ui/icons/Poll';
 import LockIcon from '@material-ui/icons/Lock';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
@@ -38,6 +39,7 @@ import ServiceDetails from '../../components/services/ServiceDetails';
 import GroupAvatar from '../../components/groups/GroupAvatar';
 import { Polls } from '../../../api/polls/polls';
 import { EventsAgenda } from '../../../api/eventsAgenda/eventsAgenda';
+import Bookmarks from '../../../api/bookmarks/bookmarks';
 
 const useStyles = (member, candidate, type) =>
   makeStyles((theme) => ({
@@ -147,7 +149,7 @@ const useStyles = (member, candidate, type) =>
     },
   }));
 
-const SingleGroupPage = ({ group = {}, ready, services, polls, events }) => {
+const SingleGroupPage = ({ group = {}, ready, services, polls, events, bookmarks }) => {
   const { type } = group;
   const [{ userId, user }] = useAppContext();
   const [loading, setLoading] = useState(false);
@@ -470,6 +472,23 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events }) => {
               />
             </Grid>
           )}
+          {(admin || member || animator || type === 0) && (
+            <Grid item xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
+              <ServiceDetails
+                service={{
+                  _id: 'bookmarks',
+                  usage: i18n.__('pages.SingleGroupPage.BookmarksUsage'),
+                  logo: <BookmarksIcon className={classes.icon} color="primary" fontSize="large" />,
+                  title:
+                    polls === undefined
+                      ? `${i18n.__('pages.SingleGroupPage.Bookmarks')}`
+                      : `${i18n.__('pages.SingleGroupPage.Bookmarks')} (${bookmarks})`,
+                  url: `/groups/${group.slug}/bookmarks`,
+                }}
+                isShort
+              />
+            </Grid>
+          )}
           <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
             <Typography className={classes.smallTitle} variant="h5">
               Description
@@ -515,6 +534,7 @@ export default withTracker(
     const subGroup = Meteor.subscribe('groups.single', { slug });
     const group = Groups.findOne({ slug }) || {};
     const polls = Polls.find({}).count();
+    const bookmarks = Bookmarks.find({}).count();
     const events = EventsAgenda.find({}).count();
     const subServices = Meteor.subscribe('services.group', { ids: group.applications });
     const services = Services.findFromPublication('services.group', {}, { sort: { name: 1 } }).fetch() || [];
@@ -524,6 +544,7 @@ export default withTracker(
       ready,
       services,
       polls,
+      bookmarks,
       events,
     };
   },
@@ -533,6 +554,7 @@ SingleGroupPage.defaultProps = {
   group: {},
   services: [],
   polls: undefined,
+  bookmarks: undefined,
   events: undefined,
 };
 
@@ -541,5 +563,6 @@ SingleGroupPage.propTypes = {
   ready: PropTypes.bool.isRequired,
   services: PropTypes.arrayOf(PropTypes.any),
   polls: PropTypes.number,
+  bookmarks: PropTypes.number,
   events: PropTypes.number,
 };

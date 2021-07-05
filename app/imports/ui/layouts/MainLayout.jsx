@@ -33,6 +33,7 @@ const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'))
 const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
 const AdminUserManagement = lazy(() => import('../pages/admin/AdminUserManagement'));
 const AdminNextcloudUrlPage = lazy(() => import('../pages/admin/AdminNextcloudUrlPage'));
+const BookmarksPage = lazy(() => import('../pages/groups/BookmarksPage'));
 
 // dynamic imports
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
@@ -102,6 +103,7 @@ function MainLayout() {
                   <Route exact path="/groups/:slug/addressbook" component={AddressBook} />
                   <Route exact path="/groups/:slug/events" component={EventsPage} />
                   <Route exact path="/groups/:slug/poll" component={PollPage} />
+                  <Route exact path="/groups/:slug/bookmarks" component={BookmarksPage} />
                   <Route exact path="/admingroups" component={AdminGroupsPage} />
                   <Route exact path="/admingroups/new" component={AdminSingleGroupPage} />
                   <Route exact path="/admingroups/:_id" component={AdminSingleGroupPage} />
