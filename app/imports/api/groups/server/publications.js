@@ -10,6 +10,7 @@ import AppRoles from '../../users/users';
 import logServer from '../../logging';
 import { Polls } from '../../polls/polls';
 import { EventsAgenda } from '../../eventsAgenda/eventsAgenda';
+import Bookmarks from '../../bookmarks/bookmarks';
 
 // publish groups that user is admin/animator of
 publishComposite('groups.adminof', function groupsAdminOf() {
@@ -306,6 +307,19 @@ publishComposite('groups.single', function groupSingle({ slug }) {
           const date = new Date();
           return EventsAgenda.find(
             { groups: { $elemMatch: { _id: groupId } }, end: { $gte: date } },
+            {
+              fields: {
+                _id: 1,
+              },
+            },
+          );
+        },
+      },
+      {
+        find(group) {
+          const groupId = group._id;
+          return Bookmarks.find(
+            { groupId },
             {
               fields: {
                 _id: 1,

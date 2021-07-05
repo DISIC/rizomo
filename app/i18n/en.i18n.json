@@ -1,5 +1,22 @@
 {
   "api": {
+    "bookmarks":{
+      "labels":{
+        "url": "URL",
+        "name": "name",
+        "author": "author",
+        "groupId": "group ID",
+        "tag": "tag",
+        "id": "ID"
+      },
+      "UnknownURL": "This URL doesn't exist.",
+      "notPermitted": "You don't have sufficient rights.",
+      "adminRankNeeded": "Admin rank or author status needed.",
+      "groupRankNeeded": "You need to be member of this group.",
+      "createBookmark":{
+        "URLAlreadyExists": "URL already exists."
+      }
+    },
     "appsettings": {
       "labels": {
         "external": "Use an external link",
@@ -308,6 +325,17 @@
     }
   },
   "components": {
+    "BookMarkEdit":{
+      "title-edit": "Modify Bookmark",
+      "title-create": "Create Bookmark",
+      "mainText": "Enter information about this bookmark",
+      "labelUrl": "URL",
+      "labelName": "Name",
+      "labelTag": "Tag",
+      "ValidateFormUpdate": "Update",
+      "ValidateFormCreate": "Create",
+      "cancel": "Cancel"
+    },
     "IntroductionEdition": {
       "title": "Introduction",
       "language": "Select the language to edit",
@@ -648,6 +676,27 @@
     "body_editRow_saveTooltip": "Save changes"
   },
   "pages": {
+    "BookmarksPage":{
+      "columnName": "Name",
+      "columnTag": "Tag",
+      "columnUrl": "URL",
+      "columnAuthor": "Author",
+      "filterTitle": "Filter Bookmarks",
+      "disableFilter": "Show all bookmarks",
+      "enableFilter": "Show only my bookmarks",
+      "noAccess": "You don't have access to bookmarks of this group",
+      "title": "Bookmarks Management",
+      "materialTableLocalization":{
+        "body_addTooltip": "Add new bookmark",
+        "body_editTooltip": "Edit this bookmark",
+        "body_deleteTooltip": "Delete this bookmark",
+        "body_emptyDataSourceMessage": "There is no bookmark available",
+        "toolbar_searchPlaceholder": "Search Bookmark",
+        "pagination_labelRowsSelect": "Bookmark per page",
+        "body_editRow_deleteText": "Do you really want to delete this bookmark ?",
+        "body_actionTooltip": "Open bookmark's URL"
+      }
+    },
     "LegalPage": {
       "personalData": "Personal Data",
       "gcu": "General Conditions of Use",
@@ -956,7 +1005,9 @@
       "Events": "Events",
       "PollUsage": "Polls list",
       "Polls": "Polls",
-      "groupArticles": "Articles"
+      "groupArticles": "Articles",
+      "BookmarksUsage": "Bookmarks list",
+      "Bookmarks": "Bookmarks"
     },
     "AddressBook": {
       "sendEmail": "Send an email to",

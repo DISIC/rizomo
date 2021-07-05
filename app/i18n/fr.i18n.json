@@ -1,5 +1,22 @@
 {
   "api": {
+    "bookmarks":{
+      "labels":{
+        "url": "URL",
+        "name": "nom",
+        "author": "auteur",
+        "groupId": "ID groupe",
+        "tag": "étiquette",
+        "id": "ID"
+      },
+      "UnknownURL": "Cette URL n'existe pas.",
+      "notPermitted": "Vous n'avez pas les droits nécessaires.",
+      "adminRankNeeded": "Rang d'administrateur ou statut d'auteur requis.",
+      "groupRankNeeded": "Vous devez faire partie de ce groupe.",
+      "createBookmark":{
+        "URLAlreadyExists": "Cette URL existe déjà."
+      }
+    },
     "appsettings": {
       "labels": {
         "external": "Utiliser un lien externe",
@@ -308,6 +325,17 @@
     }
   },
   "components": {
+    "BookMarkEdit":{
+      "title-edit": "Modification de marque-page",
+      "title-create": "Création de marque-page",
+      "mainText": "Entrez les informations du marque-page",
+      "labelUrl": "URL",
+      "labelName": "Nom",
+      "labelTag": "Etiquette",
+      "ValidateFormUpdate": "Mettre à jour",
+      "ValidateFormCreate": "Créer",
+      "cancel": "Annuler"
+    },
     "IntroductionEdition": {
       "title": "Introduction",
       "language": "Selectionnez la langue à éditer",
@@ -649,6 +677,27 @@
     "body_editRow_saveTooltip": "Enregistrer les changements"
   },
   "pages": {
+    "BookmarksPage":{
+      "columnName": "Nom",
+      "columnTag": "Etiquette",
+      "columnUrl": "URL",
+      "columnAuthor": "Auteur",
+      "filterTitle": "Filtrer les marque-pages",
+      "disableFilter": "Afficher tous les marque-pages",
+      "enableFilter": "Afficher seulement mes marque-pages",
+      "noAccess": "Vous n'avez pas accès aux marque-pages de ce groupe",
+      "title": "Gestion des marque-pages",
+      "materialTableLocalization":{
+        "body_addTooltip": "Créer un nouveau marque-page",
+        "body_editTooltip": "Modifier ce marque-page",
+        "body_deleteTooltip": "Supprimer ce marque-page",
+        "body_emptyDataSourceMessage": "Il n'y a aucun marque-page disponible",
+        "toolbar_searchPlaceholder": "Rechercher un marque-page",
+        "pagination_labelRowsSelect": "Marque-page par page",
+        "body_editRow_deleteText": "Voulez-vous réellement supprimer ce marque-page ?",
+        "body_actionTooltip": "Ouvrir le lien du marque-page"
+      }
+    },
     "LegalPage": {
       "personalData": "Données Personnelles",
       "gcu": "Conditions générales d'utilisation",
@@ -959,7 +1008,9 @@
       "Events": "Evénements",
       "PollUsage": "Liste des sondages",
       "Polls": "Sondages",
-      "groupArticles": "Publications"
+      "groupArticles": "Publications",
+      "BookmarksUsage": "Liste des marque-pages",
+      "Bookmarks": "Marque-pages"
     },
     "AddressBook": {
       "sendEmail": "Envoyer un email à",
