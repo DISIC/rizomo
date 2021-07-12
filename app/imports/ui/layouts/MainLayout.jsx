@@ -31,7 +31,6 @@ const EditArticlePage = lazy(() => import('../pages/articles/EditArticlePage'));
 const MediaStoragePage = lazy(() => import('../pages/MediaStoragePage'));
 const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'));
 const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
-const AdminUserManagement = lazy(() => import('../pages/admin/AdminUserManagement'));
 const AdminNextcloudUrlPage = lazy(() => import('../pages/admin/AdminNextcloudUrlPage'));
 const BookmarksPage = lazy(() => import('../pages/groups/BookmarksPage'));
 
@@ -140,13 +139,6 @@ function MainLayout() {
                     exact
                     path="/adminextcloudurl"
                     component={AdminNextcloudUrlPage}
-                    userId={userId}
-                    loadingUser={loadingUser}
-                  />
-                  <AdminRoute
-                    exact
-                    path="/adminusers/:_id"
-                    component={AdminUserManagement}
                     userId={userId}
                     loadingUser={loadingUser}
                   />
