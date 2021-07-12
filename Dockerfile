@@ -10,7 +10,9 @@ RUN bash $SCRIPTS_FOLDER/build-app-npm-dependencies.sh
 COPY ./app $APP_SOURCE_FOLDER/
 
 RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
-
+# run npm install after initial installation because resolutions
+# are not taken in account with npm ci
+RUN cd $APP_SOURCE_FOLDER && meteor npm install
 
 # Rather than Node 8 latest (Alpine), you can also use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html
 FROM hub.eole.education/proxyhub/library/node:12.22.1-alpine
