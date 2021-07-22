@@ -28,22 +28,27 @@ Bookmarks.schema = new SimpleSchema(
     },
     name: {
       type: String,
-      label: getLabel('api.bookmarks.label.name'),
+      label: getLabel('api.bookmarks.labels.name'),
     },
     author: {
       type: String,
-      label: getLabel('api.bookmarks.label.author'),
+      label: getLabel('api.bookmarks.labels.author'),
     },
     groupId: {
       type: String,
-      label: getLabel('api.bookmarks.label.groupId'),
+      label: getLabel('api.bookmarks.labels.groupId'),
     },
     tag: {
       type: String,
-      label: getLabel('api.bookmarks.label.tag'),
+      label: getLabel('api.bookmarks.labels.tag'),
+    },
+    icon: {
+      type: String,
+      label: getLabel('api.bookmarks.labels.icon'),
+      defaultValue: '',
     },
   },
-  { tracker: Tracker },
+  { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
 
 Bookmarks.publicFields = {
@@ -51,6 +56,7 @@ Bookmarks.publicFields = {
   name: 1,
   author: 1,
   group: 1,
+  icon: 1,
 };
 
 Bookmarks.attachSchema(Bookmarks.schema);

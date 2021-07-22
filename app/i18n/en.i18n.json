@@ -7,7 +7,8 @@
         "author": "author",
         "groupId": "group ID",
         "tag": "tag",
-        "id": "ID"
+        "id": "ID",
+        "icon": "favion"
       },
       "UnknownURL": "This URL doesn't exist.",
       "notPermitted": "You don't have sufficient rights.",
@@ -677,6 +678,7 @@
   },
   "pages": {
     "BookmarksPage":{
+      "columnIcon": "Favicon",
       "columnName": "Name",
       "columnTag": "Tag",
       "columnUrl": "URL",

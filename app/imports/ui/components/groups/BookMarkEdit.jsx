@@ -87,11 +87,12 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
         tag,
         groupId: group._id,
       },
-      function callbackQuota(error) {
+      function callbackQuota(error, urlFinal) {
         if (error) {
           msg.error(error.message);
         } else {
           msg.success(i18n.__('api.methods.operationSuccessMsg'));
+          Meteor.call('bookmark.getFavicon', { url: urlFinal });
         }
       },
     );
