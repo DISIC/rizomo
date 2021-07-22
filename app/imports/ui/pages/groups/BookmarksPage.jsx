@@ -8,6 +8,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import MaterialTable from 'material-table';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import LanguageIcon from '@material-ui/icons/Language';
 import Container from '@material-ui/core/Container';
 import { Roles } from 'meteor/alanning:roles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -34,6 +35,10 @@ const useStyles = makeStyles(() => ({
     color: 'blue',
     textDecoration: 'underline',
   },
+  icon: {
+    height: 25,
+    width: 25,
+  },
 }));
 
 function BookmarksPage({ loading, bookmarksList, group }) {
@@ -42,6 +47,20 @@ function BookmarksPage({ loading, bookmarksList, group }) {
   const [filter, setFilter] = useState(false);
   const classes = useStyles();
   const columns = [
+    {
+      title: i18n.__('pages.BookmarksPage.columnIcon'),
+      field: 'icon',
+      editable: 'never',
+      render: (rowData) => {
+        const { icon } = rowData;
+
+        if (icon !== '') {
+          // eslint-disable-next-line jsx-a11y/alt-text
+          return <img src={`${icon}`} className={classes.icon} />;
+        }
+        return <LanguageIcon className={classes.icon} />;
+      },
+    },
     {
       title: i18n.__('pages.BookmarksPage.columnName'),
       field: 'name',
@@ -175,6 +194,7 @@ function BookmarksPage({ loading, bookmarksList, group }) {
                         }
                       },
                     );
+                    Meteor.call('bookmark.getFavicon', { url: newData.url });
                   }),
                 onRowDelete: (oldData) =>
                   new Promise((resolve, reject) => {

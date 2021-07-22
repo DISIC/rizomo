@@ -116,9 +116,9 @@ describe('bookmarks', function () {
         const urlFind = Bookmarks.findOne({ url });
         assert.equal(urlFind, undefined);
 
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind2 = Bookmarks.findOne({ url });
-        assert.equal(urlFind2.url, url);
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind2.url, urlFinal);
         assert.equal(urlFind2.author, userGroupId);
         assert.equal(urlFind2.name, 'Test');
         assert.equal(urlFind2.tag, 'Tag');
@@ -127,9 +127,9 @@ describe('bookmarks', function () {
         const urlFind = Bookmarks.findOne({ url });
         assert.equal(urlFind, undefined);
 
-        createBookmark._execute({ userId: adminGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind2 = Bookmarks.findOne({ url });
-        assert.equal(urlFind2.url, url);
+        const urlFinal = createBookmark._execute({ userId: adminGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind2.url, urlFinal);
         assert.equal(urlFind2.author, adminGroupId);
         assert.equal(urlFind2.name, 'Test');
         assert.equal(urlFind2.tag, 'Tag');
@@ -138,23 +138,23 @@ describe('bookmarks', function () {
         const urlFind = Bookmarks.findOne({ url });
         assert.equal(urlFind, undefined);
 
-        createBookmark._execute({ userId: adminId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind2 = Bookmarks.findOne({ url });
-        assert.equal(urlFind2.url, url);
+        const urlFinal = createBookmark._execute({ userId: adminId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind2.url, urlFinal);
         assert.equal(urlFind2.author, adminId);
         assert.equal(urlFind2.name, 'Test');
         assert.equal(urlFind2.tag, 'Tag');
       });
       it("Doesn't create bookmark if url already exists", function () {
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind2 = Bookmarks.findOne({ url });
-        assert.equal(urlFind2.url, url);
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind2.url, urlFinal);
         assert.equal(urlFind2.author, userGroupId);
         assert.equal(urlFind2.name, 'Test');
         assert.equal(urlFind2.tag, 'Tag');
         assert.throws(
           () => {
-            createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+            createBookmark._execute({ userId: userGroupId }, { url: urlFinal, name: 'Test', groupId, tag: 'Tag' });
           },
           Meteor.Error,
           /api.bookmarks.createBookmark.URLAlreadyExists/,
@@ -173,52 +173,52 @@ describe('bookmarks', function () {
     describe('removeBookmark', function () {
       it('does remove URL', function () {
         // Create URL
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind = Bookmarks.findOne({ url });
-        assert.equal(urlFind.url, url);
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind.url, urlFinal);
         assert.equal(urlFind.name, 'Test');
         assert.equal(urlFind.tag, 'Tag');
         assert.equal(urlFind.author, userGroupId);
 
         // Remove URL
-        removeBookmark._execute({ userId: userGroupId }, { url, groupId });
-        const urlFind2 = Bookmarks.findOne({ url });
+        removeBookmark._execute({ userId: userGroupId }, { url: urlFinal, groupId });
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal });
         assert.equal(urlFind2, undefined);
       });
       it('does group admin can remove any bookmark', function () {
         // Create URL
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind = Bookmarks.findOne({ url });
-        assert.equal(urlFind.url, url);
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind.url, urlFinal);
         assert.equal(urlFind.name, 'Test');
         assert.equal(urlFind.tag, 'Tag');
         assert.equal(urlFind.author, userGroupId);
 
         // Remove URL
-        removeBookmark._execute({ userId: userGroupId }, { url, groupId });
-        const urlFind2 = Bookmarks.findOne({ url });
+        removeBookmark._execute({ userId: userGroupId }, { url: urlFinal, groupId });
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal });
         assert.equal(urlFind2, undefined);
       });
       it('does global admin can remove any bookmark', function () {
         // Create URL
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind = Bookmarks.findOne({ url });
-        assert.equal(urlFind.url, url);
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind.url, urlFinal);
         assert.equal(urlFind.name, 'Test');
         assert.equal(urlFind.tag, 'Tag');
         assert.equal(urlFind.author, userGroupId);
 
         // Remove URL
-        removeBookmark._execute({ userId: adminId }, { url, groupId });
-        const urlFind2 = Bookmarks.findOne({ url });
+        removeBookmark._execute({ userId: adminId }, { url: urlFinal, groupId });
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal });
         assert.equal(urlFind2, undefined);
       });
       it('only admin or author can remove URL', function () {
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
         // Throws if non owner/admin user, or logged out user
         assert.throws(
           () => {
-            removeBookmark._execute({ userId }, { url, groupId });
+            removeBookmark._execute({ userId }, { url: urlFinal, groupId });
           },
           Meteor.Error,
           /api.bookmarks.notPermitted/,
@@ -238,62 +238,62 @@ describe('bookmarks', function () {
     });
     describe('updateBookmark', function () {
       it('does update Bookmark as author', function () {
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind = Bookmarks.findOne({ url });
-        assert.equal(urlFind.url, url);
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind.url, urlFinal);
         assert.equal(urlFind.name, 'Test');
         assert.equal(urlFind.tag, 'Tag');
         assert.equal(urlFind.author, userGroupId);
 
-        updateBookmark._execute(
+        const urlFinal2 = updateBookmark._execute(
           { userId: userGroupId },
           { id: urlFind._id, url, name: 'TestModif', groupId, tag: 'TagModifié' },
         );
-        const urlFind2 = Bookmarks.findOne({ url });
-        assert.equal(urlFind2.url, url);
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal2 });
+        assert.equal(urlFind2.url, urlFinal2);
         assert.equal(urlFind2.name, 'TestModif');
         assert.equal(urlFind2.tag, 'TagModifié');
         assert.equal(urlFind2.author, userGroupId);
       });
       it('does update Bookmark as group admin', function () {
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind = Bookmarks.findOne({ url });
-        assert.equal(urlFind.url, url);
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind.url, urlFinal);
         assert.equal(urlFind.name, 'Test');
         assert.equal(urlFind.tag, 'Tag');
         assert.equal(urlFind.author, userGroupId);
 
-        updateBookmark._execute(
+        const urlFinal2 = updateBookmark._execute(
           { userId: adminGroupId },
           { id: urlFind._id, url, name: 'TestModif', groupId, tag: 'TagModifié' },
         );
-        const urlFind2 = Bookmarks.findOne({ url });
-        assert.equal(urlFind2.url, url);
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal2 });
+        assert.equal(urlFind2.url, urlFinal2);
         assert.equal(urlFind2.name, 'TestModif');
         assert.equal(urlFind2.tag, 'TagModifié');
         assert.equal(urlFind2.author, userGroupId);
       });
       it('does update Bookmark as global admin', function () {
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind = Bookmarks.findOne({ url });
-        assert.equal(urlFind.url, url);
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind = Bookmarks.findOne({ url: urlFinal });
+        assert.equal(urlFind.url, urlFinal);
         assert.equal(urlFind.name, 'Test');
         assert.equal(urlFind.tag, 'Tag');
         assert.equal(urlFind.author, userGroupId);
 
-        updateBookmark._execute(
+        const urlFinal2 = updateBookmark._execute(
           { userId: adminId },
           { id: urlFind._id, url, name: 'TestModif', groupId, tag: 'TagModifié' },
         );
-        const urlFind2 = Bookmarks.findOne({ url });
-        assert.equal(urlFind2.url, url);
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal2 });
+        assert.equal(urlFind2.url, urlFinal2);
         assert.equal(urlFind2.name, 'TestModif');
         assert.equal(urlFind2.tag, 'TagModifié');
         assert.equal(urlFind2.author, userGroupId);
       });
       it('only admin or author can update URL', function () {
-        createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
-        const urlFind = Bookmarks.findOne({ url });
+        const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
+        const urlFind = Bookmarks.findOne({ url: urlFinal });
 
         // Throws if non owner/admin user, or logged out user
         assert.throws(

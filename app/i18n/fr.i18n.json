@@ -7,7 +7,8 @@
         "author": "auteur",
         "groupId": "ID groupe",
         "tag": "étiquette",
-        "id": "ID"
+        "id": "ID",
+        "icon": "favicon"
       },
       "UnknownURL": "Cette URL n'existe pas.",
       "notPermitted": "Vous n'avez pas les droits nécessaires.",
@@ -678,6 +679,7 @@
   },
   "pages": {
     "BookmarksPage":{
+      "columnIcon": "Favicon",
       "columnName": "Nom",
       "columnTag": "Etiquette",
       "columnUrl": "URL",

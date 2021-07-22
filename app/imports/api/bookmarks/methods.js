@@ -10,11 +10,22 @@ import Bookmarks from './bookmarks';
 
 function _updateBookmarkURL(id, url, name, tag) {
   Bookmarks.update({ _id: id }, { $set: { url, name, tag } });
+  // Meteor.call('bookmark.getFavicon', { url });
+}
+
+function _formatURL(name) {
+  let finalName = name;
+
+  if (!name.includes('://')) {
+    finalName = `https://${name}`;
+  }
+  return finalName;
 }
 
 function _createBookmarkUrl(url, name, tag, groupId, author) {
   try {
     Bookmarks.insert({ url, name, tag, groupId, author });
+    // Meteor.call('bookmark.getFavicon', { url });
   } catch (error) {
     if (error.code === 11000) {
       throw new Meteor.Error(
@@ -45,7 +56,9 @@ export const createBookmark = new ValidatedMethod({
       throw new Meteor.Error('api.bookmarks.notPermitted', i18n.__('api.bookmarks.groupRankNeeded'));
     }
 
-    const bk = Bookmarks.findOne({ url });
+    const finalUrl = _formatURL(url);
+
+    const bk = Bookmarks.findOne({ url: finalUrl });
     if (bk !== undefined) {
       throw new Meteor.Error(
         'api.bookmarks.createBookmark.URLAlreadyExists',
@@ -53,7 +66,8 @@ export const createBookmark = new ValidatedMethod({
       );
     }
 
-    return _createBookmarkUrl(url, name, tag, groupId, this.userId);
+    _createBookmarkUrl(finalUrl, name, tag, groupId, this.userId);
+    return finalUrl;
   },
 });
 
@@ -82,7 +96,10 @@ export const updateBookmark = new ValidatedMethod({
       throw new Meteor.Error('api.bookmarks.notPermitted', i18n.__('api.bookmarks.adminRankNeeded'));
     }
 
-    return _updateBookmarkURL(id, url, name, tag);
+    const finalUrl = _formatURL(url);
+
+    _updateBookmarkURL(id, finalUrl, name, tag);
+    return finalUrl;
   },
 });
 
