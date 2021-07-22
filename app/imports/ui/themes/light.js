@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const lightTheme = createMuiTheme({
+const lightTheme = createTheme({
   shape: {
     borderRadius: 8,
   },

@@ -251,7 +251,7 @@ function ServicesPage({ services, categories, ready, structureMode }) {
 
   const searchField = (
     <Grid item xs={12} sm={12} md={6} className={searchToggle ? null : classes.small}>
-      <Collapse in={searchToggle} collapsedHeight={0}>
+      <Collapse in={searchToggle} collapsedSize={0}>
         <TextField
           margin="normal"
           id="search"
@@ -311,7 +311,7 @@ function ServicesPage({ services, categories, ready, structureMode }) {
                 </Grid>
               )}
               <Grid item xs={12} sm={12} md={12} className={searchToggle ? null : classes.small}>
-                <Collapse in={searchToggle && !isMobile} collapsedHeight={0}>
+                <Collapse in={searchToggle && !isMobile} collapsedSize={0}>
                   <>
                     <Typography variant="h6" display="inline">
                       {i18n.__('pages.ServicesPage.categories')}
