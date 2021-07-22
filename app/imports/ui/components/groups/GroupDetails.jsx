@@ -188,7 +188,7 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
           className={classes.cardHeader}
           avatar={
             animator || admin ? (
-              <GroupBadge overlap="circle" className={classes.badge} color="error" badgeContent={group.numCandidates}>
+              <GroupBadge overlap="circular" className={classes.badge} color="error" badgeContent={group.numCandidates}>
                 <GroupAvatar type={type} avatar={avatar} />
               </GroupBadge>
             ) : (

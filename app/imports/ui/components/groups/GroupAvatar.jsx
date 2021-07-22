@@ -68,7 +68,7 @@ const GroupAvatar = ({ type, avatar, profil }) => {
     </Avatar>
   ) : (
     <Badge
-      overlap="circle"
+      overlap="circular"
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',

@@ -114,7 +114,7 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
               avatar={
                 animator || hasAdmin ? (
                   <GroupBadge
-                    overlap="circle"
+                    overlap="circular"
                     className={classes.badge}
                     color="error"
                     badgeContent={group.numCandidates}

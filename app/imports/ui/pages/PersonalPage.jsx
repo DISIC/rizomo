@@ -414,7 +414,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
               </Grid>
               <Grid container spacing={4}>
                 <Grid item xs={12} sm={12} md={6} className={searchToggle ? classes.search : classes.small}>
-                  <Collapse in={searchToggle} collapsedHeight={0}>
+                  <Collapse in={searchToggle} collapsedSize={0}>
                     <TextField
                       margin="normal"
                       id="search"
