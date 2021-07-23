@@ -22,12 +22,14 @@ import PeopleIcon from '@material-ui/icons/People';
 import TodayIcon from '@material-ui/icons/Today';
 import PollIcon from '@material-ui/icons/Poll';
 import LockIcon from '@material-ui/icons/Lock';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import FolderIcon from '@material-ui/icons/Folder';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useAppContext } from '../../contexts/context';
 import Groups from '../../../api/groups/groups';
@@ -35,6 +37,9 @@ import Services from '../../../api/services/services';
 import Spinner from '../../components/system/Spinner';
 import ServiceDetails from '../../components/services/ServiceDetails';
 import GroupAvatar from '../../components/groups/GroupAvatar';
+import { Polls } from '../../../api/polls/polls';
+import { EventsAgenda } from '../../../api/eventsAgenda/eventsAgenda';
+import Bookmarks from '../../../api/bookmarks/bookmarks';
 
 const useStyles = (member, candidate, type) =>
   makeStyles((theme) => ({
@@ -144,7 +149,7 @@ const useStyles = (member, candidate, type) =>
     },
   }));
 
-const SingleGroupPage = ({ group = {}, ready, services }) => {
+const SingleGroupPage = ({ group = {}, ready, services, polls, events, bookmarks }) => {
   const { type } = group;
   const [{ userId, user }] = useAppContext();
   const [loading, setLoading] = useState(false);
@@ -156,7 +161,6 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
   const favorite = user.favGroups.includes(group._id);
   const classes = useStyles(member || animator, candidate, type)();
   const history = useHistory();
-
   const { groupPlugins, enableBBB } = Meteor.settings.public;
 
   // chekc if group resources are available and should be displayed
@@ -279,6 +283,10 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
     });
   };
 
+  const openBlog = () => {
+    window.open(`${Meteor.settings.public.laboiteBlogURL}/groups/${group.slug}`, '_blank');
+  };
+
   const openGroupFolder = (plugin) => {
     const resourceURL = groupPlugins[plugin].groupURL
       .replace('[URL]', groupPlugins[plugin].URL)
@@ -384,6 +392,19 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                     </Button>
                   </Grid>
                 ) : null}
+                {Meteor.settings.public.laboiteBlogURL !== '' ? (
+                  <Grid item key={`groupblog_${group._id}`} className={classes.cardGrid}>
+                    <Button
+                      startIcon={<LibraryBooksIcon />}
+                      className={classes.buttonAdmin}
+                      size="large"
+                      variant="contained"
+                      onClick={() => openBlog()}
+                    >
+                      {i18n.__(`pages.SingleGroupPage.groupArticles`)}
+                    </Button>
+                  </Grid>
+                ) : null}
                 {Object.keys(groupPlugins)
                   .filter((p) => groupPlugins[p].enable === true)
                   .map((p) => {
@@ -424,7 +445,10 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                   _id: 'events',
                   usage: i18n.__('pages.SingleGroupPage.EventsUsage'),
                   logo: <TodayIcon className={classes.icon} color="primary" fontSize="large" />,
-                  title: i18n.__('pages.SingleGroupPage.Events'),
+                  title:
+                    events === undefined
+                      ? `${i18n.__('pages.SingleGroupPage.Events')}`
+                      : `${i18n.__('pages.SingleGroupPage.Events')} (${events})`,
                   url: `/groups/${group.slug}/events`,
                 }}
                 isShort
@@ -438,8 +462,28 @@ const SingleGroupPage = ({ group = {}, ready, services }) => {
                   _id: 'polls',
                   usage: i18n.__('pages.SingleGroupPage.PollUsage'),
                   logo: <PollIcon className={classes.icon} color="primary" fontSize="large" />,
-                  title: i18n.__('pages.SingleGroupPage.Polls'),
+                  title:
+                    polls === undefined
+                      ? `${i18n.__('pages.SingleGroupPage.Polls')}`
+                      : `${i18n.__('pages.SingleGroupPage.Polls')} (${polls})`,
                   url: `/groups/${group.slug}/poll`,
+                }}
+                isShort
+              />
+            </Grid>
+          )}
+          {(admin || member || animator || type === 0) && (
+            <Grid item xs={12} sm={12} md={6} lg={4} className={classes.cardGrid}>
+              <ServiceDetails
+                service={{
+                  _id: 'bookmarks',
+                  usage: i18n.__('pages.SingleGroupPage.BookmarksUsage'),
+                  logo: <BookmarksIcon className={classes.icon} color="primary" fontSize="large" />,
+                  title:
+                    polls === undefined
+                      ? `${i18n.__('pages.SingleGroupPage.Bookmarks')}`
+                      : `${i18n.__('pages.SingleGroupPage.Bookmarks')} (${bookmarks})`,
+                  url: `/groups/${group.slug}/bookmarks`,
                 }}
                 isShort
               />
@@ -487,8 +531,11 @@ export default withTracker(
       params: { slug },
     },
   }) => {
-    const subGroup = Meteor.subscribe('groups.one', { slug });
-    const group = Groups.findOneFromPublication('groups.one', {}) || {};
+    const subGroup = Meteor.subscribe('groups.single', { slug });
+    const group = Groups.findOne({ slug }) || {};
+    const polls = Polls.find({}).count();
+    const bookmarks = Bookmarks.find({}).count();
+    const events = EventsAgenda.find({}).count();
     const subServices = Meteor.subscribe('services.group', { ids: group.applications });
     const services = Services.findFromPublication('services.group', {}, { sort: { name: 1 } }).fetch() || [];
     const ready = subGroup.ready() && subServices.ready();
@@ -496,6 +543,9 @@ export default withTracker(
       group,
       ready,
       services,
+      polls,
+      bookmarks,
+      events,
     };
   },
 )(SingleGroupPage);
@@ -503,10 +553,16 @@ export default withTracker(
 SingleGroupPage.defaultProps = {
   group: {},
   services: [],
+  polls: undefined,
+  bookmarks: undefined,
+  events: undefined,
 };
 
 SingleGroupPage.propTypes = {
   group: PropTypes.objectOf(PropTypes.any),
   ready: PropTypes.bool.isRequired,
   services: PropTypes.arrayOf(PropTypes.any),
+  polls: PropTypes.number,
+  bookmarks: PropTypes.number,
+  events: PropTypes.number,
 };

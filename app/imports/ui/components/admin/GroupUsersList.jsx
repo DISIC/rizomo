@@ -159,7 +159,7 @@ const GroupsUsersList = (props) => {
 
   return (
     <>
-      <Collapse in={showSearch} collapsedHeight={0}>
+      <Collapse in={showSearch} collapsedSize={0}>
         <div className={classes.adduser}>
           <UserFinder
             onSelected={setUser}
@@ -176,7 +176,7 @@ const GroupsUsersList = (props) => {
           </IconButton>
         </div>
       </Collapse>
-      <Collapse in={showSearchGroup} collapsedHeight={0}>
+      <Collapse in={showSearchGroup} collapsedSize={0}>
         <div className={classes.adduser}>
           <GroupFinder
             onSelected={setGroupAdd}

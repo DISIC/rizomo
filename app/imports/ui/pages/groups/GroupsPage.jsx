@@ -170,7 +170,7 @@ function GroupsPage() {
 
   const searchField = (
     <Grid item xs={12} sm={12} md={6} className={searchToggle ? null : classes.small}>
-      <Collapse in={searchToggle} collapsedHeight={0}>
+      <Collapse in={searchToggle} collapsedSize={0}>
         <TextField
           margin="normal"
           id="search"

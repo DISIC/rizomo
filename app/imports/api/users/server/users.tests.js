@@ -30,10 +30,13 @@ import {
   setMemberOf,
   setKeycloakId,
   setAvatar,
+  setNcloudUrlAll,
+  toggleAdvancedPersonalPage,
 } from './methods';
 import { structures } from '../structures';
 import Groups from '../../groups/groups';
 import PersonalSpaces from '../../personalspaces/personalspaces';
+import Nextcloud from '../../nextcloud/nextcloud';
 import './publications';
 
 describe('users', function () {
@@ -62,6 +65,7 @@ describe('users', function () {
           structure: faker.company.companyName(),
           firstName: `test${faker.name.firstName()}`,
           lastName: `test${faker.name.lastName()}`,
+          ncloud: 'toto',
         });
       });
       // spécific users for userData publication and search filter test
@@ -617,7 +621,7 @@ describe('users', function () {
         const user = Meteor.users.findOne({ _id: userId });
         assert.equal(user.avatar, 'http://perdu.com/monavatar.png');
       });
-      it('only logged in users can set their language', function () {
+      it('only logged in users can set their avatar', function () {
         assert.throws(
           () => {
             setAvatar._execute({}, { avatar: 'http://perdu.com/monavatar.png' });
@@ -710,6 +714,86 @@ describe('users', function () {
           },
           Meteor.Error,
           /api.users.unsetActive.notPermitted/,
+        );
+      });
+    });
+    describe('setNcloudUrlAll', function () {
+      it('global admin can set nextcloud url for all users', function () {
+        Nextcloud.remove({});
+        for (let nb = 0; nb < 10; nb += 1) {
+          const mm = faker.internet.email();
+          Accounts.createUser({
+            email: mm,
+            username: mm,
+            password: 'toto',
+            structure: faker.company.companyName(),
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+          });
+        }
+
+        Meteor.users.update({}, { $set: { isActive: true, ncloud: '' } }, { multi: true });
+        const nbUsers = Meteor.users.find({}).count();
+        assert.equal(nbUsers, 12);
+
+        Nextcloud.insert({ url: 'url0', active: false, count: 0 });
+        Nextcloud.insert({ url: 'url1', active: true, count: 0 });
+        Nextcloud.insert({ url: 'url2', active: true, count: 0 });
+        Nextcloud.insert({ url: 'url3', active: true, count: 0 });
+        const nbActiveUrls = Nextcloud.find({ active: true }).count();
+        assert.equal(nbActiveUrls, 3);
+
+        let cpt = setNcloudUrlAll._execute({ userId: adminId }, {});
+        assert.equal(cpt, 12);
+
+        const url0 = Nextcloud.findOne({ url: 'url0' });
+        assert.equal(url0.count, 0);
+        const url1 = Nextcloud.findOne({ url: 'url1' });
+        assert.equal(url1.count, 4);
+        const url2 = Nextcloud.findOne({ url: 'url2' });
+        assert.equal(url2.count, 4);
+        const url3 = Nextcloud.findOne({ url: 'url3' });
+        assert.equal(url3.count, 4);
+
+        cpt = setNcloudUrlAll._execute({ userId: adminId }, {});
+        assert.equal(cpt, 0);
+      });
+      it('only global admin can set nextcloud url for all users', function () {
+        // Throws if non admin user, or logged out user
+        assert.throws(
+          () => {
+            setNcloudUrlAll._execute({ userId }, {});
+          },
+          Meteor.Error,
+          /api.users.setNcloudUrlAll.notPermitted/,
+        );
+        assert.throws(
+          () => {
+            setNcloudUrlAll._execute({}, {});
+          },
+          Meteor.Error,
+          /api.users.setNcloudUrlAll.notLoggedIn/,
+        );
+      });
+    });
+    describe('toggleAdvancedPersonalPage', function () {
+      it('users can toggle their advancedPersonalPage option', function () {
+        let user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.advancedPersonalPage, false);
+        toggleAdvancedPersonalPage._execute({ userId }, {});
+        user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.advancedPersonalPage, true);
+        toggleAdvancedPersonalPage._execute({ userId }, {});
+        user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.advancedPersonalPage, false);
+      });
+      it('only logged in users can set their advancedPersonalPage', function () {
+        assert.throws(
+          () => {
+            toggleAdvancedPersonalPage._execute({}, {});
+          },
+          Meteor.Error,
+          /api.users.toggleAdvancedPersonalPage.notPermitted/,
         );
       });
     });

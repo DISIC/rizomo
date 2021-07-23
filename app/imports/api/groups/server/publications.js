@@ -8,6 +8,9 @@ import { checkPaginationParams, isActive, getLabel } from '../../utils';
 import Groups from '../groups';
 import AppRoles from '../../users/users';
 import logServer from '../../logging';
+import { Polls } from '../../polls/polls';
+import { EventsAgenda } from '../../eventsAgenda/eventsAgenda';
+import Bookmarks from '../../bookmarks/bookmarks';
 
 // publish groups that user is admin/animator of
 publishComposite('groups.adminof', function groupsAdminOf() {
@@ -261,4 +264,70 @@ FindFromPublication.publish('groups.one', function groupsOne({ slug }) {
       sort: { name: -1 },
     },
   );
+});
+
+// publish one group and events and pools based on its slug
+publishComposite('groups.single', function groupSingle({ slug }) {
+  if (!isActive(this.userId)) {
+    return this.ready();
+  }
+  try {
+    new SimpleSchema({
+      slug: {
+        type: String,
+        label: getLabel('api.groups.labels.slug'),
+      },
+    }).validate({ slug });
+  } catch (err) {
+    logServer(`publish groups.one : ${err}`);
+    this.error(err);
+  }
+
+  return {
+    find() {
+      return Groups.find({ slug }, { fields: Groups.allPublicFields, limit: 1, sort: { name: -1 } });
+    },
+    children: [
+      {
+        find(group) {
+          const groupId = group._id;
+          return Polls.find(
+            { groups: { $in: [groupId] }, active: true },
+            {
+              fields: {
+                _id: 1,
+              },
+            },
+          );
+        },
+      },
+      {
+        find(group) {
+          const groupId = group._id;
+          const date = new Date();
+          return EventsAgenda.find(
+            { groups: { $elemMatch: { _id: groupId } }, end: { $gte: date } },
+            {
+              fields: {
+                _id: 1,
+              },
+            },
+          );
+        },
+      },
+      {
+        find(group) {
+          const groupId = group._id;
+          return Bookmarks.find(
+            { groupId },
+            {
+              fields: {
+                _id: 1,
+              },
+            },
+          );
+        },
+      },
+    ],
+  };
 });

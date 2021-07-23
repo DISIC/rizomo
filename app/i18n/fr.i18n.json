@@ -1,5 +1,23 @@
 {
   "api": {
+    "bookmarks": {
+      "labels": {
+        "url": "URL",
+        "name": "nom",
+        "author": "auteur",
+        "groupId": "ID groupe",
+        "tag": "étiquette",
+        "id": "ID",
+        "icon": "favicon"
+      },
+      "UnknownURL": "Cette URL n'existe pas.",
+      "notPermitted": "Vous n'avez pas les droits nécessaires.",
+      "adminRankNeeded": "Rang d'administrateur ou statut d'auteur requis.",
+      "groupRankNeeded": "Vous devez faire partie de ce groupe.",
+      "createBookmark": {
+        "URLAlreadyExists": "Cette URL existe déjà."
+      }
+    },
     "appsettings": {
       "labels": {
         "external": "Utiliser un lien externe",
@@ -74,7 +92,9 @@
         "lastLogin": "Date de dernière connexion",
         "avatar": "URL de l'avatar",
         "groupCount": "Nombre de groupes créés",
-        "groupQuota": "Quota de groupes"
+        "groupQuota": "Quota de groupes",
+        "ncloud": "URL Nextcloud",
+        "advancedPersonalPage": "Page personnelle avancée"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -227,6 +247,15 @@
       "userGroupRemoveError": "Keycloak : ERREUR lors de la suppression du groupe {$groupName} pour l'utilisateur {$userId}"
     },
     "nextcloud": {
+      "labels": {
+        "url": "url",
+        "active": "actif",
+        "count": "compteur"
+      },
+      "notPermitted": "Vous n'avez pas les droits suffisants",
+      "adminRankNeeded": "Vous devez être administrateur",
+      "unknownURL": "URL introuvable.",
+      "urlAlreadyExists": "L'url existe déjà",
       "groupExists": "Ce groupe existe déjà dans Nextcloud",
       "addGroupError": "Erreur lors de la création du groupe dans Nextcloud",
       "addGroupFolderError": "Erreur lors de la création du partage dans Nextcloud",
@@ -298,6 +327,17 @@
     }
   },
   "components": {
+    "BookMarkEdit": {
+      "title-edit": "Modification de marque-page",
+      "title-create": "Création de marque-page",
+      "mainText": "Entrez les informations du marque-page",
+      "labelUrl": "URL",
+      "labelName": "Nom",
+      "labelTag": "Etiquette",
+      "ValidateFormUpdate": "Mettre à jour",
+      "ValidateFormCreate": "Créer",
+      "cancel": "Annuler"
+    },
     "IntroductionEdition": {
       "title": "Introduction",
       "language": "Selectionnez la langue à éditer",
@@ -348,6 +388,13 @@
       "update": "Mettre à jour",
       "cancel": "Annuler"
     },
+    "AdminNextCloudUrlEdit": {
+      "subtitle": "Ajout et édition d'URL Nextcloud",
+      "labelUrl": "URL",
+      "cancel": "Annuler",
+      "mainText": "Saisissez l'URL à créer",
+      "ValidateForm": "Valider"
+    },
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
@@ -380,6 +427,7 @@
     "MainMenu": {
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs",
+      "menuAdminNextcloudUrl": "Gestion des URL Nextcloud",
       "menuAdminCategories": "Gestion des categories",
       "menuAdminTags": "Gestion des mots clé",
       "menuAdminGroups": "Gestion des Groupes",
@@ -613,7 +661,9 @@
       "cancel": "Annuler",
       "mainText": "Nombre maximal de groupes que peut créer l'utilisateur",
       "createdGroup": "groupe(s) créé(s) par l'utilisateur",
-      "ValidateForm": "Valider"
+      "ValidateForm": "Valider",
+      "ncloudURL": "URL Nextcloud",
+      "changeURL": "Renouveller"
     }
   },
   "validatejs": {
@@ -629,6 +679,28 @@
     "body_editRow_saveTooltip": "Enregistrer les changements"
   },
   "pages": {
+    "BookmarksPage": {
+      "columnIcon": "Favicon",
+      "columnName": "Nom",
+      "columnTag": "Etiquette",
+      "columnUrl": "URL",
+      "columnAuthor": "Auteur",
+      "filterTitle": "Filtrer les marque-pages",
+      "disableFilter": "Afficher tous les marque-pages",
+      "enableFilter": "Afficher seulement mes marque-pages",
+      "noAccess": "Vous n'avez pas accès aux marque-pages de ce groupe",
+      "title": "Gestion des marque-pages",
+      "materialTableLocalization": {
+        "body_addTooltip": "Créer un nouveau marque-page",
+        "body_editTooltip": "Modifier ce marque-page",
+        "body_deleteTooltip": "Supprimer ce marque-page",
+        "body_emptyDataSourceMessage": "Il n'y a aucun marque-page disponible",
+        "toolbar_searchPlaceholder": "Rechercher un marque-page",
+        "pagination_labelRowsSelect": "Marque-page par page",
+        "body_editRow_deleteText": "Voulez-vous réellement supprimer ce marque-page ?",
+        "body_actionTooltip": "Ouvrir le lien du marque-page"
+      }
+    },
     "LegalPage": {
       "personalData": "Données Personnelles",
       "gcu": "Conditions générales d'utilisation",
@@ -695,14 +767,15 @@
       "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
       "logoutType": "Portée de la déconnexion",
       "backupTitle": "Téléchargez vos données de publication",
-      "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous également possible de charger des données que vous auriez téléchargé d'une autre instance de la boite",
+      "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous est également possible de charger des données que vous auriez téléchargées d'une autre instance de la boite.",
       "downloadPublicationBackup": "Télécharger les données",
       "UploadPublicationBackup": "Charger des données",
       "uploadSuccess": "Chargement des données réussi",
       "uploadImg": "Charger une image",
       "useCam": "Utiliser la webcam",
       "useGallery": "Choisir parmi la galerie d'images",
-      "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle."
+      "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle.",
+      "advancedPersonalPage": "Activer l'espace perso avancé"
     },
     "NotFound": {
       "backButtonLabel": "Retour",
@@ -795,6 +868,26 @@
         "body_editTooltip": "Modifier ce groupe",
         "body_deleteTooltip": "Supprimer ce groupe",
         "body_editRow_deleteText": "Supprimer vraiment ce groupe ?"
+      }
+    },
+    "AdminNextcloudUrlPage": {
+      "title": "Gestion des URL Nextcloud",
+      "columnUrl": "URL",
+      "columnActive": "Actif",
+      "columnCount": "Nombre d'utilisations",
+      "updateAll": "Attribuer une URL à tous les utilisateurs",
+      "methodEmpty": "Tous les utilisateurs possèdent déjà une URL",
+      "methodSuccess": "Opération réussie. Nombre d'URL attribuées: ",
+      "materialTableLocalization": {
+        "body_activeTooltip": "Activer/Désactiver cette URL",
+        "body_addTooltip": "Ajouter une URL",
+        "body_emptyDataSourceMessage": "Aucune URL présente",
+        "pagination_labelRowsSelect": "URL par page",
+        "toolbar_searchPlaceholder": "Rechercher une URL",
+        "body_editRow_deleteText": "Supprimer vraiment cette URL ?",
+        "body_deleteTooltip": "Supprimer cette URL",
+        "activated": "Oui",
+        "deactivated": "Non"
       }
     },
     "AdminUsersPage": {
@@ -918,10 +1011,15 @@
       "EventsUsage": "Liste des événements",
       "Events": "Evénements",
       "PollUsage": "Liste des sondages",
-      "Polls": "Sondages"
+      "Polls": "Sondages",
+      "groupArticles": "Publications",
+      "BookmarksUsage": "Liste des marque-pages",
+      "Bookmarks": "Marque-pages"
     },
     "AddressBook": {
       "sendEmail": "Envoyer un email à",
+      "goToMezig": "Voir la page Mezig de",
+      "goToBlog": "Voir la page Blog de",
       "back": "Retour au groupe",
       "searchText": "Quel utilisateur cherchez-vous ?"
     },

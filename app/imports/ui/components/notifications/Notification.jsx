@@ -98,7 +98,7 @@ const Notification = ({ notification, toast }) => {
           invisible={read}
           variant="dot"
           badgeContent=" "
-          overlap="circle"
+          overlap="circular"
           color="primary"
           anchorOrigin={{
             vertical: 'bottom',

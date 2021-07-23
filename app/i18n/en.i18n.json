@@ -1,5 +1,23 @@
 {
   "api": {
+    "bookmarks": {
+      "labels": {
+        "url": "URL",
+        "name": "name",
+        "author": "author",
+        "groupId": "group ID",
+        "tag": "tag",
+        "id": "ID",
+        "icon": "favion"
+      },
+      "UnknownURL": "This URL doesn't exist.",
+      "notPermitted": "You don't have sufficient rights.",
+      "adminRankNeeded": "Admin rank or author status needed.",
+      "groupRankNeeded": "You need to be member of this group.",
+      "createBookmark": {
+        "URLAlreadyExists": "URL already exists."
+      }
+    },
     "appsettings": {
       "labels": {
         "external": "Use an external link",
@@ -74,7 +92,9 @@
         "lastLogin": "Last login date",
         "avatar": "avatar URL",
         "groupCount": "Amount of created groups",
-        "groupQuota": "Amount of groups creatable"
+        "groupQuota": "Amount of groups creatable",
+        "ncloud": "Nextcloud URL",
+        "advancedPersonalPage": "Advanced personal page"
       },
       "logoutTypes": {
         "ask": "Ask at logout",
@@ -227,6 +247,15 @@
       "userGroupRemoveError": "Keycloak : ERROR removing group {$groupName} from user {$userId}"
     },
     "nextcloud": {
+      "labels": {
+        "url": "url",
+        "active": "active",
+        "count": "count"
+      },
+      "unknownURL": "URL not found",
+      "notPermitted": "You don't have sufficient rights.",
+      "adminRankNeeded": "You must be admin",
+      "urlAlreadyExists": "URL already exists",
       "groupExists": "Group already exists in Nextcloud",
       "addGroupError": "Error, could not create group in Nextcloud",
       "addGroupFolderError": "Error, could not create group folder in Nextcloud",
@@ -298,6 +327,17 @@
     }
   },
   "components": {
+    "BookMarkEdit": {
+      "title-edit": "Modify Bookmark",
+      "title-create": "Create Bookmark",
+      "mainText": "Enter information about this bookmark",
+      "labelUrl": "URL",
+      "labelName": "Name",
+      "labelTag": "Tag",
+      "ValidateFormUpdate": "Update",
+      "ValidateFormCreate": "Create",
+      "cancel": "Cancel"
+    },
     "IntroductionEdition": {
       "title": "Introduction",
       "language": "Select the language to edit",
@@ -348,6 +388,13 @@
       "update": "Update",
       "cancel": "Cancel"
     },
+    "AdminNextcloudUrlEdit": {
+      "subtitle": "Add & edit Nextcloud URL",
+      "labelUrl": "URL",
+      "cancel": "Cancel",
+      "mainText": "Enter URL to create",
+      "ValidateForm": "Save"
+    },
     "MenuBar": {
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
@@ -380,6 +427,7 @@
     "MainMenu": {
       "menuAdminServices": "Service Management",
       "menuAdminUsers": "Users Management",
+      "menuAdminNextcloudUrl": "Nextcloud URL management",
       "menuAdminUserValidation": "User validation",
       "menuAdminCategories": "Categories Management",
       "menuAdminTags": "Tags Management",
@@ -612,7 +660,9 @@
       "cancel": "Cancel",
       "mainText": "The max amount of group the user can create",
       "createdGroup": "group(s) created by user",
-      "ValidateForm": "Validate"
+      "ValidateForm": "Validate",
+      "ncloudURL": "Nextcloud URL",
+      "changeURL": "Renew"
     }
   },
   "validatejs": {
@@ -628,6 +678,28 @@
     "body_editRow_saveTooltip": "Save changes"
   },
   "pages": {
+    "BookmarksPage": {
+      "columnIcon": "Favicon",
+      "columnName": "Name",
+      "columnTag": "Tag",
+      "columnUrl": "URL",
+      "columnAuthor": "Author",
+      "filterTitle": "Filter Bookmarks",
+      "disableFilter": "Show all bookmarks",
+      "enableFilter": "Show only my bookmarks",
+      "noAccess": "You don't have access to bookmarks of this group",
+      "title": "Bookmarks Management",
+      "materialTableLocalization": {
+        "body_addTooltip": "Add new bookmark",
+        "body_editTooltip": "Edit this bookmark",
+        "body_deleteTooltip": "Delete this bookmark",
+        "body_emptyDataSourceMessage": "There is no bookmark available",
+        "toolbar_searchPlaceholder": "Search Bookmark",
+        "pagination_labelRowsSelect": "Bookmark per page",
+        "body_editRow_deleteText": "Do you really want to delete this bookmark ?",
+        "body_actionTooltip": "Open bookmark's URL"
+      }
+    },
     "LegalPage": {
       "personalData": "Personal Data",
       "gcu": "General Conditions of Use",
@@ -694,14 +766,15 @@
       "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data.",
       "logoutType": "Logout perimeter",
       "backupTitle": "Backup your publications",
-      "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance",
+      "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance.",
       "downloadPublicationBackup": "Download data",
       "UploadPublicationBackup": "Upload datas",
       "uploadSuccess": "Datas uploaded with success",
       "uploadImg": "Upload an image",
       "useCam": "Take a picture",
       "useGallery": "Choose among image gallery",
-      "structureMessage": "Check this box to link all imported articles to your current attachment structure."
+      "structureMessage": "Check this box to link all imported articles to your current attachment structure.",
+      "advancedPersonalPage": "Activate advanced personal page"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
@@ -791,6 +864,26 @@
         "body_editTooltip": "Modify this group",
         "body_deleteTooltip": "Remove this group",
         "body_editRow_deleteText": "Do you really want to delete this group ?"
+      }
+    },
+    "AdminNextcloudUrlPage": {
+      "title": "Nextcloud URL management",
+      "columnUrl": "URL",
+      "columnActive": "Active",
+      "columnCount": "Number of uses",
+      "updateAll": "Give URL to all users",
+      "methodEmpty": "All users already have URL assigned",
+      "methodSuccess": "Operation succeeded. Number of URL assigned: ",
+      "materialTableLocalization": {
+        "body_editTooltip": "Activate/Deactivate this URL",
+        "body_addTooltip": "Add URL",
+        "body_emptyDataSourceMessage": "No URL to display",
+        "pagination_labelRowsSelect": "URL per page",
+        "toolbar_searchPlaceholder": "Search URL",
+        "body_editRow_deleteText": "Do you really want to delete this url ?",
+        "body_deleteTooltip": "Delete this URL",
+        "activated": "Yes",
+        "deactivated": "No"
       }
     },
     "AdminUsersPage": {
@@ -915,10 +1008,15 @@
       "EventsUsage": "Events list",
       "Events": "Events",
       "PollUsage": "Polls list",
-      "Polls": "Polls"
+      "Polls": "Polls",
+      "groupArticles": "Articles",
+      "BookmarksUsage": "Bookmarks list",
+      "Bookmarks": "Bookmarks"
     },
     "AddressBook": {
       "sendEmail": "Send an email to",
+      "goToMezig": "See Mezig Page of",
+      "goToBlog": "See Blog Page of",
       "back": "Back to the group",
       "searchText": "Which user are you looking for ?"
     },

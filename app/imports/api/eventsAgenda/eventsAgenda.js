@@ -25,7 +25,7 @@ EventsAgenda.publicFields = {
   group: 1,
   participants: 1,
   guests: 1,
-  authorId: 1,
+  userId: 1,
 };
 
 // Factory.define('eventsAgenda', EventsAgenda, {});

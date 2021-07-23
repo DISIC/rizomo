@@ -21,6 +21,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
+import LanguageIcon from '@material-ui/icons/Language';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SendIcon from '@material-ui/icons/Send';
 import Pagination from '@material-ui/lab/Pagination';
 import { useHistory } from 'react-router-dom';
@@ -74,6 +76,11 @@ const AddressBook = ({
   const goBack = () => {
     history.goBack();
   };
+
+  const authorBlogPage =
+    Meteor.settings.public.laboiteBlogURL !== ''
+      ? `${Meteor.settings.public.laboiteBlogURL}/authors/`
+      : `${Meteor.absoluteUrl()}public/`;
 
   useEffect(() => {
     if (page !== 1) {
@@ -142,6 +149,33 @@ const AddressBook = ({
                   />
 
                   <ListItemSecondaryAction>
+                    {user.mezigName ? (
+                      <Tooltip title={`${i18n.__('pages.AddressBook.goToMezig')} ${user.firstName}`} aria-label="add">
+                        <IconButton
+                          edge="end"
+                          aria-label="comments"
+                          onClick={() =>
+                            window.open(
+                              `${Meteor.settings.public.services.mezigUrl}/profil/${user.mezigName}`,
+                              '_blank',
+                            )
+                          }
+                        >
+                          <LanguageIcon />
+                        </IconButton>
+                      </Tooltip>
+                    ) : null}
+                    {user.articlesCount !== 0 ? (
+                      <Tooltip title={`${i18n.__('pages.AddressBook.goToBlog')} ${user.firstName}`} aria-label="add">
+                        <IconButton
+                          edge="end"
+                          aria-label="comments"
+                          onClick={() => window.open(`${authorBlogPage}${user._id}`, '_blank')}
+                        >
+                          <LibraryBooksIcon />
+                        </IconButton>
+                      </Tooltip>
+                    ) : null}
                     <Tooltip title={`${i18n.__('pages.AddressBook.sendEmail')} ${user.firstName}`} aria-label="add">
                       <IconButton edge="end" aria-label="comments" href={`mailto:${user.emails[0].address}`}>
                         <SendIcon />

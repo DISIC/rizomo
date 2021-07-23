@@ -112,6 +112,7 @@ function ServiceDetails({ service, favAction, isShort }) {
   const isAddressBook = service._id === 'addressbook';
   const isEvents = service._id === 'events';
   const isPoll = service._id === 'polls';
+  const isBookmark = service._id === 'bookmarks';
 
   const handleFavorite = () => {
     if (!favorite) {
@@ -172,7 +173,17 @@ function ServiceDetails({ service, favAction, isShort }) {
         )}
       /> */}
       <Link
-        to={isAddressBook ? service.url : isEvents ? service.url : isPoll ? service.url : `/services/${service.slug}`}
+        to={
+          isAddressBook
+            ? service.url
+            : isEvents
+            ? service.url
+            : isPoll
+            ? service.url
+            : isBookmark
+            ? service.url
+            : `/services/${service.slug}`
+        }
         className={classes.noUnderline}
       >
         <CardHeader
@@ -183,6 +194,8 @@ function ServiceDetails({ service, favAction, isShort }) {
             ) : isEvents ? (
               service.logo
             ) : isPoll ? (
+              service.logo
+            ) : isBookmark ? (
               service.logo
             ) : (
               <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
@@ -226,7 +239,7 @@ function ServiceDetails({ service, favAction, isShort }) {
             );
           })}
         </Paper> */}
-        {!isAddressBook && !isEvents && !isPoll && (
+        {!isAddressBook && !isEvents && !isPoll && !isBookmark && (
           <div className={isShort ? classes.cardActionShort : classes.cardActions}>
             {service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
 

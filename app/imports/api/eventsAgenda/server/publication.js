@@ -10,7 +10,7 @@ const queryGroupEvents = ({ search, group }) => {
   const fieldsToSearch = ['title', 'start', 'end'];
   const searchQuery = fieldsToSearch.map((field) => ({
     [field]: { $regex: regex },
-    groups: { $elemMatch: { id: group._id } },
+    groups: { $elemMatch: { _id: group._id } },
   }));
   return {
     $or: searchQuery,
