@@ -122,6 +122,11 @@ Meteor.users.schema = new SimpleSchema(
       allowedValues: ['ask', 'local', 'global'],
       label: getLabel('api.users.labels.logoutType'),
     },
+    advancedPersonalPage: {
+      type: Boolean,
+      defaultValue: false,
+      label: getLabel('api.users.labels.advancedPersonalPage'),
+    },
     articlesCount: {
       type: SimpleSchema.Integer,
       defaultValue: 0,
@@ -281,6 +286,7 @@ Meteor.users.selfFields = {
   groupCount: 1,
   groupQuota: 1,
   ncloud: 1,
+  advancedPersonalPage: 1,
 };
 
 Meteor.users.adminFields = {

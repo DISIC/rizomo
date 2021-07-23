@@ -910,6 +910,24 @@ export const setQuota = new ValidatedMethod({
   },
 });
 
+export const toggleAdvancedPersonalPage = new ValidatedMethod({
+  name: 'users.toggleAdvancedPersonalPage',
+  validate: null,
+
+  run() {
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.toggleAdvancedPersonalPage.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    // check user existence
+    const user = Meteor.users.findOne({ _id: this.userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.toggleAdvancedPersonalPage.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    const newValue = !(user.advancedPersonalPage || false);
+    Meteor.users.update(this.userId, { $set: { advancedPersonalPage: newValue } });
+  },
+});
+
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
   [
@@ -935,6 +953,7 @@ const LISTS_METHODS = _.pluck(
     setKeycloakId,
     setAvatar,
     userUpdated,
+    toggleAdvancedPersonalPage,
   ],
   'name',
 );
