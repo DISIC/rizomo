@@ -1,7 +1,7 @@
 {
   "api": {
-    "bookmarks":{
-      "labels":{
+    "bookmarks": {
+      "labels": {
         "url": "URL",
         "name": "name",
         "author": "author",
@@ -14,7 +14,7 @@
       "notPermitted": "You don't have sufficient rights.",
       "adminRankNeeded": "Admin rank or author status needed.",
       "groupRankNeeded": "You need to be member of this group.",
-      "createBookmark":{
+      "createBookmark": {
         "URLAlreadyExists": "URL already exists."
       }
     },
@@ -93,7 +93,8 @@
         "avatar": "avatar URL",
         "groupCount": "Amount of created groups",
         "groupQuota": "Amount of groups creatable",
-        "ncloud": "Nextcloud URL"
+        "ncloud": "Nextcloud URL",
+        "advancedPersonalPage": "Advanced personal page"
       },
       "logoutTypes": {
         "ask": "Ask at logout",
@@ -326,7 +327,7 @@
     }
   },
   "components": {
-    "BookMarkEdit":{
+    "BookMarkEdit": {
       "title-edit": "Modify Bookmark",
       "title-create": "Create Bookmark",
       "mainText": "Enter information about this bookmark",
@@ -677,7 +678,7 @@
     "body_editRow_saveTooltip": "Save changes"
   },
   "pages": {
-    "BookmarksPage":{
+    "BookmarksPage": {
       "columnIcon": "Favicon",
       "columnName": "Name",
       "columnTag": "Tag",
@@ -688,7 +689,7 @@
       "enableFilter": "Show only my bookmarks",
       "noAccess": "You don't have access to bookmarks of this group",
       "title": "Bookmarks Management",
-      "materialTableLocalization":{
+      "materialTableLocalization": {
         "body_addTooltip": "Add new bookmark",
         "body_editTooltip": "Edit this bookmark",
         "body_deleteTooltip": "Delete this bookmark",
@@ -772,7 +773,8 @@
       "uploadImg": "Upload an image",
       "useCam": "Take a picture",
       "useGallery": "Choose among image gallery",
-      "structureMessage": "Check this box to link all imported articles to your current attachment structure."
+      "structureMessage": "Check this box to link all imported articles to your current attachment structure.",
+      "advancedPersonalPage": "Activate advanced personal page"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {

@@ -1,7 +1,7 @@
 {
   "api": {
-    "bookmarks":{
-      "labels":{
+    "bookmarks": {
+      "labels": {
         "url": "URL",
         "name": "nom",
         "author": "auteur",
@@ -14,7 +14,7 @@
       "notPermitted": "Vous n'avez pas les droits nécessaires.",
       "adminRankNeeded": "Rang d'administrateur ou statut d'auteur requis.",
       "groupRankNeeded": "Vous devez faire partie de ce groupe.",
-      "createBookmark":{
+      "createBookmark": {
         "URLAlreadyExists": "Cette URL existe déjà."
       }
     },
@@ -93,7 +93,8 @@
         "avatar": "URL de l'avatar",
         "groupCount": "Nombre de groupes créés",
         "groupQuota": "Quota de groupes",
-        "ncloud": "URL Nextcloud"
+        "ncloud": "URL Nextcloud",
+        "advancedPersonalPage": "Page personnelle avancée"
       },
       "logoutTypes": {
         "ask": "Demander à la déconnexion",
@@ -326,7 +327,7 @@
     }
   },
   "components": {
-    "BookMarkEdit":{
+    "BookMarkEdit": {
       "title-edit": "Modification de marque-page",
       "title-create": "Création de marque-page",
       "mainText": "Entrez les informations du marque-page",
@@ -678,7 +679,7 @@
     "body_editRow_saveTooltip": "Enregistrer les changements"
   },
   "pages": {
-    "BookmarksPage":{
+    "BookmarksPage": {
       "columnIcon": "Favicon",
       "columnName": "Nom",
       "columnTag": "Etiquette",
@@ -689,7 +690,7 @@
       "enableFilter": "Afficher seulement mes marque-pages",
       "noAccess": "Vous n'avez pas accès aux marque-pages de ce groupe",
       "title": "Gestion des marque-pages",
-      "materialTableLocalization":{
+      "materialTableLocalization": {
         "body_addTooltip": "Créer un nouveau marque-page",
         "body_editTooltip": "Modifier ce marque-page",
         "body_deleteTooltip": "Supprimer ce marque-page",
@@ -773,7 +774,8 @@
       "uploadImg": "Charger une image",
       "useCam": "Utiliser la webcam",
       "useGallery": "Choisir parmi la galerie d'images",
-      "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle."
+      "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle.",
+      "advancedPersonalPage": "Activer l'espace perso avancé"
     },
     "NotFound": {
       "backButtonLabel": "Retour",

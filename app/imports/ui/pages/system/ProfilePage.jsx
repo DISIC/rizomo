@@ -78,6 +78,7 @@ const defaultState = {
   structureSelect: '',
   logoutType: '',
   avatar: '',
+  advancedPersonalPage: false,
 };
 
 const logoutTypeLabels = {
@@ -115,7 +116,13 @@ const ProfilePage = () => {
   const [tempImageLoaded, setTempImageLoaded] = useState(false);
 
   const checkSubmitOk = () => {
-    const errSum = Object.keys(errors).reduce((sum, name) => sum + errors[name], '');
+    const errSum = Object.keys(errors).reduce((sum, name) => {
+      if (name === 'advancedPersonalPage') {
+        // checkbox not concerned by errors
+        return sum;
+      }
+      return sum + errors[name];
+    }, '');
     if (errSum !== '') {
       return false;
     }
@@ -131,6 +138,8 @@ const ProfilePage = () => {
       lastName: errors.lastName === '' || reset ? data.lastName || '' : userData.lastName,
       email: errors.email === '' || reset ? data.emails[0].address : userData.email,
       avatar: userData.avatar === '' || reset ? data.avatar : userData.avatar,
+      advancedPersonalPage:
+        userData.advancedPersonalPage === false || reset ? data.advancedPersonalPage : userData.advancedPersonalPage,
     });
     if (reset === true) {
       setErrors(defaultState);
@@ -147,7 +156,8 @@ const ProfilePage = () => {
       userData.username === user.username &&
       userData.structureSelect === user.structure &&
       userData.logoutType === user.logoutType &&
-      userData.avatar === user.avatar
+      userData.avatar === user.avatar &&
+      userData.advancedPersonalPage === user.advancedPersonalPage
     ) {
       msg.success(i18n.__('pages.ProfilePage.updateSuccess'));
       setSubmitted(false);
@@ -187,6 +197,11 @@ const ProfilePage = () => {
     }
     setTempImageLoaded(false);
     setData(user, true);
+  };
+
+  const onCheckOption = (event) => {
+    const { name, checked } = event.target;
+    setUserData({ ...userData, [name]: checked });
   };
 
   const onUpdateField = (event) => {
@@ -284,6 +299,14 @@ const ProfilePage = () => {
       }
       // replace 'Avatar_TEMP.png' even if the image comes from gallery then the name will be unchanged
       Meteor.call('users.setAvatar', { avatar: userData.avatar.replace('Avatar_TEMP.png', 'Avatar.png') }, (error) => {
+        if (error) {
+          msg.error(error.message);
+        }
+      });
+    }
+    if (userData.advancedPersonalPage !== user.advancedPersonalPage) {
+      modifications = true;
+      Meteor.call('users.toggleAdvancedPersonalPage', {}, (error) => {
         if (error) {
           msg.error(error.message);
         }
@@ -504,6 +527,19 @@ const ProfilePage = () => {
               ) : null}
               <Grid item>
                 <LanguageSwitcher relative />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      id="advancedPersonalPage"
+                      name="advancedPersonalPage"
+                      color="primary"
+                      checked={userData.advancedPersonalPage}
+                      onChange={onCheckOption}
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />
+                  }
+                  label={i18n.__('pages.ProfilePage.advancedPersonalPage')}
+                />
               </Grid>
             </Grid>
             <div className={classes.buttonGroup}>

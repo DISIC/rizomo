@@ -31,6 +31,7 @@ import {
   setKeycloakId,
   setAvatar,
   setNcloudUrlAll,
+  toggleAdvancedPersonalPage,
 } from './methods';
 import { structures } from '../structures';
 import Groups from '../../groups/groups';
@@ -620,7 +621,7 @@ describe('users', function () {
         const user = Meteor.users.findOne({ _id: userId });
         assert.equal(user.avatar, 'http://perdu.com/monavatar.png');
       });
-      it('only logged in users can set their language', function () {
+      it('only logged in users can set their avatar', function () {
         assert.throws(
           () => {
             setAvatar._execute({}, { avatar: 'http://perdu.com/monavatar.png' });
@@ -772,6 +773,27 @@ describe('users', function () {
           },
           Meteor.Error,
           /api.users.setNcloudUrlAll.notLoggedIn/,
+        );
+      });
+    });
+    describe('toggleAdvancedPersonalPage', function () {
+      it('users can toggle their advancedPersonalPage option', function () {
+        let user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.advancedPersonalPage, false);
+        toggleAdvancedPersonalPage._execute({ userId }, {});
+        user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.advancedPersonalPage, true);
+        toggleAdvancedPersonalPage._execute({ userId }, {});
+        user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.advancedPersonalPage, false);
+      });
+      it('only logged in users can set their advancedPersonalPage', function () {
+        assert.throws(
+          () => {
+            toggleAdvancedPersonalPage._execute({}, {});
+          },
+          Meteor.Error,
+          /api.users.toggleAdvancedPersonalPage.notPermitted/,
         );
       });
     });

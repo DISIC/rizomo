@@ -264,3 +264,19 @@ Migrations.add({
     Meteor.users.rawCollection().updateMany({}, { $unset: { ncloud: true } });
   },
 });
+
+Migrations.add({
+  version: 15,
+  name: 'Add advancedPersonalPage to users',
+  up: () => {
+    Meteor.users
+      .find()
+      .fetch()
+      .forEach((user) => {
+        Meteor.users.update({ _id: user._id }, { $set: { advancedPersonalPage: false } });
+      });
+  },
+  down: () => {
+    Meteor.users.rawCollection().updateMany({}, { $unset: { advancedPersonalPage: true } });
+  },
+});

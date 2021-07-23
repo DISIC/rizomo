@@ -132,7 +132,7 @@ const useStyles = (isMobile) =>
 
 function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
   const AUTOSAVE_INTERVAL = 3000;
-  const [{ isMobile }] = useAppContext();
+  const [{ user, loadingUser, isMobile }] = useAppContext();
   const [customDrag, setcustomDrag] = useState(false);
   const [search, setSearch] = useState('');
   const [searchToggle, setSearchToggle] = useState(false);
@@ -363,9 +363,11 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     setPsNeedUpdate(true);
   };
 
+  const notReady = isLoading || loadingUser;
+
   return (
     <>
-      {isLoading ? (
+      {notReady ? (
         <Spinner />
       ) : (
         <Fade in>
@@ -392,24 +394,26 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                       <AddBoxIcon />
                     </IconButton>
                   ) : null}
-                  <Grid
-                    className={classes.modeEdition}
-                    component="label"
-                    container
-                    alignItems="center"
-                    spacing={1}
-                    title={i18n.__('pages.PersonalPage.toggleEdition')}
-                  >
-                    <Grid item>
-                      <LockIcon />
+                  {user.advancedPersonalPage ? (
+                    <Grid
+                      className={classes.modeEdition}
+                      component="label"
+                      container
+                      alignItems="center"
+                      spacing={1}
+                      title={i18n.__('pages.PersonalPage.toggleEdition')}
+                    >
+                      <Grid item>
+                        <LockIcon />
+                      </Grid>
+                      <Grid item>
+                        <Switch checked={customDrag} onChange={handleCustomDrag} value="customDrag" color="primary" />
+                      </Grid>
+                      <Grid item>
+                        <LockOpenIcon />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Switch checked={customDrag} onChange={handleCustomDrag} value="customDrag" color="primary" />
-                    </Grid>
-                    <Grid item>
-                      <LockOpenIcon />
-                    </Grid>
-                  </Grid>
+                  ) : null}
                 </div>
               </Grid>
               <Grid container spacing={4}>
