@@ -68,6 +68,10 @@ export const userMenu = [
     path: '/publications',
     content: 'menuPublications',
   },
+  {
+    path: '/userBookmarks',
+    content: 'menuUserBookmarks',
+  },
 ];
 
 export const userGroups = [

@@ -433,6 +433,7 @@
       "menuAdminGroups": "Gestion des Groupes",
       "menuAdminUsers": "Gestion des utilisateurs",
       "menuPublications": "Publications",
+      "menuUserBookmarks": "Marque-pages",
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
       "menuMedias": "Stockage de Médias",
@@ -679,6 +680,9 @@
     "body_editRow_saveTooltip": "Enregistrer les changements"
   },
   "pages": {
+    "UserBookmarksPage":{
+      "back": "Retour"
+    },
     "BookmarksPage": {
       "columnIcon": "Favicon",
       "columnName": "Nom",
