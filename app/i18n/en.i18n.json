@@ -433,6 +433,7 @@
       "menuAdminTags": "Tags Management",
       "menuAdminGroups": "Groups Management",
       "menuPublications": "Publications",
+      "menuUserBookmarks": "Bookmarks",
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
       "menuMedias": "Medias Storage",
@@ -678,6 +679,9 @@
     "body_editRow_saveTooltip": "Save changes"
   },
   "pages": {
+    "UserBookmarksPage":{
+      "back": "Go back"
+    },
     "BookmarksPage": {
       "columnIcon": "Favicon",
       "columnName": "Name",
