@@ -7,12 +7,28 @@ import '../../../../i18n/en.i18n.json';
 import faker from 'faker';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
-import { updateUserBookmark, removeUserBookmark, createUserBookmark } from '../methods';
+import {
+  updateUserBookmark,
+  removeUserBookmark,
+  createUserBookmark,
+  favUserBookmark,
+  unfavUserBookmark,
+} from '../methods';
 import UserBookmarks from '../userBookmarks';
 import './publications';
 import Groups from '../../groups/groups';
+import PersonalSpaces from '../../personalspaces/personalspaces';
 
-describe('bookmarks', function () {
+function pspaceHasBookmark(user, id) {
+  const pspace = PersonalSpaces.findOne({
+    userId: user,
+    unsorted: { $elemMatch: { type: 'link', element_id: id } },
+  });
+  const inFavs = Meteor.users.findOne(user).favUserBookmarks.includes(id);
+  return pspace !== undefined && inFavs;
+}
+
+describe('userBookmarks', function () {
   describe('publications', function () {
     let userId;
     before(function () {
@@ -38,7 +54,6 @@ describe('bookmarks', function () {
     let adminId;
     let userId2;
     const url = 'Test/test';
-    const url2 = 'Test3/test';
     beforeEach(function () {
       // Clear
       Meteor.users.remove({});
@@ -112,7 +127,7 @@ describe('bookmarks', function () {
             createUserBookmark._execute({ userId }, { url: urlFinal, name: 'Test', tag: 'Tag' });
           },
           Meteor.Error,
-          /api.bookmarks.createBookmark.URLAlreadyExists/,
+          /api.userBookmarks.createBookmark.URLAlreadyExists/,
         );
       });
     });
@@ -127,7 +142,7 @@ describe('bookmarks', function () {
         assert.equal(urlFind.userId, userId);
 
         // Remove URL
-        removeUserBookmark._execute({ userId }, { url: urlFinal });
+        removeUserBookmark._execute({ userId }, { id: urlFind._id });
         const urlFind2 = UserBookmarks.findOne({ url: urlFinal });
         assert.equal(urlFind2, undefined);
       });
@@ -141,19 +156,20 @@ describe('bookmarks', function () {
         assert.equal(urlFind.userId, userId);
 
         // Remove URL
-        removeUserBookmark._execute({ userId: adminId }, { url: urlFinal });
+        removeUserBookmark._execute({ userId: adminId }, { id: urlFind._id });
         const urlFind2 = UserBookmarks.findOne({ url: urlFinal });
         assert.equal(urlFind2, undefined);
       });
       it('only admin or author can remove URL', function () {
         const urlFinal = createUserBookmark._execute({ userId }, { url, name: 'Test', tag: 'Tag' });
+        const urlFind = UserBookmarks.findOne({ url: urlFinal });
         // Throws if non owner/admin user, or logged out user
         assert.throws(
           () => {
-            removeUserBookmark._execute({ userId: userId2 }, { url: urlFinal });
+            removeUserBookmark._execute({ userId: userId2 }, { id: urlFind._id });
           },
           Meteor.Error,
-          /api.bookmarks.notPermitted/,
+          /api.userBookmarks.removeUserBookmark.notPermitted/,
         );
       });
       it("Doesn't remove URL that doesn't exists", function () {
@@ -161,10 +177,10 @@ describe('bookmarks', function () {
         // Throws if non owner/admin user, or logged out user
         assert.throws(
           () => {
-            removeUserBookmark._execute({ userId }, { url: url2 });
+            removeUserBookmark._execute({ userId }, { id: 'XXXXXXXXXXXXXXXXX' });
           },
           Meteor.Error,
-          /api.bookmarks.UnknownURL/,
+          /api.userBookmarks.removeUserBookmark.UnknownBookmark/,
         );
       });
     });
@@ -218,7 +234,39 @@ describe('bookmarks', function () {
             );
           },
           Meteor.Error,
-          /api.bookmarks.notPermitted/,
+          /api.userBookmarks.updateUserBookmark.notPermitted/,
+        );
+      });
+    });
+    describe('(un)favUserBookmark', function () {
+      it('does (un)set a user bookmark as favorite', function () {
+        const urlFinal = createUserBookmark._execute({ userId }, { url, name: 'Test', tag: 'Tag' });
+        const bookmarkId = UserBookmarks.findOne({ url: urlFinal, userId })._id;
+        favUserBookmark._execute({ userId }, { bookmarkId });
+        let user = Meteor.users.findOne(userId);
+        assert.include(user.favUserBookmarks, bookmarkId, 'favorite bookmark list contains bookmarkId');
+        assert.equal(pspaceHasBookmark(userId, bookmarkId), true, 'bookmark is in personal space');
+        unfavUserBookmark._execute({ userId }, { bookmarkId });
+        user = Meteor.users.findOne(userId);
+        assert.notInclude(user.favUserBookmarks, bookmarkId, 'favorite bookmark list does not contains bookmarkId');
+        assert.equal(pspaceHasBookmark(userId, bookmarkId), false, 'bookmark is no longer in personal space');
+      });
+      it('does not set a bookmark as favorite if not logged in', function () {
+        assert.throws(
+          () => {
+            favUserBookmark._execute({}, { bookmarkId: 'XXXXXXXXXXXXXXXXX' });
+          },
+          Meteor.Error,
+          /api.userBookmarks.favUserBookmark.mustBeLoggedIn/,
+        );
+      });
+      it('does not unset a bookmark as favorite if not logged in', function () {
+        assert.throws(
+          () => {
+            unfavUserBookmark._execute({}, { bookmarkId: 'XXXXXXXXXXXXXXXXX' });
+          },
+          Meteor.Error,
+          /api.userBookmarks.unfavUserBookmark.mustBeLoggedIn/,
         );
       });
     });

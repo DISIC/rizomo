@@ -52,6 +52,7 @@ UserBookmarks.publicFields = {
   name: 1,
   userId: 1,
   icon: 1,
+  tag: 1,
 };
 
 UserBookmarks.attachSchema(UserBookmarks.schema);

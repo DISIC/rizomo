@@ -4,6 +4,7 @@ import { isActive } from '../../utils';
 import PersonalSpaces from '../personalspaces';
 import Services from '../../services/services';
 import Groups from '../../groups/groups';
+import UserBookmarks from '../../userBookmarks/userBookmarks';
 
 // publish personalspace for the connected user
 publishComposite('personalspaces.self', () => ({
@@ -46,6 +47,24 @@ publishComposite('personalspaces.self', () => ({
           );
         });
         return Groups.find({ _id: { $in: groups } }, { fields: Groups.publicFields, sort: { title: 1 }, limit: 1000 });
+      },
+    },
+    {
+      find(pSpace) {
+        // fetch bookmarks associated to personalSpace
+        let bookmarks = [];
+        bookmarks = bookmarks.concat(
+          pSpace.unsorted.filter((item) => item.type === 'link').map((link) => link.element_id),
+        );
+        pSpace.sorted.forEach((zone) => {
+          bookmarks = bookmarks.concat(
+            zone.elements.filter((item) => item.type === 'link').map((link) => link.element_id),
+          );
+        });
+        return UserBookmarks.find(
+          { _id: { $in: bookmarks } },
+          { fields: UserBookmarks.publicFields, sort: { title: 1 }, limit: 1000 },
+        );
       },
     },
   ],

@@ -280,3 +280,14 @@ Migrations.add({
     Meteor.users.rawCollection().updateMany({}, { $unset: { advancedPersonalPage: true } });
   },
 });
+
+Migrations.add({
+  version: 16,
+  name: 'Add favUserBookmarks to users',
+  up: () => {
+    Meteor.users.update({}, { $set: { favUserBookmarks: [] } }, { multi: true });
+  },
+  down: () => {
+    Meteor.users.rawCollection().updateMany({}, { $unset: { favUserBookmarks: true } });
+  },
+});

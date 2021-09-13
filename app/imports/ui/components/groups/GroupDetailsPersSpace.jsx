@@ -92,7 +92,7 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
     <Card className={classes.card} elevation={3}>
       <Tooltip
         TransitionComponent={Zoom}
-        enterDelay={2000}
+        enterDelay={600}
         title={
           <>
             <Typography>{group.name}</Typography>

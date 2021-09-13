@@ -11,7 +11,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -23,6 +22,7 @@ import Badge from '@material-ui/core/Badge';
 import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
 import Groups from '../../../api/groups/groups';
+import UserBookmarks from '../../../api/userBookmarks/userBookmarks';
 import ServiceDetailsPersSpace from '../services/ServiceDetailsPersSpace';
 import GroupDetailsPersSpace from '../groups/GroupDetailsPersSpace';
 import PersonalLinkDetails from './PersonalLinkDetails';
@@ -160,9 +160,6 @@ const PersonalZone = ({
   lastZone,
   moveDownZone,
   moveUpZone,
-  addPersonalLink,
-  updatePersonalLink,
-  delPersonalLink,
   customDrag,
   isSorted,
   isExpanded,
@@ -214,12 +211,7 @@ const PersonalZone = ({
   return (
     <Accordion className={classes.expansionpanel} expanded={isSorted ? isExpanded : localIsExpanded}>
       <AccordionSummary
-        expandIcon={
-          <ExpandMoreIcon
-            className={classes.cursorPointer}
-            onClick={customDrag && isSorted ? handleClickExpansion(index) : null}
-          />
-        }
+        expandIcon={<ExpandMoreIcon className={classes.cursorPointer} />}
         aria-controls={`zone-${title}-${index}`}
         id={`expand-${index}`}
         onClick={!(customDrag && isSorted) ? handleClickExpansion(index) : null}
@@ -252,15 +244,6 @@ const PersonalZone = ({
                 title={i18n.__('components.PersonalZone.modifyTitle')}
               >
                 <EditIcon className={classes.zoneButton} fontSize="small" />
-              </IconButton>
-            )}
-            {customDrag && isSorted && (
-              <IconButton
-                onClick={() => addPersonalLink(index)}
-                className={classes.zoneButton}
-                title={i18n.__('components.PersonalZone.addPersonalLink')}
-              >
-                <AddCircleOutlineIcon />
               </IconButton>
             )}
           </div>
@@ -373,7 +356,8 @@ const PersonalZone = ({
                       );
                     }
                     case 'link': {
-                      return (
+                      const myLink = UserBookmarks.findOne(elem.element_id);
+                      return myLink === undefined ? null : (
                         <Grid
                           className={classes.gridItem}
                           item
@@ -384,13 +368,7 @@ const PersonalZone = ({
                           lg={3}
                         >
                           <div className={customDrag ? classes.handle : null} />
-                          <PersonalLinkDetails
-                            link={elem}
-                            isMobile={isMobile}
-                            globalEdit={customDrag}
-                            updateLink={(linkId) => updatePersonalLink(index, linkId)}
-                            delLink={(newLink) => delPersonalLink(index, newLink)}
-                          />
+                          <PersonalLinkDetails link={myLink} isMobile={isMobile} globalEdit={customDrag} />
                         </Grid>
                       );
                     }
@@ -418,9 +396,6 @@ PersonalZone.propTypes = {
   lastZone: PropTypes.bool,
   moveDownZone: PropTypes.func,
   moveUpZone: PropTypes.func,
-  addPersonalLink: PropTypes.func,
-  updatePersonalLink: PropTypes.func,
-  delPersonalLink: PropTypes.func,
   customDrag: PropTypes.bool.isRequired,
   isSorted: PropTypes.bool,
   isExpanded: PropTypes.bool,
@@ -437,9 +412,6 @@ PersonalZone.defaultProps = {
   lastZone: false,
   moveDownZone: null,
   moveUpZone: null,
-  addPersonalLink: null,
-  updatePersonalLink: null,
-  delPersonalLink: null,
 };
 
 export default PersonalZone;

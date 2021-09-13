@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { Random } from 'meteor/random';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import LaunchIcon from '@material-ui/icons/Launch';
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import RemoveIcon from '@material-ui/icons/Remove';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,6 +17,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import CardHeader from '@material-ui/core/CardHeader';
 import Zoom from '@material-ui/core/Zoom';
+import Button from '@material-ui/core/Button';
 import i18n from 'meteor/universe:i18n';
 import { useObjectState } from '../../utils/hooks';
 
@@ -73,27 +75,59 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     marginBottom: 10,
   },
+  fab: {
+    textTransform: 'none',
+    color: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.tertiary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.tertiary.main,
+    },
+  },
 }));
 
-function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }) {
-  const { title = '', url = '', element_id: elementId } = link;
-
+function PersonalLinkDetails({ link, globalEdit, isMobile }) {
+  const { name = '', url = '', tag = '', _id = Random.id(), icon = '' } = link;
   const classes = useStyles();
-  const [localEdit, setLocalEdit] = useState(title === '');
-  const [state, setState] = useObjectState({ title, url });
+  const [localEdit, setLocalEdit] = useState(name === '');
+  const [state, setState] = useObjectState({ name, url, tag });
+  const favButtonLabel = i18n.__('components.PersonalLinkDetails.favButtonLabelNoFav');
 
   const handleLocalEdit = (event) => {
     setLocalEdit(!localEdit);
     if (!event.target.checked) {
-      if (state.title !== title || state.url !== url) {
-        updateLink({ element_id: elementId, ...state });
+      if (state.name !== name || state.url !== url) {
+        Meteor.call('userBookmark.updateURL', { id: _id, url: state.url, name: state.name, tag: link.tag });
+        Meteor.call('userBookmark.getFavicon', { url: state.url });
       }
     }
   };
 
+  const handleFavorite = () => {
+    Meteor.call('userBookmarks.unfavUserBookmark', { bookmarkId: link._id }, (err) => {
+      if (err) {
+        msg.error(err.reason);
+      } else {
+        msg.success(i18n.__('components.PersonalLinkDetails.unfavSuccessMsg'));
+      }
+    });
+  };
+
   const handleChangeState = (event) => {
-    const { name, value } = event.target;
-    setState({ [name]: value });
+    const { name: linkName, value } = event.target;
+    setState({ [linkName]: value });
+  };
+
+  const showAvatar = () => {
+    if (icon !== '') {
+      return <Avatar variant="rounded" src={icon} />;
+    }
+    return (
+      <Avatar className={classes.avatar}>
+        <LaunchIcon />
+      </Avatar>
+    );
   };
 
   const showData = () => {
@@ -104,8 +138,8 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }
           <form onSubmit={handleLocalEdit} className={classes.form}>
             <TextField
               label={i18n.__('components.PersonalLinkDetails.titleLabel')}
-              value={state.title}
-              name="title"
+              value={state.name}
+              name="name"
               onChange={handleChangeState}
               autoFocus
             />
@@ -123,14 +157,14 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }
     return (
       <Tooltip
         TransitionComponent={Zoom}
-        enterDelay={2000}
+        enterDelay={600}
         title={
           <>
-            <Typography>{state.title}</Typography>
+            <Typography>{state.url}</Typography>
             {i18n.__('pages.PersonalPage.typeLink')}
           </>
         }
-        aria-label={state.title}
+        aria-label={state.name}
       >
         {/* this span is to allow display of tooltip when CardActionArea is disabled 
         (occur when a service is disabled) */}
@@ -142,21 +176,10 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }
           >
             <CardHeader
               classes={{ content: classes.cardHeaderContent }}
-              avatar={
-                globalEdit && localEdit ? null : (
-                  <Avatar className={classes.avatar}>
-                    <LaunchIcon />
-                  </Avatar>
-                )
-              }
+              avatar={showAvatar()}
               title={
                 <Typography className={classes.linkName} gutterBottom noWrap={!isMobile} variant="h6" component="h2">
-                  {state.title || i18n.__('components.PersonalLinkDetails.titleLabel')}
-                </Typography>
-              }
-              subheader={
-                <Typography variant="body2" className={classes.linkUrl} noWrap={!isMobile} component="p">
-                  {state.url || i18n.__('components.PersonalLinkDetails.urlLabel')}
+                  {state.name || i18n.__('components.PersonalLinkDetails.titleLabel')}
                 </Typography>
               }
             />
@@ -179,13 +202,10 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }
               {localEdit ? <SaveIcon /> : <EditIcon />}
             </IconButton>
           </Tooltip>
-          <Tooltip
-            title={i18n.__('components.PersonalLinkDetails.delLink')}
-            aria-label={i18n.__('components.PersonalLinkDetails.delLink')}
-          >
-            <IconButton className={classes.zoneButton} color="primary" onClick={delLink(elementId)}>
-              <DeleteIcon />
-            </IconButton>
+          <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
+            <Button variant="outlined" size="small" className={classes.fab} onClick={handleFavorite}>
+              <RemoveIcon />
+            </Button>
           </Tooltip>
         </CardActions>
       ) : null}
@@ -196,8 +216,6 @@ function PersonalLinkDetails({ link, globalEdit, delLink, updateLink, isMobile }
 PersonalLinkDetails.propTypes = {
   link: PropTypes.objectOf(PropTypes.any).isRequired,
   globalEdit: PropTypes.bool.isRequired,
-  updateLink: PropTypes.func.isRequired,
-  delLink: PropTypes.func.isRequired,
   isMobile: PropTypes.bool.isRequired,
 };
 

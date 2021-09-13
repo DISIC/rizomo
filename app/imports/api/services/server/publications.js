@@ -18,7 +18,7 @@ Meteor.publish('services.all', function servicesAll() {
 });
 
 // publish available sergices attached to current user structure
-Meteor.publish('services.structure', function servicesStructure() {
+FindFromPublication.publish('services.structure', function servicesStructure() {
   if (!isActive(this.userId)) {
     return this.ready();
   }

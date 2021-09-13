@@ -442,7 +442,16 @@ export default withTracker(({ match: { path } }) => {
   const structureMode = path === '/structure';
   const subName = structureMode ? 'services.structure' : 'services.all';
   const servicesHandle = Meteor.subscribe(subName);
-  const services = Services.find({ state: { $ne: 10 } }, { sort: { title: 1 } }).fetch();
+  let services;
+  if (structureMode) {
+    services = Services.findFromPublication(
+      'services.structure',
+      { state: { $ne: 10 } },
+      { sort: { title: 1 } },
+    ).fetch();
+  } else {
+    services = Services.find({ state: { $ne: 10 } }, { sort: { title: 1 } }).fetch();
+  }
   const categoriesHandle = Meteor.subscribe('categories.all');
   const cats = Categories.find({}, { sort: { name: 1 } }).fetch();
   const categories = cats.map((cat) => ({ ...cat, count: Services.find({ categories: { $in: [cat._id] } }).count() }));
