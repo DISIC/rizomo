@@ -11,6 +11,7 @@
         "icon": "favion"
       },
       "UnknownURL": "This URL doesn't exist.",
+      "unknownBookmark": "This bookmark doesn't exist.",
       "notPermitted": "You don't have sufficient rights.",
       "adminRankNeeded": "Admin rank or author status needed.",
       "groupRankNeeded": "You need to be member of this group.",
@@ -85,6 +86,7 @@
         "isActive": "User Is Active",
         "isRequest": "User Awaits Activation",
         "favServices": "Favorite Services",
+        "favUserBookmarks": "Favorite Bookmarks",
         "structure": "Attachment Structure",
         "primaryEmail": "Primary Email",
         "language": "Preferred Language",
@@ -538,17 +540,17 @@
       "forbiddenDelZoneLabel": "Empty this zone before delete it",
       "upZoneLabel": "Move up this zone",
       "downZoneLabel": "Move down this zone",
-      "addPersonalLink": "Add a personal in this zone",
       "emptyDragZone": "Drop elements here",
       "modifyTitle": "Modify zone title"
     },
     "PersonalLinkDetails": {
       "visitLink": "Visit this link",
-      "delLink": "Delete this link",
       "titleLabel": "Link title",
       "urlLabel": "Link url",
       "modifyLink": "Modify this link",
-      "saveLink": "Save this lien"
+      "saveLink": "Save this lien",
+      "favButtonLabelNoFav": "Remove from your personal space",
+      "unfavSuccessMsg": "Removed from your personal space"
     },
     "ArticleDetails": {
       "editArticleButtonLabel": "Edit this publication",
@@ -679,8 +681,10 @@
     "body_editRow_saveTooltip": "Save changes"
   },
   "pages": {
-    "UserBookmarksPage":{
-      "back": "Go back"
+    "UserBookmarksPage": {
+      "back": "Go back",
+      "favoriteBookmark": "Add to your personal space",
+      "unfavoriteBookmark": "Remove from your personal space"
     },
     "BookmarksPage": {
       "columnIcon": "Favicon",
@@ -945,6 +949,7 @@
       "unsortedFav": "My Favorites",
       "unsortedGroup": "My groups",
       "unsortedService": "My applications",
+      "unsortedLinks": "My bookmarks",
       "newZone": "New Zone",
       "typeApplication": "Application",
       "typeGroup": "Group",

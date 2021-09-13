@@ -31,6 +31,7 @@ import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import PersonalZone from '../components/personalspace/PersonalZone';
 import Animation from '../components/screencast/Animation';
 import { useAppContext } from '../contexts/context';
+import UserBookmarks from '../../api/userBookmarks/userBookmarks';
 
 const useStyles = (isMobile) =>
   makeStyles((theme) => ({
@@ -130,7 +131,7 @@ const useStyles = (isMobile) =>
     },
   }));
 
-function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
+function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLinks }) {
   const AUTOSAVE_INTERVAL = 3000;
   const [{ user, loadingUser, isMobile }] = useAppContext();
   const [customDrag, setcustomDrag] = useState(false);
@@ -157,7 +158,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     let searchText = '';
     switch (element.type) {
       case 'service': {
-        const service = Services.findOne({ _id: element.element_id });
+        const service = Services.findOne(element.element_id);
         searchText = service !== undefined ? service.title : '';
         break;
       }
@@ -167,7 +168,8 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
         break;
       }
       case 'link': {
-        searchText = element.title || '';
+        const userBookmark = UserBookmarks.findOne(element.element_id);
+        searchText = userBookmark !== undefined ? `${userBookmark.name} ${userBookmark.url}` : '';
         break;
       }
       default:
@@ -176,6 +178,10 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     }
     searchText = searchText.toLowerCase();
     return searchText.indexOf(search.toLowerCase()) > -1;
+  };
+
+  const filterLink = (element) => {
+    return element.type === 'link';
   };
 
   const filterGroup = (element) => {
@@ -202,7 +208,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
 
   const [localPS, setLocalPS] = useState({});
   useEffect(() => {
-    if (personalspace && allServices && allGroups) {
+    if (personalspace && allServices && allGroups && allLinks) {
       // Called once
       Meteor.call('personalspaces.checkPersonalSpace', {}, (err) => {
         if (err) {
@@ -213,7 +219,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
   }, []);
 
   useEffect(() => {
-    if (personalspace && allServices && allGroups) {
+    if (personalspace && allServices && allGroups && allLinks) {
       setLocalPS(personalspace);
     }
   }, [personalspace]);
@@ -265,9 +271,20 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
         setLocalPS({ ...localPS, sorted });
       }
     } else if (type === 'service') {
-      setLocalPS({ ...localPS, unsorted: [...list, ...localPS.unsorted.filter(filterGroup)] });
+      setLocalPS({
+        ...localPS,
+        unsorted: [...list, ...localPS.unsorted.filter(filterGroup), ...localPS.unsorted.filter(filterLink)],
+      });
+    } else if (type === 'link') {
+      setLocalPS({
+        ...localPS,
+        unsorted: [...list, ...localPS.unsorted.filter(filterGroup), ...localPS.unsorted.filter(filterService)],
+      });
     } else {
-      setLocalPS({ ...localPS, unsorted: [...list, ...localPS.unsorted.filter(filterService)] });
+      setLocalPS({
+        ...localPS,
+        unsorted: [...list, ...localPS.unsorted.filter(filterService), ...localPS.unsorted.filter(filterLink)],
+      });
     }
   };
 
@@ -325,40 +342,6 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     } else {
       sorted.push(newZone);
     }
-    setLocalPS({ ...localPS, sorted });
-    setPsNeedUpdate(true);
-  };
-
-  const addLink = (zoneIndex) => {
-    const { sorted } = localPS;
-    const newLink = {
-      type: 'link',
-      element_id: Random.id(),
-      title: '',
-      url: '',
-    };
-    if (sorted[zoneIndex].isExpanded !== true) {
-      // Expand zone to add the new link
-      sorted[zoneIndex].isExpanded = true;
-    }
-    sorted[zoneIndex].elements.unshift(newLink);
-    setLocalPS({ ...localPS, sorted });
-    setPsNeedUpdate(true);
-  };
-
-  const updateLink = (zoneIndex, link) => {
-    const { sorted } = localPS;
-    const linkIndex = sorted[zoneIndex].elements.map((item) => item.element_id).indexOf(link.element_id);
-    sorted[zoneIndex].elements[linkIndex].title = link.title;
-    sorted[zoneIndex].elements[linkIndex].url = link.url;
-    setLocalPS({ ...localPS, sorted });
-    setPsNeedUpdate(true);
-  };
-
-  const delLink = (zoneIndex, linkId) => () => {
-    const { sorted } = localPS;
-    const removeIndex = sorted[zoneIndex].elements.map((item) => item.element_id).indexOf(linkId);
-    sorted[zoneIndex].elements.splice(removeIndex, 1);
     setLocalPS({ ...localPS, sorted });
     setPsNeedUpdate(true);
   };
@@ -490,6 +473,19 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                   />,
                 ]
               : null}
+            {localPS.unsorted.filter(filterLink).length !== 0
+              ? [
+                  <PersonalZone
+                    key="zone-favUserBookmark-000000000000"
+                    elements={localPS.unsorted.filter(filterSearch).filter(filterLink)}
+                    title={i18n.__('pages.PersonalPage.unsortedLinks')}
+                    setList={setZoneList('link')}
+                    suspendUpdate={suspendUpdate}
+                    updateList={updateList}
+                    customDrag={customDrag}
+                  />,
+                ]
+              : null}
             {localPS.unsorted.length !== 0 ? [<Divider key="div-000000000000" className={classes.divider} />] : null}
             {localPS.sorted.map(({ zone_id: zoneId, elements, name, isExpanded }, index) => [
               <PersonalZone
@@ -505,9 +501,6 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                 lastZone={localPS.sorted.length === index + 1}
                 moveDownZone={downZone}
                 moveUpZone={upZone}
-                addPersonalLink={addLink}
-                updatePersonalLink={updateLink}
-                delPersonalLink={delLink}
                 customDrag={customDrag}
                 isSorted
                 isExpanded={isExpanded}
@@ -543,6 +536,7 @@ PersonalPage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   allServices: PropTypes.arrayOf(PropTypes.object).isRequired,
   allGroups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allLinks: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default withTracker(() => {
@@ -550,10 +544,12 @@ export default withTracker(() => {
   const personalspace = PersonalSpaces.findOne() || { userId: this.userId, unsorted: [], sorted: [] };
   const allServices = Services.find().fetch();
   const allGroups = Groups.find().fetch();
+  const allLinks = UserBookmarks.find().fetch();
   return {
     personalspace,
     isLoading: !subscription.ready(),
     allServices,
     allGroups,
+    allLinks,
   };
 })(PersonalPage);

@@ -135,7 +135,12 @@ export default withTracker(({ match: { path } }) => {
   const structureMode = path === '/adminstructureservices';
   const servicesHandle = Meteor.subscribe(structureMode ? 'services.structure' : 'services.all');
   const loading = !servicesHandle.ready();
-  const services = Services.find({}, { sort: { title: 1 } }).fetch();
+  let services;
+  if (structureMode) {
+    services = Services.findFromPublication('services.structure', {}, { sort: { title: 1 } }).fetch();
+  } else {
+    services = Services.find({}, { sort: { title: 1 } }).fetch();
+  }
   return {
     services,
     loading,

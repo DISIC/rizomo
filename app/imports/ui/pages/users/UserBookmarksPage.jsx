@@ -8,6 +8,8 @@ import MaterialTable from 'material-table';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import LanguageIcon from '@material-ui/icons/Language';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
 import Container from '@material-ui/core/Container';
 import { Roles } from 'meteor/alanning:roles';
 import add from '@material-ui/icons/Add';
@@ -38,7 +40,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function UserBookmarksPage({ loading, bookmarksList }) {
-  const [{ userId }] = useAppContext();
+  const [{ user, userId }] = useAppContext();
   const history = useHistory();
   const classes = useStyles();
   const columns = [
@@ -131,6 +133,26 @@ function UserBookmarksPage({ loading, bookmarksList }) {
                     OpenURLEditor();
                   },
                 },
+                (rowData) => {
+                  const isFavorite = user.favUserBookmarks.indexOf(rowData._id) !== -1;
+                  return {
+                    icon: () => (isFavorite ? <StarIcon /> : <StarBorderIcon />),
+                    tooltip: i18n.__(
+                      `pages.UserBookmarksPage.${isFavorite ? 'unfavoriteBookmark' : 'favoriteBookmark'}`,
+                    ),
+                    onClick: () => {
+                      Meteor.call(
+                        `userBookmarks.${isFavorite ? 'unfavUserBookmark' : 'favUserBookmark'}`,
+                        { bookmarkId: rowData._id },
+                        (err) => {
+                          if (err) {
+                            msg.error(err.reason);
+                          }
+                        },
+                      );
+                    },
+                  };
+                },
               ]}
               editable={{
                 isDeleteHidden: (rowData) => hideEditActions(rowData.userId),
@@ -160,7 +182,7 @@ function UserBookmarksPage({ loading, bookmarksList }) {
                   new Promise((resolve, reject) => {
                     removeUserBookmark.call(
                       {
-                        url: oldData.url,
+                        id: oldData._id,
                       },
                       (err, res) => {
                         if (err) {

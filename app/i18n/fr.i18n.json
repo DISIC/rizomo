@@ -11,6 +11,7 @@
         "icon": "favicon"
       },
       "UnknownURL": "Cette URL n'existe pas.",
+      "unknownBookmark": "Ce marque-page n'existe pas.",
       "notPermitted": "Vous n'avez pas les droits nécessaires.",
       "adminRankNeeded": "Rang d'administrateur ou statut d'auteur requis.",
       "groupRankNeeded": "Vous devez faire partie de ce groupe.",
@@ -85,6 +86,7 @@
         "isActive": "Utilisateur Actif",
         "isRequest": "Utilisateur En Attente De Validation",
         "favServices": "Services Favoris",
+        "favUserBookmarks": "Marque-pages favoris",
         "structure": "Structure De Rattachement",
         "primaryEmail": "Adresse Électronique principale",
         "language": "Langage Préféré",
@@ -539,17 +541,17 @@
       "forbiddenDelZoneLabel": "Vider la zone pour la supprimer",
       "upZoneLabel": "Faire monter cette zone",
       "downZoneLabel": "Faire descendre cette zone",
-      "addPersonalLink": "Ajouter un lien personnel à cette zone",
       "emptyDragZone": "Glissez les éléments ici",
       "modifyTitle": "Modifier le titre de la zone"
     },
     "PersonalLinkDetails": {
       "visitLink": "Visiter ce lien",
-      "delLink": "Supprimer ce lien",
       "titleLabel": "Titre du lien",
       "urlLabel": "Url du lien",
       "modifyLink": "Modifier le lien",
-      "saveLink": "Enregistrer le lien"
+      "saveLink": "Enregistrer le lien",
+      "favButtonLabelNoFav": "Supprimer de votre espace personnel",
+      "unfavSuccessMsg": "Supprimé de votre espace personnel"
     },
     "ArticleDetails": {
       "editArticleButtonLabel": "Editer cette publication",
@@ -680,8 +682,10 @@
     "body_editRow_saveTooltip": "Enregistrer les changements"
   },
   "pages": {
-    "UserBookmarksPage":{
-      "back": "Retour"
+    "UserBookmarksPage": {
+      "back": "Retour",
+      "favoriteBookmark": "Ajouter à votre espace personnel",
+      "unfavoriteBookmark": "Supprimer de votre espace personnel"
     },
     "BookmarksPage": {
       "columnIcon": "Favicon",
@@ -949,6 +953,7 @@
       "unsortedFav": "Mes Favoris",
       "unsortedGroup": "Mes groupes",
       "unsortedService": "Mes applications",
+      "unsortedLinks": "Mes marque-pages",
       "newZone": "Nouvelle Zone",
       "typeApplication": "Application",
       "typeGroup": "Groupe",

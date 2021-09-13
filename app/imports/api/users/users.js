@@ -100,6 +100,14 @@ Meteor.users.schema = new SimpleSchema(
     'favGroups.$': {
       type: { type: String, regEx: SimpleSchema.RegEx.Id },
     },
+    favUserBookmarks: {
+      type: Array,
+      defaultValue: [],
+      label: getLabel('api.users.labels.favUserBookmarks'),
+    },
+    'favUserBookmarks.$': {
+      type: { type: String, regEx: SimpleSchema.RegEx.Id },
+    },
     structure: {
       type: String,
       optional: true,
@@ -277,6 +285,7 @@ Meteor.users.selfFields = {
   isRequest: 1,
   favServices: 1,
   favGroups: 1,
+  favUserBookmarks: 1,
   structure: 1,
   primaryEmail: 1,
   language: 1,
