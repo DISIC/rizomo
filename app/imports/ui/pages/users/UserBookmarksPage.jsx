@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import LanguageIcon from '@material-ui/icons/Language';
@@ -119,7 +119,9 @@ function UserBookmarksPage({ loading, bookmarksList }) {
               // other props
               title={`${i18n.__('pages.BookmarksPage.title')}`}
               columns={columns}
-              data={bookmarksList}
+              data={bookmarksList.map((row) => {
+                return { ...row, id: row._id };
+              })}
               options={options}
               localization={setMaterialTableLocalization('pages.BookmarksPage')}
               actions={[

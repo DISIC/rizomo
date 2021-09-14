@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import Container from '@material-ui/core/Container';
 import Fade from '@material-ui/core/Fade';
 import Spinner from '../../components/system/Spinner';
@@ -72,7 +72,7 @@ const AdminCategoriesPage = ({ categories, loading }) => {
               // other props
               title={i18n.__('pages.AdminCategoriesPage.title')}
               columns={columns}
-              data={categories}
+              data={categories.map((row) => ({ ...row, id: row._id }))}
               options={options}
               localization={setMaterialTableLocalization('pages.AdminCategoriesPage')}
               editable={{

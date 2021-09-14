@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Fade from '@material-ui/core/Fade';
 import Container from '@material-ui/core/Container';
@@ -66,7 +66,7 @@ function AdminUserValidationPage({ usersrequest, loading }) {
               // other props
               title={i18n.__('pages.AdminUserValidationPage.title')}
               columns={columns}
-              data={usersrequest}
+              data={usersrequest.map((row) => ({ ...row, id: row._id }))}
               options={options}
               localization={setMaterialTableLocalization('pages.AdminUserValidationPage')}
               actions={[
