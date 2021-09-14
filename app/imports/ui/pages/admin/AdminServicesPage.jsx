@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import Container from '@material-ui/core/Container';
 import Fade from '@material-ui/core/Fade';
 import { useHistory } from 'react-router-dom';
@@ -73,7 +73,7 @@ function AdminServicesPage({ services, loading, structureMode }) {
               // other props
               title={`${i18n.__('pages.AdminServicesPage.title')} ${structureMode ? `(${user.structure})` : ''}`}
               columns={columns}
-              data={services}
+              data={services.map((row) => ({ ...row, id: row._id }))}
               options={options}
               localization={setMaterialTableLocalization('pages.AdminServicesPage')}
               actions={[
