@@ -814,6 +814,7 @@
       "viewList": "Mode liste",
       "endOfList": "Fin de la liste",
       "filterGroup": "Afficher uniquement les groupes rejoints",
+      "filterGroupLabel": "Mes groupes seulement",
       "disableFilterGroup": "Afficher tous les groupes",
       "noGroup": "Il n'y a aucun groupe à afficher."
     },
