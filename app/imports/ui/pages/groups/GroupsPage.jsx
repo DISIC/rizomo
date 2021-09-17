@@ -16,6 +16,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ClearIcon from '@material-ui/icons/Clear';
 import Pagination from '@material-ui/lab/Pagination';
 import i18n from 'meteor/universe:i18n';
@@ -205,6 +206,21 @@ function GroupsPage() {
     </Grid>
   );
 
+  const filterSwitch = () => (
+    <Tooltip
+      title={
+        filterChecked
+          ? `${i18n.__('pages.GroupsPage.disableFilterGroup')}`
+          : `${i18n.__('pages.GroupsPage.filterGroup')}`
+      }
+    >
+      <FormControlLabel
+        control={<Switch checked={filterChecked} onChange={updateFilterCheck} name="filterSwitch" color="primary" />}
+        label={i18n.__('pages.GroupsPage.filterGroupLabel')}
+      />
+    </Tooltip>
+  );
+
   return (
     <Fade in>
       <Container>
@@ -215,19 +231,7 @@ function GroupsPage() {
               <IconButton onClick={toggleSearch}>
                 <SearchIcon fontSize="large" />
               </IconButton>
-              <Tooltip
-                title={
-                  filterChecked
-                    ? `${i18n.__('pages.GroupsPage.disableFilterGroup')}`
-                    : `${i18n.__('pages.GroupsPage.filterGroup')}`
-                }
-              >
-                <Switch
-                  color={filterChecked ? 'primary' : 'default'}
-                  inputProps={{ 'aria-label': 'checkbox with default color' }}
-                  onChange={updateFilterCheck}
-                />
-              </Tooltip>
+              {!isMobile && filterSwitch()}
             </Typography>
             <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>
           </Grid>
@@ -237,6 +241,7 @@ function GroupsPage() {
           {isMobile && (
             <Grid item xs={12} sm={12} className={classes.mobileButtonContainer}>
               <div />
+              {filterSwitch()}
               {toggleButtons}
             </Grid>
           )}
