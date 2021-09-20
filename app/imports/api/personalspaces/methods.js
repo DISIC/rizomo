@@ -230,9 +230,51 @@ export const checkPersonalSpace = new ValidatedMethod({
   },
 });
 
+export const backToDefaultElement = new ValidatedMethod({
+  name: 'personalspaces.backToDefaultElement',
+  validate: new SimpleSchema({
+    elementId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    type: String,
+  }).validator(),
+
+  run({ elementId, type }) {
+    // check if active and logged in
+    if (!isActive(this.userId)) {
+      throw new Meteor.Error('api.personalspaces.backToDefaultElement.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    // remove all entries matching item type and element_id
+    PersonalSpaces.update(
+      { userId: this.userId },
+      {
+        $pull: {
+          unsorted: { type, element_id: elementId },
+          'sorted.$[].elements': { type, element_id: elementId },
+        },
+      },
+    );
+    // add element in default zone according to element type
+    switch (type) {
+      case 'service':
+        addService._execute({ userId: this.userId }, { serviceId: elementId });
+        break;
+
+      case 'group':
+        addGroup._execute({ userId: this.userId }, { groupId: elementId });
+        break;
+
+      case 'link':
+        addUserBookmark._execute({ userId: this.userId }, { bookmarkId: elementId });
+        break;
+
+      default:
+        throw new Meteor.Error('api.personalspaces.backToDefaultElement.unknownType');
+    }
+  },
+});
+
 // Get list of all method names on User
 const LISTS_METHODS = _.pluck(
-  [updatePersonalSpace, removeElement, addService, addGroup, addUserBookmark, checkPersonalSpace],
+  [updatePersonalSpace, removeElement, addService, addGroup, addUserBookmark, checkPersonalSpace, backToDefaultElement],
   'name',
 );
 

@@ -8,6 +8,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import RemoveIcon from '@material-ui/icons/Remove';
+import PublishIcon from '@material-ui/icons/Publish';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -87,12 +88,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PersonalLinkDetails({ link, globalEdit, isMobile }) {
+function PersonalLinkDetails({ link, globalEdit, isMobile, isSorted }) {
   const { name = '', url = '', tag = '', _id = Random.id(), icon = '' } = link;
   const classes = useStyles();
   const [localEdit, setLocalEdit] = useState(name === '');
   const [state, setState] = useObjectState({ name, url, tag });
   const favButtonLabel = i18n.__('components.PersonalLinkDetails.favButtonLabelNoFav');
+  const backToDefaultButtonLabel = i18n.__('components.PersonalLinkDetails.backToDefault');
 
   const handleLocalEdit = (event) => {
     setLocalEdit(!localEdit);
@@ -110,6 +112,14 @@ function PersonalLinkDetails({ link, globalEdit, isMobile }) {
         msg.error(err.reason);
       } else {
         msg.success(i18n.__('components.PersonalLinkDetails.unfavSuccessMsg'));
+      }
+    });
+  };
+
+  const handleBackToDefault = () => {
+    Meteor.call('personalspaces.backToDefaultElement', { elementId: link._id, type: 'link' }, (err) => {
+      if (err) {
+        msg.error(err.reason);
       }
     });
   };
@@ -202,6 +212,13 @@ function PersonalLinkDetails({ link, globalEdit, isMobile }) {
               {localEdit ? <SaveIcon /> : <EditIcon />}
             </IconButton>
           </Tooltip>
+          {isSorted ? (
+            <Tooltip title={backToDefaultButtonLabel} aria-label={backToDefaultButtonLabel}>
+              <Button variant="outlined" size="small" className={classes.fab} onClick={handleBackToDefault}>
+                <PublishIcon />
+              </Button>
+            </Tooltip>
+          ) : null}
           <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
             <Button variant="outlined" size="small" className={classes.fab} onClick={handleFavorite}>
               <RemoveIcon />
@@ -217,6 +234,7 @@ PersonalLinkDetails.propTypes = {
   link: PropTypes.objectOf(PropTypes.any).isRequired,
   globalEdit: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
+  isSorted: PropTypes.bool.isRequired,
 };
 
 export default PersonalLinkDetails;

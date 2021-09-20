@@ -421,7 +421,8 @@
       "favSuccessMsg": "Added to your personal space",
       "open": "Open",
       "pin": "Pin",
-      "unpin": "Unpin"
+      "unpin": "Unpin",
+      "backToDefault": "Move back to default zone"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Open side menu",
@@ -531,7 +532,8 @@
     "GroupDetailsPersSpace": {
       "groupCandidate": "Candidate",
       "groupAdmin": "Administrator",
-      "groupNone": "No role"
+      "groupNone": "No role",
+      "backToDefault": "Move back to default zone"
     },
     "AppVersion": {
       "title": "Version"
@@ -551,7 +553,8 @@
       "modifyLink": "Modify this link",
       "saveLink": "Save this lien",
       "favButtonLabelNoFav": "Remove from your personal space",
-      "unfavSuccessMsg": "Removed from your personal space"
+      "unfavSuccessMsg": "Removed from your personal space",
+      "backToDefault": "Move back to default zone"
     },
     "ArticleDetails": {
       "editArticleButtonLabel": "Edit this publication",
@@ -956,8 +959,7 @@
       "typeApplication": "Application",
       "typeGroup": "Group",
       "typeLink": "Link",
-      "addZoneStartButton": "Add zone at start",
-      "addZoneEndButton": "Add zone at end",
+      "addZoneHere": "Add a zone here",
       "toggleEdition": "Toggle edition mode"
     },
     "HelpPage": {
