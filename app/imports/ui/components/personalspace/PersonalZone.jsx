@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
     '&::before': {
       content: 'none',
     },
-    backgroundColor: '#f9f9fd',
+    backgroundColor: '#f1f1fc',
+    padding: '4px !important',
   },
   expansionpanelsummaryexpanded: {
-    margin: '0 !important',
     minHeight: '0 !important',
   },
   expansionpanelsummarycontent: {
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'grab',
     position: 'absolute',
     textAlign: 'center',
-    width: 'calc(100% - 32px)',
+    width: 'calc(100% - 8px)',
     backgroundColor: theme.palette.primary.main,
     opacity: 0.2,
     height: 20,
@@ -293,7 +293,7 @@ const PersonalZone = ({
       </AccordionSummary>
       <AccordionDetails>
         <ReactSortable
-          className={`MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 ${
+          className={`MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 ${
             elements.length === 0 ? `${classes.emptyZone} ${customDrag ? classes.emptyDragZone : ''}` : ''
           }`}
           list={elements}
