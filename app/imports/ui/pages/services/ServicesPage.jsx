@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import SearchIcon from '@material-ui/icons/Search';
 import ViewListIcon from '@material-ui/icons/ViewList';
@@ -17,7 +16,6 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import Fade from '@material-ui/core/Fade';
@@ -162,8 +160,6 @@ function ServicesPage({ services, categories, ready, structureMode }) {
 
   const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
   const toggleFilter = () => updateGlobalState('filterToggle', !filterToggle);
-  const updateSearch = (e) => updateGlobalState('search', e.target.value);
-  const resetSearch = () => updateGlobalState('search', '');
   const resetCatList = () => updateGlobalState('catList', []);
   const changeViewMode = (_, value) => updateGlobalState('viewMode', value);
   const updateCatList = (catId) => {
@@ -177,16 +173,6 @@ function ServicesPage({ services, categories, ready, structureMode }) {
     } else {
       // add new catId to list
       updateGlobalState('catList', [...catList, catId]);
-    }
-  };
-  const checkEscape = (e) => {
-    if (e.keyCode === 27) {
-      // ESCAPE key
-      servicePage.search = '';
-      servicePage.searchToggle = false;
-      servicePage.filterToggle = false;
-      servicePage.catList = [];
-      updateGlobalState('searchToggle', false); // all servicePage values will be saved with this call
     }
   };
 
@@ -245,45 +231,12 @@ function ServicesPage({ services, categories, ready, structureMode }) {
       startIcon={<FilterListIcon />}
     >
       {i18n.__('pages.ServicesPage.filter')}{' '}
-      {!!catList.length && <span className={classes.badge}>{catList.length}</span>}
+      {catList.length ? (
+        <span className={classes.badge}>{catList.length}</span>
+      ) : (
+        i18n.__('pages.ServicesPage.emptyFilter')
+      )}
     </Button>
-  );
-
-  const searchField = (
-    <Grid item xs={12} sm={12} md={6} className={searchToggle ? null : classes.small}>
-      <Collapse in={searchToggle} collapsedSize={0}>
-        <TextField
-          margin="normal"
-          id="search"
-          label={i18n.__('pages.ServicesPage.searchText')}
-          name="search"
-          fullWidth
-          onChange={updateSearch}
-          onKeyDown={checkEscape}
-          type="text"
-          value={search}
-          variant="outlined"
-          inputProps={{
-            ref: inputRef,
-          }}
-          // eslint-disable-next-line react/jsx-no-duplicate-props
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-            endAdornment: search ? (
-              <InputAdornment position="end">
-                <IconButton onClick={resetSearch}>
-                  <ClearIcon />
-                </IconButton>
-              </InputAdornment>
-            ) : null,
-          }}
-        />
-      </Collapse>
-    </Grid>
   );
 
   return (
@@ -303,7 +256,6 @@ function ServicesPage({ services, categories, ready, structureMode }) {
               </Grid>
             </Grid>
             <Grid container spacing={4}>
-              {searchField}
               {isMobile && (
                 <Grid item xs={12} sm={12} className={classes.mobileButtonContainer}>
                   {mobileFilterButton}

@@ -78,17 +78,17 @@ function AdminServicesPage({ services, loading, structureMode }) {
               localization={setMaterialTableLocalization('pages.AdminServicesPage')}
               actions={[
                 {
-                  icon: 'edit',
-                  tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
-                  onClick: (event, rowData) => {
-                    history.push(`/admin${urlStruct}services/${rowData._id}`);
-                  },
-                },
-                {
                   icon: keyboardArrowRight,
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_goTooltip'),
                   onClick: (event, rowData) => {
                     history.push(`/${structureMode ? urlStruct : 'services'}/${rowData.slug}`);
+                  },
+                },
+                {
+                  icon: 'edit',
+                  tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
+                  onClick: (event, rowData) => {
+                    history.push(`/admin${urlStruct}services/${rowData._id}`);
                   },
                 },
                 {

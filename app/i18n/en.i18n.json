@@ -400,6 +400,8 @@
     "MenuBar": {
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
+      "menuArticles": "My publications",
+      "menuArticlesMobile": "Publications",
       "menuHelp": "Help",
       "menuServices": "Applications",
       "menuStructure": "My Structure",
@@ -434,7 +436,6 @@
       "menuAdminCategories": "Categories Management",
       "menuAdminTags": "Tags Management",
       "menuAdminGroups": "Groups Management",
-      "menuPublications": "Publications",
       "menuUserBookmarks": "Bookmarks",
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
@@ -490,7 +491,7 @@
       "addTag": "Add ",
       "noTag": "No tag found",
       "tagLabel": "Tag",
-      "placeholder": "Type to search a tag",
+      "placeholder": "Enter tag",
       "clear": "Clear",
       "loading": "Loading...",
       "open": "Open",
@@ -678,7 +679,7 @@
     "pagination_nextTooltip": "Next page",
     "pagination_lastTooltip": "Last page",
     "body_editRow_cancelTooltip": "Cancel",
-    "body_editRow_saveTooltip": "Save changes"
+    "body_editRow_saveTooltip": "Confirm"
   },
   "pages": {
     "UserBookmarksPage": {
@@ -794,7 +795,7 @@
       "tabsLabel": "Services tabs",
       "tabFavServicesLabel": "Favorite services",
       "tabAllServicesLabel": "All services",
-      "searchText": "Which app would you need ?",
+      "emptyFilter": "There is no filter available.",
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view",
@@ -1045,6 +1046,8 @@
     },
     "ArticlesPage": {
       "title": "Your publications",
+      "searchArticle": "Search publication",
+      "addNewArticle": "Add new publication",
       "openPublicPage": "All publications page",
       "copyOwnPublicPageUrl": "Copy url to your public publications page",
       "successCopyURL": "Public URL has been sent to clipboard",
@@ -1069,7 +1072,7 @@
       "successCopyURL": "Public URL has been sent to clipboard",
       "switchToHtml": "Classic editor",
       "switchToMarkdown": "Markdown editor",
-      "selectTag": "Select",
+      "selectTag": "Add",
       "save_draf": "Draft",
       "draft": "Draft",
       "createTag": "Create"

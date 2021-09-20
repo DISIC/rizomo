@@ -400,6 +400,8 @@
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
+      "menuArticles": "Mes publications",
+      "menuArticlesMobile": "Publications",
       "menuHelp": "Aide",
       "menuServices": "Applications",
       "menuStructure": "Ma Structure",
@@ -434,7 +436,6 @@
       "menuAdminTags": "Gestion des mots clé",
       "menuAdminGroups": "Gestion des Groupes",
       "menuAdminUsers": "Gestion des utilisateurs",
-      "menuPublications": "Publications",
       "menuUserBookmarks": "Marque-pages",
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
@@ -473,7 +474,7 @@
         "body_addTooltip": "Ajouter un utilisateur",
         "body_editTooltip": "Modifier cet utilisateur",
         "body_deleteTooltip": "Enlever cet utilisateur",
-        "body_editRow_deleteText": "Enlever vraiment cet utilisateur ?",
+        "body_editRow_deleteText": "Souhaitez vous réellement enlever cet utilisateur ?",
         "body_addGroupTooltip": "Ajouter les membres d'un autre groupe"
       }
     },
@@ -490,9 +491,10 @@
       "close": "Fermer"
     },
     "TagFinder": {
+      "addTag": "Ajouter ",
       "noTag": "Aucun utilisateur trouvé",
       "tagLabel": "Mot clé",
-      "placeholder": "Saisir pour rechercher",
+      "placeholder": "Saisir un mot clé",
       "clear": "Effacer",
       "loading": "Chargement...",
       "open": "Ouvrir",
@@ -679,7 +681,7 @@
     "pagination_nextTooltip": "Page suivante",
     "pagination_lastTooltip": "Dernière page",
     "body_editRow_cancelTooltip": "Annuler",
-    "body_editRow_saveTooltip": "Enregistrer les changements"
+    "body_editRow_saveTooltip": "Valider"
   },
   "pages": {
     "UserBookmarksPage": {
@@ -798,7 +800,7 @@
       "tabsLabel": "Onglet des services",
       "tabFavServicesLabel": "Mes services épinglés",
       "tabAllServicesLabel": "Tous les services",
-      "searchText": "De quelle application avez-vous besoin ?",
+      "emptyFilter": "Aucun filtre n'est présent.",
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste",
@@ -833,7 +835,7 @@
         "body_editTooltip": "Modifier ce service",
         "body_goTooltip": "Aller à ce service",
         "body_deleteTooltip": "Supprimer ce service",
-        "body_editRow_deleteText": "Supprimer vraiment ce service ?"
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer ce service ?"
       }
     },
     "AdminCategoriesPage": {
@@ -846,7 +848,7 @@
         "body_addTooltip": "Ajouter une catégorie",
         "body_editTooltip": "Modifier cette catégorie",
         "body_deleteTooltip": "Supprimer cette catégorie",
-        "body_editRow_deleteText": "Supprimer vraiment cette catégorie ?"
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer cette catégorie ?"
       }
     },
     "AdminTagsPage": {
@@ -859,7 +861,7 @@
         "body_addTooltip": "Ajouter un Mot clé",
         "body_editTooltip": "Modifier ce Mot clé",
         "body_deleteTooltip": "Supprimer ce Mot clé",
-        "body_editRow_deleteText": "Supprimer vraiment ce Mots clé ?"
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer ce Mot clé ?"
       }
     },
     "AdminGroupsPage": {
@@ -876,7 +878,7 @@
         "body_addTooltip": "Ajouter un groupe",
         "body_editTooltip": "Modifier ce groupe",
         "body_deleteTooltip": "Supprimer ce groupe",
-        "body_editRow_deleteText": "Supprimer vraiment ce groupe ?"
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer ce groupe ?"
       }
     },
     "AdminNextcloudUrlPage": {
@@ -893,7 +895,7 @@
         "body_emptyDataSourceMessage": "Aucune URL présente",
         "pagination_labelRowsSelect": "URL par page",
         "toolbar_searchPlaceholder": "Rechercher une URL",
-        "body_editRow_deleteText": "Supprimer vraiment cette URL ?",
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer cette URL ?",
         "body_deleteTooltip": "Supprimer cette URL",
         "activated": "Oui",
         "deactivated": "Non"
@@ -906,7 +908,7 @@
       "setAdmin": "Donner les droits d'administrateur",
       "unsetAdmin": "Enlever les droits d'administrateur",
       "deleteUser": "Supprimer l'utilisateur",
-      "deleteUserConfirmation": "Supprimer vraiment cet utilisateur ?",
+      "deleteUserConfirmation": "Souhaitez vous réellement supprimer cet utilisateur ?",
       "deleteSelfConfirmation": "Vous allez supprimer votre propre compte. Continuer ?",
       "cancelDelete": "Annuler la suppression",
       "successSetAdmin": "Droits d'administrateur donnés",
@@ -1048,6 +1050,8 @@
     },
     "ArticlesPage": {
       "title": "Vos publications",
+      "searchArticle": "Chercher une publication",
+      "addNewArticle": "Créer une publication",
       "openPublicPage": "Voir toutes les publications",
       "copyOwnPublicPageUrl": "Copier le lien vers la page publique de vos publications",
       "successCopyURL": "URL publique copiée dans le presse-papier",
@@ -1072,7 +1076,7 @@
       "successCopyURL": "URL publique copiée dans le presse-papier",
       "switchToHtml": "Éditeur Classic",
       "switchToMarkdown": "Éditeur Markdown",
-      "selectTag": "Sélectionner",
+      "selectTag": "Ajouter",
       "save_draf": "Brouillon",
       "draft": "Brouillon",
       "createTag": "Créer"

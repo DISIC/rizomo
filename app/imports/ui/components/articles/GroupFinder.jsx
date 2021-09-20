@@ -88,6 +88,7 @@ function GroupFinder({ onSelected, exclude = [], opened }) {
                 </InputAdornment>
               ),
             }}
+            fullWidth
           />
         );
       }}

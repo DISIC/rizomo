@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { PropTypes } from 'prop-types';
 import GroupIcon from '@material-ui/icons/Group';
+import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import HomeIcon from '@material-ui/icons/Home';
 import HelpIcon from '@material-ui/icons/Help';
 import BusinessIcon from '@material-ui/icons/Business';
@@ -17,6 +18,13 @@ export const links = [
     content: 'menuMyspace',
     contentMobile: 'menuMyspaceMobile',
     icon: <HomeIcon />,
+    admin: false,
+  },
+  {
+    path: '/publications',
+    content: 'menuArticles',
+    contentMobile: 'menuArticlesMobile',
+    icon: <LibraryBooks />,
     admin: false,
   },
   {
