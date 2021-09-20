@@ -955,8 +955,8 @@
       "typeApplication": "Application",
       "typeGroup": "Group",
       "typeLink": "Link",
-      "addZoneStartButton": "Add a new zone at start",
-      "addZoneEndButton": "Add a new zone at the end",
+      "addZoneStartButton": "Add zone at start",
+      "addZoneEndButton": "Add zone at end",
       "toggleEdition": "Toggle edition mode"
     },
     "HelpPage": {

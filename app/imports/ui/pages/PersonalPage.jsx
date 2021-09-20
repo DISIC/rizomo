@@ -50,12 +50,18 @@ const useStyles = (isMobile) =>
       alignItems: 'center',
       paddingTop: '0 !important',
     },
+    zoneButtonContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
     flex: {
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
       justifyContent: 'space-between',
       alignItems: isMobile ? 'flex-start' : 'center',
     },
+    flexGrow: {},
     cardGrid: {
       paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(2),
@@ -72,9 +78,10 @@ const useStyles = (isMobile) =>
     ghost: {
       opacity: '1 !important',
     },
-    spaceBetween: {
+    titleButtons: {
       display: 'flex',
-      justifyContent: 'space-between',
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     handle: {
       cursor: 'grab',
@@ -96,21 +103,15 @@ const useStyles = (isMobile) =>
         borderRadius: theme.shape.borderRadius,
       },
     },
-    zoneButton: {
-      color: theme.palette.primary.main,
-      opacity: 0.5,
-      cursor: 'pointer',
-      '&:hover': {
-        opacity: 1,
-        color: theme.palette.error.main,
-      },
-    },
     zoneButtonEnd: {
-      opacity: 0.5,
+      opacity: 0.7,
+      textTransform: 'none',
+      // width: '80%',
       cursor: 'pointer',
       '&:hover': {
         opacity: 1,
-        color: theme.palette.error.main,
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.tertiary.main,
       },
     },
     divider: {
@@ -361,43 +362,43 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                   <Grid item>
                     <Typography variant={isMobile ? 'h5' : 'h4'}>{i18n.__('pages.PersonalPage.welcome')}</Typography>
                   </Grid>
-                  <Grid item>
-                    <IconButton onClick={toggleSearch} disabled={customDrag}>
-                      <SearchIcon fontSize="large" />
-                    </IconButton>
+                  <Grid item style={isMobile ? { width: '100%' } : { flexGrow: 1 }}>
+                    <Grid container className={classes.titleButtons}>
+                      <Grid item style={{ flexGrow: 1 }}>
+                        <IconButton onClick={toggleSearch} disabled={customDrag}>
+                          <SearchIcon fontSize="large" />
+                        </IconButton>
+                      </Grid>
+                      {user.advancedPersonalPage ? (
+                        <Grid item>
+                          <Grid
+                            className={classes.modeEdition}
+                            component="label"
+                            container
+                            alignItems="center"
+                            spacing={1}
+                            title={i18n.__('pages.PersonalPage.toggleEdition')}
+                          >
+                            <Grid item>
+                              <LockIcon />
+                            </Grid>
+                            <Grid item>
+                              <Switch
+                                checked={customDrag}
+                                onChange={handleCustomDrag}
+                                value="customDrag"
+                                color="primary"
+                              />
+                            </Grid>
+                            <Grid item>
+                              <LockOpenIcon />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
-                <div className={classes.spaceBetween}>
-                  {customDrag ? (
-                    <IconButton
-                      onClick={() => addZone(0)}
-                      className={classes.zoneButton}
-                      title={i18n.__('pages.PersonalPage.addZoneStartButton')}
-                    >
-                      <AddBoxIcon />
-                    </IconButton>
-                  ) : null}
-                  {user.advancedPersonalPage ? (
-                    <Grid
-                      className={classes.modeEdition}
-                      component="label"
-                      container
-                      alignItems="center"
-                      spacing={1}
-                      title={i18n.__('pages.PersonalPage.toggleEdition')}
-                    >
-                      <Grid item>
-                        <LockIcon />
-                      </Grid>
-                      <Grid item>
-                        <Switch checked={customDrag} onChange={handleCustomDrag} value="customDrag" color="primary" />
-                      </Grid>
-                      <Grid item>
-                        <LockOpenIcon />
-                      </Grid>
-                    </Grid>
-                  ) : null}
-                </div>
               </Grid>
               <Grid container spacing={4}>
                 <Grid item xs={12} sm={12} md={6} className={searchToggle ? classes.search : classes.small}>
@@ -487,6 +488,20 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                 ]
               : null}
             {localPS.unsorted.length !== 0 ? [<Divider key="div-000000000000" className={classes.divider} />] : null}
+            {customDrag && localPS.sorted.length >= 1 ? (
+              <div className={classes.zoneButtonContainer}>
+                <Button
+                  startIcon={<AddBoxIcon />}
+                  onClick={() => addZone(0)}
+                  className={classes.zoneButtonEnd}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
+                  {i18n.__('pages.PersonalPage.addZoneStartButton')}
+                </Button>
+              </div>
+            ) : null}
             {localPS.sorted.map(({ zone_id: zoneId, elements, name, isExpanded }, index) => [
               <PersonalZone
                 key={`zone-${zoneId}`}
@@ -511,9 +526,9 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
               // ) : null,
             ])}
             {customDrag ? (
-              <>
-                <Divider className={classes.divider} key="div-addEnd" />
+              <div className={classes.zoneButtonContainer}>
                 <Button
+                  startIcon={<AddBoxIcon />}
                   onClick={() => addZone(1)}
                   className={classes.zoneButtonEnd}
                   variant="contained"
@@ -522,7 +537,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                 >
                   {i18n.__('pages.PersonalPage.addZoneEndButton')}
                 </Button>
-              </>
+              </div>
             ) : null}
           </Container>
         </Fade>
