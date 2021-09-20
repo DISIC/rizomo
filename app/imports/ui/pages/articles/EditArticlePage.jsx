@@ -85,10 +85,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 60,
   },
   tagInputs: {
-    display: 'flex',
-    margin: 'auto',
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(2),
   },
   tags: {
     marginTop: 10,
@@ -581,57 +579,56 @@ function EditArticlePage({
             />
           </div>
         ) : null}
-        <Grid container className={classes.tagInputs}>
-          <Grid item xs={12} md={6}>
-            <ButtonGroup>
-              <TagFinder
-                resetKey={tagsKey}
-                tags={tags}
-                exclude={data.tags}
-                onSelected={newTagChanged}
-                inputWidth={isMobile ? 200 : 285}
-              />
-              <Button variant="contained" disabled={newTag.name === ''} color="primary" onClick={addTag}>
-                {i18n.__(
-                  newTag._id === null && newTag.name
-                    ? 'pages.EditArticlePage.createTag'
-                    : 'pages.EditArticlePage.selectTag',
-                )}
-              </Button>
-            </ButtonGroup>
-            <div className={classes.tags}>
-              {data.tags.map((tagName) => {
-                // const tagName = Tags.findOne(tagId).name;
+
+        <Grid className={classes.tagInputs}>
+          <GroupFinder exclude={data.groups ? data.groups.map((g) => g._id) : []} onSelected={addGroupToArticle} />
+          <div className={classes.tags}>
+            {data.groups &&
+              data.groups.map((group) => {
                 return (
                   <Chip
                     className={classes.tag}
-                    key={tagName}
-                    label={tagName}
+                    key={group._id}
+                    label={group.name}
                     color="secondary"
-                    onDelete={() => removeTag(tagName)}
+                    onDelete={() => removeGroup(group)}
                   />
                 );
               })}
-            </div>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <GroupFinder exclude={data.groups ? data.groups.map((g) => g._id) : []} onSelected={addGroupToArticle} />
-            <div className={classes.tags}>
-              {data.groups &&
-                data.groups.map((group) => {
-                  return (
-                    <Chip
-                      className={classes.tag}
-                      key={group._id}
-                      label={group.name}
-                      color="secondary"
-                      onDelete={() => removeGroup(group)}
-                    />
-                  );
-                })}
-            </div>
-          </Grid>
+          </div>
         </Grid>
+
+        <ButtonGroup>
+          <TagFinder
+            resetKey={tagsKey}
+            tags={tags}
+            exclude={data.tags}
+            onSelected={newTagChanged}
+            inputWidth={isMobile ? 310 : 1138}
+          />
+          <Button variant="contained" disabled={newTag.name === ''} color="primary" onClick={addTag}>
+            {i18n.__(
+              newTag._id === null && newTag.name
+                ? 'pages.EditArticlePage.createTag'
+                : 'pages.EditArticlePage.selectTag',
+            )}
+          </Button>
+        </ButtonGroup>
+        <div className={classes.tags}>
+          {data.tags.map((tagName) => {
+            // const tagName = Tags.findOne(tagId).name;
+            return (
+              <Chip
+                className={classes.tag}
+                key={tagName}
+                label={tagName}
+                color="secondary"
+                onDelete={() => removeTag(tagName)}
+              />
+            );
+          })}
+        </div>
+
         <div className={classes.wysiwyg}>
           <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
 

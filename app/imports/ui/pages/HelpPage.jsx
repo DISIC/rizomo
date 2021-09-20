@@ -49,10 +49,11 @@ function HelpPage() {
       },
     },
     closeButton: {
-      margin: '10px',
-      marginBottom: '0px',
+      marginRight: '20px',
+      marginTop: '-30px',
       width: '30px',
       height: '30px',
+      position: 'absolute',
       display: 'flex',
       justifyContent: 'right',
     },
@@ -62,6 +63,7 @@ function HelpPage() {
       marginTop: 75,
     },
     gridModal: {
+      marginTop: '30px',
       backgroundColor: 'white',
       width: 'fit-content',
       height: 'fit-content',
@@ -144,8 +146,8 @@ function HelpPage() {
           <Grid container className={classes.gridModal}>
             <Grid item className={classes.button}>
               <CancelIcon className={classes.closeButton} onClick={() => setScreencastModal(false)} />
+              <Screencast link={link} />
             </Grid>
-            <Screencast link={link} />
           </Grid>
         </Modal>
       </Container>
