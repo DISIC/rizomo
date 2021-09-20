@@ -421,7 +421,8 @@
       "favSuccessMsg": "Ajouté à votre espace personnel",
       "open": "Ouvrir",
       "pin": "Épingler",
-      "unpin": "Retirer"
+      "unpin": "Retirer",
+      "backToDefault": "Remettre dans la zone par défaut"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Ouvrir le menu latéral",
@@ -533,7 +534,8 @@
     "GroupDetailsPersSpace": {
       "groupCandidate": "Candidat",
       "groupAdmin": "Administrateur",
-      "groupNone": "Aucun rôle"
+      "groupNone": "Aucun rôle",
+      "backToDefault": "Remettre dans la zone par défaut"
     },
     "AppVersion": {
       "title": "Version"
@@ -553,7 +555,8 @@
       "modifyLink": "Modifier le lien",
       "saveLink": "Enregistrer le lien",
       "favButtonLabelNoFav": "Supprimer de votre espace personnel",
-      "unfavSuccessMsg": "Supprimé de votre espace personnel"
+      "unfavSuccessMsg": "Supprimé de votre espace personnel",
+      "backToDefault": "Remettre dans la zone par défaut"
     },
     "ArticleDetails": {
       "editArticleButtonLabel": "Editer cette publication",
@@ -961,8 +964,7 @@
       "typeApplication": "Application",
       "typeGroup": "Groupe",
       "typeLink": "Lien",
-      "addZoneStartButton": "Ajouter une zone au début",
-      "addZoneEndButton": "Ajouter une zone à la fin",
+      "addZoneHere": "Ajouter une zone ici",
       "toggleEdition": "Activer/Désactiver le mode édition"
     },
     "HelpPage": {

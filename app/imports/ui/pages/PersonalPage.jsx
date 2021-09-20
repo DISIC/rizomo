@@ -498,7 +498,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                   color="primary"
                   fullWidth
                 >
-                  {i18n.__('pages.PersonalPage.addZoneStartButton')}
+                  {i18n.__('pages.PersonalPage.addZoneHere')}
                 </Button>
               </div>
             ) : null}
@@ -535,7 +535,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                   color="primary"
                   fullWidth
                 >
-                  {i18n.__('pages.PersonalPage.addZoneEndButton')}
+                  {i18n.__('pages.PersonalPage.addZoneHere')}
                 </Button>
               </div>
             ) : null}

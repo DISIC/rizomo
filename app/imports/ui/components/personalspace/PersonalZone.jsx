@@ -211,7 +211,12 @@ const PersonalZone = ({
   return (
     <Accordion className={classes.expansionpanel} expanded={isSorted ? isExpanded : localIsExpanded}>
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon className={classes.cursorPointer} />}
+        expandIcon={
+          <ExpandMoreIcon
+            className={classes.cursorPointer}
+            onClick={customDrag && isSorted ? handleClickExpansion(index) : null}
+          />
+        }
         aria-controls={`zone-${title}-${index}`}
         id={`expand-${index}`}
         onClick={!(customDrag && isSorted) ? handleClickExpansion(index) : null}
@@ -325,7 +330,12 @@ const PersonalZone = ({
                           lg={3}
                         >
                           <div className={customDrag ? classes.handle : null} />
-                          <ServiceDetailsPersSpace service={myservice} customDrag={customDrag} isMobile={isMobile} />
+                          <ServiceDetailsPersSpace
+                            service={myservice}
+                            customDrag={customDrag}
+                            isMobile={isMobile}
+                            isSorted={isSorted}
+                          />
                         </Grid>
                       );
                     }
@@ -351,6 +361,7 @@ const PersonalZone = ({
                             admin={managedGroups.includes(elem.element_id)}
                             globalAdmin={isAdmin}
                             customDrag={customDrag}
+                            isSorted={isSorted}
                           />
                         </Grid>
                       );
@@ -368,7 +379,12 @@ const PersonalZone = ({
                           lg={3}
                         >
                           <div className={customDrag ? classes.handle : null} />
-                          <PersonalLinkDetails link={myLink} isMobile={isMobile} globalEdit={customDrag} />
+                          <PersonalLinkDetails
+                            link={myLink}
+                            isMobile={isMobile}
+                            globalEdit={customDrag}
+                            isSorted={isSorted}
+                          />
                         </Grid>
                       );
                     }

@@ -6,8 +6,11 @@ import Card from '@material-ui/core/Card';
 import { useHistory } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
+import Button from '@material-ui/core/Button';
 import Zoom from '@material-ui/core/Zoom';
+import PublishIcon from '@material-ui/icons/Publish';
 
 import i18n from 'meteor/universe:i18n';
 import GroupAvatar from './GroupAvatar';
@@ -51,9 +54,29 @@ const useStyles = ({ type }, admin, member, candidate) =>
       justifyContent: 'end',
       paddingTop: 0,
     },
+    fab: {
+      textTransform: 'none',
+      color: theme.palette.primary.main,
+      borderColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.tertiary.main,
+      '&:hover': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.tertiary.main,
+      },
+    },
   }));
 
-function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator, globalAdmin, isMobile, customDrag }) {
+function GroupDetailsPersSpace({
+  group = {},
+  member,
+  candidate,
+  admin,
+  animator,
+  globalAdmin,
+  isMobile,
+  customDrag,
+  isSorted,
+}) {
   const history = useHistory();
   const { type } = group;
   const classes = useStyles(group, admin, member || animator, candidate)();
@@ -88,6 +111,16 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
   };
   const hasAdmin = admin || globalAdmin;
 
+  const backToDefaultButtonLabel = i18n.__('components.GroupDetailsPersSpace.backToDefault');
+
+  const handleBackToDefault = () => {
+    Meteor.call('personalspaces.backToDefaultElement', { elementId: group._id, type: 'group' }, (err) => {
+      if (err) {
+        msg.error(err.reason);
+      }
+    });
+  };
+
   return (
     <Card className={classes.card} elevation={3}>
       <Tooltip
@@ -104,11 +137,7 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
         {/* this span is to allow display of tooltip when CardActionArea is disabled 
         (occur when a service is disabled) */}
         <span>
-          <CardActionArea
-            className={classes.actionarea}
-            onClick={() => history.push(`/groups/${group.slug}`)}
-            disabled={customDrag}
-          >
+          <CardActionArea className={classes.actionarea} onClick={() => history.push(`/groups/${group.slug}`)}>
             <CardHeader
               classes={{ content: classes.cardHeaderContent }}
               avatar={
@@ -153,6 +182,15 @@ function GroupDetailsPersSpace({ group = {}, member, candidate, admin, animator,
           </Tooltip>
         )}
       </CardActions> */}
+      {customDrag && isSorted ? (
+        <CardActions className={classes.cardActionsUnique}>
+          <Tooltip title={backToDefaultButtonLabel} aria-label={backToDefaultButtonLabel}>
+            <Button variant="outlined" size="small" className={classes.fab} onClick={handleBackToDefault}>
+              <PublishIcon />
+            </Button>
+          </Tooltip>
+        </CardActions>
+      ) : null}
     </Card>
   );
 }
@@ -166,6 +204,7 @@ GroupDetailsPersSpace.propTypes = {
   isMobile: PropTypes.bool.isRequired,
   globalAdmin: PropTypes.bool.isRequired,
   customDrag: PropTypes.bool.isRequired,
+  isSorted: PropTypes.bool.isRequired,
 };
 
 export default GroupDetailsPersSpace;
