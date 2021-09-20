@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -487,7 +486,6 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                   />,
                 ]
               : null}
-            {localPS.unsorted.length !== 0 ? [<Divider key="div-000000000000" className={classes.divider} />] : null}
             {customDrag && localPS.sorted.length >= 1 ? (
               <div className={classes.zoneButtonContainer}>
                 <Button
