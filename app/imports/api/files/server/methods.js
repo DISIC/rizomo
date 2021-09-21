@@ -292,7 +292,7 @@ export const getFilesForCurrentUser = new ValidatedMethod({
     }
     try {
       const results = new Promise((resolve, reject) => {
-        const stream = s3Client.listObjects(minioBucket, `users/${this.userId}`, true, '');
+        const stream = s3Client.listObjectsV2(minioBucket, `users/${this.userId}`, true, '');
         const files = [];
         stream.on('data', (obj) => {
           files.push(obj);
