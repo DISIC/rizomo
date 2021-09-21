@@ -45,7 +45,7 @@
     "material-table": "^1.69.3",
     "meteor-node-stubs": "^1.0.3",
     "mic-recorder-to-mp3": "^2.2.2",
-    "minio": "^7.0.18",
+    "minio": "^7.0.19",
     "moment": "^2.29.1",
     "node-fetch": "^2.6.1",
     "prop-types": "^15.7.2",
