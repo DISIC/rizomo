@@ -259,13 +259,13 @@ export const setNcloudUrlAll = new ValidatedMethod({
       throw new Meteor.Error('api.users.setNcloudUrlAll.notPermitted', i18n.__('api.users.adminNeeded'));
     }
 
-    const users = Meteor.users.find({ ncloud: '' }).fetch();
+    const users = Meteor.users.find({ nclocator: '' }).fetch();
 
     let cpt = 0;
 
     for (let i = 0; i < users.length; i += 1) {
-      users[i].ncloud = getRandomNCloudURL();
-      Meteor.users.update({ _id: users[i]._id }, { $set: { ncloud: users[i].ncloud } });
+      users[i].nclocator = getRandomNCloudURL();
+      Meteor.users.update({ _id: users[i]._id }, { $set: { nclocator: users[i].nclocator } });
       cpt += 1;
     }
 

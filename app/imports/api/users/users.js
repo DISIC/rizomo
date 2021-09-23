@@ -165,7 +165,7 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
       label: getLabel('api.users.labels.primaryEmail'),
     },
-    ncloud: {
+    nclocator: {
       type: String,
       autoValue() {
         if (this.isInsert) {
@@ -294,7 +294,7 @@ Meteor.users.selfFields = {
   avatar: 1,
   groupCount: 1,
   groupQuota: 1,
-  ncloud: 1,
+  nclocator: 1,
   advancedPersonalPage: 1,
 };
 
@@ -311,7 +311,7 @@ Meteor.users.adminFields = {
   avatar: 1,
   groupCount: 1,
   groupQuota: 1,
-  ncloud: 1,
+  nclocator: 1,
 };
 
 Meteor.users.publicFields = {
@@ -328,7 +328,7 @@ Meteor.users.publicFields = {
   groupCount: 1,
   groupQuota: 1,
   mezigName: 1,
-  ncloud: 1,
+  nclocator: 1,
 };
 
 Meteor.users.deny({

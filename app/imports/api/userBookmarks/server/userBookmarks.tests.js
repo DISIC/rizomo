@@ -44,7 +44,7 @@ describe('userBookmarks', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        ncloud: '',
+        nclocator: '',
       });
       Meteor.users.update(userId, { $set: { isActive: true } });
     });
@@ -88,7 +88,7 @@ describe('userBookmarks', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        ncloud: '',
+        nclocator: '',
       });
 
       // Generate 'user'
@@ -99,7 +99,7 @@ describe('userBookmarks', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        ncloud: '',
+        nclocator: '',
       });
       Meteor.users.update({}, { $set: { isActive: true } }, { multi: true });
     });

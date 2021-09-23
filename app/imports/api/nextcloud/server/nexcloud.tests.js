@@ -25,7 +25,7 @@ describe('nextcloud', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        ncloud: '',
+        nclocator: '',
       });
       Meteor.users.update(userId, { $set: { isActive: true } });
     });
@@ -63,7 +63,7 @@ describe('nextcloud', function () {
         structure: faker.company.companyName(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        ncloud: '',
+        nclocator: '',
       });
       Meteor.users.update({}, { $set: { isActive: true } });
     });
@@ -136,17 +136,17 @@ describe('nextcloud', function () {
         assert.equal(urlFind.count, 0);
 
         const user = Meteor.users.find({ userId });
-        user.ncloud = getRandomNCloudURL();
+        user.nclocator = getRandomNCloudURL();
 
-        const urlFind2 = Nextcloud.findOne({ url: user.ncloud });
-        assert.equal(user.ncloud, url3);
+        const urlFind2 = Nextcloud.findOne({ url: user.nclocator });
+        assert.equal(user.nclocator, url3);
         assert.equal(urlFind2.count, 1);
       });
       it('does select only active url', function () {
         Nextcloud.remove({});
         const user = Meteor.users.find({ userId });
-        user.ncloud = '';
-        Meteor.users.update({ userId }, { $set: { ncloud: '' } });
+        user.nclocator = '';
+        Meteor.users.update({ userId }, { $set: { nclocator: '' } });
 
         updateNextcloudURL._execute({ userId: adminId }, { url, active: false });
         const urlFind = Nextcloud.findOne({ url });
@@ -161,10 +161,10 @@ describe('nextcloud', function () {
         assert.equal(urlFind2.count, 0);
 
         // Select url for user
-        user.ncloud = getRandomNCloudURL();
+        user.nclocator = getRandomNCloudURL();
 
-        const urlUser = Nextcloud.findOne({ url: user.ncloud });
-        assert.equal(user.ncloud, url2);
+        const urlUser = Nextcloud.findOne({ url: user.nclocator });
+        assert.equal(user.nclocator, url2);
         assert.equal(urlUser.count, 1);
       });
     });

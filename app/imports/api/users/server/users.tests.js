@@ -65,7 +65,7 @@ describe('users', function () {
           structure: faker.company.companyName(),
           firstName: `test${faker.name.firstName()}`,
           lastName: `test${faker.name.lastName()}`,
-          ncloud: 'toto',
+          nclocator: 'toto',
         });
       });
       // spécific users for userData publication and search filter test
@@ -732,7 +732,7 @@ describe('users', function () {
           });
         }
 
-        Meteor.users.update({}, { $set: { isActive: true, ncloud: '' } }, { multi: true });
+        Meteor.users.update({}, { $set: { isActive: true, nclocator: '' } }, { multi: true });
         const nbUsers = Meteor.users.find({}).count();
         assert.equal(nbUsers, 12);
 
