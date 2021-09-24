@@ -10,7 +10,14 @@ import '../../../../i18n/en.i18n.json';
 import faker from 'faker';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
-import { addService, addGroup, updatePersonalSpace, removeElement, checkPersonalSpace } from '../methods';
+import {
+  addService,
+  addGroup,
+  updatePersonalSpace,
+  removeElement,
+  checkPersonalSpace,
+  backToDefaultElement,
+} from '../methods';
 import PersonalSpaces from '../personalspaces';
 import './publications';
 import './factories';
@@ -18,6 +25,8 @@ import Services from '../../services/services';
 import '../../services/server/factories';
 import Groups from '../../groups/groups';
 import '../../groups/server/factories';
+import UserBookmarks from '../../userBookmarks/userBookmarks';
+import { createUserBookmark, favUserBookmark } from '../../userBookmarks/methods';
 
 describe('personalspaces', function () {
   describe('mutators', function () {
@@ -89,6 +98,7 @@ describe('personalspaces', function () {
       Meteor.users.remove({});
       Services.remove({});
       Groups.remove({});
+      UserBookmarks.remove({});
       PersonalSpaces.remove({});
 
       // Generate 'user'
@@ -280,6 +290,90 @@ describe('personalspaces', function () {
         assert.typeOf(psafter.unsorted, 'array');
         assert.lengthOf(psafter.unsorted, 1);
         assert.equal(psafter.unsorted[0].element_id, serviceIdS);
+      });
+    });
+    describe('backToDefaultElement', function () {
+      it("does move back elements to their default zone in current user's personalspace", function () {
+        // add groups, services and links in sorted zone of personalspace
+        const serviceId1 = Factory.create('service')._id;
+        const serviceId2 = Factory.create('service')._id;
+        const groupId1 = Factory.create('group', { owner: Random.id() })._id;
+        const groupId2 = Factory.create('group', { owner: Random.id() })._id;
+        const urlFinal1 = createUserBookmark._execute({ userId }, { url: 'toto.com', name: 'Test', tag: 'Tag' });
+        const bookmarkId1 = UserBookmarks.findOne({ url: urlFinal1, userId })._id;
+        favUserBookmark._execute({ userId }, { bookmarkId: bookmarkId1 });
+        const urlFinal2 = createUserBookmark._execute({ userId }, { url: 'titi.com', name: 'Test', tag: 'Tag' });
+        const bookmarkId2 = UserBookmarks.findOne({ url: urlFinal2, userId })._id;
+        favUserBookmark._execute({ userId }, { bookmarkId: bookmarkId2 });
+        const newZone = {
+          zone_id: Random.id(),
+          name: 'zone',
+          elements: [
+            {
+              element_id: serviceId1,
+              type: 'service',
+            },
+            {
+              element_id: groupId1,
+              type: 'group',
+            },
+            {
+              element_id: bookmarkId1,
+              type: 'link',
+            },
+            {
+              element_id: serviceId2,
+              type: 'service',
+            },
+            {
+              element_id: groupId2,
+              type: 'group',
+            },
+            {
+              element_id: bookmarkId2,
+              type: 'link',
+            },
+          ],
+        };
+        const newPS = { ...emptyPS, unsorted: [], sorted: [newZone] };
+        updatePersonalSpace._execute({ userId }, { data: newPS });
+        let ps = PersonalSpaces.findOne({ userId });
+        // verifying personalspace init
+        assert.typeOf(ps.unsorted, 'array');
+        assert.lengthOf(ps.unsorted, 0);
+        assert.typeOf(ps.sorted, 'array');
+        assert.lengthOf(ps.sorted, 1);
+        assert.typeOf(ps.sorted[0].elements, 'array');
+        assert.lengthOf(ps.sorted[0].elements, 6);
+        // call backToDefaultElement for one of each element
+        backToDefaultElement._execute({ userId }, { elementId: serviceId1, type: 'service' });
+        backToDefaultElement._execute({ userId }, { elementId: groupId1, type: 'group' });
+        backToDefaultElement._execute({ userId }, { elementId: bookmarkId1, type: 'link' });
+        ps = PersonalSpaces.findOne({ userId });
+        assert.typeOf(ps.unsorted, 'array');
+        assert.lengthOf(ps.unsorted, 3);
+        assert.typeOf(ps.sorted, 'array');
+        assert.lengthOf(ps.sorted, 1);
+        assert.typeOf(ps.sorted[0].elements, 'array');
+        assert.lengthOf(ps.sorted[0].elements, 3);
+      });
+      it('does not move back elements to their default zone for not connected user', function () {
+        assert.throws(
+          () => {
+            backToDefaultElement._execute({}, { elementId: Random.id(), type: 'service' });
+          },
+          Meteor.Error,
+          /api.personalspaces.backToDefaultElement.notPermitted/,
+        );
+      });
+      it('does not move back elements to their default zone for unknown type', function () {
+        assert.throws(
+          () => {
+            backToDefaultElement._execute({ userId }, { elementId: Random.id(), type: 'toto' });
+          },
+          Meteor.Error,
+          /api.personalspaces.backToDefaultElement.unknownType/,
+        );
       });
     });
   });

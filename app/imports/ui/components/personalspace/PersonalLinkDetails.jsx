@@ -24,37 +24,33 @@ import { useObjectState } from '../../utils/hooks';
 
 const linkColor = 'brown';
 const useStyles = makeStyles((theme) => ({
-  avatar: {
-    backgroundColor: linkColor,
-    width: theme.spacing(5),
-    height: theme.spacing(5),
-    margin: 'auto',
-  },
-  cardActions: {
-    justifyContent: 'space-between',
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
   card: {
     height: '100%',
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    position: 'relative',
-  },
-  cardContent: {
-    padding: 10,
   },
   cardHeaderContent: { display: 'grid' },
-  cardContentEdit: {
-    padding: 10,
-    paddingBottom: 0,
-  },
   cardContentForm: {
     padding: 10,
     paddingBottom: 0,
     textAlign: 'center',
     marginTop: 20,
+  },
+  cardActions: {
+    justifyContent: 'space-between',
+    paddingTop: 0,
+    paddingBottom: 0,
+    flexShrink: 0,
+  },
+  span: {
+    flex: '1 0 auto',
+  },
+  avatar: {
+    backgroundColor: linkColor,
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    margin: 'auto',
   },
   actionarea: {},
   linkName: {
@@ -88,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PersonalLinkDetails({ link, globalEdit, isMobile, isSorted }) {
+function PersonalLinkDetails({ link, globalEdit, isMobile, isSorted, needUpdate }) {
   const { name = '', url = '', tag = '', _id = Random.id(), icon = '' } = link;
   const classes = useStyles();
   const [localEdit, setLocalEdit] = useState(name === '');
@@ -120,6 +116,8 @@ function PersonalLinkDetails({ link, globalEdit, isMobile, isSorted }) {
     Meteor.call('personalspaces.backToDefaultElement', { elementId: link._id, type: 'link' }, (err) => {
       if (err) {
         msg.error(err.reason);
+      } else {
+        needUpdate();
       }
     });
   };
@@ -178,7 +176,7 @@ function PersonalLinkDetails({ link, globalEdit, isMobile, isSorted }) {
       >
         {/* this span is to allow display of tooltip when CardActionArea is disabled 
         (occur when a service is disabled) */}
-        <span>
+        <span className={classes.span}>
           <CardActionArea
             className={classes.actionarea}
             onClick={() => window.open(url, '_blank', 'noreferrer,noopener')}
@@ -235,6 +233,7 @@ PersonalLinkDetails.propTypes = {
   globalEdit: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
   isSorted: PropTypes.bool.isRequired,
+  needUpdate: PropTypes.func.isRequired,
 };
 
 export default PersonalLinkDetails;

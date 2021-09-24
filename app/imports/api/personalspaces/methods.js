@@ -192,7 +192,6 @@ export const checkPersonalSpace = new ValidatedMethod({
         const elem = zone[index];
         if (elementIds[elem.type].indexOf(elem.element_id) !== -1) {
           // We have a duplicate card to delete
-          logServer(`Remove personalspace duplicate ${elem.type} for ${u.username}...`);
           zone.splice(index, 1);
           changeMade = true;
           // eslint-disable-next-line
@@ -203,7 +202,26 @@ export const checkPersonalSpace = new ValidatedMethod({
           const group = Groups.findOne(elem.element_id);
           if (group === undefined) {
             // group no more exists so delete element
-            logServer(`Remove no more existing group from personalspace for ${u.username}...`);
+            zone.splice(index, 1);
+            changeMade = true;
+            // eslint-disable-next-line
+            continue; // continue to next element
+          }
+        } else if (elem.type === 'link') {
+          // Check if link still exists
+          const link = UserBookmarks.findOne(elem.element_id);
+          if (link === undefined) {
+            // link no more exists so delete element
+            zone.splice(index, 1);
+            changeMade = true;
+            // eslint-disable-next-line
+            continue; // continue to next element
+          }
+        } else if (elem.type === 'service') {
+          // Check if service still exists
+          const service = Services.findOne(elem.element_id);
+          if (service === undefined) {
+            // service no more exists so delete element
             zone.splice(index, 1);
             changeMade = true;
             // eslint-disable-next-line
