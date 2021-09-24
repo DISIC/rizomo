@@ -41,6 +41,7 @@ Bookmarks.schema = new SimpleSchema(
     tag: {
       type: String,
       label: getLabel('api.bookmarks.labels.tag'),
+      defaultValue: '',
     },
     icon: {
       type: String,

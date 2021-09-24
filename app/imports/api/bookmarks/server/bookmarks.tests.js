@@ -145,6 +145,16 @@ describe('bookmarks', function () {
         assert.equal(urlFind2.name, 'Test');
         assert.equal(urlFind2.tag, 'Tag');
       });
+      it('does create a new bookmark with an empty Tag', function () {
+        const urlFind = Bookmarks.findOne({ url });
+        assert.equal(urlFind, undefined);
+        const urlFinal = createBookmark._execute({ userId: adminId }, { url, name: 'Test', groupId });
+        const urlFind2 = Bookmarks.findOne({ url: urlFinal, author: adminId });
+        assert.equal(urlFind2.url, urlFinal);
+        assert.equal(urlFind2.author, adminId);
+        assert.equal(urlFind2.name, 'Test');
+        assert.equal(urlFind2.tag, '');
+      });
       it("Doesn't create bookmark if url already exists", function () {
         const urlFinal = createBookmark._execute({ userId: userGroupId }, { url, name: 'Test', groupId, tag: 'Tag' });
         const urlFind2 = Bookmarks.findOne({ url: urlFinal });

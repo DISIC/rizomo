@@ -130,16 +130,16 @@ function BookmarksPage({ loading, bookmarksList, group }) {
                 {i18n.__('pages.Polls.back')}
               </Button>
             </Grid>
-            <FormControlLabel
-              value="start"
-              control={
-                <Tooltip
-                  title={
-                    filter
-                      ? `${i18n.__('pages.BookmarksPage.disableFilter')}`
-                      : `${i18n.__('pages.BookmarksPage.enableFilter')}`
-                  }
-                >
+            <Tooltip
+              title={
+                filter
+                  ? `${i18n.__('pages.BookmarksPage.disableFilter')}`
+                  : `${i18n.__('pages.BookmarksPage.enableFilter')}`
+              }
+            >
+              <FormControlLabel
+                value="start"
+                control={
                   <Switch
                     checked={filter}
                     onChange={filterOnURL}
@@ -147,11 +147,11 @@ function BookmarksPage({ loading, bookmarksList, group }) {
                     name="checkedB"
                     inputProps={{ 'aria-label': 'primary checkbox' }}
                   />
-                </Tooltip>
-              }
-              label={i18n.__('pages.BookmarksPage.filterTitle')}
-              labelPlacement="start"
-            />
+                }
+                label={i18n.__('pages.BookmarksPage.filterTitle')}
+                labelPlacement="start"
+              />
+            </Tooltip>
             <MaterialTable
               // other props
               title={`${i18n.__('pages.BookmarksPage.title')}`}

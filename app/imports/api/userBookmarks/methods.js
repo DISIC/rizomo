@@ -20,12 +20,7 @@ function _formatURL(name) {
 
 export const createUserBookmark = new ValidatedMethod({
   name: 'userBookmark.create',
-  validate: new SimpleSchema({
-    url: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.url') },
-    name: { type: String, label: getLabel('api.bookmarks.labels.name') },
-    tag: { type: String, label: getLabel('api.bookmarks.labels.tag') },
-  }).validator({ clean: true }),
-
+  validate: UserBookmarks.schema.omit('userId', 'icon').validator({ clean: true }),
   run({ url, name, tag }) {
     const isAllowed = isActive(this.userId);
     if (!isAllowed) {
@@ -54,7 +49,7 @@ export const updateUserBookmark = new ValidatedMethod({
     id: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.bookmarks.labels.id') },
     url: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.url') },
     name: { type: String, label: getLabel('api.bookmarks.labels.name') },
-    tag: { type: String, label: getLabel('api.bookmarks.labels.tag') },
+    tag: { type: String, label: getLabel('api.bookmarks.labels.tag'), defaultValue: '' },
   }).validator({ clean: true }),
 
   run({ id, url, name, tag }) {
