@@ -766,7 +766,8 @@
       "textLabel": "Texte",
       "captchaInfo": "Indiquez le résultat de l'opération",
       "redirectMsg": "Formulaire envoyé. Redirection automatique en cours...",
-      "redirectTime": "secondes"
+      "redirectTime": "secondes",
+      "cancel": "Annuler"
     },
     "ProfilePage": {
       "title": "Mes préférences",

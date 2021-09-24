@@ -764,7 +764,8 @@
       "textLabel": "Text",
       "captchaInfo": "Indicate the result of the operation",
       "redirectMsg": "Your request has been sent. Redirection in progress...",
-      "redirectTime": "seconds"
+      "redirectTime": "seconds",
+      "cancel": "Cancel"
     },
     "ProfilePage": {
       "title": "My settings",
