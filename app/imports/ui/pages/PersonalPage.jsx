@@ -346,6 +346,11 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
     setPsNeedUpdate(true);
   };
 
+  const handleNeedUpdate = () => {
+    // Call by elements when click on handleBackToDefault
+    setPsNeedUpdate(false);
+  };
+
   const notReady = isLoading || loadingUser;
 
   return (
@@ -457,6 +462,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                     suspendUpdate={suspendUpdate}
                     updateList={updateList}
                     customDrag={customDrag}
+                    needUpdate={handleNeedUpdate}
                   />,
                 ]
               : null}
@@ -470,6 +476,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                     suspendUpdate={suspendUpdate}
                     updateList={updateList}
                     customDrag={customDrag}
+                    needUpdate={handleNeedUpdate}
                   />,
                 ]
               : null}
@@ -483,6 +490,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                     suspendUpdate={suspendUpdate}
                     updateList={updateList}
                     customDrag={customDrag}
+                    needUpdate={handleNeedUpdate}
                   />,
                 ]
               : null}
@@ -518,6 +526,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                 isSorted
                 isExpanded={isExpanded}
                 setExpanded={setExpanded}
+                needUpdate={handleNeedUpdate}
               />,
               // localPS.sorted.length !== index + 1 ? (
               //   <Divider className={classes.divider} key={`div-${zoneId}`} />

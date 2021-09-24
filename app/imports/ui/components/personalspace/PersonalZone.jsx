@@ -164,6 +164,7 @@ const PersonalZone = ({
   isSorted,
   isExpanded,
   setExpanded,
+  needUpdate,
 }) => {
   const classes = useStyles();
   const [{ userId, isMobile }] = useAppContext();
@@ -206,6 +207,10 @@ const PersonalZone = ({
     } else {
       setIsExpanded(!localIsExpanded);
     }
+  };
+
+  const handleNeedUpdate = () => {
+    needUpdate();
   };
 
   return (
@@ -335,6 +340,7 @@ const PersonalZone = ({
                             customDrag={customDrag}
                             isMobile={isMobile}
                             isSorted={isSorted}
+                            needUpdate={handleNeedUpdate}
                           />
                         </Grid>
                       );
@@ -362,6 +368,7 @@ const PersonalZone = ({
                             globalAdmin={isAdmin}
                             customDrag={customDrag}
                             isSorted={isSorted}
+                            needUpdate={handleNeedUpdate}
                           />
                         </Grid>
                       );
@@ -384,6 +391,7 @@ const PersonalZone = ({
                             isMobile={isMobile}
                             globalEdit={customDrag}
                             isSorted={isSorted}
+                            needUpdate={handleNeedUpdate}
                           />
                         </Grid>
                       );
@@ -416,6 +424,7 @@ PersonalZone.propTypes = {
   isSorted: PropTypes.bool,
   isExpanded: PropTypes.bool,
   setExpanded: PropTypes.func,
+  needUpdate: PropTypes.func.isRequired,
 };
 
 PersonalZone.defaultProps = {

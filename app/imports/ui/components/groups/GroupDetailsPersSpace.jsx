@@ -18,18 +18,31 @@ import GroupBadge from './GroupBadge';
 
 const useStyles = ({ type }, admin, member, candidate) =>
   makeStyles((theme) => ({
-    avatar: {
-      backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-      width: theme.spacing(5),
-      height: theme.spacing(5),
-      margin: 'auto',
-    },
     card: {
       height: '100%',
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
-      position: 'relative',
+    },
+    cardHeaderContent: { display: 'grid' },
+    cardActions: {
+      justifyContent: 'space-between',
+      paddingTop: 0,
+      paddingBottom: 10,
+    },
+    cardActionsUnique: {
+      justifyContent: 'end',
+      paddingTop: 0,
+      paddingBottom: 10,
+    },
+    span: {
+      flex: '1 0 auto',
+    },
+    avatar: {
+      backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
+      width: theme.spacing(5),
+      height: theme.spacing(5),
+      margin: 'auto',
     },
     buttonText: {
       textTransform: 'none',
@@ -44,15 +57,6 @@ const useStyles = ({ type }, admin, member, candidate) =>
     },
     serviceName: {
       color: theme.palette.primary.main,
-    },
-    cardHeaderContent: { display: 'grid' },
-    cardActions: {
-      justifyContent: 'space-between',
-      paddingTop: 0,
-    },
-    cardActionsUnique: {
-      justifyContent: 'end',
-      paddingTop: 0,
     },
     fab: {
       textTransform: 'none',
@@ -76,6 +80,7 @@ function GroupDetailsPersSpace({
   isMobile,
   customDrag,
   isSorted,
+  needUpdate,
 }) {
   const history = useHistory();
   const { type } = group;
@@ -117,6 +122,8 @@ function GroupDetailsPersSpace({
     Meteor.call('personalspaces.backToDefaultElement', { elementId: group._id, type: 'group' }, (err) => {
       if (err) {
         msg.error(err.reason);
+      } else {
+        needUpdate();
       }
     });
   };
@@ -136,7 +143,7 @@ function GroupDetailsPersSpace({
       >
         {/* this span is to allow display of tooltip when CardActionArea is disabled 
         (occur when a service is disabled) */}
-        <span>
+        <span className={classes.span}>
           <CardActionArea className={classes.actionarea} onClick={() => history.push(`/groups/${group.slug}`)}>
             <CardHeader
               classes={{ content: classes.cardHeaderContent }}
@@ -205,6 +212,7 @@ GroupDetailsPersSpace.propTypes = {
   globalAdmin: PropTypes.bool.isRequired,
   customDrag: PropTypes.bool.isRequired,
   isSorted: PropTypes.bool.isRequired,
+  needUpdate: PropTypes.func.isRequired,
 };
 
 export default GroupDetailsPersSpace;

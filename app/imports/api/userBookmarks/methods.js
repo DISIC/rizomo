@@ -72,36 +72,6 @@ export const updateUserBookmark = new ValidatedMethod({
   },
 });
 
-export const removeUserBookmark = new ValidatedMethod({
-  name: 'userBookmark.removeURL',
-  validate: new SimpleSchema({
-    id: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.bookmarks.labels.id') },
-  }).validator(),
-
-  run({ id }) {
-    // check bookmark existence
-    const bk = UserBookmarks.findOne(id);
-    if (bk === undefined) {
-      throw new Meteor.Error(
-        'api.userBookmarks.removeUserBookmark.UnknownBookmark',
-        i18n.__('api.bookmarks.UnknownBookmark'),
-      );
-    }
-
-    const isAllowed = isActive(this.userId) && (Roles.userIsInRole(this.userId, 'admin') || bk.userId === this.userId);
-
-    if (!isAllowed) {
-      throw new Meteor.Error('api.userBookmarks.removeUserBookmark.notPermitted', i18n.__('api.users.notPermitted'));
-    }
-    // remove bookmark from users favorites
-    Meteor.users.update({ favUserBookmarks: { $all: [id] } }, { $pull: { favUserBookmarks: id } }, { multi: true });
-
-    UserBookmarks.remove(id);
-
-    return null;
-  },
-});
-
 export const favUserBookmark = new ValidatedMethod({
   name: 'userBookmarks.favUserBookmark',
   validate: new SimpleSchema({
@@ -147,6 +117,38 @@ export const unfavUserBookmark = new ValidatedMethod({
     }
     // update user personalSpace
     removeElement._execute({ userId: this.userId }, { type: 'link', elementId: bookmarkId });
+  },
+});
+
+export const removeUserBookmark = new ValidatedMethod({
+  name: 'userBookmark.removeURL',
+  validate: new SimpleSchema({
+    id: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.bookmarks.labels.id') },
+  }).validator(),
+
+  run({ id }) {
+    // check bookmark existence
+    const bk = UserBookmarks.findOne(id);
+    if (bk === undefined) {
+      throw new Meteor.Error(
+        'api.userBookmarks.removeUserBookmark.UnknownBookmark',
+        i18n.__('api.bookmarks.UnknownBookmark'),
+      );
+    }
+
+    const isAllowed = isActive(this.userId) && (Roles.userIsInRole(this.userId, 'admin') || bk.userId === this.userId);
+
+    if (!isAllowed) {
+      throw new Meteor.Error('api.userBookmarks.removeUserBookmark.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    // remove bookmark from users favorites
+    Meteor.users.update({ favUserBookmarks: { $all: [id] } }, { $pull: { favUserBookmarks: id } }, { multi: true });
+
+    unfavUserBookmark._execute({ userId: this.userId }, { bookmarkId: id });
+
+    UserBookmarks.remove(id);
+
+    return null;
   },
 });
 

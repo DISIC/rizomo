@@ -121,7 +121,6 @@ export const removeBookmark = new ValidatedMethod({
     if (!isAllowed) {
       throw new Meteor.Error('api.bookmarks.notPermitted', i18n.__('api.bookmarks.adminRankNeeded'));
     }
-
     Bookmarks.remove({ url });
 
     return null;

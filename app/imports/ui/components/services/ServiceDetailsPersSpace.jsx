@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
   cardHeaderContent: { display: 'grid' },
   cardActions: {
     paddingTop: 0,
-    justifyContent: 'end',
+    paddingBottom: 10,
+    justifyContent: 'space-between',
   },
   serviceName: {
     color: theme.palette.primary.main,
@@ -38,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.disabled,
   },
   actionarea: {},
+  span: {
+    flex: '1 0 auto',
+  },
   fab: {
     textTransform: 'none',
     color: theme.palette.primary.main,
@@ -50,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ServiceDetailsPersSpace({ service, customDrag, isMobile, isSorted }) {
+function ServiceDetailsPersSpace({ service, customDrag, isMobile, isSorted, needUpdate }) {
   const classes = useStyles();
   const history = useHistory();
   const favButtonLabel = i18n.__('components.ServiceDetails.favButtonLabelNoFav');
@@ -78,6 +82,8 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile, isSorted }) {
     Meteor.call('personalspaces.backToDefaultElement', { elementId: service._id, type: 'service' }, (err) => {
       if (err) {
         msg.error(err.reason);
+      } else {
+        needUpdate();
       }
     });
   };
@@ -97,7 +103,7 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile, isSorted }) {
       >
         {/* this span is to allow display of tooltip when CardActionArea is disabled 
         (occur when a service is disabled) */}
-        <span>
+        <span className={classes.span}>
           <CardActionArea
             className={classes.actionarea}
             disabled={service.state === 5 || customDrag}
@@ -155,6 +161,7 @@ ServiceDetailsPersSpace.propTypes = {
   customDrag: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
   isSorted: PropTypes.bool.isRequired,
+  needUpdate: PropTypes.func.isRequired,
 };
 
 export default ServiceDetailsPersSpace;
