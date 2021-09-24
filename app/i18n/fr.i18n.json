@@ -1073,16 +1073,22 @@
       "contentLabel": "Contenu de cette publication",
       "update": "Mettre à jour",
       "save": "Publier",
-      "cancel": "Annuler",
+      "cancel": "Annuler la publication",
       "delete": "Supprimer",
       "copyPublicURL": "Copier l'URL publique",
       "successCopyURL": "URL publique copiée dans le presse-papier",
       "switchToHtml": "Éditeur Classic",
       "switchToMarkdown": "Éditeur Markdown",
       "selectTag": "Ajouter",
-      "save_draf": "Brouillon",
+      "save_draf": "Enregistrer le brouillon",
       "draft": "Brouillon",
-      "createTag": "Créer"
+      "createTag": "Créer",
+      "CloseEditArticle":{
+        "title": "Annuler la publication",
+        "mainText": "Souhaitez-vous réellement fermer cette page ? Toutes les modifications non enregistrées seront perdues.",
+        "confirm": "Confirmer",
+        "cancel": "Annuler"
+      }
     },
     "PublicArticlePage": {
       "title": "Publications de",

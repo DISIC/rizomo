@@ -1069,16 +1069,22 @@
       "contentLabel": "Content of the publication",
       "update": "Update",
       "save": "Publish",
-      "cancel": "Cancel",
+      "cancel": "Cancel publication",
       "delete": "Delete",
       "copyPublicURL": "copy public URL",
       "successCopyURL": "Public URL has been sent to clipboard",
       "switchToHtml": "Classic editor",
       "switchToMarkdown": "Markdown editor",
       "selectTag": "Add",
-      "save_draf": "Draft",
+      "save_draf": "Save Draft",
       "draft": "Draft",
-      "createTag": "Create"
+      "createTag": "Create",
+      "CloseEditArticle":{
+        "title": "Cancel publication",
+        "mainText": "Do you really want to close this page ? Any unsaved changes will be lost.",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
     },
     "PublicArticlePage": {
       "title": "Publications by",
