@@ -15,6 +15,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -63,6 +67,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     marginBottom: theme.spacing(2),
+  },
+  titleDialog: {
+    color: 'darkblue',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
   gridItem: {
     display: 'flex',
@@ -192,6 +201,7 @@ function EditArticlePage({
   const [toastInstance, setToast] = useState();
   const [toastRange, setRange] = useState(0);
   const [updateStructure, setUpdateStructure] = useState(false);
+  const [open, setOpen] = useState(false);
   const [showUpdateStructure, setShowUpdateStructure] = useState(false);
   let publicURL;
   if (Meteor.settings.public.laboiteBlogURL) {
@@ -241,6 +251,23 @@ function EditArticlePage({
       audioHandler,
     });
   }, []);
+
+  const handleOpenDialog = () => {
+    if (content.length !== 0) {
+      setOpen(true);
+    } else {
+      history.push('/publications');
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
+
+  const closeEditPage = () => {
+    setOpen(false);
+    history.push('/publications');
+  };
 
   const onUpdateRichText = (html) => {
     let imgData;
@@ -505,193 +532,216 @@ function EditArticlePage({
     return <Spinner />;
   }
   return (
-    <Container>
-      <Grid container spacing={4}>
-        <Grid item xs={12} className={isMobile ? null : classes.flex}>
-          <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
-            {i18n.__(`pages.EditArticlePage.${slug ? 'title' : 'creationTitle'}`)}{' '}
-            {article.draft ? ` - ${i18n.__(`pages.EditArticlePage.draft`)}` : null}
-          </Typography>
+    <div>
+      <Container>
+        <Grid container spacing={4}>
+          <Grid item xs={12} className={isMobile ? null : classes.flex}>
+            <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
+              {i18n.__(`pages.EditArticlePage.${slug ? 'title' : 'creationTitle'}`)}{' '}
+              {article.draft ? ` - ${i18n.__(`pages.EditArticlePage.draft`)}` : null}
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <form noValidate autoComplete="off">
-        <TextField
-          onChange={onUpdateField}
-          value={data.title}
-          name="title"
-          label={i18n.__('pages.EditArticlePage.titleLabel')}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          value={publicURL}
-          label={i18n.__('pages.EditArticlePage.slugLabel')}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          disabled
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton
-                  title={i18n.__('pages.EditArticlePage.copyPublicURL')}
-                  aria-label={i18n.__('pages.EditArticlePage.copyPublicURL')}
-                  onClick={handleCopyURL}
-                >
-                  <AssignmentIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          onChange={onUpdateField}
-          value={data.description}
-          name="description"
-          label={i18n.__('pages.EditArticlePage.descriptionLabel')}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          multiline
-          helperText={`${data.description.length}/400`}
-        />
-        {article._id && showUpdateStructure ? (
-          <div className={classes.flexVertical}>
-            <TextField
-              className={classes.structure}
-              value={article.structure}
-              label={i18n.__('api.articles.labels.structure')}
-              variant="outlined"
-              margin="normal"
-              disabled
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="primary"
-                  checked={updateStructure}
-                  onChange={() => setUpdateStructure(!updateStructure)}
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
-                />
-              }
-              label={i18n.__('pages.EditArticlePage.structureMessage', { structure: user.structure })}
-            />
-          </div>
-        ) : null}
-
-        <Grid className={classes.tagInputs}>
-          <GroupFinder exclude={data.groups ? data.groups.map((g) => g._id) : []} onSelected={addGroupToArticle} />
-          <div className={classes.tags}>
-            {data.groups &&
-              data.groups.map((group) => {
-                return (
-                  <Chip
-                    className={classes.tag}
-                    key={group._id}
-                    label={group.name}
-                    color="secondary"
-                    onDelete={() => removeGroup(group)}
-                  />
-                );
-              })}
-          </div>
-        </Grid>
-
-        <ButtonGroup>
-          <TagFinder
-            resetKey={tagsKey}
-            tags={tags}
-            exclude={data.tags}
-            onSelected={newTagChanged}
-            inputWidth={isMobile ? 310 : 1138}
+        <form noValidate autoComplete="off">
+          <TextField
+            onChange={onUpdateField}
+            value={data.title}
+            name="title"
+            label={i18n.__('pages.EditArticlePage.titleLabel')}
+            variant="outlined"
+            fullWidth
+            margin="normal"
           />
-          <Button variant="contained" disabled={newTag.name === ''} color="primary" onClick={addTag}>
-            {i18n.__(
-              newTag._id === null && newTag.name
-                ? 'pages.EditArticlePage.createTag'
-                : 'pages.EditArticlePage.selectTag',
-            )}
-          </Button>
-        </ButtonGroup>
-        <div className={classes.tags}>
-          {data.tags.map((tagName) => {
-            // const tagName = Tags.findOne(tagId).name;
-            return (
-              <Chip
-                className={classes.tag}
-                key={tagName}
-                label={tagName}
-                color="secondary"
-                onDelete={() => removeTag(tagName)}
+          <TextField
+            value={publicURL}
+            label={i18n.__('pages.EditArticlePage.slugLabel')}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            disabled
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton
+                    title={i18n.__('pages.EditArticlePage.copyPublicURL')}
+                    aria-label={i18n.__('pages.EditArticlePage.copyPublicURL')}
+                    onClick={handleCopyURL}
+                  >
+                    <AssignmentIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            onChange={onUpdateField}
+            value={data.description}
+            name="description"
+            label={i18n.__('pages.EditArticlePage.descriptionLabel')}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            multiline
+            helperText={`${data.description.length}/400`}
+          />
+          {article._id && showUpdateStructure ? (
+            <div className={classes.flexVertical}>
+              <TextField
+                className={classes.structure}
+                value={article.structure}
+                label={i18n.__('api.articles.labels.structure')}
+                variant="outlined"
+                margin="normal"
+                disabled
               />
-            );
-          })}
-        </div>
-
-        <div className={classes.wysiwyg}>
-          <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
-
-          {typeof data.markdown === 'undefined' && (
-            <div className={classes.buttonsContainer}>
-              <Button variant="contained" onClick={() => toggleMarkdown(false)}>
-                {i18n.__('pages.EditArticlePage.switchToHtml')}
-              </Button>
-
-              <Button variant="contained" onClick={() => toggleMarkdown(true)}>
-                {i18n.__('pages.EditArticlePage.switchToMarkdown')}
-              </Button>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="primary"
+                    checked={updateStructure}
+                    onChange={() => setUpdateStructure(!updateStructure)}
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                }
+                label={i18n.__('pages.EditArticlePage.structureMessage', { structure: user.structure })}
+              />
             </div>
-          )}
-
-          {typeof data.markdown !== 'undefined' ? (
-            data.markdown ? (
-              <ToastUIEditor
-                id="content"
-                language={language}
-                toastRef={toastRef}
-                value={content}
-                onChange={onUpdateRichText}
-                handlers={{ imageHandler, webcamHandler, audioHandler }}
-              />
-            ) : (
-              <>
-                <CustomToolbarArticle withMedia withWebcam />
-                <ReactQuill {...quillOptions} id="content" value={content} onChange={onUpdateRichText} />
-              </>
-            )
           ) : null}
-        </div>
-        <div className={classes.buttonGroup}>
-          <div>
-            <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
-              {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
-              {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
+
+          <Grid className={classes.tagInputs}>
+            <GroupFinder exclude={data.groups ? data.groups.map((g) => g._id) : []} onSelected={addGroupToArticle} />
+            <div className={classes.tags}>
+              {data.groups &&
+                data.groups.map((group) => {
+                  return (
+                    <Chip
+                      className={classes.tag}
+                      key={group._id}
+                      label={group.name}
+                      color="secondary"
+                      onDelete={() => removeGroup(group)}
+                    />
+                  );
+                })}
+            </div>
+          </Grid>
+
+          <ButtonGroup>
+            <TagFinder
+              resetKey={tagsKey}
+              tags={tags}
+              exclude={data.tags}
+              onSelected={newTagChanged}
+              inputWidth={isMobile ? 310 : 1138}
+            />
+            <Button variant="contained" disabled={newTag.name === ''} color="primary" onClick={addTag}>
+              {i18n.__(
+                newTag._id === null && newTag.name
+                  ? 'pages.EditArticlePage.createTag'
+                  : 'pages.EditArticlePage.selectTag',
+              )}
             </Button>
-            {(!slug || article.draft) && (
-              <Button variant="contained" onClick={submitUpdateArticleDraft}>
-                {i18n.__('pages.EditArticlePage.save_draf')}
-              </Button>
-            )}
+          </ButtonGroup>
+          <div className={classes.tags}>
+            {data.tags.map((tagName) => {
+              // const tagName = Tags.findOne(tagId).name;
+              return (
+                <Chip
+                  className={classes.tag}
+                  key={tagName}
+                  label={tagName}
+                  color="secondary"
+                  onDelete={() => removeTag(tagName)}
+                />
+              );
+            })}
           </div>
 
-          <Button variant="contained" onClick={() => history.push('/publications')}>
-            {i18n.__('pages.EditArticlePage.cancel')}
+          <div className={classes.wysiwyg}>
+            <InputLabel htmlFor="content">{i18n.__('pages.EditArticlePage.contentLabel')}</InputLabel>
+
+            {typeof data.markdown === 'undefined' && (
+              <div className={classes.buttonsContainer}>
+                <Button variant="contained" onClick={() => toggleMarkdown(false)}>
+                  {i18n.__('pages.EditArticlePage.switchToHtml')}
+                </Button>
+
+                <Button variant="contained" onClick={() => toggleMarkdown(true)}>
+                  {i18n.__('pages.EditArticlePage.switchToMarkdown')}
+                </Button>
+              </div>
+            )}
+
+            {typeof data.markdown !== 'undefined' ? (
+              data.markdown ? (
+                <ToastUIEditor
+                  id="content"
+                  language={language}
+                  toastRef={toastRef}
+                  value={content}
+                  onChange={onUpdateRichText}
+                  handlers={{ imageHandler, webcamHandler, audioHandler }}
+                />
+              ) : (
+                <>
+                  <CustomToolbarArticle withMedia withWebcam />
+                  <ReactQuill {...quillOptions} id="content" value={content} onChange={onUpdateRichText} />
+                </>
+              )
+            ) : null}
+          </div>
+          <div className={classes.buttonGroup}>
+            <div>
+              <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
+                {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
+                {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
+              </Button>
+              {(!slug || article.draft) && (
+                <Button variant="contained" style={{ marginLeft: 10 }} onClick={submitUpdateArticleDraft}>
+                  {i18n.__('pages.EditArticlePage.save_draf')}
+                </Button>
+              )}
+            </div>
+
+            <Button variant="contained" onClick={() => handleOpenDialog(true)}>
+              {i18n.__('pages.EditArticlePage.cancel')}
+            </Button>
+            {!!slug && (
+              <ValidationButton
+                color="red"
+                icon={<DeleteIcon />}
+                text={i18n.__('pages.EditArticlePage.delete')}
+                onAction={deleteArticle}
+              />
+            )}
+          </div>
+        </form>
+        {picker && <ImagePicker selectFile={selectFile} onClose={() => togglePicker(false)} isMobile={isMobile} />}
+        {webcam && <WebcamModal selectFile={insertVideo} onClose={() => toggleWebcam(false)} />}
+        {audio && <AudioModal selectFile={insertAudio} onClose={() => toggleAudio(false)} />}
+      </Container>
+      <Dialog
+        open={open}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <h3 className={classes.titleDialog}>{i18n.__('pages.EditArticlePage.CloseEditArticle.title')}</h3>
+            {i18n.__('pages.EditArticlePage.CloseEditArticle.mainText')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeEditPage} color="primary" autoFocus>
+            {i18n.__('pages.EditArticlePage.CloseEditArticle.confirm')}
           </Button>
-          {!!slug && (
-            <ValidationButton
-              color="red"
-              icon={<DeleteIcon />}
-              text={i18n.__('pages.EditArticlePage.delete')}
-              onAction={deleteArticle}
-            />
-          )}
-        </div>
-      </form>
-      {picker && <ImagePicker selectFile={selectFile} onClose={() => togglePicker(false)} isMobile={isMobile} />}
-      {webcam && <WebcamModal selectFile={insertVideo} onClose={() => toggleWebcam(false)} />}
-      {audio && <AudioModal selectFile={insertAudio} onClose={() => toggleAudio(false)} />}
-    </Container>
+          <Button onClick={handleCloseDialog} color="primary">
+            {i18n.__('pages.EditArticlePage.CloseEditArticle.cancel')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 }
 
