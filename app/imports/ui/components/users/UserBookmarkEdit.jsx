@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import i18n from 'meteor/universe:i18n';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -33,7 +33,7 @@ const useStyles = (isMobile) =>
     paper: {
       overflow: 'auto',
       position: 'absolute',
-      width: isMobile ? '95%' : '50%',
+      width: isMobile ? '95%' : '25%',
       maxHeight: '100%',
       top: isMobile ? 0 : '50%',
       left: isMobile ? '2.5%' : '50%',
@@ -56,45 +56,58 @@ const UserBookMarkEdit = ({ data, onEdit, open, onClose }) => {
   const [url, setUrl] = useState(data.url);
   const [tag, setTag] = useState(data.tag);
   const [name, setName] = useState(data.name);
+  const [isValid, setIsValid] = useState(false);
   const classes = useStyles(isMobile)();
 
+  useEffect(() => {
+    setIsValid(!!url && !!name);
+  }, [url, name]);
+
   const changeBookmark = () => {
-    Meteor.call(
-      'userBookmark.updateURL',
-      {
-        url,
-        name,
-        tag,
-      },
-      function callbackQuota(error) {
-        if (error) {
-          msg.error(error.message);
-        } else {
-          msg.success(i18n.__('api.methods.operationSuccessMsg'));
-        }
-      },
-    );
-    onClose();
+    if (isValid) {
+      Meteor.call(
+        'userBookmark.updateURL',
+        {
+          url,
+          name,
+          tag,
+        },
+        function callbackQuota(error) {
+          if (error) {
+            msg.error(i18n.__('api.bookmarks.creationFailed'));
+          } else {
+            msg.success(i18n.__('api.methods.operationSuccessMsg'));
+            onClose();
+          }
+        },
+      );
+    } else {
+      msg.error(i18n.__('api.bookmarks.creationFailed'));
+    }
   };
 
   const createBookmark = () => {
-    Meteor.call(
-      'userBookmark.create',
-      {
-        url,
-        name,
-        tag,
-      },
-      function callbackQuota(error, urlFinal) {
-        if (error) {
-          msg.error(error.message);
-        } else {
-          msg.success(i18n.__('api.methods.operationSuccessMsg'));
-          Meteor.call('userBookmark.getFavicon', { url: urlFinal });
-        }
-      },
-    );
-    onClose();
+    if (isValid) {
+      Meteor.call(
+        'userBookmark.create',
+        {
+          url,
+          name,
+          tag,
+        },
+        function callbackQuota(error, urlFinal) {
+          if (error) {
+            msg.error(i18n.__('api.bookmarks.creationFailed'));
+          } else {
+            msg.success(i18n.__('api.methods.operationSuccessMsg'));
+            Meteor.call('userBookmark.getFavicon', { url: urlFinal });
+            onClose();
+          }
+        },
+      );
+    } else {
+      msg.error(i18n.__('api.bookmarks.creationFailed'));
+    }
   };
 
   const updateURL = (e) => {
@@ -129,6 +142,8 @@ const UserBookMarkEdit = ({ data, onEdit, open, onClose }) => {
               label={i18n.__('components.BookMarkEdit.labelName')}
               type="text"
               onChange={updateName}
+              variant="outlined"
+              fullWidth
             />
           </CardContent>
           <CardContent>
@@ -139,6 +154,8 @@ const UserBookMarkEdit = ({ data, onEdit, open, onClose }) => {
                 label={i18n.__('components.BookMarkEdit.labelUrl')}
                 type="text"
                 onChange={updateURL}
+                variant="outlined"
+                fullWidth
               />
             ) : (
               <TextField
@@ -146,6 +163,8 @@ const UserBookMarkEdit = ({ data, onEdit, open, onClose }) => {
                 label={i18n.__('components.BookMarkEdit.labelUrl')}
                 type="text"
                 onChange={updateURL}
+                variant="outlined"
+                fullWidth
               />
             )}
           </CardContent>
@@ -155,15 +174,17 @@ const UserBookMarkEdit = ({ data, onEdit, open, onClose }) => {
               label={i18n.__('components.BookMarkEdit.labelTag')}
               type="text"
               onChange={updateTag}
+              variant="outlined"
+              fullWidth
             />
           </CardContent>
           <CardActions className={classes.actions}>
             {onEdit ? (
-              <Button onClick={changeBookmark} variant="contained" color="primary">
+              <Button onClick={changeBookmark} disabled={!isValid} variant="contained" color="primary">
                 {i18n.__('components.BookMarkEdit.ValidateFormUpdate')}
               </Button>
             ) : (
-              <Button onClick={createBookmark} variant="contained" color="primary">
+              <Button onClick={createBookmark} disabled={!isValid} variant="contained" color="primary">
                 {i18n.__('components.BookMarkEdit.ValidateFormCreate')}
               </Button>
             )}
