@@ -109,6 +109,12 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const [{ userId }] = useAppContext();
   const isAdmin = Roles.userIsInRole(userId, 'admin', params._id);
 
+  const typeLabel = React.useRef(null);
+  const [labelTypeWidth, setLabelTypeWidth] = React.useState(0);
+  useEffect(() => {
+    setLabelTypeWidth(typeLabel.current.offsetWidth);
+  }, []);
+
   useEffect(() => {
     if (params._id && group._id && loading) {
       setLoading(false);
@@ -312,12 +318,13 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                   disabled
                 />
                 {Object.keys(groupPlugins).map((p) => groupPluginsShow(p))}
-                <FormControl>
-                  <InputLabel htmlFor="type" id="type-label">
+                <FormControl variant="outlined" fullWidth margin="normal">
+                  <InputLabel htmlFor="type" id="type-label" ref={typeLabel}>
                     {i18n.__('pages.AdminSingleGroupPage.type')}
                   </InputLabel>
                   <Select
                     labelId="type-label"
+                    labelWidth={labelTypeWidth}
                     id="type"
                     name="type"
                     value={groupData.type}

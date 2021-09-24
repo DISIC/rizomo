@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
   logoWrapper: {
     display: 'flex',
     flexDirection: 'column',
+    marginBottom: theme.spacing(1),
   },
   wysiwyg: {
     marginTop: theme.spacing(3),
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   chipWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(1),
     '& > *': {
       margin: theme.spacing(0.5),
     },
@@ -150,6 +151,14 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { path, par
   };
 
   // useEffect(() => removeUndefined, []); // TO UNDERSTAND :)
+
+  const stateLabel = React.useRef(null);
+  const [labelStateWidth, setLabelStateWidth] = React.useState(36);
+  useEffect(() => {
+    if (stateLabel.current) {
+      setLabelStateWidth(stateLabel.current.offsetWidth);
+    }
+  }, [stateLabel.current]);
 
   useEffect(() => {
     if (params._id && service._id && loading) {
@@ -280,11 +289,18 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { path, par
               margin="normal"
               disabled
             />
-            <FormControl>
-              <InputLabel htmlFor="state" id="state-label">
+            <FormControl variant="outlined" fullWidth margin="normal">
+              <InputLabel htmlFor="state" id="state-label" ref={stateLabel}>
                 {i18n.__('pages.AdminSingleServicePage.state')}
               </InputLabel>
-              <Select labelId="state-label" id="state" name="state" value={serviceData.state} onChange={onUpdateField}>
+              <Select
+                labelId="state-label"
+                id="state"
+                name="state"
+                value={serviceData.state}
+                onChange={onUpdateField}
+                labelWidth={labelStateWidth}
+              >
                 {Object.keys(Services.stateLabels).map((val) => (
                   <MenuItem key={val} value={val}>
                     {i18n.__(Services.stateLabels[val])}
