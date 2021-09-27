@@ -383,12 +383,12 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
               </>
             ) : null}
             <div className={classes.buttonGroup}>
-              <Button variant="contained" color="primary" onClick={submitUpdateGroup}>
-                {params._id ? i18n.__('pages.AdminSingleGroupPage.update') : i18n.__('pages.AdminSingleGroupPage.save')}
-              </Button>
-
               <Button variant="contained" onClick={cancelForm}>
                 {i18n.__('pages.AdminSingleGroupPage.cancel')}
+              </Button>
+
+              <Button variant="contained" color="primary" onClick={submitUpdateGroup}>
+                {params._id ? i18n.__('pages.AdminSingleGroupPage.update') : i18n.__('pages.AdminSingleGroupPage.save')}
               </Button>
             </div>
           </form>

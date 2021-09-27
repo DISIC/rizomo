@@ -174,6 +174,7 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
             />
           </CardContent>
           <CardActions className={classes.actions}>
+            <Button onClick={onClose}>{i18n.__('components.BookMarkEdit.cancel')}</Button>
             {onEdit ? (
               <Button onClick={changeBookmark} disabled={!isValid} variant="contained" color="primary">
                 {i18n.__('components.BookMarkEdit.ValidateFormUpdate')}
@@ -183,7 +184,6 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
                 {i18n.__('components.BookMarkEdit.ValidateFormCreate')}
               </Button>
             )}
-            <Button onClick={onClose}>{i18n.__('components.BookMarkEdit.cancel')}</Button>
           </CardActions>
         </Card>
       </div>

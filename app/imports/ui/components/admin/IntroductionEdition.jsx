@@ -128,12 +128,12 @@ const IntroductionEdition = ({ data = [] }) => {
       </div>
       {changes && (
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary" onClick={onSubmitUpdateData} disabled={loading}>
-            {i18n.__('components.IntroductionEdition.update')}
-          </Button>
-
           <Button variant="contained" onClick={onCancel} disabled={loading}>
             {i18n.__('components.IntroductionEdition.cancel')}
+          </Button>
+
+          <Button variant="contained" color="primary" onClick={onSubmitUpdateData} disabled={loading}>
+            {i18n.__('components.IntroductionEdition.update')}
           </Button>
         </div>
       )}

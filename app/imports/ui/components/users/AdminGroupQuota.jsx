@@ -108,10 +108,10 @@ const AdminGroupQuota = ({ data, open, onClose }) => {
             </Typography>
           </CardContent>
           <CardActions className={classes.actions}>
+            <Button onClick={onClose}>{i18n.__('components.AdminGroupQuota.cancel')}</Button>
             <Button onClick={changeQuota} variant="contained" color="primary">
               {i18n.__('components.AdminGroupQuota.ValidateForm')}
             </Button>
-            <Button onClick={onClose}>{i18n.__('components.AdminGroupQuota.cancel')}</Button>
           </CardActions>
         </Card>
       </div>
