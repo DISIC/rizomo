@@ -779,7 +779,8 @@
       "valueRequired": "Ce champ ne peut pas être vide",
       "updateSuccess": "Profil mis à jour avec succès",
       "noModifications": "Aucun changement à appliquer",
-      "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
+      "keycloakProcedure": "Les données ci-dessous doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
+      "keycloakProcedureLink": "Vous pouvez accéder à l'application en cliquant ici",
       "logoutType": "Portée de la déconnexion",
       "backupTitle": "Téléchargez vos données de publication",
       "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous est également possible de charger des données que vous auriez téléchargées d'une autre instance de la boite.",
@@ -790,7 +791,8 @@
       "useCam": "Utiliser la webcam",
       "useGallery": "Choisir parmi la galerie d'images",
       "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle.",
-      "advancedPersonalPage": "Activer l'espace perso avancé"
+      "advancedPersonalPage": "Activer l'espace personnel avancé",
+      "languageLabel": "Choix de la langue"
     },
     "NotFound": {
       "backButtonLabel": "Retour",

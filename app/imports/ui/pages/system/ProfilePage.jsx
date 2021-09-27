@@ -68,6 +68,12 @@ const useStyles = makeStyles((theme) => ({
   maxWidth: {
     maxWidth: '88vw',
   },
+  labelLanguage: {
+    fontSize: 16,
+    margin: 10,
+    marginTop: 20,
+    marginBottom: 20,
+  },
 }));
 
 const defaultState = {
@@ -351,6 +357,9 @@ const ProfilePage = () => {
     reader.readAsText(files[0]);
   };
 
+  // eslint-disable-next-line max-len
+  const accountURL = `${Meteor.settings.public.keycloakUrl}/realms/${Meteor.settings.public.keycloakRealm}/account`;
+
   const SendNewAvatarToMedia = (avImg) => {
     dispatch({
       type: 'uploads.add',
@@ -392,7 +401,16 @@ const ProfilePage = () => {
           <form noValidate autoComplete="off">
             <Grid container className={classes.form} spacing={2}>
               <Grid container spacing={2} style={{ alignItems: 'center' }}>
-                <Grid item xs={isMobile ? 12 : 6} style={{ paddingLeft: '18px' }}>
+                <Grid item xs={isMobile ? 16 : 8} style={{ paddingLeft: '18px' }}>
+                  {keycloakMode ? (
+                    <Paper className={classes.keycloakMessage}>
+                      <Typography>{i18n.__('pages.ProfilePage.keycloakProcedure')}</Typography>
+                      <br />
+                      <Typography style={{ textDecoration: 'underline' }}>
+                        <a href={accountURL}>{i18n.__('pages.ProfilePage.keycloakProcedureLink')}</a>
+                      </Typography>
+                    </Paper>
+                  ) : null}
                   <TextField
                     disabled={keycloakMode}
                     margin="normal"
@@ -473,13 +491,8 @@ const ProfilePage = () => {
                       {errors.username}
                     </FormHelperText>
                   </FormControl>
-                  {keycloakMode ? (
-                    <Paper className={classes.keycloakMessage}>
-                      <Typography>{i18n.__('pages.ProfilePage.keycloakProcedure')}</Typography>
-                    </Paper>
-                  ) : null}
                 </Grid>
-                <Grid item xs={isMobile ? 12 : 6}>
+                <Grid item xs={isMobile ? 12 : 4}>
                   <AvatarPicker
                     userAvatar={userData.avatar || ''}
                     userFirstName={userData.firstName || ''}
@@ -526,7 +539,10 @@ const ProfilePage = () => {
                 </Grid>
               ) : null}
               <Grid item>
-                <LanguageSwitcher relative />
+                <Grid container spacing={2} style={{ alignItems: 'center' }}>
+                  <p className={classes.labelLanguage}>{i18n.__('pages.ProfilePage.languageLabel')}</p>
+                  <LanguageSwitcher relative />
+                </Grid>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -543,11 +559,11 @@ const ProfilePage = () => {
               </Grid>
             </Grid>
             <div className={classes.buttonGroup}>
-              <Button variant="contained" disabled={!submitOk} color="primary" onClick={submitUpdateUser}>
-                {i18n.__('pages.ProfilePage.update')}
-              </Button>
               <Button variant="contained" onClick={resetForm}>
                 {i18n.__('pages.ProfilePage.reset')}
+              </Button>
+              <Button variant="contained" disabled={!submitOk} color="primary" onClick={submitUpdateUser}>
+                {i18n.__('pages.ProfilePage.update')}
               </Button>
             </div>
           </form>
@@ -558,13 +574,13 @@ const ProfilePage = () => {
 
           <Grid container>
             <Grid item xs={12} sm={6} md={6} className={classes.buttonWrapper}>
-              <Button variant="contained" onClick={downloadBackup}>
+              <Button variant="contained" onClick={downloadBackup} color="secondary">
                 {i18n.__('pages.ProfilePage.downloadPublicationBackup')}
               </Button>
             </Grid>
             <Grid item xs={12} sm={6} md={6} className={classes.buttonWrapper}>
               <div className={classes.fileWrap}>
-                <Button variant="contained" htmlFor="upload">
+                <Button variant="contained" htmlFor="upload" color="secondary">
                   {i18n.__('pages.ProfilePage.UploadPublicationBackup')}
                   <input className={classes.inputFile} type="file" id="upload" onChange={uploadData} />
                 </Button>
