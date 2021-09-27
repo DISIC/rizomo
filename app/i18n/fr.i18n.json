@@ -1084,7 +1084,7 @@
       "save_draf": "Enregistrer le brouillon",
       "draft": "Brouillon",
       "createTag": "Créer",
-      "CloseEditArticle":{
+      "CloseEditArticle": {
         "title": "Annuler la publication",
         "mainText": "Souhaitez-vous réellement fermer cette page ? Toutes les modifications non enregistrées seront perdues.",
         "confirm": "Confirmer",
