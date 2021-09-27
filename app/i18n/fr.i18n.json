@@ -1074,7 +1074,7 @@
       "contentLabel": "Contenu de cette publication",
       "update": "Mettre à jour",
       "save": "Publier",
-      "cancel": "Annuler la publication",
+      "cancel": "Annuler les modifications",
       "delete": "Supprimer",
       "copyPublicURL": "Copier l'URL publique",
       "successCopyURL": "URL publique copiée dans le presse-papier",
@@ -1085,7 +1085,7 @@
       "draft": "Brouillon",
       "createTag": "Créer",
       "CloseEditArticle": {
-        "title": "Annuler la publication",
+        "title": "Annuler les modifications",
         "mainText": "Souhaitez-vous réellement fermer cette page ? Toutes les modifications non enregistrées seront perdues.",
         "confirm": "Confirmer",
         "cancel": "Annuler"

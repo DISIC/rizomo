@@ -1070,7 +1070,7 @@
       "contentLabel": "Content of the publication",
       "update": "Update",
       "save": "Publish",
-      "cancel": "Cancel publication",
+      "cancel": "Discard changes",
       "delete": "Delete",
       "copyPublicURL": "copy public URL",
       "successCopyURL": "Public URL has been sent to clipboard",
@@ -1080,8 +1080,8 @@
       "save_draf": "Save Draft",
       "draft": "Draft",
       "createTag": "Create",
-      "CloseEditArticle":{
-        "title": "Cancel publication",
+      "CloseEditArticle": {
+        "title": "Discard changes",
         "mainText": "Do you really want to close this page ? Any unsaved changes will be lost.",
         "confirm": "Confirm",
         "cancel": "Cancel"
