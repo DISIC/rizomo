@@ -17,8 +17,8 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import Switch from '@material-ui/core/Switch';
+import EditIcon from '@material-ui/icons/Edit';
 import LockIcon from '@material-ui/icons/Lock';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import SearchIcon from '@material-ui/icons/Search';
@@ -384,7 +384,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                             title={i18n.__('pages.PersonalPage.toggleEdition')}
                           >
                             <Grid item>
-                              <LockIcon />
+                              <LockIcon color="primary" />
                             </Grid>
                             <Grid item>
                               <Switch
@@ -395,7 +395,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                               />
                             </Grid>
                             <Grid item>
-                              <LockOpenIcon />
+                              <EditIcon color="primary" />
                             </Grid>
                           </Grid>
                         </Grid>

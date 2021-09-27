@@ -9,8 +9,8 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionActions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
-import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -138,7 +138,6 @@ const useStyles = makeStyles((theme) => ({
   },
   zoneButton: {
     color: theme.palette.primary.main,
-    opacity: 0.5,
     cursor: 'pointer',
     '&:hover': {
       opacity: 1,
@@ -228,7 +227,7 @@ const PersonalZone = ({
         className={customDrag && isSorted ? classes.cursorDefault : null}
         classes={{ expanded: classes.expansionpanelsummaryexpanded, content: classes.expansionpanelsummarycontent }}
       >
-        <Typography variant="h6" color="primary" className={classes.zone}>
+        <Typography variant="h5" color="primary" className={classes.zone}>
           <div>
             <Badge
               classes={{ badge: classes.badge }}
@@ -265,7 +264,7 @@ const PersonalZone = ({
                 title={i18n.__('components.PersonalZone.upZoneLabel')}
                 disabled={index === 0}
               >
-                <VerticalAlignTopIcon />
+                <ArrowUpwardIcon />
               </IconButton>
               <IconButton
                 onClick={() => moveDownZone(index)}
@@ -273,7 +272,7 @@ const PersonalZone = ({
                 title={i18n.__('components.PersonalZone.downZoneLabel')}
                 disabled={lastZone}
               >
-                <VerticalAlignBottomIcon />
+                <ArrowDownwardIcon />
               </IconButton>
               <Tooltip
                 title={
