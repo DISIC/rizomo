@@ -777,7 +777,8 @@
       "valueRequired": "This field can not be empty",
       "updateSuccess": "Profile update success",
       "noModifications": "No changes to apply",
-      "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data.",
+      "keycloakProcedure": "Data underneath must be modified in the \"My account\" application. You must then logout and login to update data.",
+      "keycloakProcedureLink": "You can accesse to this application by clicking here",
       "logoutType": "Logout perimeter",
       "backupTitle": "Backup your publications",
       "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance.",
@@ -788,7 +789,8 @@
       "useCam": "Take a picture",
       "useGallery": "Choose among image gallery",
       "structureMessage": "Check this box to link all imported articles to your current attachment structure.",
-      "advancedPersonalPage": "Activate advanced personal page"
+      "advancedPersonalPage": "Activate advanced personal page",
+      "languageLabel": "Change language"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
