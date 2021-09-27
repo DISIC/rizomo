@@ -61,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
   },
   zoneButton: {
     color: theme.palette.primary.main,
-    opacity: 0.5,
     cursor: 'pointer',
     '&:hover': {
       opacity: 1,
