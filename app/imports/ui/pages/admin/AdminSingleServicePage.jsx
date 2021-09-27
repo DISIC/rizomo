@@ -416,14 +416,14 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { path, par
             </Grid>
 
             <div className={classes.buttonGroup}>
+              <Button variant="contained" onClick={onCancel}>
+                {i18n.__('pages.AdminSingleServicePage.cancel')}
+              </Button>
+
               <Button variant="contained" color="primary" onClick={onSubmitUpdateService}>
                 {params._id
                   ? i18n.__('pages.AdminSingleServicePage.update')
                   : i18n.__('pages.AdminSingleServicePage.save')}
-              </Button>
-
-              <Button variant="contained" onClick={onCancel}>
-                {i18n.__('pages.AdminSingleServicePage.cancel')}
               </Button>
             </div>
           </form>

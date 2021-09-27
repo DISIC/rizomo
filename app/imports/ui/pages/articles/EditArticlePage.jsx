@@ -691,18 +691,6 @@ function EditArticlePage({
             ) : null}
           </div>
           <div className={classes.buttonGroup}>
-            <div>
-              <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
-                {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
-                {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
-              </Button>
-              {(!slug || article.draft) && (
-                <Button variant="contained" style={{ marginLeft: 10 }} onClick={submitUpdateArticleDraft}>
-                  {i18n.__('pages.EditArticlePage.save_draf')}
-                </Button>
-              )}
-            </div>
-
             <Button variant="contained" onClick={() => handleOpenDialog(true)}>
               {i18n.__('pages.EditArticlePage.cancel')}
             </Button>
@@ -714,6 +702,23 @@ function EditArticlePage({
                 onAction={deleteArticle}
               />
             )}
+
+            <div>
+              <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
+                {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
+                {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
+              </Button>
+              {(!slug || article.draft) && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{ marginLeft: 10 }}
+                  onClick={submitUpdateArticleDraft}
+                >
+                  {i18n.__('pages.EditArticlePage.save_draf')}
+                </Button>
+              )}
+            </div>
           </div>
         </form>
         {picker && <ImagePicker selectFile={selectFile} onClose={() => togglePicker(false)} isMobile={isMobile} />}
