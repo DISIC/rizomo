@@ -110,9 +110,11 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
   const isAdmin = Roles.userIsInRole(userId, 'admin', params._id);
 
   const typeLabel = React.useRef(null);
-  const [labelTypeWidth, setLabelTypeWidth] = React.useState(0);
+  const [labelTypeWidth, setLabelTypeWidth] = React.useState(36);
   useEffect(() => {
-    setLabelTypeWidth(typeLabel.current.offsetWidth);
+    if (typeLabel.current) {
+      setLabelTypeWidth(typeLabel.current.offsetWidth);
+    }
   }, []);
 
   useEffect(() => {
