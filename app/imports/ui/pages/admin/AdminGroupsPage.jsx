@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
 import { useHistory } from 'react-router-dom';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import Container from '@material-ui/core/Container';
 import edit from '@material-ui/icons/Edit';
 import add from '@material-ui/icons/Add';
@@ -74,7 +74,7 @@ function AdminGroupsPage({ groups, loading, user }) {
             // other props
             title={`${i18n.__('pages.AdminGroupsPage.title')} (${user.groupCount}/${user.groupQuota})`}
             columns={columns}
-            data={groups}
+            data={groups.map((row) => ({ ...row, id: row._id }))}
             options={options}
             localization={setMaterialTableLocalization('pages.AdminGroupsPage')}
             actions={[

@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import Container from '@material-ui/core/Container';
 import Fade from '@material-ui/core/Fade';
 import { useHistory } from 'react-router-dom';
@@ -73,22 +73,22 @@ function AdminServicesPage({ services, loading, structureMode }) {
               // other props
               title={`${i18n.__('pages.AdminServicesPage.title')} ${structureMode ? `(${user.structure})` : ''}`}
               columns={columns}
-              data={services}
+              data={services.map((row) => ({ ...row, id: row._id }))}
               options={options}
               localization={setMaterialTableLocalization('pages.AdminServicesPage')}
               actions={[
-                {
-                  icon: 'edit',
-                  tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
-                  onClick: (event, rowData) => {
-                    history.push(`/admin${urlStruct}services/${rowData._id}`);
-                  },
-                },
                 {
                   icon: keyboardArrowRight,
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_goTooltip'),
                   onClick: (event, rowData) => {
                     history.push(`/${structureMode ? urlStruct : 'services'}/${rowData.slug}`);
+                  },
+                },
+                {
+                  icon: 'edit',
+                  tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
+                  onClick: (event, rowData) => {
+                    history.push(`/admin${urlStruct}services/${rowData._id}`);
                   },
                 },
                 {
@@ -135,7 +135,12 @@ export default withTracker(({ match: { path } }) => {
   const structureMode = path === '/adminstructureservices';
   const servicesHandle = Meteor.subscribe(structureMode ? 'services.structure' : 'services.all');
   const loading = !servicesHandle.ready();
-  const services = Services.find({}, { sort: { title: 1 } }).fetch();
+  let services;
+  if (structureMode) {
+    services = Services.findFromPublication('services.structure', {}, { sort: { title: 1 } }).fetch();
+  } else {
+    services = Services.find({}, { sort: { title: 1 } }).fetch();
+  }
   return {
     services,
     loading,

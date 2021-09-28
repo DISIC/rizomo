@@ -17,7 +17,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
-import SendIcon from '@material-ui/icons/Send';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -181,7 +181,7 @@ const EventsPage = ({
                             window.open(`${Meteor.settings.public.services.agendaUrl}`, '_blank', 'noreferrer,noopener')
                           }
                         >
-                          <SendIcon />
+                          <ChevronRightIcon />
                         </IconButton>
                       </Tooltip>
                     </ListItemSecondaryAction>

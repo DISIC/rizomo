@@ -11,7 +11,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
-import Divider from '@material-ui/core/Divider';
 
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -54,6 +53,18 @@ const useStyles = (member, candidate, type) =>
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
+    },
+    groupInfos: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: theme.spacing(1),
+    },
+    buttonQuit: {
+      backgroundColor: 'red',
+      '&:hover': {
+        color: 'red',
+        backgroundColor: theme.palette.tertiary.main,
+      },
     },
     favoriteButton: {
       display: 'flex',
@@ -111,6 +122,10 @@ const useStyles = (member, candidate, type) =>
     },
     category: {
       marginLeft: theme.spacing(1),
+    },
+    membershipText: {
+      textTransform: 'none',
+      color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
     },
     buttonText: {
       textTransform: 'none',
@@ -253,7 +268,7 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events, bookmarks
     return <LockIcon />;
   };
 
-  const text = () => {
+  const membershipText = () => {
     if (animator) {
       return i18n.__('components.GroupDetails.groupAnimator');
     }
@@ -262,6 +277,13 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events, bookmarks
     }
     if (candidate) {
       return i18n.__('components.GroupDetails.groupCandidate');
+    }
+    return '';
+  };
+
+  const buttonText = () => {
+    if (animator || member || candidate) {
+      return i18n.__(`pages.SingleGroupPage.${animator ? 'stopAnimating' : member ? 'leaveGroup' : 'cancelCandidate'}`);
     }
     if (type === 5) {
       return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
@@ -329,9 +351,16 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events, bookmarks
               <GroupAvatar type={type || 0} avatar={group.avatar} />
               <div className={classes.title}>
                 <Typography variant="h5">{group.name}</Typography>
-                <Typography color={type === 0 ? 'primary' : 'secondary'} variant="h6">
-                  {groupType}
-                </Typography>
+                <div className={classes.groupInfos}>
+                  <Typography color={type === 0 ? 'primary' : 'secondary'} variant="h6">
+                    {groupType}
+                  </Typography>
+                  {animator || member || candidate ? (
+                    <Typography className={classes.membershipText} variant="h6">
+                      {`(${membershipText()})`}
+                    </Typography>
+                  ) : null}
+                </div>
               </div>
             </div>
           </Grid>
@@ -339,16 +368,31 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events, bookmarks
             <Grid container className={classes.actionButtons} spacing={1}>
               {type !== 10 || admin || member || animator ? (
                 <Grid item>
-                  <Button
-                    startIcon={icon()}
-                    className={classes.buttonText}
-                    size="large"
-                    variant={member || animator || candidate ? 'text' : 'contained'}
-                    disableElevation={member || animator || candidate}
-                    onClick={animator || member || candidate ? null : handleJoinGroup}
-                  >
-                    {text()}
-                  </Button>
+                  {animator || member || candidate ? (
+                    <Button
+                      className={classes.buttonQuit}
+                      startIcon={<ClearIcon />}
+                      color="primary"
+                      variant="contained"
+                      onClick={handleJoinGroup}
+                    >
+                      {i18n.__(
+                        `pages.SingleGroupPage.${
+                          animator ? 'stopAnimating' : member ? 'leaveGroup' : 'cancelCandidate'
+                        }`,
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      startIcon={icon()}
+                      className={classes.buttonText}
+                      size="large"
+                      variant="contained"
+                      onClick={handleJoinGroup}
+                    >
+                      {buttonText()}
+                    </Button>
+                  )}
                 </Grid>
               ) : null}
               {admin && (
@@ -500,24 +544,6 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events, bookmarks
             <Button color="primary" disableElevation size="small" variant="outlined" onClick={handleOpenedContent}>
               {i18n.__(`pages.SingleGroupPage.${openedContent ? 'seeLess' : 'seeMore'}`)}
             </Button>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} className={classes.cardGrid}>
-            <Divider style={{ marginBottom: 30 }} />
-
-            {(animator || member || candidate) && (
-              <Button
-                style={{ border: 'red', color: 'red' }}
-                color="primary"
-                startIcon={<ClearIcon />}
-                disableElevation
-                variant="outlined"
-                onClick={handleJoinGroup}
-              >
-                {i18n.__(
-                  `pages.SingleGroupPage.${animator ? 'stopAnimating' : member ? 'leaveGroup' : 'cancelCandidate'}`,
-                )}
-              </Button>
-            )}
           </Grid>
         </Grid>
       </Container>

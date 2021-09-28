@@ -3,10 +3,10 @@ import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 import { getLabel } from '../utils';
 
-const Bookmarks = new Mongo.Collection('bookmarks');
+const UserBookmarks = new Mongo.Collection('userBookmarks');
 
 // Deny all client-side updates since we will be using methods to manage this collection
-Bookmarks.deny({
+UserBookmarks.deny({
   insert() {
     return true;
   },
@@ -18,7 +18,7 @@ Bookmarks.deny({
   },
 });
 
-Bookmarks.schema = new SimpleSchema(
+UserBookmarks.schema = new SimpleSchema(
   {
     url: {
       type: String,
@@ -30,13 +30,9 @@ Bookmarks.schema = new SimpleSchema(
       type: String,
       label: getLabel('api.bookmarks.labels.name'),
     },
-    author: {
+    userId: {
       type: String,
-      label: getLabel('api.bookmarks.labels.author'),
-    },
-    groupId: {
-      type: String,
-      label: getLabel('api.bookmarks.labels.groupId'),
+      label: getLabel('api.users.labels.id'),
     },
     tag: {
       type: String,
@@ -52,14 +48,14 @@ Bookmarks.schema = new SimpleSchema(
   { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
 
-Bookmarks.publicFields = {
+UserBookmarks.publicFields = {
   url: 1,
   name: 1,
-  author: 1,
-  group: 1,
+  userId: 1,
   icon: 1,
+  tag: 1,
 };
 
-Bookmarks.attachSchema(Bookmarks.schema);
+UserBookmarks.attachSchema(UserBookmarks.schema);
 
-export default Bookmarks;
+export default UserBookmarks;

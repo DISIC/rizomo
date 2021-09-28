@@ -6,11 +6,13 @@
         "name": "name",
         "author": "author",
         "groupId": "group ID",
-        "tag": "tag",
+        "tag": "annotation",
         "id": "ID",
         "icon": "favion"
       },
+      "creationFailed": "Creation failed. Make sure all fields are filled.",
       "UnknownURL": "This URL doesn't exist.",
+      "unknownBookmark": "This bookmark doesn't exist.",
       "notPermitted": "You don't have sufficient rights.",
       "adminRankNeeded": "Admin rank or author status needed.",
       "groupRankNeeded": "You need to be member of this group.",
@@ -85,6 +87,7 @@
         "isActive": "User Is Active",
         "isRequest": "User Awaits Activation",
         "favServices": "Favorite Services",
+        "favUserBookmarks": "Favorite Bookmarks",
         "structure": "Attachment Structure",
         "primaryEmail": "Primary Email",
         "language": "Preferred Language",
@@ -333,7 +336,7 @@
       "mainText": "Enter information about this bookmark",
       "labelUrl": "URL",
       "labelName": "Name",
-      "labelTag": "Tag",
+      "labelTag": "Annotation",
       "ValidateFormUpdate": "Update",
       "ValidateFormCreate": "Create",
       "cancel": "Cancel"
@@ -398,6 +401,8 @@
     "MenuBar": {
       "menuMyspace": "My Dashboard",
       "menuMyspaceMobile": "Dashboard",
+      "menuArticles": "My publications",
+      "menuArticlesMobile": "Publications",
       "menuHelp": "Help",
       "menuServices": "Applications",
       "menuStructure": "My Structure",
@@ -417,7 +422,8 @@
       "favSuccessMsg": "Added to your personal space",
       "open": "Open",
       "pin": "Pin",
-      "unpin": "Unpin"
+      "unpin": "Unpin",
+      "backToDefault": "Move back to default zone"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Open side menu",
@@ -432,7 +438,7 @@
       "menuAdminCategories": "Categories Management",
       "menuAdminTags": "Tags Management",
       "menuAdminGroups": "Groups Management",
-      "menuPublications": "Publications",
+      "menuUserBookmarks": "Bookmarks",
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
       "menuMedias": "Medias Storage",
@@ -487,7 +493,7 @@
       "addTag": "Add ",
       "noTag": "No tag found",
       "tagLabel": "Tag",
-      "placeholder": "Type to search a tag",
+      "placeholder": "Enter tag",
       "clear": "Clear",
       "loading": "Loading...",
       "open": "Open",
@@ -527,7 +533,8 @@
     "GroupDetailsPersSpace": {
       "groupCandidate": "Candidate",
       "groupAdmin": "Administrator",
-      "groupNone": "No role"
+      "groupNone": "No role",
+      "backToDefault": "Move back to default zone"
     },
     "AppVersion": {
       "title": "Version"
@@ -537,17 +544,18 @@
       "forbiddenDelZoneLabel": "Empty this zone before delete it",
       "upZoneLabel": "Move up this zone",
       "downZoneLabel": "Move down this zone",
-      "addPersonalLink": "Add a personal in this zone",
       "emptyDragZone": "Drop elements here",
       "modifyTitle": "Modify zone title"
     },
     "PersonalLinkDetails": {
       "visitLink": "Visit this link",
-      "delLink": "Delete this link",
       "titleLabel": "Link title",
       "urlLabel": "Link url",
       "modifyLink": "Modify this link",
-      "saveLink": "Save this lien"
+      "saveLink": "Save this lien",
+      "favButtonLabelNoFav": "Remove from your personal space",
+      "unfavSuccessMsg": "Removed from your personal space",
+      "backToDefault": "Move back to default zone"
     },
     "ArticleDetails": {
       "editArticleButtonLabel": "Edit this publication",
@@ -675,16 +683,21 @@
     "pagination_nextTooltip": "Next page",
     "pagination_lastTooltip": "Last page",
     "body_editRow_cancelTooltip": "Cancel",
-    "body_editRow_saveTooltip": "Save changes"
+    "body_editRow_saveTooltip": "Confirm"
   },
   "pages": {
+    "UserBookmarksPage": {
+      "back": "Go back",
+      "favoriteBookmark": "Add to your personal space",
+      "unfavoriteBookmark": "Remove from your personal space"
+    },
     "BookmarksPage": {
       "columnIcon": "Favicon",
       "columnName": "Name",
-      "columnTag": "Tag",
+      "columnTag": "Annotation",
       "columnUrl": "URL",
       "columnAuthor": "Author",
-      "filterTitle": "Filter Bookmarks",
+      "filterTitle": "Show only my Bookmarks",
       "disableFilter": "Show all bookmarks",
       "enableFilter": "Show only my bookmarks",
       "noAccess": "You don't have access to bookmarks of this group",
@@ -751,7 +764,8 @@
       "textLabel": "Text",
       "captchaInfo": "Indicate the result of the operation",
       "redirectMsg": "Your request has been sent. Redirection in progress...",
-      "redirectTime": "seconds"
+      "redirectTime": "seconds",
+      "cancel": "Cancel"
     },
     "ProfilePage": {
       "title": "My settings",
@@ -763,7 +777,8 @@
       "valueRequired": "This field can not be empty",
       "updateSuccess": "Profile update success",
       "noModifications": "No changes to apply",
-      "keycloakProcedure": "Data above must be modified in the \"My account\" application. You must then logout and login to update data.",
+      "keycloakProcedure": "Data underneath must be modified in the \"My account\" application. You must then logout and login to update data.",
+      "keycloakProcedureLink": "You can accesse to this application by clicking here",
       "logoutType": "Logout perimeter",
       "backupTitle": "Backup your publications",
       "backupMessage": "You can use the download button to backup your publications at anytime. It is possible to upload data you downloaded in another instance.",
@@ -774,7 +789,8 @@
       "useCam": "Take a picture",
       "useGallery": "Choose among image gallery",
       "structureMessage": "Check this box to link all imported articles to your current attachment structure.",
-      "advancedPersonalPage": "Activate advanced personal page"
+      "advancedPersonalPage": "Activate advanced personal page",
+      "languageLabel": "Change language"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
@@ -786,7 +802,7 @@
       "tabsLabel": "Services tabs",
       "tabFavServicesLabel": "Favorite services",
       "tabAllServicesLabel": "All services",
-      "searchText": "Which app would you need ?",
+      "emptyFilter": "There is no filter available.",
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view",
@@ -802,6 +818,7 @@
       "viewList": "List view",
       "endOfList": "End of the list",
       "filterGroup": "Show only joined groups",
+      "filterGroupLabel": "Only my groups ",
       "disableFilterGroup": "Show all groups",
       "noGroup": "There is no group to display."
     },
@@ -941,12 +958,12 @@
       "unsortedFav": "My Favorites",
       "unsortedGroup": "My groups",
       "unsortedService": "My applications",
+      "unsortedLinks": "My bookmarks",
       "newZone": "New Zone",
       "typeApplication": "Application",
       "typeGroup": "Group",
       "typeLink": "Link",
-      "addZoneStartButton": "Add a new zone at start",
-      "addZoneEndButton": "Add a new zone at the end",
+      "addZoneHere": "Add a zone here",
       "toggleEdition": "Toggle edition mode"
     },
     "HelpPage": {
@@ -1035,6 +1052,8 @@
     },
     "ArticlesPage": {
       "title": "Your publications",
+      "searchArticle": "Search publication",
+      "addNewArticle": "Add new publication",
       "openPublicPage": "All publications page",
       "copyOwnPublicPageUrl": "Copy url to your public publications page",
       "successCopyURL": "Public URL has been sent to clipboard",
@@ -1053,16 +1072,22 @@
       "contentLabel": "Content of the publication",
       "update": "Update",
       "save": "Publish",
-      "cancel": "Cancel",
+      "cancel": "Discard changes",
       "delete": "Delete",
       "copyPublicURL": "copy public URL",
       "successCopyURL": "Public URL has been sent to clipboard",
       "switchToHtml": "Classic editor",
       "switchToMarkdown": "Markdown editor",
-      "selectTag": "Select",
-      "save_draf": "Draft",
+      "selectTag": "Add",
+      "save_draf": "Save Draft",
       "draft": "Draft",
-      "createTag": "Create"
+      "createTag": "Create",
+      "CloseEditArticle": {
+        "title": "Discard changes",
+        "mainText": "Do you really want to close this page ? Any unsaved changes will be lost.",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
     },
     "PublicArticlePage": {
       "title": "Publications by",

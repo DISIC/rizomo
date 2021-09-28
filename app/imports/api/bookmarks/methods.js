@@ -40,12 +40,7 @@ function _createBookmarkUrl(url, name, tag, groupId, author) {
 
 export const createBookmark = new ValidatedMethod({
   name: 'bookmark.create',
-  validate: new SimpleSchema({
-    url: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.url') },
-    name: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.name') },
-    tag: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.tag') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator({ clean: true }),
+  validate: Bookmarks.schema.omit('author', 'icon').validator({ clean: true }),
 
   run({ url, name, groupId, tag }) {
     const isAllowed =
@@ -77,7 +72,7 @@ export const updateBookmark = new ValidatedMethod({
     id: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.id') },
     url: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.url') },
     name: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.name') },
-    tag: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.tag') },
+    tag: { type: String, regEx: SimpleSchema.RegEx.url, label: getLabel('api.bookmarks.labels.tag'), defaultValue: '' },
     groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
   }).validator({ clean: true }),
 
@@ -126,7 +121,6 @@ export const removeBookmark = new ValidatedMethod({
     if (!isAllowed) {
       throw new Meteor.Error('api.bookmarks.notPermitted', i18n.__('api.bookmarks.adminRankNeeded'));
     }
-
     Bookmarks.remove({ url });
 
     return null;

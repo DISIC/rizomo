@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { useAppContext } from '../../contexts/context';
 
 const useStyles = (isMobile) =>
-  makeStyles(() => ({
+  makeStyles((theme) => ({
     root: {
       width: '100%',
     },
@@ -34,7 +34,7 @@ const useStyles = (isMobile) =>
     paper: {
       overflow: 'auto',
       position: 'absolute',
-      width: isMobile ? '95%' : '50%',
+      width: isMobile ? '95%' : '25%',
       maxHeight: '100%',
       top: isMobile ? 0 : '50%',
       left: isMobile ? '2.5%' : '50%',
@@ -46,6 +46,11 @@ const useStyles = (isMobile) =>
     },
     groupCountInfo: {
       marginTop: 30,
+    },
+    buttonGroup: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginTop: theme.spacing(5),
     },
     alert: {
       margin: 8,
@@ -96,6 +101,7 @@ const AdminNextCloudUrlEdit = ({ data, open, onClose }) => {
             <Grid>
               <TextField
                 defaultValue={url}
+                fullWidth
                 label={i18n.__('components.AdminNextCloudUrlEdit.labelUrl')}
                 type="text"
                 onChange={updateURL}
@@ -103,10 +109,14 @@ const AdminNextCloudUrlEdit = ({ data, open, onClose }) => {
             </Grid>
           </CardContent>
           <CardActions className={classes.actions}>
-            <Button onClick={changeURL} variant="contained" color="primary">
-              {i18n.__('components.AdminNextCloudUrlEdit.ValidateForm')}
-            </Button>
-            <Button onClick={onClose}>{i18n.__('components.AdminNextCloudUrlEdit.cancel')}</Button>
+            <div className={classes.buttonGroup}>
+              <Button style={{ marginRight: 10 }} onClick={onClose}>
+                {i18n.__('components.AdminNextCloudUrlEdit.cancel')}
+              </Button>
+              <Button onClick={changeURL} variant="contained" color="primary">
+                {i18n.__('components.AdminNextCloudUrlEdit.ValidateForm')}
+              </Button>
+            </div>
           </CardActions>
         </Card>
       </div>

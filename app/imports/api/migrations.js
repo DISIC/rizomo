@@ -280,3 +280,25 @@ Migrations.add({
     Meteor.users.rawCollection().updateMany({}, { $unset: { advancedPersonalPage: true } });
   },
 });
+
+Migrations.add({
+  version: 16,
+  name: 'Add favUserBookmarks to users',
+  up: () => {
+    Meteor.users.update({}, { $set: { favUserBookmarks: [] } }, { multi: true });
+  },
+  down: () => {
+    Meteor.users.rawCollection().updateMany({}, { $unset: { favUserBookmarks: true } });
+  },
+});
+
+Migrations.add({
+  version: 17,
+  name: 'Rename nclocator field for users',
+  up: () => {
+    Meteor.users.rawCollection().updateMany({}, { $rename: { ncloud: 'nclocator' } });
+  },
+  down: () => {
+    Meteor.users.rawCollection().updateMany({}, { $rename: { nclocator: 'ncloud' } });
+  },
+});

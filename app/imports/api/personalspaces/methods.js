@@ -10,6 +10,7 @@ import PersonalSpaces from './personalspaces';
 import Groups from '../groups/groups';
 import Services from '../services/services';
 import logServer from '../logging';
+import UserBookmarks from '../userBookmarks/userBookmarks';
 
 const addItem = (userId, item) => {
   const currentPersonalSpace = PersonalSpaces.findOne({ userId });
@@ -100,6 +101,28 @@ export const addGroup = new ValidatedMethod({
   },
 });
 
+export const addUserBookmark = new ValidatedMethod({
+  name: 'personalspaces.addBookmark',
+  validate: new SimpleSchema({
+    bookmarkId: { type: String, regEx: SimpleSchema.RegEx.Id },
+  }).validator(),
+
+  run({ bookmarkId }) {
+    // check if active and logged in
+    if (!isActive(this.userId)) {
+      throw new Meteor.Error('api.personalspaces.addBookmark.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    const bookmark = UserBookmarks.findOne(bookmarkId);
+    if (bookmark === undefined) {
+      throw new Meteor.Error(
+        'api.personalspaces.addBookmark.unknownBookmark',
+        i18n.__('api.bookmarks.unknownBookmark'),
+      );
+    }
+    addItem(this.userId, { type: 'link', element_id: bookmarkId });
+  },
+});
+
 export const updatePersonalSpace = new ValidatedMethod({
   name: 'personalspaces.updatePersonalSpace',
   validate: new SimpleSchema({
@@ -132,9 +155,12 @@ export const checkPersonalSpace = new ValidatedMethod({
       throw new Meteor.Error('api.personalspaces.updatePersonalSpace.notPermitted', i18n.__('api.users.notPermitted'));
     }
     const currentPersonalSpace = PersonalSpaces.findOne({ userId: this.userId });
+    const u = Meteor.users.findOne(
+      { _id: this.userId },
+      { fields: { username: 1, favServices: 1, favGroups: 1, favUserBookmarks: 1 } },
+    );
     if (currentPersonalSpace === undefined) {
-      const u = Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1, favServices: 1, favGroups: 1 } });
-      logServer(`Regen personalspaces for ${u.username}...`);
+      logServer(`Regen Personalspace (not found) for ${u.username}...`);
       const unsorted = [];
       u.favServices.forEach((s) => {
         unsorted.push({
@@ -148,23 +174,24 @@ export const checkPersonalSpace = new ValidatedMethod({
           type: 'group',
         });
       });
+      u.favUserBookmarks.forEach((b) => {
+        unsorted.push({
+          element_id: b,
+          type: 'link',
+        });
+      });
       updatePersonalSpace._execute({ userId: this.userId }, { data: { userId: this.userId, unsorted, sorted: [] } });
       return; // No need to go further
     }
     let changeMade = false;
-    const elementIds = [];
+    const elementIds = { service: [], group: [], link: [] };
 
     const checkZone = (zone) => {
       // Loop zone elements backward so we can delete items by index
       for (let index = zone.length - 1; index >= 0; index -= 1) {
         const elem = zone[index];
-        if (elementIds.indexOf(elem.element_id) !== -1) {
+        if (elementIds[elem.type].indexOf(elem.element_id) !== -1) {
           // We have a duplicate card to delete
-          logServer(
-            `Remove personalspace duplicate ${elem.type} for ${
-              Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1 } }).username
-            }...`,
-          );
           zone.splice(index, 1);
           changeMade = true;
           // eslint-disable-next-line
@@ -175,18 +202,33 @@ export const checkPersonalSpace = new ValidatedMethod({
           const group = Groups.findOne(elem.element_id);
           if (group === undefined) {
             // group no more exists so delete element
-            logServer(
-              `Remove personalspace no more existing group for ${
-                Meteor.users.findOne({ _id: this.userId }, { fields: { username: 1 } }).username
-              }...`,
-            );
+            zone.splice(index, 1);
+            changeMade = true;
+            // eslint-disable-next-line
+            continue; // continue to next element
+          }
+        } else if (elem.type === 'link') {
+          // Check if link still exists
+          const link = UserBookmarks.findOne(elem.element_id);
+          if (link === undefined) {
+            // link no more exists so delete element
+            zone.splice(index, 1);
+            changeMade = true;
+            // eslint-disable-next-line
+            continue; // continue to next element
+          }
+        } else if (elem.type === 'service') {
+          // Check if service still exists
+          const service = Services.findOne(elem.element_id);
+          if (service === undefined) {
+            // service no more exists so delete element
             zone.splice(index, 1);
             changeMade = true;
             // eslint-disable-next-line
             continue; // continue to next element
           }
         }
-        elementIds.push(elem.element_id);
+        elementIds[elem.type].push(elem.element_id);
       }
     };
 
@@ -206,8 +248,53 @@ export const checkPersonalSpace = new ValidatedMethod({
   },
 });
 
+export const backToDefaultElement = new ValidatedMethod({
+  name: 'personalspaces.backToDefaultElement',
+  validate: new SimpleSchema({
+    elementId: { type: String, regEx: SimpleSchema.RegEx.Id },
+    type: String,
+  }).validator(),
+
+  run({ elementId, type }) {
+    // check if active and logged in
+    if (!isActive(this.userId)) {
+      throw new Meteor.Error('api.personalspaces.backToDefaultElement.notPermitted', i18n.__('api.users.notPermitted'));
+    }
+    // remove all entries matching item type and element_id
+    PersonalSpaces.update(
+      { userId: this.userId },
+      {
+        $pull: {
+          unsorted: { type, element_id: elementId },
+          'sorted.$[].elements': { type, element_id: elementId },
+        },
+      },
+    );
+    // add element in default zone according to element type
+    switch (type) {
+      case 'service':
+        addService._execute({ userId: this.userId }, { serviceId: elementId });
+        break;
+
+      case 'group':
+        addGroup._execute({ userId: this.userId }, { groupId: elementId });
+        break;
+
+      case 'link':
+        addUserBookmark._execute({ userId: this.userId }, { bookmarkId: elementId });
+        break;
+
+      default:
+        throw new Meteor.Error('api.personalspaces.backToDefaultElement.unknownType');
+    }
+  },
+});
+
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([updatePersonalSpace, removeElement, addService, addGroup, checkPersonalSpace], 'name');
+const LISTS_METHODS = _.pluck(
+  [updatePersonalSpace, removeElement, addService, addGroup, addUserBookmark, checkPersonalSpace, backToDefaultElement],
+  'name',
+);
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second

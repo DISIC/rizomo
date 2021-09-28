@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import Container from '@material-ui/core/Container';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -92,7 +92,7 @@ function AdminNextcloudUrlPage({ loading, nextclouds }) {
               // other props
               title={`${i18n.__('pages.AdminNextcloudUrlPage.title')}`}
               columns={columns}
-              data={nextclouds}
+              data={nextclouds.map((row) => ({ ...row, id: row._id }))}
               options={options}
               localization={setMaterialTableLocalization('pages.AdminNextcloudUrlPage')}
               actions={[

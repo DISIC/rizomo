@@ -19,6 +19,13 @@ const useStyles = (isMobile) =>
     root: {
       width: '100%',
     },
+    media: {
+      height: 0,
+      paddingTop: '56.25%', // 16:9
+    },
+    video: {
+      width: '100%',
+    },
     actions: {
       display: 'flex',
       justifyContent: 'center',
@@ -44,7 +51,7 @@ const useStyles = (isMobile) =>
     },
   }));
 
-const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
+const UserBookMarkEdit = ({ data, onEdit, open, onClose }) => {
   const [{ isMobile }] = useAppContext();
   const [url, setUrl] = useState(data.url);
   const [tag, setTag] = useState(data.tag);
@@ -59,12 +66,11 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
   const changeBookmark = () => {
     if (isValid) {
       Meteor.call(
-        'bookmark.updateURL',
+        'userBookmark.updateURL',
         {
           url,
           name,
           tag,
-          groupId: group._id,
         },
         function callbackQuota(error) {
           if (error) {
@@ -83,19 +89,18 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
   const createBookmark = () => {
     if (isValid) {
       Meteor.call(
-        'bookmark.create',
+        'userBookmark.create',
         {
           url,
           name,
           tag,
-          groupId: group._id,
         },
         function callbackQuota(error, urlFinal) {
           if (error) {
             msg.error(i18n.__('api.bookmarks.creationFailed'));
           } else {
             msg.success(i18n.__('api.methods.operationSuccessMsg'));
-            Meteor.call('bookmark.getFavicon', { url: urlFinal });
+            Meteor.call('userBookmark.getFavicon', { url: urlFinal });
             onClose();
           }
         },
@@ -191,12 +196,11 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
   );
 };
 
-BookMarkEdit.propTypes = {
+UserBookMarkEdit.propTypes = {
   data: PropTypes.objectOf(PropTypes.any).isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  group: PropTypes.objectOf(PropTypes.any).isRequired,
   onEdit: PropTypes.bool.isRequired,
 };
 
-export default BookMarkEdit;
+export default UserBookMarkEdit;

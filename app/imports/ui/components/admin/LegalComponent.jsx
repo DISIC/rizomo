@@ -133,12 +133,12 @@ const LegalComponent = ({ tabkey, data = {} }) => {
       )}
       {changes && (
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary" onClick={onSubmitUpdateData} disabled={loading}>
-            {i18n.__('components.LegalComponent.update')}
-          </Button>
-
           <Button variant="contained" onClick={onCancel} disabled={loading}>
             {i18n.__('components.LegalComponent.cancel')}
+          </Button>
+
+          <Button variant="contained" color="primary" onClick={onSubmitUpdateData} disabled={loading}>
+            {i18n.__('components.LegalComponent.update')}
           </Button>
         </div>
       )}

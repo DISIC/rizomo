@@ -6,11 +6,13 @@
         "name": "nom",
         "author": "auteur",
         "groupId": "ID groupe",
-        "tag": "étiquette",
+        "tag": "commentaire",
         "id": "ID",
         "icon": "favicon"
       },
+      "creationFailed": "Echec lors de la création. Assurez-vous que tous les champs soient convenablement remplis.",
       "UnknownURL": "Cette URL n'existe pas.",
+      "unknownBookmark": "Ce marque-page n'existe pas.",
       "notPermitted": "Vous n'avez pas les droits nécessaires.",
       "adminRankNeeded": "Rang d'administrateur ou statut d'auteur requis.",
       "groupRankNeeded": "Vous devez faire partie de ce groupe.",
@@ -85,6 +87,7 @@
         "isActive": "Utilisateur Actif",
         "isRequest": "Utilisateur En Attente De Validation",
         "favServices": "Services Favoris",
+        "favUserBookmarks": "Marque-pages favoris",
         "structure": "Structure De Rattachement",
         "primaryEmail": "Adresse Électronique principale",
         "language": "Langage Préféré",
@@ -333,7 +336,7 @@
       "mainText": "Entrez les informations du marque-page",
       "labelUrl": "URL",
       "labelName": "Nom",
-      "labelTag": "Etiquette",
+      "labelTag": "Commentaire",
       "ValidateFormUpdate": "Mettre à jour",
       "ValidateFormCreate": "Créer",
       "cancel": "Annuler"
@@ -398,6 +401,8 @@
     "MenuBar": {
       "menuMyspace": "Mon Espace Personnel",
       "menuMyspaceMobile": "Mon Espace",
+      "menuArticles": "Mes publications",
+      "menuArticlesMobile": "Publications",
       "menuHelp": "Aide",
       "menuServices": "Applications",
       "menuStructure": "Ma Structure",
@@ -417,7 +422,8 @@
       "favSuccessMsg": "Ajouté à votre espace personnel",
       "open": "Ouvrir",
       "pin": "Épingler",
-      "unpin": "Retirer"
+      "unpin": "Retirer",
+      "backToDefault": "Remettre dans la zone par défaut"
     },
     "TopBar": {
       "sideMenuOpenLabel": "Ouvrir le menu latéral",
@@ -432,7 +438,7 @@
       "menuAdminTags": "Gestion des mots clé",
       "menuAdminGroups": "Gestion des Groupes",
       "menuAdminUsers": "Gestion des utilisateurs",
-      "menuPublications": "Publications",
+      "menuUserBookmarks": "Marque-pages",
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
       "menuMedias": "Stockage de Médias",
@@ -470,7 +476,7 @@
         "body_addTooltip": "Ajouter un utilisateur",
         "body_editTooltip": "Modifier cet utilisateur",
         "body_deleteTooltip": "Enlever cet utilisateur",
-        "body_editRow_deleteText": "Enlever vraiment cet utilisateur ?",
+        "body_editRow_deleteText": "Souhaitez vous réellement enlever cet utilisateur ?",
         "body_addGroupTooltip": "Ajouter les membres d'un autre groupe"
       }
     },
@@ -487,9 +493,10 @@
       "close": "Fermer"
     },
     "TagFinder": {
+      "addTag": "Ajouter ",
       "noTag": "Aucun utilisateur trouvé",
       "tagLabel": "Mot clé",
-      "placeholder": "Saisir pour rechercher",
+      "placeholder": "Saisir un mot clé",
       "clear": "Effacer",
       "loading": "Chargement...",
       "open": "Ouvrir",
@@ -528,7 +535,8 @@
     "GroupDetailsPersSpace": {
       "groupCandidate": "Candidat",
       "groupAdmin": "Administrateur",
-      "groupNone": "Aucun rôle"
+      "groupNone": "Aucun rôle",
+      "backToDefault": "Remettre dans la zone par défaut"
     },
     "AppVersion": {
       "title": "Version"
@@ -538,17 +546,18 @@
       "forbiddenDelZoneLabel": "Vider la zone pour la supprimer",
       "upZoneLabel": "Faire monter cette zone",
       "downZoneLabel": "Faire descendre cette zone",
-      "addPersonalLink": "Ajouter un lien personnel à cette zone",
       "emptyDragZone": "Glissez les éléments ici",
       "modifyTitle": "Modifier le titre de la zone"
     },
     "PersonalLinkDetails": {
       "visitLink": "Visiter ce lien",
-      "delLink": "Supprimer ce lien",
       "titleLabel": "Titre du lien",
       "urlLabel": "Url du lien",
       "modifyLink": "Modifier le lien",
-      "saveLink": "Enregistrer le lien"
+      "saveLink": "Enregistrer le lien",
+      "favButtonLabelNoFav": "Supprimer de votre espace personnel",
+      "unfavSuccessMsg": "Supprimé de votre espace personnel",
+      "backToDefault": "Remettre dans la zone par défaut"
     },
     "ArticleDetails": {
       "editArticleButtonLabel": "Editer cette publication",
@@ -676,16 +685,21 @@
     "pagination_nextTooltip": "Page suivante",
     "pagination_lastTooltip": "Dernière page",
     "body_editRow_cancelTooltip": "Annuler",
-    "body_editRow_saveTooltip": "Enregistrer les changements"
+    "body_editRow_saveTooltip": "Valider"
   },
   "pages": {
+    "UserBookmarksPage": {
+      "back": "Retour",
+      "favoriteBookmark": "Ajouter à votre espace personnel",
+      "unfavoriteBookmark": "Supprimer de votre espace personnel"
+    },
     "BookmarksPage": {
       "columnIcon": "Favicon",
       "columnName": "Nom",
-      "columnTag": "Etiquette",
+      "columnTag": "Commentaire",
       "columnUrl": "URL",
       "columnAuthor": "Auteur",
-      "filterTitle": "Filtrer les marque-pages",
+      "filterTitle": "Seulement mes marque-pages",
       "disableFilter": "Afficher tous les marque-pages",
       "enableFilter": "Afficher seulement mes marque-pages",
       "noAccess": "Vous n'avez pas accès aux marque-pages de ce groupe",
@@ -752,7 +766,8 @@
       "textLabel": "Texte",
       "captchaInfo": "Indiquez le résultat de l'opération",
       "redirectMsg": "Formulaire envoyé. Redirection automatique en cours...",
-      "redirectTime": "secondes"
+      "redirectTime": "secondes",
+      "cancel": "Annuler"
     },
     "ProfilePage": {
       "title": "Mes préférences",
@@ -764,7 +779,8 @@
       "valueRequired": "Ce champ ne peut pas être vide",
       "updateSuccess": "Profil mis à jour avec succès",
       "noModifications": "Aucun changement à appliquer",
-      "keycloakProcedure": "Les données ci-dessus doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
+      "keycloakProcedure": "Les données ci-dessous doivent être modifiées dans l'application \"Mon compte\". Vous devrez ensuite vous déconnecter/reconnecter pour les mettre à jour.",
+      "keycloakProcedureLink": "Vous pouvez accéder à l'application en cliquant ici",
       "logoutType": "Portée de la déconnexion",
       "backupTitle": "Téléchargez vos données de publication",
       "backupMessage": "Vous pouvez utilisez ces boutons pour télécharger vos données afin de les sauvegarder. Il vous est également possible de charger des données que vous auriez téléchargées d'une autre instance de la boite.",
@@ -775,7 +791,8 @@
       "useCam": "Utiliser la webcam",
       "useGallery": "Choisir parmi la galerie d'images",
       "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle.",
-      "advancedPersonalPage": "Activer l'espace perso avancé"
+      "advancedPersonalPage": "Activer l'espace personnel avancé",
+      "languageLabel": "Choix de la langue"
     },
     "NotFound": {
       "backButtonLabel": "Retour",
@@ -790,7 +807,7 @@
       "tabsLabel": "Onglet des services",
       "tabFavServicesLabel": "Mes services épinglés",
       "tabAllServicesLabel": "Tous les services",
-      "searchText": "De quelle application avez-vous besoin ?",
+      "emptyFilter": "Aucun filtre n'est présent.",
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste",
@@ -806,6 +823,7 @@
       "viewList": "Mode liste",
       "endOfList": "Fin de la liste",
       "filterGroup": "Afficher uniquement les groupes rejoints",
+      "filterGroupLabel": "Mes groupes seulement",
       "disableFilterGroup": "Afficher tous les groupes",
       "noGroup": "Il n'y a aucun groupe à afficher."
     },
@@ -824,7 +842,7 @@
         "body_editTooltip": "Modifier ce service",
         "body_goTooltip": "Aller à ce service",
         "body_deleteTooltip": "Supprimer ce service",
-        "body_editRow_deleteText": "Supprimer vraiment ce service ?"
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer ce service ?"
       }
     },
     "AdminCategoriesPage": {
@@ -837,7 +855,7 @@
         "body_addTooltip": "Ajouter une catégorie",
         "body_editTooltip": "Modifier cette catégorie",
         "body_deleteTooltip": "Supprimer cette catégorie",
-        "body_editRow_deleteText": "Supprimer vraiment cette catégorie ?"
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer cette catégorie ?"
       }
     },
     "AdminTagsPage": {
@@ -850,7 +868,7 @@
         "body_addTooltip": "Ajouter un Mot clé",
         "body_editTooltip": "Modifier ce Mot clé",
         "body_deleteTooltip": "Supprimer ce Mot clé",
-        "body_editRow_deleteText": "Supprimer vraiment ce Mots clé ?"
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer ce Mot clé ?"
       }
     },
     "AdminGroupsPage": {
@@ -867,7 +885,7 @@
         "body_addTooltip": "Ajouter un groupe",
         "body_editTooltip": "Modifier ce groupe",
         "body_deleteTooltip": "Supprimer ce groupe",
-        "body_editRow_deleteText": "Supprimer vraiment ce groupe ?"
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer ce groupe ?"
       }
     },
     "AdminNextcloudUrlPage": {
@@ -884,7 +902,7 @@
         "body_emptyDataSourceMessage": "Aucune URL présente",
         "pagination_labelRowsSelect": "URL par page",
         "toolbar_searchPlaceholder": "Rechercher une URL",
-        "body_editRow_deleteText": "Supprimer vraiment cette URL ?",
+        "body_editRow_deleteText": "Souhaitez vous réellement supprimer cette URL ?",
         "body_deleteTooltip": "Supprimer cette URL",
         "activated": "Oui",
         "deactivated": "Non"
@@ -897,7 +915,7 @@
       "setAdmin": "Donner les droits d'administrateur",
       "unsetAdmin": "Enlever les droits d'administrateur",
       "deleteUser": "Supprimer l'utilisateur",
-      "deleteUserConfirmation": "Supprimer vraiment cet utilisateur ?",
+      "deleteUserConfirmation": "Souhaitez vous réellement supprimer cet utilisateur ?",
       "deleteSelfConfirmation": "Vous allez supprimer votre propre compte. Continuer ?",
       "cancelDelete": "Annuler la suppression",
       "successSetAdmin": "Droits d'administrateur donnés",
@@ -945,12 +963,12 @@
       "unsortedFav": "Mes Favoris",
       "unsortedGroup": "Mes groupes",
       "unsortedService": "Mes applications",
+      "unsortedLinks": "Mes marque-pages",
       "newZone": "Nouvelle Zone",
       "typeApplication": "Application",
       "typeGroup": "Groupe",
       "typeLink": "Lien",
-      "addZoneStartButton": "Ajouter une nouvelle zone au début",
-      "addZoneEndButton": "Ajouter une nouvelle zone à la fin",
+      "addZoneHere": "Ajouter une zone ici",
       "toggleEdition": "Activer/Désactiver le mode édition"
     },
     "HelpPage": {
@@ -1038,6 +1056,8 @@
     },
     "ArticlesPage": {
       "title": "Vos publications",
+      "searchArticle": "Chercher une publication",
+      "addNewArticle": "Créer une publication",
       "openPublicPage": "Voir toutes les publications",
       "copyOwnPublicPageUrl": "Copier le lien vers la page publique de vos publications",
       "successCopyURL": "URL publique copiée dans le presse-papier",
@@ -1056,16 +1076,22 @@
       "contentLabel": "Contenu de cette publication",
       "update": "Mettre à jour",
       "save": "Publier",
-      "cancel": "Annuler",
+      "cancel": "Annuler les modifications",
       "delete": "Supprimer",
       "copyPublicURL": "Copier l'URL publique",
       "successCopyURL": "URL publique copiée dans le presse-papier",
       "switchToHtml": "Éditeur Classic",
       "switchToMarkdown": "Éditeur Markdown",
-      "selectTag": "Sélectionner",
-      "save_draf": "Brouillon",
+      "selectTag": "Ajouter",
+      "save_draf": "Enregistrer le brouillon",
       "draft": "Brouillon",
-      "createTag": "Créer"
+      "createTag": "Créer",
+      "CloseEditArticle": {
+        "title": "Annuler les modifications",
+        "mainText": "Souhaitez-vous réellement fermer cette page ? Toutes les modifications non enregistrées seront perdues.",
+        "confirm": "Confirmer",
+        "cancel": "Annuler"
+      }
     },
     "PublicArticlePage": {
       "title": "Publications de",

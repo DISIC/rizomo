@@ -13,6 +13,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Zoom from '@material-ui/core/Zoom';
+import PublishIcon from '@material-ui/icons/Publish';
 
 import i18n from 'meteor/universe:i18n';
 
@@ -28,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
   cardHeaderContent: { display: 'grid' },
   cardActions: {
     paddingTop: 0,
-    justifyContent: 'end',
+    paddingBottom: 10,
+    justifyContent: 'space-between',
   },
   serviceName: {
     color: theme.palette.primary.main,
@@ -37,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.disabled,
   },
   actionarea: {},
+  span: {
+    flex: '1 0 auto',
+  },
   fab: {
     textTransform: 'none',
     color: theme.palette.primary.main,
@@ -49,10 +54,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
+function ServiceDetailsPersSpace({ service, customDrag, isMobile, isSorted, needUpdate }) {
   const classes = useStyles();
   const history = useHistory();
   const favButtonLabel = i18n.__('components.ServiceDetails.favButtonLabelNoFav');
+  const backToDefaultButtonLabel = i18n.__('components.ServiceDetails.backToDefault');
 
   const handleFavorite = () => {
     Meteor.call('services.unfavService', { serviceId: service._id }, (err) => {
@@ -72,11 +78,21 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
     }
   };
 
+  const handleBackToDefault = () => {
+    Meteor.call('personalspaces.backToDefaultElement', { elementId: service._id, type: 'service' }, (err) => {
+      if (err) {
+        msg.error(err.reason);
+      } else {
+        needUpdate();
+      }
+    });
+  };
+
   return (
     <Card className={classes.card} elevation={3}>
       <Tooltip
         TransitionComponent={Zoom}
-        enterDelay={2000}
+        enterDelay={600}
         title={
           <>
             <Typography>{service.title}</Typography>
@@ -87,7 +103,7 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
       >
         {/* this span is to allow display of tooltip when CardActionArea is disabled 
         (occur when a service is disabled) */}
-        <span>
+        <span className={classes.span}>
           <CardActionArea
             className={classes.actionarea}
             disabled={service.state === 5 || customDrag}
@@ -122,6 +138,13 @@ function ServiceDetailsPersSpace({ service, customDrag, isMobile }) {
       </Tooltip>
       {customDrag ? (
         <CardActions className={classes.cardActions}>
+          {isSorted ? (
+            <Tooltip title={backToDefaultButtonLabel} aria-label={backToDefaultButtonLabel}>
+              <Button variant="outlined" size="small" className={classes.fab} onClick={handleBackToDefault}>
+                <PublishIcon />
+              </Button>
+            </Tooltip>
+          ) : null}
           <Tooltip title={favButtonLabel} aria-label={favButtonLabel}>
             <Button variant="outlined" size="small" className={classes.fab} onClick={handleFavorite}>
               <RemoveIcon />
@@ -137,6 +160,8 @@ ServiceDetailsPersSpace.propTypes = {
   service: PropTypes.objectOf(PropTypes.any).isRequired,
   customDrag: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
+  isSorted: PropTypes.bool.isRequired,
+  needUpdate: PropTypes.func.isRequired,
 };
 
 export default ServiceDetailsPersSpace;

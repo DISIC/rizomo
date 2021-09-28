@@ -9,9 +9,8 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionActions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
-import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -23,6 +22,7 @@ import Badge from '@material-ui/core/Badge';
 import { useAppContext } from '../../contexts/context';
 import Services from '../../../api/services/services';
 import Groups from '../../../api/groups/groups';
+import UserBookmarks from '../../../api/userBookmarks/userBookmarks';
 import ServiceDetailsPersSpace from '../services/ServiceDetailsPersSpace';
 import GroupDetailsPersSpace from '../groups/GroupDetailsPersSpace';
 import PersonalLinkDetails from './PersonalLinkDetails';
@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
     '&::before': {
       content: 'none',
     },
-    backgroundColor: '#f9f9fd',
+    backgroundColor: '#f1f1fc',
+    padding: '4px !important',
   },
   expansionpanelsummaryexpanded: {
-    margin: '0 !important',
     minHeight: '0 !important',
   },
   expansionpanelsummarycontent: {
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'grab',
     position: 'absolute',
     textAlign: 'center',
-    width: 'calc(100% - 32px)',
+    width: 'calc(100% - 8px)',
     backgroundColor: theme.palette.primary.main,
     opacity: 0.2,
     height: 20,
@@ -138,7 +138,6 @@ const useStyles = makeStyles((theme) => ({
   },
   zoneButton: {
     color: theme.palette.primary.main,
-    opacity: 0.5,
     cursor: 'pointer',
     '&:hover': {
       opacity: 1,
@@ -160,13 +159,11 @@ const PersonalZone = ({
   lastZone,
   moveDownZone,
   moveUpZone,
-  addPersonalLink,
-  updatePersonalLink,
-  delPersonalLink,
   customDrag,
   isSorted,
   isExpanded,
   setExpanded,
+  needUpdate,
 }) => {
   const classes = useStyles();
   const [{ userId, isMobile }] = useAppContext();
@@ -211,6 +208,10 @@ const PersonalZone = ({
     }
   };
 
+  const handleNeedUpdate = () => {
+    needUpdate();
+  };
+
   return (
     <Accordion className={classes.expansionpanel} expanded={isSorted ? isExpanded : localIsExpanded}>
       <AccordionSummary
@@ -226,7 +227,7 @@ const PersonalZone = ({
         className={customDrag && isSorted ? classes.cursorDefault : null}
         classes={{ expanded: classes.expansionpanelsummaryexpanded, content: classes.expansionpanelsummarycontent }}
       >
-        <Typography variant="h6" color="primary" className={classes.zone}>
+        <Typography variant="h5" color="primary" className={classes.zone}>
           <div>
             <Badge
               classes={{ badge: classes.badge }}
@@ -254,15 +255,6 @@ const PersonalZone = ({
                 <EditIcon className={classes.zoneButton} fontSize="small" />
               </IconButton>
             )}
-            {customDrag && isSorted && (
-              <IconButton
-                onClick={() => addPersonalLink(index)}
-                className={classes.zoneButton}
-                title={i18n.__('components.PersonalZone.addPersonalLink')}
-              >
-                <AddCircleOutlineIcon />
-              </IconButton>
-            )}
           </div>
           {customDrag && isSorted ? (
             <div className={classes.buttonZone}>
@@ -272,7 +264,7 @@ const PersonalZone = ({
                 title={i18n.__('components.PersonalZone.upZoneLabel')}
                 disabled={index === 0}
               >
-                <VerticalAlignTopIcon />
+                <ArrowUpwardIcon />
               </IconButton>
               <IconButton
                 onClick={() => moveDownZone(index)}
@@ -280,7 +272,7 @@ const PersonalZone = ({
                 title={i18n.__('components.PersonalZone.downZoneLabel')}
                 disabled={lastZone}
               >
-                <VerticalAlignBottomIcon />
+                <ArrowDownwardIcon />
               </IconButton>
               <Tooltip
                 title={
@@ -310,7 +302,7 @@ const PersonalZone = ({
       </AccordionSummary>
       <AccordionDetails>
         <ReactSortable
-          className={`MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 ${
+          className={`MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 ${
             elements.length === 0 ? `${classes.emptyZone} ${customDrag ? classes.emptyDragZone : ''}` : ''
           }`}
           list={elements}
@@ -342,7 +334,13 @@ const PersonalZone = ({
                           lg={3}
                         >
                           <div className={customDrag ? classes.handle : null} />
-                          <ServiceDetailsPersSpace service={myservice} customDrag={customDrag} isMobile={isMobile} />
+                          <ServiceDetailsPersSpace
+                            service={myservice}
+                            customDrag={customDrag}
+                            isMobile={isMobile}
+                            isSorted={isSorted}
+                            needUpdate={handleNeedUpdate}
+                          />
                         </Grid>
                       );
                     }
@@ -368,12 +366,15 @@ const PersonalZone = ({
                             admin={managedGroups.includes(elem.element_id)}
                             globalAdmin={isAdmin}
                             customDrag={customDrag}
+                            isSorted={isSorted}
+                            needUpdate={handleNeedUpdate}
                           />
                         </Grid>
                       );
                     }
                     case 'link': {
-                      return (
+                      const myLink = UserBookmarks.findOne(elem.element_id);
+                      return myLink === undefined ? null : (
                         <Grid
                           className={classes.gridItem}
                           item
@@ -385,11 +386,11 @@ const PersonalZone = ({
                         >
                           <div className={customDrag ? classes.handle : null} />
                           <PersonalLinkDetails
-                            link={elem}
+                            link={myLink}
                             isMobile={isMobile}
                             globalEdit={customDrag}
-                            updateLink={(linkId) => updatePersonalLink(index, linkId)}
-                            delLink={(newLink) => delPersonalLink(index, newLink)}
+                            isSorted={isSorted}
+                            needUpdate={handleNeedUpdate}
                           />
                         </Grid>
                       );
@@ -418,13 +419,11 @@ PersonalZone.propTypes = {
   lastZone: PropTypes.bool,
   moveDownZone: PropTypes.func,
   moveUpZone: PropTypes.func,
-  addPersonalLink: PropTypes.func,
-  updatePersonalLink: PropTypes.func,
-  delPersonalLink: PropTypes.func,
   customDrag: PropTypes.bool.isRequired,
   isSorted: PropTypes.bool,
   isExpanded: PropTypes.bool,
   setExpanded: PropTypes.func,
+  needUpdate: PropTypes.func.isRequired,
 };
 
 PersonalZone.defaultProps = {
@@ -437,9 +436,6 @@ PersonalZone.defaultProps = {
   lastZone: false,
   moveDownZone: null,
   moveUpZone: null,
-  addPersonalLink: null,
-  updatePersonalLink: null,
-  delPersonalLink: null,
 };
 
 export default PersonalZone;

@@ -12,14 +12,13 @@ import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import Switch from '@material-ui/core/Switch';
+import EditIcon from '@material-ui/icons/Edit';
 import LockIcon from '@material-ui/icons/Lock';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import SearchIcon from '@material-ui/icons/Search';
@@ -31,6 +30,7 @@ import PersonalSpaces from '../../api/personalspaces/personalspaces';
 import PersonalZone from '../components/personalspace/PersonalZone';
 import Animation from '../components/screencast/Animation';
 import { useAppContext } from '../contexts/context';
+import UserBookmarks from '../../api/userBookmarks/userBookmarks';
 
 const useStyles = (isMobile) =>
   makeStyles((theme) => ({
@@ -49,12 +49,18 @@ const useStyles = (isMobile) =>
       alignItems: 'center',
       paddingTop: '0 !important',
     },
+    zoneButtonContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
     flex: {
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
       justifyContent: 'space-between',
       alignItems: isMobile ? 'flex-start' : 'center',
     },
+    flexGrow: {},
     cardGrid: {
       paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(2),
@@ -71,9 +77,10 @@ const useStyles = (isMobile) =>
     ghost: {
       opacity: '1 !important',
     },
-    spaceBetween: {
+    titleButtons: {
       display: 'flex',
-      justifyContent: 'space-between',
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     handle: {
       cursor: 'grab',
@@ -95,21 +102,15 @@ const useStyles = (isMobile) =>
         borderRadius: theme.shape.borderRadius,
       },
     },
-    zoneButton: {
-      color: theme.palette.primary.main,
-      opacity: 0.5,
-      cursor: 'pointer',
-      '&:hover': {
-        opacity: 1,
-        color: theme.palette.error.main,
-      },
-    },
     zoneButtonEnd: {
-      opacity: 0.5,
+      opacity: 0.7,
+      textTransform: 'none',
+      // width: '80%',
       cursor: 'pointer',
       '&:hover': {
         opacity: 1,
-        color: theme.palette.error.main,
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.tertiary.main,
       },
     },
     divider: {
@@ -130,7 +131,7 @@ const useStyles = (isMobile) =>
     },
   }));
 
-function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
+function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLinks }) {
   const AUTOSAVE_INTERVAL = 3000;
   const [{ user, loadingUser, isMobile }] = useAppContext();
   const [customDrag, setcustomDrag] = useState(false);
@@ -157,7 +158,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     let searchText = '';
     switch (element.type) {
       case 'service': {
-        const service = Services.findOne({ _id: element.element_id });
+        const service = Services.findOne(element.element_id);
         searchText = service !== undefined ? service.title : '';
         break;
       }
@@ -167,7 +168,8 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
         break;
       }
       case 'link': {
-        searchText = element.title || '';
+        const userBookmark = UserBookmarks.findOne(element.element_id);
+        searchText = userBookmark !== undefined ? `${userBookmark.name} ${userBookmark.url}` : '';
         break;
       }
       default:
@@ -176,6 +178,10 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     }
     searchText = searchText.toLowerCase();
     return searchText.indexOf(search.toLowerCase()) > -1;
+  };
+
+  const filterLink = (element) => {
+    return element.type === 'link';
   };
 
   const filterGroup = (element) => {
@@ -202,7 +208,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
 
   const [localPS, setLocalPS] = useState({});
   useEffect(() => {
-    if (personalspace && allServices && allGroups) {
+    if (personalspace && allServices && allGroups && allLinks) {
       // Called once
       Meteor.call('personalspaces.checkPersonalSpace', {}, (err) => {
         if (err) {
@@ -213,7 +219,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
   }, []);
 
   useEffect(() => {
-    if (personalspace && allServices && allGroups) {
+    if (personalspace && allServices && allGroups && allLinks) {
       setLocalPS(personalspace);
     }
   }, [personalspace]);
@@ -265,9 +271,20 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
         setLocalPS({ ...localPS, sorted });
       }
     } else if (type === 'service') {
-      setLocalPS({ ...localPS, unsorted: [...list, ...localPS.unsorted.filter(filterGroup)] });
+      setLocalPS({
+        ...localPS,
+        unsorted: [...list, ...localPS.unsorted.filter(filterGroup), ...localPS.unsorted.filter(filterLink)],
+      });
+    } else if (type === 'link') {
+      setLocalPS({
+        ...localPS,
+        unsorted: [...list, ...localPS.unsorted.filter(filterGroup), ...localPS.unsorted.filter(filterService)],
+      });
     } else {
-      setLocalPS({ ...localPS, unsorted: [...list, ...localPS.unsorted.filter(filterService)] });
+      setLocalPS({
+        ...localPS,
+        unsorted: [...list, ...localPS.unsorted.filter(filterService), ...localPS.unsorted.filter(filterLink)],
+      });
     }
   };
 
@@ -329,38 +346,9 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
     setPsNeedUpdate(true);
   };
 
-  const addLink = (zoneIndex) => {
-    const { sorted } = localPS;
-    const newLink = {
-      type: 'link',
-      element_id: Random.id(),
-      title: '',
-      url: '',
-    };
-    if (sorted[zoneIndex].isExpanded !== true) {
-      // Expand zone to add the new link
-      sorted[zoneIndex].isExpanded = true;
-    }
-    sorted[zoneIndex].elements.unshift(newLink);
-    setLocalPS({ ...localPS, sorted });
-    setPsNeedUpdate(true);
-  };
-
-  const updateLink = (zoneIndex, link) => {
-    const { sorted } = localPS;
-    const linkIndex = sorted[zoneIndex].elements.map((item) => item.element_id).indexOf(link.element_id);
-    sorted[zoneIndex].elements[linkIndex].title = link.title;
-    sorted[zoneIndex].elements[linkIndex].url = link.url;
-    setLocalPS({ ...localPS, sorted });
-    setPsNeedUpdate(true);
-  };
-
-  const delLink = (zoneIndex, linkId) => () => {
-    const { sorted } = localPS;
-    const removeIndex = sorted[zoneIndex].elements.map((item) => item.element_id).indexOf(linkId);
-    sorted[zoneIndex].elements.splice(removeIndex, 1);
-    setLocalPS({ ...localPS, sorted });
-    setPsNeedUpdate(true);
+  const handleNeedUpdate = () => {
+    // Call by elements when click on handleBackToDefault
+    setPsNeedUpdate(false);
   };
 
   const notReady = isLoading || loadingUser;
@@ -378,43 +366,43 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                   <Grid item>
                     <Typography variant={isMobile ? 'h5' : 'h4'}>{i18n.__('pages.PersonalPage.welcome')}</Typography>
                   </Grid>
-                  <Grid item>
-                    <IconButton onClick={toggleSearch} disabled={customDrag}>
-                      <SearchIcon fontSize="large" />
-                    </IconButton>
+                  <Grid item style={isMobile ? { width: '100%' } : { flexGrow: 1 }}>
+                    <Grid container className={classes.titleButtons}>
+                      <Grid item style={{ flexGrow: 1 }}>
+                        <IconButton onClick={toggleSearch} disabled={customDrag}>
+                          <SearchIcon fontSize="large" />
+                        </IconButton>
+                      </Grid>
+                      {user.advancedPersonalPage ? (
+                        <Grid item>
+                          <Grid
+                            className={classes.modeEdition}
+                            component="label"
+                            container
+                            alignItems="center"
+                            spacing={1}
+                            title={i18n.__('pages.PersonalPage.toggleEdition')}
+                          >
+                            <Grid item>
+                              <LockIcon color="primary" />
+                            </Grid>
+                            <Grid item>
+                              <Switch
+                                checked={customDrag}
+                                onChange={handleCustomDrag}
+                                value="customDrag"
+                                color="primary"
+                              />
+                            </Grid>
+                            <Grid item>
+                              <EditIcon color="primary" />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
-                <div className={classes.spaceBetween}>
-                  {customDrag ? (
-                    <IconButton
-                      onClick={() => addZone(0)}
-                      className={classes.zoneButton}
-                      title={i18n.__('pages.PersonalPage.addZoneStartButton')}
-                    >
-                      <AddBoxIcon />
-                    </IconButton>
-                  ) : null}
-                  {user.advancedPersonalPage ? (
-                    <Grid
-                      className={classes.modeEdition}
-                      component="label"
-                      container
-                      alignItems="center"
-                      spacing={1}
-                      title={i18n.__('pages.PersonalPage.toggleEdition')}
-                    >
-                      <Grid item>
-                        <LockIcon />
-                      </Grid>
-                      <Grid item>
-                        <Switch checked={customDrag} onChange={handleCustomDrag} value="customDrag" color="primary" />
-                      </Grid>
-                      <Grid item>
-                        <LockOpenIcon />
-                      </Grid>
-                    </Grid>
-                  ) : null}
-                </div>
               </Grid>
               <Grid container spacing={4}>
                 <Grid item xs={12} sm={12} md={6} className={searchToggle ? classes.search : classes.small}>
@@ -474,6 +462,7 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                     suspendUpdate={suspendUpdate}
                     updateList={updateList}
                     customDrag={customDrag}
+                    needUpdate={handleNeedUpdate}
                   />,
                 ]
               : null}
@@ -487,10 +476,38 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                     suspendUpdate={suspendUpdate}
                     updateList={updateList}
                     customDrag={customDrag}
+                    needUpdate={handleNeedUpdate}
                   />,
                 ]
               : null}
-            {localPS.unsorted.length !== 0 ? [<Divider key="div-000000000000" className={classes.divider} />] : null}
+            {localPS.unsorted.filter(filterLink).length !== 0
+              ? [
+                  <PersonalZone
+                    key="zone-favUserBookmark-000000000000"
+                    elements={localPS.unsorted.filter(filterSearch).filter(filterLink)}
+                    title={i18n.__('pages.PersonalPage.unsortedLinks')}
+                    setList={setZoneList('link')}
+                    suspendUpdate={suspendUpdate}
+                    updateList={updateList}
+                    customDrag={customDrag}
+                    needUpdate={handleNeedUpdate}
+                  />,
+                ]
+              : null}
+            {customDrag && localPS.sorted.length >= 1 ? (
+              <div className={classes.zoneButtonContainer}>
+                <Button
+                  startIcon={<AddBoxIcon />}
+                  onClick={() => addZone(0)}
+                  className={classes.zoneButtonEnd}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
+                  {i18n.__('pages.PersonalPage.addZoneHere')}
+                </Button>
+              </div>
+            ) : null}
             {localPS.sorted.map(({ zone_id: zoneId, elements, name, isExpanded }, index) => [
               <PersonalZone
                 key={`zone-${zoneId}`}
@@ -505,31 +522,29 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups }) {
                 lastZone={localPS.sorted.length === index + 1}
                 moveDownZone={downZone}
                 moveUpZone={upZone}
-                addPersonalLink={addLink}
-                updatePersonalLink={updateLink}
-                delPersonalLink={delLink}
                 customDrag={customDrag}
                 isSorted
                 isExpanded={isExpanded}
                 setExpanded={setExpanded}
+                needUpdate={handleNeedUpdate}
               />,
               // localPS.sorted.length !== index + 1 ? (
               //   <Divider className={classes.divider} key={`div-${zoneId}`} />
               // ) : null,
             ])}
             {customDrag ? (
-              <>
-                <Divider className={classes.divider} key="div-addEnd" />
+              <div className={classes.zoneButtonContainer}>
                 <Button
+                  startIcon={<AddBoxIcon />}
                   onClick={() => addZone(1)}
                   className={classes.zoneButtonEnd}
                   variant="contained"
                   color="primary"
                   fullWidth
                 >
-                  {i18n.__('pages.PersonalPage.addZoneEndButton')}
+                  {i18n.__('pages.PersonalPage.addZoneHere')}
                 </Button>
-              </>
+              </div>
             ) : null}
           </Container>
         </Fade>
@@ -543,6 +558,7 @@ PersonalPage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   allServices: PropTypes.arrayOf(PropTypes.object).isRequired,
   allGroups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allLinks: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default withTracker(() => {
@@ -550,10 +566,12 @@ export default withTracker(() => {
   const personalspace = PersonalSpaces.findOne() || { userId: this.userId, unsorted: [], sorted: [] };
   const allServices = Services.find().fetch();
   const allGroups = Groups.find().fetch();
+  const allLinks = UserBookmarks.find().fetch();
   return {
     personalspace,
     isLoading: !subscription.ready(),
     allServices,
     allGroups,
+    allLinks,
   };
 })(PersonalPage);

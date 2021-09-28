@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -197,7 +197,7 @@ const GroupsUsersList = (props) => {
         // other props
         title={title}
         columns={columns}
-        data={data}
+        data={data.map((row) => ({ ...row, id: row._id }))}
         options={options}
         localization={setMaterialTableLocalization('components.GroupUsersList')}
         actions={actions}

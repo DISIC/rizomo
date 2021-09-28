@@ -284,6 +284,9 @@ const Contact = () => {
                 {counter} {i18n.__('pages.ContactForm.redirectTime')}
               </p>
             )}
+            <Button fullWidth variant="contained" className={classes.submit} onClick={() => history.push('/')}>
+              {i18n.__('pages.ContactForm.cancel')}
+            </Button>
           </Grid>
         </form>
       </div>

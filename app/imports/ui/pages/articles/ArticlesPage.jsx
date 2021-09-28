@@ -7,12 +7,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import ShareIcon from '@material-ui/icons/Share';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -25,7 +26,7 @@ import { useAppContext } from '../../contexts/context';
 import ArticleDetails from '../../components/articles/ArticleDetails';
 import { usePagination } from '../../utils/hooks';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   flex: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -42,6 +43,17 @@ const useStyles = makeStyles(() => ({
   pagination: {
     display: 'flex',
     justifyContent: 'flex-end',
+  },
+  buttonOption: {
+    textTransform: 'none',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.tertiary.main,
+    fontWeight: 'bold',
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.tertiary.main,
+    },
+    margin: 5,
   },
 }));
 
@@ -119,34 +131,41 @@ function ArticlesPage() {
         <Grid container spacing={4}>
           <Grid item xs={12} className={isMobile ? null : classes.flex}>
             <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
+              {i18n.__('pages.ArticlesPage.title')}
+
               <Tooltip
                 title={i18n.__('pages.ArticlesPage.copyOwnPublicPageUrl')}
                 aria-label={i18n.__('pages.ArticlesPage.copyOwnPublicPageUrl')}
               >
                 <IconButton onClick={handleCopyURL}>
-                  <AssignmentIcon fontSize="large" />
+                  <ShareIcon fontSize="large" />
                 </IconButton>
               </Tooltip>
-              {i18n.__('pages.ArticlesPage.title')}
-
-              <IconButton onClick={toggleSearch}>
-                <SearchIcon fontSize="large" />
-              </IconButton>
-              <Link to="/publications/new">
-                <IconButton>
-                  <AddIcon fontSize="large" />
+              <Tooltip
+                title={i18n.__('pages.ArticlesPage.searchArticle')}
+                aria-label={i18n.__('pages.ArticlesPage.searchArticle')}
+              >
+                <IconButton onClick={toggleSearch}>
+                  <SearchIcon fontSize="large" />
                 </IconButton>
-              </Link>
+              </Tooltip>
             </Typography>
             <div className={classes.spaceBetween}>
-              <Tooltip
-                title={i18n.__('pages.ArticlesPage.openPublicPage')}
-                aria-label={i18n.__('pages.ArticlesPage.openPublicPage')}
+              <Link to="/publications/new">
+                <Button startIcon={<AddIcon />} className={classes.buttonOption} size="medium" variant="contained">
+                  {i18n.__('pages.ArticlesPage.addNewArticle')}
+                </Button>
+              </Link>
+
+              <Button
+                startIcon={<OpenInNewIcon />}
+                className={classes.buttonOption}
+                size="medium"
+                variant="contained"
+                onClick={() => window.open(blogPage, '_blank')}
               >
-                <IconButton onClick={() => window.open(blogPage, '_blank')}>
-                  <OpenInNewIcon fontSize="large" />
-                </IconButton>
-              </Tooltip>
+                {i18n.__('pages.ArticlesPage.openPublicPage')}
+              </Button>
             </div>
           </Grid>
         </Grid>
@@ -185,6 +204,7 @@ function ArticlesPage() {
             </Collapse>
           </Grid>
         </Grid>
+
         {loading ? (
           <Spinner />
         ) : (

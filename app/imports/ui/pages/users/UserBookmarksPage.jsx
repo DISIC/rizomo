@@ -2,27 +2,25 @@ import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import Switch from '@material-ui/core/Switch';
 import { withTracker } from 'meteor/react-meteor-data';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import MaterialTable from '@material-table/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import LanguageIcon from '@material-ui/icons/Language';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
 import Container from '@material-ui/core/Container';
 import { Roles } from 'meteor/alanning:roles';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Tooltip from '@material-ui/core/Tooltip';
 import add from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
-import { removeBookmark, updateBookmark } from '../../../api/bookmarks/methods';
+import { removeUserBookmark, updateUserBookmark } from '../../../api/userBookmarks/methods';
 import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
-import BookMarkEdit from '../../components/groups/BookMarkEdit';
-import Bookmarks from '../../../api/bookmarks/bookmarks';
-import Groups from '../../../api/groups/groups';
+import UserBookMarkEdit from '../../components/users/UserBookmarkEdit';
+import UserBookmarks from '../../../api/userBookmarks/userBookmarks';
 
 const useStyles = makeStyles(() => ({
   ErrorPage: {
@@ -41,10 +39,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function BookmarksPage({ loading, bookmarksList, group }) {
-  const [{ userId }] = useAppContext();
+function UserBookmarksPage({ loading, bookmarksList }) {
+  const [{ user, userId }] = useAppContext();
   const history = useHistory();
-  const [filter, setFilter] = useState(false);
   const classes = useStyles();
   const columns = [
     {
@@ -87,26 +84,14 @@ function BookmarksPage({ loading, bookmarksList, group }) {
   const [bkData, setBkData] = useState({});
   const [onEdit, setOnEdit] = useState(false);
 
-  const bookmarksListFinal = bookmarksList.filter((bookmark) => bookmark.author === userId);
-
   const OpenURLEditor = () => setEditUrl(true);
-
-  const filterOnURL = () => setFilter(!filter);
-
-  const userInGroup = (checkId) => {
-    return Roles.userIsInRole(checkId, ['member', 'animator', 'admin'], group._id);
-  };
 
   const goBack = () => {
     history.goBack();
   };
 
   const hideEditActions = (checkId) => {
-    return !(
-      checkId === userId ||
-      Roles.userIsInRole(userId, 'admin', group._id) ||
-      Roles.userIsInRole(userId, 'admin')
-    );
+    return !(checkId === userId || Roles.userIsInRole(userId, 'admin'));
   };
 
   const options = {
@@ -122,41 +107,21 @@ function BookmarksPage({ loading, bookmarksList, group }) {
     <>
       {loading ? (
         <Spinner />
-      ) : userInGroup(userId) ? (
+      ) : (
         <div>
           <Container style={{ overflowX: 'auto' }}>
             <Grid className={classes.goBackButton} item xs={12} sm={12} md={12}>
               <Button color="primary" startIcon={<ArrowBack />} onClick={goBack}>
-                {i18n.__('pages.Polls.back')}
+                {i18n.__('pages.UserBookmarksPage.back')}
               </Button>
             </Grid>
-            <Tooltip
-              title={
-                filter
-                  ? `${i18n.__('pages.BookmarksPage.disableFilter')}`
-                  : `${i18n.__('pages.BookmarksPage.enableFilter')}`
-              }
-            >
-              <FormControlLabel
-                value="start"
-                control={
-                  <Switch
-                    checked={filter}
-                    onChange={filterOnURL}
-                    color="primary"
-                    name="checkedB"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
-                  />
-                }
-                label={i18n.__('pages.BookmarksPage.filterTitle')}
-                labelPlacement="start"
-              />
-            </Tooltip>
             <MaterialTable
               // other props
               title={`${i18n.__('pages.BookmarksPage.title')}`}
               columns={columns}
-              data={(filter ? bookmarksListFinal : bookmarksList).map((row) => ({ ...row, id: row._id }))}
+              data={bookmarksList.map((row) => {
+                return { ...row, id: row._id };
+              })}
               options={options}
               localization={setMaterialTableLocalization('pages.BookmarksPage')}
               actions={[
@@ -170,19 +135,38 @@ function BookmarksPage({ loading, bookmarksList, group }) {
                     OpenURLEditor();
                   },
                 },
+                (rowData) => {
+                  const isFavorite = user.favUserBookmarks.indexOf(rowData._id) !== -1;
+                  return {
+                    icon: () => (isFavorite ? <StarIcon /> : <StarBorderIcon />),
+                    tooltip: i18n.__(
+                      `pages.UserBookmarksPage.${isFavorite ? 'unfavoriteBookmark' : 'favoriteBookmark'}`,
+                    ),
+                    onClick: () => {
+                      Meteor.call(
+                        `userBookmarks.${isFavorite ? 'unfavUserBookmark' : 'favUserBookmark'}`,
+                        { bookmarkId: rowData._id },
+                        (err) => {
+                          if (err) {
+                            msg.error(err.reason);
+                          }
+                        },
+                      );
+                    },
+                  };
+                },
               ]}
               editable={{
-                isDeleteHidden: (rowData) => hideEditActions(rowData.author),
-                isEditHidden: (rowData) => hideEditActions(rowData.author),
+                isDeleteHidden: (rowData) => hideEditActions(rowData.userId),
+                isEditHidden: (rowData) => hideEditActions(rowData.userId),
                 onRowUpdate: (newData, oldData) =>
                   new Promise((resolve, reject) => {
-                    updateBookmark.call(
+                    updateUserBookmark.call(
                       {
                         id: oldData._id,
                         url: newData.url,
                         name: newData.name,
                         tag: newData.tag,
-                        groupId: group._id,
                       },
                       (err, res) => {
                         if (err) {
@@ -194,14 +178,13 @@ function BookmarksPage({ loading, bookmarksList, group }) {
                         }
                       },
                     );
-                    Meteor.call('bookmark.getFavicon', { url: newData.url });
+                    Meteor.call('userBookmark.getFavicon', { url: newData.url });
                   }),
                 onRowDelete: (oldData) =>
                   new Promise((resolve, reject) => {
-                    removeBookmark.call(
+                    removeUserBookmark.call(
                       {
-                        url: oldData.url,
-                        groupId: group._id,
+                        id: oldData._id,
                       },
                       (err, res) => {
                         if (err) {
@@ -218,43 +201,26 @@ function BookmarksPage({ loading, bookmarksList, group }) {
             />
           </Container>
           {editUrl ? (
-            <BookMarkEdit
-              data={bkData}
-              group={group}
-              onEdit={onEdit}
-              open={editUrl}
-              onClose={() => setEditUrl(false)}
-            />
+            <UserBookMarkEdit data={bkData} onEdit={onEdit} open={editUrl} onClose={() => setEditUrl(false)} />
           ) : null}
         </div>
-      ) : (
-        <p className={classes.ErrorPage}>{i18n.__('pages.BookmarksPage.noAccess')}</p>
       )}
     </>
   );
 }
 
-BookmarksPage.propTypes = {
+UserBookmarksPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   bookmarksList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  group: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withTracker(
-  ({
-    match: {
-      params: { slug },
-    },
-  }) => {
-    const subGroup = Meteor.subscribe('groups.single', { slug });
-    const group = Groups.findOne({ slug }) || {};
-    const bookmarksHandle = Meteor.subscribe('bookmark.group.all', { groupId: group._id });
-    const bookmarksList = Bookmarks.find({ groupId: group._id }, { sort: { name: 1 } }).fetch();
-    const loading = !bookmarksHandle.ready() || !subGroup.ready();
-    return {
-      loading,
-      bookmarksList,
-      group,
-    };
-  },
-)(BookmarksPage);
+export default withTracker(() => {
+  const [{ userId }] = useAppContext();
+  const bookmarksHandle = Meteor.subscribe('bookmark.user.all', { userId });
+  const bookmarksList = UserBookmarks.find({ userId }, { sort: { name: 1 } }).fetch();
+  const loading = !bookmarksHandle.ready();
+  return {
+    loading,
+    bookmarksList,
+  };
+})(UserBookmarksPage);

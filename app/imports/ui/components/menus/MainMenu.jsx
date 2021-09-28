@@ -65,8 +65,8 @@ export const userMenu = [
     content: 'menuMedias',
   },
   {
-    path: '/publications',
-    content: 'menuPublications',
+    path: '/userBookmarks',
+    content: 'menuUserBookmarks',
   },
 ];
 

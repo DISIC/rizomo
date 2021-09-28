@@ -1,9 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
-import SearchIcon from '@material-ui/icons/Search';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -17,13 +15,11 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 import { withTracker } from 'meteor/react-meteor-data';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
 import Slide from '@material-ui/core/Slide';
 import AppBar from '@material-ui/core/AppBar';
 import ListItem from '@material-ui/core/ListItem';
@@ -55,6 +51,10 @@ const useStyles = (isMobile) =>
     },
     smallGrid: {
       height: 20,
+    },
+    filterTitle: {
+      fontSize: '0.85rem',
+      margin: theme.spacing(1),
     },
     badge: {
       height: 20,
@@ -136,20 +136,11 @@ function ServicesPage({ services, categories, ready, structureMode }) {
   const {
     catList = [],
     search = '',
-    searchToggle = false,
     filterToggle = false,
     viewMode = 'list', // Possible values : "card" or "list"
   } = servicePage;
-  const inputRef = useRef(null);
 
   const favs = loadingUser ? [] : user.favServices;
-
-  // focus on search input when it appears
-  useEffect(() => {
-    if (inputRef.current && searchToggle) {
-      inputRef.current.focus();
-    }
-  }, [searchToggle]);
 
   const updateGlobalState = (key, value) =>
     dispatch({
@@ -160,10 +151,7 @@ function ServicesPage({ services, categories, ready, structureMode }) {
       },
     });
 
-  const toggleSearch = () => updateGlobalState('searchToggle', !searchToggle);
   const toggleFilter = () => updateGlobalState('filterToggle', !filterToggle);
-  const updateSearch = (e) => updateGlobalState('search', e.target.value);
-  const resetSearch = () => updateGlobalState('search', '');
   const resetCatList = () => updateGlobalState('catList', []);
   const changeViewMode = (_, value) => updateGlobalState('viewMode', value);
   const updateCatList = (catId) => {
@@ -177,16 +165,6 @@ function ServicesPage({ services, categories, ready, structureMode }) {
     } else {
       // add new catId to list
       updateGlobalState('catList', [...catList, catId]);
-    }
-  };
-  const checkEscape = (e) => {
-    if (e.keyCode === 27) {
-      // ESCAPE key
-      servicePage.search = '';
-      servicePage.searchToggle = false;
-      servicePage.filterToggle = false;
-      servicePage.catList = [];
-      updateGlobalState('searchToggle', false); // all servicePage values will be saved with this call
     }
   };
 
@@ -229,12 +207,6 @@ function ServicesPage({ services, categories, ready, structureMode }) {
     </ToggleButtonGroup>
   );
 
-  const searchButton = (
-    <IconButton onClick={toggleSearch}>
-      <SearchIcon fontSize="large" />
-    </IconButton>
-  );
-
   const mobileFilterButton = (
     <Button
       style={{ textTransform: 'none' }}
@@ -245,45 +217,12 @@ function ServicesPage({ services, categories, ready, structureMode }) {
       startIcon={<FilterListIcon />}
     >
       {i18n.__('pages.ServicesPage.filter')}{' '}
-      {!!catList.length && <span className={classes.badge}>{catList.length}</span>}
+      {catList.length ? (
+        <span className={classes.badge}>{catList.length}</span>
+      ) : (
+        i18n.__('pages.ServicesPage.emptyFilter')
+      )}
     </Button>
-  );
-
-  const searchField = (
-    <Grid item xs={12} sm={12} md={6} className={searchToggle ? null : classes.small}>
-      <Collapse in={searchToggle} collapsedSize={0}>
-        <TextField
-          margin="normal"
-          id="search"
-          label={i18n.__('pages.ServicesPage.searchText')}
-          name="search"
-          fullWidth
-          onChange={updateSearch}
-          onKeyDown={checkEscape}
-          type="text"
-          value={search}
-          variant="outlined"
-          inputProps={{
-            ref: inputRef,
-          }}
-          // eslint-disable-next-line react/jsx-no-duplicate-props
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-            endAdornment: search ? (
-              <InputAdornment position="end">
-                <IconButton onClick={resetSearch}>
-                  <ClearIcon />
-                </IconButton>
-              </InputAdornment>
-            ) : null,
-          }}
-        />
-      </Collapse>
-    </Grid>
   );
 
   return (
@@ -297,31 +236,22 @@ function ServicesPage({ services, categories, ready, structureMode }) {
               <Grid item xs={12} className={isMobile ? null : classes.flex}>
                 <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
                   {i18n.__(structureMode ? 'pages.ServicesPage.titleStructure' : 'pages.ServicesPage.titleServices')}
-                  {searchButton}
                 </Typography>
                 <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>
               </Grid>
             </Grid>
             <Grid container spacing={4}>
-              {searchField}
-              {isMobile && (
+              {isMobile ? (
                 <Grid item xs={12} sm={12} className={classes.mobileButtonContainer}>
                   {mobileFilterButton}
                   {toggleButtons}
                 </Grid>
-              )}
-              <Grid item xs={12} sm={12} md={12} className={searchToggle ? null : classes.small}>
-                <Collapse in={searchToggle && !isMobile} collapsedSize={0}>
+              ) : (
+                <Grid item xs={12} sm={12} md={12}>
                   <>
-                    <Typography variant="h6" display="inline">
+                    <Typography variant="h6" display="inline" className={classes.filterTitle}>
                       {i18n.__('pages.ServicesPage.categories')}
                     </Typography>
-                    {catList.length > 0 ? (
-                      <Button color="primary" onClick={resetCatList} startIcon={<ClearIcon />}>
-                        {i18n.__('pages.ServicesPage.reset')}
-                      </Button>
-                    ) : null}
-                    <br />
                     {categories.map((cat) => (
                       <Chip
                         className={classes.chip}
@@ -338,10 +268,16 @@ function ServicesPage({ services, categories, ready, structureMode }) {
                         onClick={() => updateCatList(cat._id)}
                       />
                     ))}
+                    {catList.length > 0 ? (
+                      <Button color="primary" onClick={resetCatList} startIcon={<ClearIcon />}>
+                        {i18n.__('pages.ServicesPage.reset')}
+                      </Button>
+                    ) : null}
                   </>
-                </Collapse>
-              </Grid>
+                </Grid>
+              )}
             </Grid>
+
             <Grid container className={classes.cardGrid} spacing={isMobile ? 2 : 4}>
               {services.length === 0 ? (
                 <Typography className={classes.emptyMsg}>
@@ -442,7 +378,16 @@ export default withTracker(({ match: { path } }) => {
   const structureMode = path === '/structure';
   const subName = structureMode ? 'services.structure' : 'services.all';
   const servicesHandle = Meteor.subscribe(subName);
-  const services = Services.find({ state: { $ne: 10 } }, { sort: { title: 1 } }).fetch();
+  let services;
+  if (structureMode) {
+    services = Services.findFromPublication(
+      'services.structure',
+      { state: { $ne: 10 } },
+      { sort: { title: 1 } },
+    ).fetch();
+  } else {
+    services = Services.find({ state: { $ne: 10 } }, { sort: { title: 1 } }).fetch();
+  }
   const categoriesHandle = Meteor.subscribe('categories.all');
   const cats = Categories.find({}, { sort: { name: 1 } }).fetch();
   const categories = cats.map((cat) => ({ ...cat, count: Services.find({ categories: { $in: [cat._id] } }).count() }));
