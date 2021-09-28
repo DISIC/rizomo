@@ -704,20 +704,20 @@ function EditArticlePage({
             )}
 
             <div>
-              <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
-                {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
-                {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
-              </Button>
               {(!slug || article.draft) && (
                 <Button
                   variant="contained"
                   color="secondary"
-                  style={{ marginLeft: 10 }}
+                  style={{ marginRight: 10 }}
                   onClick={submitUpdateArticleDraft}
                 >
                   {i18n.__('pages.EditArticlePage.save_draf')}
                 </Button>
               )}
+              <Button variant="contained" color="primary" onClick={submitUpdateArticlePublished}>
+                {slug ? i18n.__('pages.EditArticlePage.update') : i18n.__('pages.EditArticlePage.save')}
+                {slug && article.draft && ` - ${i18n.__('pages.EditArticlePage.save')}`}
+              </Button>
             </div>
           </div>
         </form>
