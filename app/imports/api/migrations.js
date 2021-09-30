@@ -257,7 +257,7 @@ Migrations.add({
       .find()
       .fetch()
       .forEach((user) => {
-        Meteor.users.update({ _id: user._id }, { $set: { ncloud: '' } });
+        Meteor.users.rawCollection().update({ _id: user._id }, { $set: { ncloud: '' } });
       });
   },
   down: () => {
