@@ -12,7 +12,7 @@ const lightTheme = createTheme({
       dark: '#212F74',
     },
     secondary: {
-      main: '#EFAC61',
+      main: '#E48231',
       light: '#FFDBA5',
     },
     tertiary: {
