@@ -228,9 +228,11 @@ function GroupsPage() {
           <Grid item xs={12} className={isMobile ? null : classes.flex}>
             <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
               {`${i18n.__('pages.GroupsPage.title')} (${total})`}
-              <IconButton onClick={toggleSearch}>
-                <SearchIcon fontSize="large" />
-              </IconButton>
+              <Tooltip title={i18n.__('pages.GroupsPage.searchGroup')}>
+                <IconButton onClick={toggleSearch}>
+                  <SearchIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
               {!isMobile && filterSwitch()}
             </Typography>
             <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>

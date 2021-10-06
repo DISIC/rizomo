@@ -818,6 +818,7 @@
     "GroupsPage": {
       "title": "Explorer les groupes",
       "searchText": "Quel groupe cherchez-vous ?",
+      "searchGroup": "Rechercher un groupe",
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste",
@@ -958,6 +959,7 @@
     "PersonalPage": {
       "welcome": "Bienvenue sur votre espace personnel",
       "searchText": "Besoin de retrouver un service, groupe ou lien personnel ?",
+      "searchElement": "Chercher un élément",
       "noFavYet": "Ajoutez ici des éléments depuis l'onglet Applications",
       "unsorted": "À trier",
       "unsortedFav": "Mes Favoris",

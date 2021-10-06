@@ -813,6 +813,7 @@
     "GroupsPage": {
       "title": "Explore the groups",
       "searchText": "Which group are you looking for ?",
+      "searchGroup": "Search a group",
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view",
@@ -953,6 +954,7 @@
     "PersonalPage": {
       "welcome": "Welcome on your personal space",
       "searchText": "Need to find a service, group or personal link ?",
+      "searchElement": "Search element",
       "noFavYet": "Add here some elements from Applications tab",
       "unsorted": "To be sorted",
       "unsortedFav": "My Favorites",
