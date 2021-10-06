@@ -22,13 +22,6 @@ export const links = [
     admin: false,
   },
   {
-    path: '/publications',
-    content: 'menuArticles',
-    contentMobile: 'menuArticlesMobile',
-    icon: <LibraryBooks />,
-    admin: false,
-  },
-  {
     path: '/groups',
     content: 'menuGroupes',
     contentMobile: 'menuGroupesMobile',
@@ -41,6 +34,13 @@ export const links = [
     icon: <AppsIcon />,
     admin: false,
     tooltip: 'tooltipServices',
+  },
+  {
+    path: '/publications',
+    content: 'menuArticles',
+    contentMobile: 'menuArticlesMobile',
+    icon: <LibraryBooks />,
+    admin: false,
   },
   {
     path: '/structure',
