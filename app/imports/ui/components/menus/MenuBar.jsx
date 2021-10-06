@@ -11,6 +11,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import HelpIcon from '@material-ui/icons/Help';
 import BusinessIcon from '@material-ui/icons/Business';
 import AppsIcon from '@material-ui/icons/Apps';
+import updateDocumentTitle from '../../utils/updateDocumentTitle';
 
 export const links = [
   {
@@ -96,6 +97,10 @@ const MenuBar = ({ mobile }) => {
       'aria-controls': `scrollable-force-tabpanel-${index}`,
     };
   }
+  const handleClick = (link) => {
+    updateDocumentTitle(i18n.__(`components.MenuBar.${link.content}`));
+    history.push(link.path);
+  };
 
   return (
     <Tabs
@@ -122,7 +127,7 @@ const MenuBar = ({ mobile }) => {
           className={mobile ? classes.mobileTabs : null}
           icon={mobile ? link.icon : undefined}
           label={<T>{link.contentMobile || link.content}</T>}
-          onClick={() => history.push(link.path)}
+          onClick={() => handleClick(link)}
         />
       ))}
     </Tabs>

@@ -35,6 +35,7 @@ import Categories from '../../../api/categories/categories';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
 import ServiceDetailsList from '../../components/services/ServiceDetailsList';
+// import useDocumentTitle from '../../utils/useDocumentTitle';
 
 const useStyles = (isMobile) =>
   makeStyles((theme) => ({
@@ -140,6 +141,7 @@ function ServicesPage({ services, categories, ready, structureMode }) {
     viewMode = 'list', // Possible values : "card" or "list"
   } = servicePage;
 
+  // useDocumentTitle(i18n.__(structureMode ? 'pages.ServicesPage.titleStructure' : 'pages.ServicesPage.titleServices'));
   const favs = loadingUser ? [] : user.favServices;
 
   const updateGlobalState = (key, value) =>
