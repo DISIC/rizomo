@@ -19,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
     outline: 'none',
     marginRight: 25,
     fontFamily: 'WorkSansBold',
+    padding: 10,
+    '&:hover': {
+      backgroundColor: 'orange',
+      borderRadius: 5,
+    },
   },
   mobileLink: {
     flexDirection: 'column',

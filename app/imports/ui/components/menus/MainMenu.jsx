@@ -19,6 +19,15 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     marginLeft: theme.spacing(1),
   },
+  menuItem: {
+    '&:hover': {
+      color: theme.palette.text.primary,
+      // backgroundColor: '#eeeeee',
+      backgroundColor: theme.palette.backgroundFocus.main,
+      opacity: 1,
+      transition: 'all 300ms ease-in-out',
+    },
+  },
 }));
 
 export const adminMenu = [
@@ -183,13 +192,14 @@ const MainMenu = ({ user = {} }) => {
         }}
       >
         <MenuItem
+          className={classes.menuItem}
           onClick={() => handleMenuClick({ path: '/profile', content: 'menuProfileLabel' })}
           selected={pathname === '/profile'}
         >
           <T>menuProfileLabel</T>
         </MenuItem>
 
-        <MenuItem onClick={onLogout}>
+        <MenuItem className={classes.menuItem} onClick={onLogout}>
           <T>menuLogoutLabel</T>
         </MenuItem>
         <Divider />
@@ -198,6 +208,7 @@ const MainMenu = ({ user = {} }) => {
             <Divider key={item.path} />
           ) : (
             <MenuItem
+              className={classes.menuItem}
               key={item.path}
               onClick={() => handleMenuClick(item)}
               selected={currentLink ? currentLink.path === item.path : false}

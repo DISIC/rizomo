@@ -65,6 +65,12 @@ const useStyles = (mobile) =>
     mobileTabs: {
       textTransform: 'none',
     },
+    elementTab: {
+      '&:hover': {
+        color: theme.palette.text.primary,
+        transition: 'all 300ms ease-in-out',
+      },
+    },
     flexContainer: {
       display: 'flex',
       alignItems: 'center',
@@ -124,7 +130,7 @@ const MenuBar = ({ mobile }) => {
           title={link.tooltip ? i18n.__(`components.MenuBar.${link.tooltip}`) : ''}
           disableFocusRipple={mobile}
           disableRipple={mobile}
-          className={mobile ? classes.mobileTabs : null}
+          className={mobile ? classes.mobileTabs : classes.elementTab}
           icon={mobile ? link.icon : undefined}
           label={<T>{link.contentMobile || link.content}</T>}
           onClick={() => handleClick(link)}

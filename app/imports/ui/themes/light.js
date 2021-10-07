@@ -18,6 +18,9 @@ const lightTheme = createTheme({
     tertiary: {
       main: '#fff',
     },
+    backgroundFocus: {
+      main: '#ffb260',
+    },
     text: {
       primary: '#040D3E',
     },
