@@ -7,7 +7,7 @@ const { version } = PackageJSON;
 const AppVersion = () => (
   <span
     style={{
-      opacity: 0.3,
+      opacity: 0.5,
     }}
   >
     {i18n.__('components.AppVersion.title')} {version}
