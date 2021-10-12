@@ -218,7 +218,7 @@ const MainMenu = ({ user = {} }) => {
           );
         })}
         <Divider />
-        <MenuItem>
+        <MenuItem disabled style={{ opacity: 1 }}>
           <AppVersion />
         </MenuItem>
       </Menu>
