@@ -673,6 +673,9 @@
       "ValidateForm": "Valider",
       "ncloudURL": "URL Nextcloud",
       "changeURL": "Renouveller"
+    },
+    "SkipLink": {
+      "skipToContent": "Aller au contenu"
     }
   },
   "validatejs": {

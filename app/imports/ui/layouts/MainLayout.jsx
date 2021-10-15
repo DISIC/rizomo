@@ -1,9 +1,10 @@
-import React, { lazy, Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useEffect, lazy, Suspense } from 'react';
+import { useLocation, Route, Switch } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 
 // components
+import SkipLink from '../components/menus/SkipLink';
 import TopBar from '../components/menus/TopBar';
 import Spinner from '../components/system/Spinner';
 import AdminRoute from '../components/system/AdminRoute';
@@ -76,14 +77,23 @@ const useStyles = (isMobile) =>
 function MainLayout() {
   const [{ userId, user, loadingUser, isMobile }] = useAppContext();
   const classes = useStyles(isMobile)();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Reset focus on all location changes
+    if (location.hash !== '#main') {
+      document.getElementById('root').focus();
+    }
+  }, [location]);
 
   return (
     <div className={classes.root}>
+      <SkipLink />
       <TopBar />
       {loadingUser ? (
         <Spinner full />
       ) : (
-        <main className={classes.content}>
+        <main className={classes.content} id="main">
           <Suspense fallback={<Spinner full />}>
             {user.isActive ? (
               user.structure !== undefined ? (
