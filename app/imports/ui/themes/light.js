@@ -19,7 +19,7 @@ const lightTheme = createTheme({
       main: '#fff',
     },
     backgroundFocus: {
-      main: '#ffb260',
+      main: '#ffe0b2',
     },
     text: {
       primary: '#040D3E',
