@@ -38,8 +38,16 @@ const useStyles = makeStyles((theme) => ({
   serviceNameDiasbled: {
     color: theme.palette.text.disabled,
   },
-  actionarea: {},
+  actionarea: {
+    textDecoration: 'none',
+    outline: 'none',
+    '&:hover': {
+      backgroundColor: theme.palette.backgroundFocus.main,
+    },
+    flexGrow: 100,
+  },
   span: {
+    display: 'flex',
     flex: '1 0 auto',
   },
   fab: {
