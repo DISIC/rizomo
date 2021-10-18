@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
 // support for french language in editor.
 // Add other files and update supportedLanguages variable if new languages are supported
@@ -27,59 +26,36 @@ const useStyles = makeStyles(() => ({
 }));
 
 const toolbarItems = [
-  'heading',
-  'bold',
-  'italic',
-  'strike',
-  'divider',
-  'hr',
-  'quote',
-  'divider',
-  'ul',
-  'ol',
-  'task',
-  'indent',
-  'outdent',
-  'divider',
-  'table',
-  'link',
-  'divider',
-  'code',
-  'codeblock',
-  'divider',
+  ['heading', 'bold', 'italic', 'strike'],
+  ['hr', 'quote'],
+  ['ul', 'ol', 'task', 'indent', 'outdent'],
+  ['table', 'link'],
+  ['code', 'codeblock'],
 ];
 const markdownEditorItems = [
-  {
-    type: 'button',
-    options: {
+  [
+    {
       className: 'image-toast',
       event: 'editor-image',
       tooltip: i18n.__('components.CustomQuill.image'),
       text: `I`,
       style: 'background:none;color:black;',
     },
-  },
-  {
-    type: 'button',
-    options: {
+    {
       className: 'webcam-toast',
       event: 'editor-webcam',
       tooltip: i18n.__('components.CustomQuill.webcam'),
       text: `W`,
       style: 'background:none;color:black;',
     },
-  },
-
-  {
-    type: 'button',
-    options: {
+    {
       className: 'audio-toast',
       event: 'editor-audio',
       tooltip: i18n.__('components.CustomQuill.audio'),
       text: `A`,
       style: 'background:none;color:black;',
     },
-  },
+  ],
 ];
 const mediaIcon = `
   <svg viewBox="0 0 24 24">
@@ -139,15 +115,18 @@ const ToastUIEditor = ({ value, onChange, handlers, toastRef, language }) => {
       updateMode();
       const instance = toastRef.current.getInstance();
       if (instance.isMarkdownMode()) {
-        instance.eventManager.addEventType('editor-audio');
-        instance.eventManager.listen('editor-audio', () => getInstance(handlers.audioHandler));
-        instance.eventManager.addEventType('editor-image');
-        instance.eventManager.listen('editor-image', () => getInstance(handlers.imageHandler));
-        instance.eventManager.addEventType('editor-webcam');
-        instance.eventManager.listen('editor-webcam', () => getInstance(handlers.webcamHandler));
         document.getElementsByClassName('image-toast')[0].innerHTML = mediaIcon;
+        document
+          .getElementsByClassName('image-toast')[0]
+          .addEventListener('click', () => getInstance(handlers.imageHandler));
         document.getElementsByClassName('audio-toast')[0].innerHTML = audioIcon;
+        document
+          .getElementsByClassName('audio-toast')[0]
+          .addEventListener('click', () => getInstance(handlers.audioHandler));
         document.getElementsByClassName('webcam-toast')[0].innerHTML = webcamIcon;
+        document
+          .getElementsByClassName('webcam-toast')[0]
+          .addEventListener('click', () => getInstance(handlers.webcamHandler));
       }
     }
   }, [toastRef]);
@@ -171,7 +150,7 @@ const ToastUIEditor = ({ value, onChange, handlers, toastRef, language }) => {
         ref={toastRef}
         events={{
           change: updateEditor,
-          stateChange: updateMode,
+          caretChange: updateMode,
         }}
       />
     </div>

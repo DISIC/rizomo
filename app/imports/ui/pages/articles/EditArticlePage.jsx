@@ -221,7 +221,7 @@ function EditArticlePage({
 
   function imageHandler(instance) {
     if (data.markdown) {
-      setRange(instance.getRange());
+      setRange(instance.getSelection());
     }
     togglePicker(true);
     // eslint-disable-next-line react/no-this-in-sfc
@@ -229,7 +229,7 @@ function EditArticlePage({
   }
   function webcamHandler(instance) {
     if (data.markdown) {
-      setRange(instance.getRange());
+      setRange(instance.getSelection());
     }
     toggleWebcam(true);
     // eslint-disable-next-line react/no-this-in-sfc
@@ -237,7 +237,7 @@ function EditArticlePage({
   }
   function audioHandler(instance) {
     if (data.markdown) {
-      setRange(instance.getRange());
+      setRange(instance.getSelection());
     }
     toggleAudio(true);
     // eslint-disable-next-line react/no-this-in-sfc
