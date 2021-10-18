@@ -2,21 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Tooltip from '@material-ui/core/Tooltip';
 import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import GroupAvatar from './GroupAvatar';
 
 const useStyles = makeStyles((theme) => ({
-  action: {
+  noUnderline: {
+    textDecoration: 'none',
+    outline: 'none',
+    '&:focus, &:hover': {
+      backgroundColor: theme.palette.backgroundFocus.main,
+    },
     display: 'flex',
-    alignItems: 'center',
-    marginTop: 'auto',
-    height: '100%',
+    flexGrow: 100,
   },
+
   card: {
     height: '100%',
     width: '100%',
@@ -25,16 +27,6 @@ const useStyles = makeStyles((theme) => ({
     padding: 5,
     '& .MuiCardHeader-root': {
       padding: 8,
-    },
-  },
-  cardMedia: {
-    maxWidth: '50px',
-    objectFit: 'contain',
-    borderRadius: theme.shape.borderRadius,
-  },
-  fab: {
-    '&:hover': {
-      color: 'red',
     },
   },
 }));
@@ -56,37 +48,29 @@ const GroupDetailsList = ({ group, member, candidate, animator, admin }) => {
     ? i18n.__('components.GroupDetails.closedGroup')
     : i18n.__('components.GroupDetails.moderateGroup');
 
-  const detailsButton = (
-    <Tooltip
-      title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
-      aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
-    >
-      <IconButton color="primary">
-        <ChevronRightIcon fontSize="large" />
-      </IconButton>
-    </Tooltip>
-  );
-
   return (
     <Card className={classes.card} elevation={3}>
-      <Link to={`/groups/${group.slug}`} className={classes.noUnderline}>
-        <CardHeader
-          classes={{ action: classes.action }}
-          avatar={<GroupAvatar type={type} avatar={avatar} />}
-          action={detailsButton}
-          title={group.name}
-          titleTypographyProps={{
-            variant: 'h6',
-            color: 'primary',
-          }}
-          subheader={groupType}
-          subheaderTypographyProps={{
-            variant: 'body2',
-            color: type === 0 ? 'primary' : 'secondary',
-            style: { color: member || animator ? 'green' : null },
-          }}
-        />
-      </Link>
+      <Tooltip
+        title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
+        aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
+      >
+        <Link to={`/groups/${group.slug}`} className={classes.noUnderline}>
+          <CardHeader
+            avatar={<GroupAvatar type={type} avatar={avatar} />}
+            title={group.name}
+            titleTypographyProps={{
+              variant: 'h6',
+              color: 'primary',
+            }}
+            subheader={groupType}
+            subheaderTypographyProps={{
+              variant: 'body2',
+              color: type === 0 ? 'primary' : 'secondary',
+              style: { color: member || animator ? 'green' : null },
+            }}
+          />
+        </Link>
+      </Tooltip>
     </Card>
   );
 };
