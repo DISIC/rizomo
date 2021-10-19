@@ -44,9 +44,6 @@ const useStyles = makeStyles((theme) => ({
   inline: {
     display: 'inline',
   },
-  avatar: {
-    backgroundColor: theme.palette.primary.main,
-  },
   structureAdmin: {
     backgroundColor: theme.palette.secondary.dark,
   },
@@ -214,7 +211,7 @@ const AdminStructureUsersPage = () => {
                   <ListItem alignItems="flex-start" key={`user-${user.emails[0].address}`}>
                     <ListItemAvatar>
                       <UserAvatar
-                        customClass={isStructureAdmin(user) ? classes.structureAdmin : classes.avatar}
+                        customClass={isStructureAdmin(user) ? classes.structureAdmin : ''}
                         userAvatar={user.avatar || ''}
                         userFirstName={user.firstName}
                       />
