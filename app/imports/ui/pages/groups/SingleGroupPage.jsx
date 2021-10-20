@@ -397,7 +397,7 @@ const SingleGroupPage = ({ group = {}, ready, services, polls, events, bookmarks
               ) : null}
               {admin && (
                 <Grid item>
-                  <Link to={`/admingroups/${group._id}`}>
+                  <Link to={`/admingroups/${group._id}`} tabIndex={-1}>
                     <Button startIcon={<EditIcon />} className={classes.buttonAdmin} size="large" variant="contained">
                       {i18n.__('components.GroupDetails.manageGroupButtonLabel')}
                     </Button>
