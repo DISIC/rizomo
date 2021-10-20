@@ -74,6 +74,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
     marginBottom: 20,
   },
+  keycloakLink: {
+    textDecoration: 'underline',
+    '&:hover, &:focus': {
+      color: theme.palette.secondary.main,
+      outline: 'none',
+    },
+  },
 }));
 
 const defaultState = {
@@ -406,8 +413,10 @@ const ProfilePage = () => {
                     <Paper className={classes.keycloakMessage}>
                       <Typography>{i18n.__('pages.ProfilePage.keycloakProcedure')}</Typography>
                       <br />
-                      <Typography style={{ textDecoration: 'underline' }}>
-                        <a href={accountURL}>{i18n.__('pages.ProfilePage.keycloakProcedureLink')}</a>
+                      <Typography>
+                        <a href={accountURL} className={classes.keycloakLink}>
+                          {i18n.__('pages.ProfilePage.keycloakProcedureLink')}
+                        </a>
                       </Typography>
                     </Paper>
                   ) : null}
@@ -580,7 +589,7 @@ const ProfilePage = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={6} className={classes.buttonWrapper}>
               <div className={classes.fileWrap}>
-                <Button variant="contained" htmlFor="upload" color="secondary">
+                <Button variant="contained" htmlFor="upload" color="secondary" tabIndex={-1}>
                   {i18n.__('pages.ProfilePage.UploadPublicationBackup')}
                   <input className={classes.inputFile} type="file" id="upload" onChange={uploadData} />
                 </Button>
