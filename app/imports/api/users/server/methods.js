@@ -409,7 +409,6 @@ export const setArticlesEnable = new ValidatedMethod({
       throw new Meteor.Error('api.users.toggleAdvancedPersonalPage.unknownUser', i18n.__('api.users.unknownUser'));
     }
     const newValue = !(user.articlesEnable || false);
-    console.log(newValue);
     Meteor.users.update(this.userId, { $set: { articlesEnable: newValue } });
   },
 });
