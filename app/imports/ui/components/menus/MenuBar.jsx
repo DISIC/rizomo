@@ -11,6 +11,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import HelpIcon from '@material-ui/icons/Help';
 import BusinessIcon from '@material-ui/icons/Business';
 import AppsIcon from '@material-ui/icons/Apps';
+import { useAppContext } from '../../contexts/context';
 import updateDocumentTitle from '../../utils/updateDocumentTitle';
 
 export const links = [
@@ -87,6 +88,7 @@ const useStyles = (mobile) =>
 
 const MenuBar = ({ mobile }) => {
   const { pathname } = useLocation();
+  const [{ user }] = useAppContext();
   const history = useHistory();
   const classes = useStyles(mobile)();
   const T = i18n.createComponent('components.MenuBar');
@@ -96,6 +98,8 @@ const MenuBar = ({ mobile }) => {
     }
     return false;
   });
+
+  const finalLink = user.articlesEnable ? links : links.filter(({ path }) => path !== '/publications');
 
   function a11yProps(index) {
     return {
@@ -122,7 +126,7 @@ const MenuBar = ({ mobile }) => {
       variant="scrollable"
       scrollButtons="on"
     >
-      {links.map((link, index) => (
+      {finalLink.map((link, index) => (
         <Tab
           {...a11yProps(index)}
           key={link.path}

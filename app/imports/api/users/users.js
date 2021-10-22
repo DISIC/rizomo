@@ -175,6 +175,12 @@ Meteor.users.schema = new SimpleSchema(
       },
       label: getLabel('api.users.labels.ncloud'),
     },
+    articlesEnable: {
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      label: getLabel('api.users.labels.articlesEnable'),
+    },
   },
   { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
@@ -296,6 +302,7 @@ Meteor.users.selfFields = {
   groupQuota: 1,
   nclocator: 1,
   advancedPersonalPage: 1,
+  articlesEnable: 1,
 };
 
 Meteor.users.adminFields = {
@@ -312,6 +319,7 @@ Meteor.users.adminFields = {
   groupCount: 1,
   groupQuota: 1,
   nclocator: 1,
+  articlesEnable: 1,
 };
 
 Meteor.users.publicFields = {
@@ -329,6 +337,7 @@ Meteor.users.publicFields = {
   groupQuota: 1,
   mezigName: 1,
   nclocator: 1,
+  articlesEnable: 1,
 };
 
 Meteor.users.deny({

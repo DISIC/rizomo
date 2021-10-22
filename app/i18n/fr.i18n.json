@@ -795,7 +795,8 @@
       "useGallery": "Choisir parmi la galerie d'images",
       "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle.",
       "advancedPersonalPage": "Activer l'espace personnel avancé",
-      "languageLabel": "Choix de la langue"
+      "languageLabel": "Choix de la langue",
+      "activateArticles": "Activer les publications"
     },
     "NotFound": {
       "backButtonLabel": "Retour",

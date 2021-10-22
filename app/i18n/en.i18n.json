@@ -793,7 +793,8 @@
       "useGallery": "Choose among image gallery",
       "structureMessage": "Check this box to link all imported articles to your current attachment structure.",
       "advancedPersonalPage": "Activate advanced personal page",
-      "languageLabel": "Change language"
+      "languageLabel": "Change language",
+      "activateArticles": "Activate articles"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
