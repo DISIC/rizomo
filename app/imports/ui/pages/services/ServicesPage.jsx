@@ -29,13 +29,13 @@ import Dialog from '@material-ui/core/Dialog';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Tooltip from '@material-ui/core/Tooltip';
 import ServiceDetails from '../../components/services/ServiceDetails';
 import Services from '../../../api/services/services';
 import Categories from '../../../api/categories/categories';
 import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
 import ServiceDetailsList from '../../components/services/ServiceDetailsList';
-// import useDocumentTitle from '../../utils/useDocumentTitle';
 
 const useStyles = (isMobile) =>
   makeStyles((theme) => ({
@@ -49,6 +49,10 @@ const useStyles = (isMobile) =>
     },
     chip: {
       margin: theme.spacing(1),
+      '&&:hover,&&:focus': {
+        backgroundColor: theme.palette.backgroundFocus.main,
+        color: theme.palette.primary.main,
+      },
     },
     smallGrid: {
       height: 20,
@@ -141,7 +145,6 @@ function ServicesPage({ services, categories, ready, structureMode }) {
     viewMode = 'list', // Possible values : "card" or "list"
   } = servicePage;
 
-  // useDocumentTitle(i18n.__(structureMode ? 'pages.ServicesPage.titleStructure' : 'pages.ServicesPage.titleServices'));
   const favs = loadingUser ? [] : user.favServices;
 
   const updateGlobalState = (key, value) =>
@@ -190,22 +193,16 @@ function ServicesPage({ services, categories, ready, structureMode }) {
 
   const toggleButtons = (
     <ToggleButtonGroup value={viewMode} exclusive aria-label={i18n.__('pages.ServicesPage.viewMode')}>
-      <ToggleButton
-        value="card"
-        onClick={changeViewMode}
-        title={i18n.__('pages.ServicesPage.viewCard')}
-        aria-label={i18n.__('pages.ServicesPage.viewCard')}
-      >
-        <DashboardIcon color="primary" />
-      </ToggleButton>
-      <ToggleButton
-        value="list"
-        onClick={changeViewMode}
-        title={i18n.__('pages.ServicesPage.viewList')}
-        aria-label={i18n.__('pages.ServicesPage.viewList')}
-      >
-        <ViewListIcon color="primary" />
-      </ToggleButton>
+      <Tooltip title={i18n.__('pages.ServicesPage.viewCard')} aria-label={i18n.__('pages.ServicesPage.viewCard')}>
+        <ToggleButton value="card" onClick={changeViewMode} aria-label={i18n.__('pages.ServicesPage.viewCard')}>
+          <DashboardIcon color="primary" />
+        </ToggleButton>
+      </Tooltip>
+      <Tooltip title={i18n.__('pages.ServicesPage.viewList')} aria-label={i18n.__('pages.ServicesPage.viewList')}>
+        <ToggleButton value="list" onClick={changeViewMode} aria-label={i18n.__('pages.ServicesPage.viewList')}>
+          <ViewListIcon color="primary" />
+        </ToggleButton>
+      </Tooltip>
     </ToggleButtonGroup>
   );
 
@@ -392,7 +389,10 @@ export default withTracker(({ match: { path } }) => {
   }
   const categoriesHandle = Meteor.subscribe('categories.all');
   const cats = Categories.find({}, { sort: { name: 1 } }).fetch();
-  const categories = cats.map((cat) => ({ ...cat, count: Services.find({ categories: { $in: [cat._id] } }).count() }));
+  const categories = cats.map((cat) => ({
+    ...cat,
+    count: Services.find({ state: { $ne: 10 }, categories: { $in: [cat._id] } }).count(),
+  }));
   const ready = servicesHandle.ready() && categoriesHandle.ready();
   return {
     services,

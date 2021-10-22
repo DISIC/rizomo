@@ -176,23 +176,23 @@ function ServiceDetails({ service, favAction, isShort }) {
           </IconButton>
         )}
       /> */}
-      <Link
-        to={
-          isAddressBook
-            ? service.url
-            : isEvents
-            ? service.url
-            : isPoll
-            ? service.url
-            : isBookmark
-            ? service.url
-            : `/services/${service.slug}`
-        }
-        className={classes.noUnderline}
+      <Tooltip
+        title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+        aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
       >
-        <Tooltip
-          title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-          aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+        <Link
+          to={
+            isAddressBook
+              ? service.url
+              : isEvents
+              ? service.url
+              : isPoll
+              ? service.url
+              : isBookmark
+              ? service.url
+              : `/services/${service.slug}`
+          }
+          className={classes.noUnderline}
         >
           <CardHeader
             className={classes.cardHeader}
@@ -218,11 +218,12 @@ function ServiceDetails({ service, favAction, isShort }) {
             subheader={service.usage}
             subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
           />
-        </Tooltip>
-      </Link>
-      <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
-        {!isShort && <Typography variant="body1">{service.description}</Typography>}
-        {/* <Paper variant="elevation" elevation={0} className={classes.paperChip}>
+        </Link>
+      </Tooltip>
+      {!isAddressBook && !isEvents && !isPoll && !isBookmark && (
+        <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
+          {!isShort && <Typography variant="body1">{service.description}</Typography>}
+          {/* <Paper variant="elevation" elevation={0} className={classes.paperChip}>
           {service.categories.map((cat) => {
             const currentCategory = categories.find((categ) => categ._id === cat);
             return (
@@ -238,7 +239,6 @@ function ServiceDetails({ service, favAction, isShort }) {
             );
           })}
         </Paper> */}
-        {!isAddressBook && !isEvents && !isPoll && !isBookmark && (
           <div className={isShort ? classes.cardActionShort : classes.cardActions}>
             {service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
 
@@ -258,8 +258,8 @@ function ServiceDetails({ service, favAction, isShort }) {
               </Tooltip>
             )}
           </div>
-        )}
-      </CardContent>
+        </CardContent>
+      )}
     </Card>
   );
 }

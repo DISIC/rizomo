@@ -1125,7 +1125,7 @@
       "usage": "Utilisation",
       "delete": "Supprimer",
       "confirmDelete": "Confirmer la suppression",
-      "objectUsedText": "Ce fichier est utilisé dans un article (titre ci dessous), si vous le supprimer, vos lecteurs tomberont sur un lien vide dans cet article. Si vous confirmez la suppression en cliquant une fois de plus sur le bouton, prenez note que cela ne sera pas réversible."
+      "objectUsedText": "Ce fichier est utilisé dans un article (titre ci dessous), si vous le supprimez, vos lecteurs tomberont sur un lien vide dans cet article. Si vous confirmez la suppression en cliquant une fois de plus sur le bouton, prenez note que cela ne sera pas réversible."
     },
     "AdminStructureUsersPage": {
       "title": "Gestion des utilisateurs de la structure",
