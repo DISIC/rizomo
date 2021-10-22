@@ -84,7 +84,7 @@ export default function ArticleDetails({ article, publicPage }) {
         title={i18n.__('components.ArticleDetails.editArticleButtonLabel')}
         aria-label={i18n.__('components.ArticleDetails.editArticleButtonLabel')}
       >
-        <Link to={`/publications/${article.slug}`}>
+        <Link to={`/publications/${article.slug}`} tabIndex={-1}>
           <Button className={classes.buttonText} variant="contained" color="secondary">
             <EditIcon fontSize="large" />
           </Button>
@@ -135,6 +135,7 @@ export default function ArticleDetails({ article, publicPage }) {
               disableRipple
               disableFocusRipple
               title={i18n.__('pages.PublicArticleDetailsPage.draft')}
+              tabIndex={-1}
             >
               {i18n.__('pages.PublicArticleDetailsPage.draft')}
             </Button>
@@ -147,6 +148,7 @@ export default function ArticleDetails({ article, publicPage }) {
               disableRipple
               disableFocusRipple
               title={i18n.__('pages.PublicArticleDetailsPage.views')}
+              tabIndex={-1}
             >
               {article.visits}
             </Button>
