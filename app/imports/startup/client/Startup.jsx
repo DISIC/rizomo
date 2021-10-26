@@ -12,6 +12,7 @@ import { registerSchemaMessages } from '../../api/utils';
 Meteor.startup(() => {
   window.Quill = Quill;
   i18n.setLocale(getLang());
+  document.documentElement.setAttribute('lang', getLang());
   // setup translated validation messages
   registerSchemaMessages();
   // setup client side login hook

@@ -19,6 +19,7 @@ const LanguageSwitcher = ({ topbar, relative }) => {
   const handleClose = () => setAnchorEl(null);
   const switchLanguage = (lan) => {
     handleClose();
+    document.documentElement.setAttribute('lang', lan);
     dispatch({ type: 'language', data: { language: lan } });
   };
 
