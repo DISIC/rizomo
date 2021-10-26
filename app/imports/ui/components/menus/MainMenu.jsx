@@ -129,7 +129,6 @@ const MainMenu = ({ user = {} }) => {
   } else {
     menu = [...userMenu, ...userGroups];
   }
-  const T = i18n.createComponent('components.MainMenu');
   const currentLink = menu.find((link) => {
     if (link.path === pathname || pathname.search(link.path) > -1) {
       return true;
@@ -196,11 +195,11 @@ const MainMenu = ({ user = {} }) => {
           onClick={() => handleMenuClick({ path: '/profile', content: 'menuProfileLabel' })}
           selected={pathname === '/profile'}
         >
-          <T>menuProfileLabel</T>
+          {i18n.__('components.MainMenu.menuProfileLabel')}
         </MenuItem>
 
         <MenuItem className={classes.menuItem} onClick={onLogout}>
-          <T>menuLogoutLabel</T>
+          {i18n.__('components.MainMenu.menuLogoutLabel')}
         </MenuItem>
         <Divider />
         {menu.map((item) => {
@@ -213,7 +212,7 @@ const MainMenu = ({ user = {} }) => {
               onClick={() => handleMenuClick(item)}
               selected={currentLink ? currentLink.path === item.path : false}
             >
-              <T>{item.content}</T>
+              {i18n.__(`components.MainMenu.${item.content}`)}
             </MenuItem>
           );
         })}
