@@ -228,7 +228,10 @@ if (Meteor.isServer) {
       }
       if (details.user.isActive === false) {
         // auto activate user based on email address
-        if (checkDomain(details.user.services.keycloak.email)) {
+        if (
+          checkDomain(details.user.services.keycloak.email) ||
+          Meteor.settings.keycloak.adminEmails.indexOf(details.user.services.keycloak.email) !== -1
+        ) {
           updateInfos.isActive = true;
           updateInfos.isRequest = false;
         } else {
