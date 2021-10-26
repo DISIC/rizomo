@@ -395,6 +395,24 @@ export const setActive = new ValidatedMethod({
   },
 });
 
+export const setArticlesEnable = new ValidatedMethod({
+  name: 'users.setArticlesEnable',
+  validate: null,
+
+  run() {
+    if (!this.userId) {
+      throw new Meteor.Error('api.users.toggleAdvancedPersonalPage.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+    }
+    // check user existence
+    const user = Meteor.users.findOne({ _id: this.userId });
+    if (user === undefined) {
+      throw new Meteor.Error('api.users.toggleAdvancedPersonalPage.unknownUser', i18n.__('api.users.unknownUser'));
+    }
+    const newValue = !(user.articlesEnable || false);
+    Meteor.users.update(this.userId, { $set: { articlesEnable: newValue } });
+  },
+});
+
 export const unsetActive = new ValidatedMethod({
   name: 'users.unsetActive',
   validate: new SimpleSchema({
@@ -934,6 +952,7 @@ const LISTS_METHODS = _.pluck(
     setUsername,
     setName,
     setStructure,
+    setArticlesEnable,
     setActive,
     removeUser,
     setAdminOf,

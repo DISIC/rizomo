@@ -85,7 +85,7 @@ const GroupAvatarPicker = ({ avatar, type, onAssignAvatar, profil }) => {
         </Grid>
         <Grid item xs={12} className={classes.buttonWrapper}>
           <Tooltip title={i18n.__('pages.ProfilePage.uploadImg')} aria-label={i18n.__('pages.ProfilePage.uploadImg')}>
-            <IconButton>
+            <IconButton tabIndex={-1}>
               <PublishIcon />
               <Input className={classes.inputFile} type="file" id="avatarUpload" onChange={uploadAvatarImg} />
             </IconButton>

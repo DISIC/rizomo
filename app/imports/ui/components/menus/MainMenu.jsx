@@ -13,10 +13,20 @@ import PropTypes from 'prop-types';
 import AppVersion from '../system/AppVersion';
 import LogoutDialog from '../system/LogoutDialog';
 import UserAvatar from '../users/UserAvatar';
+import updateDocumentTitle from '../../utils/updateDocumentTitle';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
     marginLeft: theme.spacing(1),
+  },
+  menuItem: {
+    '&:hover': {
+      color: theme.palette.text.primary,
+      // backgroundColor: '#eeeeee',
+      backgroundColor: theme.palette.backgroundFocus.main,
+      opacity: 1,
+      transition: 'all 300ms ease-in-out',
+    },
   },
 }));
 
@@ -101,10 +111,14 @@ const MainMenu = ({ user = {} }) => {
   const { pathname } = useLocation();
   const isAdmin = Roles.userIsInRole(user._id, 'admin');
   const isAdminStructure = Roles.userIsInRole(user._id, 'adminStructure', user.structure);
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
   const handleClose = () => setAnchorEl(null);
-  const handleMenuClick = (path) => {
-    history.push(path);
+  const handleMenuClick = (item) => {
+    updateDocumentTitle(i18n.__(`components.MainMenu.${item.content}`));
+    history.push(item.path);
     setAnchorEl(null);
   };
   let menu;
@@ -115,7 +129,6 @@ const MainMenu = ({ user = {} }) => {
   } else {
     menu = [...userMenu, ...userGroups];
   }
-  const T = i18n.createComponent('components.MainMenu');
   const currentLink = menu.find((link) => {
     if (link.path === pathname || pathname.search(link.path) > -1) {
       return true;
@@ -136,6 +149,7 @@ const MainMenu = ({ user = {} }) => {
   };
 
   const onLogout = () => {
+    updateDocumentTitle('');
     if (Meteor.settings.public.enableKeycloak) {
       const logoutType = user.logoutType || 'ask';
       if (logoutType === 'ask') {
@@ -176,12 +190,16 @@ const MainMenu = ({ user = {} }) => {
           horizontal: 'center',
         }}
       >
-        <MenuItem onClick={() => handleMenuClick('/profile')} selected={pathname === '/profile'}>
-          <T>menuProfileLabel</T>
+        <MenuItem
+          className={classes.menuItem}
+          onClick={() => handleMenuClick({ path: '/profile', content: 'menuProfileLabel' })}
+          selected={pathname === '/profile'}
+        >
+          {i18n.__('components.MainMenu.menuProfileLabel')}
         </MenuItem>
 
-        <MenuItem onClick={onLogout}>
-          <T>menuLogoutLabel</T>
+        <MenuItem className={classes.menuItem} onClick={onLogout}>
+          {i18n.__('components.MainMenu.menuLogoutLabel')}
         </MenuItem>
         <Divider />
         {menu.map((item) => {
@@ -189,16 +207,17 @@ const MainMenu = ({ user = {} }) => {
             <Divider key={item.path} />
           ) : (
             <MenuItem
+              className={classes.menuItem}
               key={item.path}
-              onClick={() => handleMenuClick(item.path)}
+              onClick={() => handleMenuClick(item)}
               selected={currentLink ? currentLink.path === item.path : false}
             >
-              <T>{item.content}</T>
+              {i18n.__(`components.MainMenu.${item.content}`)}
             </MenuItem>
           );
         })}
         <Divider />
-        <MenuItem>
+        <MenuItem disabled style={{ opacity: 1 }}>
           <AppVersion />
         </MenuItem>
       </Menu>

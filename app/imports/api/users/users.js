@@ -175,6 +175,12 @@ Meteor.users.schema = new SimpleSchema(
       },
       label: getLabel('api.users.labels.ncloud'),
     },
+    articlesEnable: {
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      label: getLabel('api.users.labels.articlesEnable'),
+    },
   },
   { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
@@ -222,7 +228,10 @@ if (Meteor.isServer) {
       }
       if (details.user.isActive === false) {
         // auto activate user based on email address
-        if (checkDomain(details.user.services.keycloak.email)) {
+        if (
+          checkDomain(details.user.services.keycloak.email) ||
+          Meteor.settings.keycloak.adminEmails.indexOf(details.user.services.keycloak.email) !== -1
+        ) {
           updateInfos.isActive = true;
           updateInfos.isRequest = false;
         } else {
@@ -296,6 +305,7 @@ Meteor.users.selfFields = {
   groupQuota: 1,
   nclocator: 1,
   advancedPersonalPage: 1,
+  articlesEnable: 1,
 };
 
 Meteor.users.adminFields = {
@@ -312,6 +322,7 @@ Meteor.users.adminFields = {
   groupCount: 1,
   groupQuota: 1,
   nclocator: 1,
+  articlesEnable: 1,
 };
 
 Meteor.users.publicFields = {
@@ -329,6 +340,7 @@ Meteor.users.publicFields = {
   groupQuota: 1,
   mezigName: 1,
   nclocator: 1,
+  articlesEnable: 1,
 };
 
 Meteor.users.deny({

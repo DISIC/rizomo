@@ -14,7 +14,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
-import Spinner from '../system/Spinner';
 import Notifications from '../../../api/notifications/notifications';
 import { useAppContext } from '../../contexts/context';
 import Notification from './Notification';
@@ -126,9 +125,7 @@ const NotificationsDisplay = ({ notifications, ready }) => {
 
   return (
     <>
-      {!ready ? (
-        <Spinner />
-      ) : (
+      {!ready ? null : (
         <Popper
           className={classes.popper}
           open={notificationPage.notifsOpen || false}

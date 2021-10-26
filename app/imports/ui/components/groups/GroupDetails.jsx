@@ -4,8 +4,9 @@ import { Meteor } from 'meteor/meteor';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
 import CardContent from '@material-ui/core/CardContent';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
@@ -27,6 +28,18 @@ import GroupBadge from './GroupBadge';
 
 const useStyles = ({ type }, member, candidate, isShort) =>
   makeStyles((theme) => ({
+    memberInfo: {
+      color: 'green',
+      marginLeft: 5,
+      marginTop: 12,
+      verticalAlign: 'center',
+    },
+    candidateInfo: {
+      color: theme.palette.secondary.main,
+      marginLeft: 5,
+      marginTop: 12,
+      verticalAlign: 'center',
+    },
     avatar: {
       backgroundColor: member ? 'green' : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
       width: theme.spacing(7),
@@ -50,6 +63,7 @@ const useStyles = ({ type }, member, candidate, isShort) =>
       paddingRight: 32,
       paddingBottom: isShort ? 10 : 32,
       paddingTop: 24,
+      alignItems: 'start',
     },
     card: {
       height: '100%',
@@ -79,7 +93,7 @@ const useStyles = ({ type }, member, candidate, isShort) =>
       paddingLeft: 32,
       paddingRight: 32,
       paddingBottom: 32,
-      paddingTop: 0,
+      paddingTop: theme.spacing(1),
       display: 'flex',
     },
     buttonText: {
@@ -104,6 +118,11 @@ const useStyles = ({ type }, member, candidate, isShort) =>
     noUnderline: {
       textDecoration: 'none',
       outline: 'none',
+      '&:focus, &:hover': {
+        backgroundColor: theme.palette.backgroundFocus.main,
+      },
+      display: 'flex',
+      flexGrow: 100,
     },
     chip: {
       margin: theme.spacing(0.5),
@@ -157,20 +176,41 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
     return <LockIcon />;
   };
 
-  const text = () => {
-    if (animator) {
-      return i18n.__('components.GroupDetails.groupAnimator');
-    }
-    if (member) {
-      return i18n.__('components.GroupDetails.groupMember');
-    }
-    if (candidate) {
-      return i18n.__('components.GroupDetails.groupCandidate');
-    }
+  const buttonText = () => {
     if (type === 5) {
       return i18n.__('components.GroupDetails.askToJoinModerateGroupButtonLabel');
     }
     return i18n.__('components.GroupDetails.joinPublicGroupButtonLabel');
+  };
+
+  const infoText = () => {
+    if (candidate) {
+      return (
+        <Grid className={classes.candidateInfo} container direction="row">
+          <Grid item xs={2}>
+            <AccessTimeIcon />
+          </Grid>
+          <Grid item>
+            <Typography>{i18n.__('components.GroupDetails.groupCandidate')}</Typography>
+          </Grid>
+        </Grid>
+      );
+    }
+
+    if (member || admin || animator) {
+      return (
+        <Grid className={classes.memberInfo} container direction="row">
+          <Grid item xs={2}>
+            <CheckIcon />
+          </Grid>
+          <Grid item>
+            <Typography>{i18n.__('components.GroupDetails.groupMember')}</Typography>
+          </Grid>
+        </Grid>
+      );
+    }
+
+    return null;
   };
 
   let groupType = i18n.__('components.GroupDetails.moderateGroup');
@@ -183,50 +223,50 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
   return (
     <Card className={classes.card} elevation={3}>
       {loading && <Spinner full />}
-      <Link to={`/groups/${group.slug}`} className={classes.noUnderline}>
-        <CardHeader
-          className={classes.cardHeader}
-          avatar={
-            animator || admin ? (
-              <GroupBadge overlap="circular" className={classes.badge} color="error" badgeContent={group.numCandidates}>
+      <Tooltip
+        title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
+        aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
+      >
+        <Link to={`/groups/${group.slug}`} className={classes.noUnderline}>
+          <CardHeader
+            className={classes.cardHeader}
+            avatar={
+              animator || admin ? (
+                <GroupBadge
+                  overlap="circular"
+                  className={classes.badge}
+                  color="error"
+                  badgeContent={group.numCandidates}
+                >
+                  <GroupAvatar type={type} avatar={avatar} />
+                </GroupBadge>
+              ) : (
                 <GroupAvatar type={type} avatar={avatar} />
-              </GroupBadge>
-            ) : (
-              <GroupAvatar type={type} avatar={avatar} />
-            )
-          }
-          action={
-            <Tooltip
-              title={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
-              aria-label={i18n.__('components.GroupDetails.singleGroupButtonLabel')}
-            >
-              <IconButton color="primary">
-                <ChevronRightIcon />
-              </IconButton>
-            </Tooltip>
-          }
-          title={group.name}
-          titleTypographyProps={{
-            variant: 'h6',
-            color: 'primary',
-            className: classes.title,
-          }}
-          subheader={groupType}
-          subheaderTypographyProps={{
-            variant: 'body2',
-            color: type === 0 ? 'primary' : 'secondary',
-            style: {
-              color: member || animator ? 'green' : null,
-              display: 'flex',
-              alignItems: 'center',
-            },
-          }}
-        />
-      </Link>
+              )
+            }
+            title={group.name}
+            titleTypographyProps={{
+              variant: 'h6',
+              color: 'primary',
+              className: classes.title,
+            }}
+            subheader={groupType}
+            subheaderTypographyProps={{
+              variant: 'body2',
+              color: type === 0 ? 'primary' : 'secondary',
+              style: {
+                color: member || animator ? 'green' : null,
+                display: 'flex',
+                alignItems: 'center',
+              },
+            }}
+          />
+        </Link>
+      </Tooltip>
       <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
         {!isShort && <Typography variant="body1">{group.description}</Typography>}
         <div className={isShort ? classes.cardActionShort : classes.cardActions}>
-          {type !== 10 || admin || member || animator ? (
+          {!member && !animator && !candidate ? (
             <Button
               startIcon={icon()}
               className={classes.buttonText}
@@ -235,15 +275,17 @@ function GroupDetails({ group = {}, isShort, member, candidate, admin, animator 
               disableElevation={member || animator || candidate}
               onClick={member || animator || candidate ? null : handleJoinGroup}
             >
-              {text()}
+              {buttonText()}
             </Button>
-          ) : null}
+          ) : (
+            infoText()
+          )}
           {admin && (
             <Tooltip
               title={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
               aria-label={i18n.__('components.GroupDetails.manageGroupButtonLabel')}
             >
-              <Link to={`/admingroups/${group._id}`}>
+              <Link to={`/admingroups/${group._id}`} tabIndex={-1}>
                 <IconButton color="primary">
                   <EditIcon />
                 </IconButton>

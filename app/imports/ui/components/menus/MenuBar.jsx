@@ -11,6 +11,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import HelpIcon from '@material-ui/icons/Help';
 import BusinessIcon from '@material-ui/icons/Business';
 import AppsIcon from '@material-ui/icons/Apps';
+import { useAppContext } from '../../contexts/context';
+import updateDocumentTitle from '../../utils/updateDocumentTitle';
 
 export const links = [
   {
@@ -18,13 +20,6 @@ export const links = [
     content: 'menuMyspace',
     contentMobile: 'menuMyspaceMobile',
     icon: <HomeIcon />,
-    admin: false,
-  },
-  {
-    path: '/publications',
-    content: 'menuArticles',
-    contentMobile: 'menuArticlesMobile',
-    icon: <LibraryBooks />,
     admin: false,
   },
   {
@@ -40,6 +35,13 @@ export const links = [
     icon: <AppsIcon />,
     admin: false,
     tooltip: 'tooltipServices',
+  },
+  {
+    path: '/publications',
+    content: 'menuArticles',
+    contentMobile: 'menuArticlesMobile',
+    icon: <LibraryBooks />,
+    admin: false,
   },
   {
     path: '/structure',
@@ -64,6 +66,12 @@ const useStyles = (mobile) =>
     mobileTabs: {
       textTransform: 'none',
     },
+    elementTab: {
+      '&:hover': {
+        color: theme.palette.text.primary,
+        transition: 'all 300ms ease-in-out',
+      },
+    },
     flexContainer: {
       display: 'flex',
       alignItems: 'center',
@@ -80,6 +88,7 @@ const useStyles = (mobile) =>
 
 const MenuBar = ({ mobile }) => {
   const { pathname } = useLocation();
+  const [{ user }] = useAppContext();
   const history = useHistory();
   const classes = useStyles(mobile)();
   const T = i18n.createComponent('components.MenuBar');
@@ -90,12 +99,18 @@ const MenuBar = ({ mobile }) => {
     return false;
   });
 
+  const finalLink = user.articlesEnable ? links : links.filter(({ path }) => path !== '/publications');
+
   function a11yProps(index) {
     return {
       id: `scrollable-force-tab-${index}`,
       'aria-controls': `scrollable-force-tabpanel-${index}`,
     };
   }
+  const handleClick = (link) => {
+    updateDocumentTitle(i18n.__(`components.MenuBar.${link.content}`));
+    history.push(link.path);
+  };
 
   return (
     <Tabs
@@ -111,7 +126,7 @@ const MenuBar = ({ mobile }) => {
       variant="scrollable"
       scrollButtons="on"
     >
-      {links.map((link, index) => (
+      {finalLink.map((link, index) => (
         <Tab
           {...a11yProps(index)}
           key={link.path}
@@ -119,10 +134,10 @@ const MenuBar = ({ mobile }) => {
           title={link.tooltip ? i18n.__(`components.MenuBar.${link.tooltip}`) : ''}
           disableFocusRipple={mobile}
           disableRipple={mobile}
-          className={mobile ? classes.mobileTabs : null}
+          className={mobile ? classes.mobileTabs : classes.elementTab}
           icon={mobile ? link.icon : undefined}
           label={<T>{link.contentMobile || link.content}</T>}
-          onClick={() => history.push(link.path)}
+          onClick={() => handleClick(link)}
         />
       ))}
     </Tabs>

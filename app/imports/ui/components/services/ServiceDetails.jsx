@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 // import OpenWithIcon from '@material-ui/icons/OpenWith';
@@ -14,7 +13,6 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 
@@ -69,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 32,
     paddingTop: 0,
     display: 'flex',
+    marginTop: 10,
   },
   buttonText: {
     textTransform: 'none',
@@ -94,6 +93,11 @@ const useStyles = makeStyles((theme) => ({
   noUnderline: {
     textDecoration: 'none',
     outline: 'none',
+    '&:focus, &:hover': {
+      backgroundColor: theme.palette.backgroundFocus.main,
+    },
+    display: 'flex',
+    flexGrow: 100,
   },
   fab: {
     textTransform: 'none',
@@ -150,7 +154,7 @@ function ServiceDetails({ service, favAction, isShort }) {
     </Button>
   );
   const linkButton = (
-    <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>
+    <Link to={service.url.replace(Meteor.absoluteUrl(), '/')} tabIndex={-1}>
       <Button size="large" className={classes.buttonText} variant="contained">
         {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
       </Button>
@@ -172,58 +176,54 @@ function ServiceDetails({ service, favAction, isShort }) {
           </IconButton>
         )}
       /> */}
-      <Link
-        to={
-          isAddressBook
-            ? service.url
-            : isEvents
-            ? service.url
-            : isPoll
-            ? service.url
-            : isBookmark
-            ? service.url
-            : `/services/${service.slug}`
-        }
-        className={classes.noUnderline}
+      <Tooltip
+        title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
+        aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
       >
-        <CardHeader
-          className={classes.cardHeader}
-          avatar={
-            isAddressBook ? (
-              service.logo
-            ) : isEvents ? (
-              service.logo
-            ) : isPoll ? (
-              service.logo
-            ) : isBookmark ? (
-              service.logo
-            ) : (
-              <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
-            )
+        <Link
+          to={
+            isAddressBook
+              ? service.url
+              : isEvents
+              ? service.url
+              : isPoll
+              ? service.url
+              : isBookmark
+              ? service.url
+              : `/services/${service.slug}`
           }
-          action={
-            <Tooltip
-              title={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-              aria-label={i18n.__('components.ServiceDetails.singleServiceButtonLabel')}
-            >
-              <IconButton color="primary">
-                <ChevronRightIcon />
-              </IconButton>
-            </Tooltip>
-          }
-          title={service.title}
-          titleTypographyProps={{
-            variant: 'h6',
-            color: 'primary',
-            className: classes.title,
-          }}
-          subheader={service.usage}
-          subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
-        />
-      </Link>
-      <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
-        {!isShort && <Typography variant="body1">{service.description}</Typography>}
-        {/* <Paper variant="elevation" elevation={0} className={classes.paperChip}>
+          className={classes.noUnderline}
+        >
+          <CardHeader
+            className={classes.cardHeader}
+            avatar={
+              isAddressBook ? (
+                service.logo
+              ) : isEvents ? (
+                service.logo
+              ) : isPoll ? (
+                service.logo
+              ) : isBookmark ? (
+                service.logo
+              ) : (
+                <CardMedia className={classes.cardMedia} component="img" alt={service.title} image={service.logo} />
+              )
+            }
+            title={service.title}
+            titleTypographyProps={{
+              variant: 'h6',
+              color: 'primary',
+              className: classes.title,
+            }}
+            subheader={service.usage}
+            subheaderTypographyProps={{ variant: 'body2', color: 'primary' }}
+          />
+        </Link>
+      </Tooltip>
+      {!isAddressBook && !isEvents && !isPoll && !isBookmark && (
+        <CardContent className={isShort ? classes.cardContentMobile : classes.cardContent}>
+          {!isShort && <Typography variant="body1">{service.description}</Typography>}
+          {/* <Paper variant="elevation" elevation={0} className={classes.paperChip}>
           {service.categories.map((cat) => {
             const currentCategory = categories.find((categ) => categ._id === cat);
             return (
@@ -239,7 +239,6 @@ function ServiceDetails({ service, favAction, isShort }) {
             );
           })}
         </Paper> */}
-        {!isAddressBook && !isEvents && !isPoll && !isBookmark && (
           <div className={isShort ? classes.cardActionShort : classes.cardActions}>
             {service.state === 5 ? inactiveButton : isExternal ? openButton : linkButton}
 
@@ -259,8 +258,8 @@ function ServiceDetails({ service, favAction, isShort }) {
               </Tooltip>
             )}
           </div>
-        )}
-      </CardContent>
+        </CardContent>
+      )}
     </Card>
   );
 }

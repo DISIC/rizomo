@@ -151,7 +151,7 @@ const SingleServicePage = ({ service = {}, ready, categories = [] }) => {
     </Button>
   );
   const linkButton = (
-    <Link to={service.url.replace(Meteor.absoluteUrl(), '/')}>
+    <Link to={service.url.replace(Meteor.absoluteUrl(), '/')} tabIndex={-1}>
       <Button size="large" color="primary" className={classes.buttonText} variant="contained">
         {i18n.__('components.ServiceDetails.runServiceButtonLabel')}
       </Button>

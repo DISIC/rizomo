@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
   },
   span: {
+    display: 'flex',
     flex: '1 0 auto',
   },
   avatar: {
@@ -52,7 +53,14 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(5),
     margin: 'auto',
   },
-  actionarea: {},
+  actionarea: {
+    textDecoration: 'none',
+    outline: 'none',
+    '&:hover': {
+      backgroundColor: theme.palette.backgroundFocus.main,
+    },
+    flexGrow: 100,
+  },
   linkName: {
     color: theme.palette.primary.main,
   },

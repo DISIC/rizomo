@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Switch from '@material-ui/core/Switch';
 import EditIcon from '@material-ui/icons/Edit';
@@ -369,9 +370,11 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                   <Grid item style={isMobile ? { width: '100%' } : { flexGrow: 1 }}>
                     <Grid container className={classes.titleButtons}>
                       <Grid item style={{ flexGrow: 1 }}>
-                        <IconButton onClick={toggleSearch} disabled={customDrag}>
-                          <SearchIcon fontSize="large" />
-                        </IconButton>
+                        <Tooltip title={i18n.__('pages.PersonalPage.searchElement')}>
+                          <IconButton onClick={toggleSearch} disabled={customDrag}>
+                            <SearchIcon fontSize="large" />
+                          </IconButton>
+                        </Tooltip>
                       </Grid>
                       {user.advancedPersonalPage ? (
                         <Grid item>

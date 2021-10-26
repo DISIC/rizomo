@@ -673,6 +673,9 @@
       "ValidateForm": "Valider",
       "ncloudURL": "URL Nextcloud",
       "changeURL": "Renouveller"
+    },
+    "SkipLink": {
+      "skipToContent": "Aller au contenu"
     }
   },
   "validatejs": {
@@ -792,7 +795,8 @@
       "useGallery": "Choisir parmi la galerie d'images",
       "structureMessage": "Cocher cette case pour lier tous les articles importés à votre structure de rattachement actuelle.",
       "advancedPersonalPage": "Activer l'espace personnel avancé",
-      "languageLabel": "Choix de la langue"
+      "languageLabel": "Choix de la langue",
+      "activateArticles": "Activer les publications"
     },
     "NotFound": {
       "backButtonLabel": "Retour",
@@ -818,6 +822,7 @@
     "GroupsPage": {
       "title": "Explorer les groupes",
       "searchText": "Quel groupe cherchez-vous ?",
+      "searchGroup": "Rechercher un groupe",
       "viewMode": "Changer le mode d'affichage",
       "viewCard": "Mode cartes",
       "viewList": "Mode liste",
@@ -958,6 +963,7 @@
     "PersonalPage": {
       "welcome": "Bienvenue sur votre espace personnel",
       "searchText": "Besoin de retrouver un service, groupe ou lien personnel ?",
+      "searchElement": "Chercher un élément",
       "noFavYet": "Ajoutez ici des éléments depuis l'onglet Applications",
       "unsorted": "À trier",
       "unsortedFav": "Mes Favoris",
@@ -1120,7 +1126,7 @@
       "usage": "Utilisation",
       "delete": "Supprimer",
       "confirmDelete": "Confirmer la suppression",
-      "objectUsedText": "Ce fichier est utilisé dans un article (titre ci dessous), si vous le supprimer, vos lecteurs tomberont sur un lien vide dans cet article. Si vous confirmez la suppression en cliquant une fois de plus sur le bouton, prenez note que cela ne sera pas réversible."
+      "objectUsedText": "Ce fichier est utilisé dans un article (titre ci dessous), si vous le supprimez, vos lecteurs tomberont sur un lien vide dans cet article. Si vous confirmez la suppression en cliquant une fois de plus sur le bouton, prenez note que cela ne sera pas réversible."
     },
     "AdminStructureUsersPage": {
       "title": "Gestion des utilisateurs de la structure",

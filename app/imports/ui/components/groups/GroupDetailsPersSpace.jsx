@@ -24,7 +24,17 @@ const useStyles = ({ type }, admin, member, candidate) =>
       display: 'flex',
       flexDirection: 'column',
     },
-    cardHeaderContent: { display: 'grid' },
+    cardHeaderContent: {
+      display: 'grid',
+    },
+    actionarea: {
+      textDecoration: 'none',
+      outline: 'none',
+      '&:hover': {
+        backgroundColor: theme.palette.backgroundFocus.main,
+      },
+      flexGrow: 100,
+    },
     cardActions: {
       justifyContent: 'space-between',
       paddingTop: 0,
@@ -36,6 +46,7 @@ const useStyles = ({ type }, admin, member, candidate) =>
       paddingBottom: 10,
     },
     span: {
+      display: 'flex',
       flex: '1 0 auto',
     },
     avatar: {
@@ -144,7 +155,11 @@ function GroupDetailsPersSpace({
         {/* this span is to allow display of tooltip when CardActionArea is disabled 
         (occur when a service is disabled) */}
         <span className={classes.span}>
-          <CardActionArea className={classes.actionarea} onClick={() => history.push(`/groups/${group.slug}`)}>
+          <CardActionArea
+            className={classes.actionarea}
+            onClick={() => history.push(`/groups/${group.slug}`)}
+            disabled={customDrag}
+          >
             <CardHeader
               classes={{ content: classes.cardHeaderContent }}
               avatar={

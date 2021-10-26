@@ -32,6 +32,7 @@ import {
   setAvatar,
   setNcloudUrlAll,
   toggleAdvancedPersonalPage,
+  setArticlesEnable,
 } from './methods';
 import { structures } from '../structures';
 import Groups from '../../groups/groups';
@@ -791,6 +792,27 @@ describe('users', function () {
         assert.throws(
           () => {
             toggleAdvancedPersonalPage._execute({}, {});
+          },
+          Meteor.Error,
+          /api.users.toggleAdvancedPersonalPage.notPermitted/,
+        );
+      });
+    });
+    describe('setArticlesEnable', function () {
+      it('users can toggle their articles option', function () {
+        let user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.articlesEnable, false);
+        setArticlesEnable._execute({ userId }, {});
+        user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.articlesEnable, true);
+        setArticlesEnable._execute({ userId }, {});
+        user = Meteor.users.findOne({ _id: userId });
+        assert.equal(user.articlesEnable, false);
+      });
+      it('only logged in users can set their articles option', function () {
+        assert.throws(
+          () => {
+            setArticlesEnable._execute({}, {});
           },
           Meteor.Error,
           /api.users.toggleAdvancedPersonalPage.notPermitted/,

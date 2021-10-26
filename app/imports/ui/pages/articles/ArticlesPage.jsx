@@ -151,7 +151,7 @@ function ArticlesPage() {
               </Tooltip>
             </Typography>
             <div className={classes.spaceBetween}>
-              <Link to="/publications/new">
+              <Link to="/publications/new" tabIndex={-1}>
                 <Button startIcon={<AddIcon />} className={classes.buttonOption} size="medium" variant="contained">
                   {i18n.__('pages.ArticlesPage.addNewArticle')}
                 </Button>

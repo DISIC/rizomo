@@ -93,14 +93,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   emptyZone: {
-    minHeight: '200px',
+    minHeight: '150px',
     border: `2px dashed ${theme.palette.primary.main}`,
     borderRadius: theme.shape.borderRadius,
     margin: 'auto',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    opacity: 0.2,
+    opacity: 0.4,
     '&::before': {
       content: "''",
       width: '100px',

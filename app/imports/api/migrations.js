@@ -302,3 +302,19 @@ Migrations.add({
     Meteor.users.rawCollection().updateMany({}, { $rename: { nclocator: 'ncloud' } });
   },
 });
+
+Migrations.add({
+  version: 18,
+  name: 'Add articlesEnable field for users',
+  up: () => {
+    Meteor.users
+      .find()
+      .fetch()
+      .forEach((user) => {
+        Meteor.users.update({ _id: user._id }, { $set: { articlesEnable: false } });
+      });
+  },
+  down: () => {
+    Meteor.users.rawCollection().updateMany({}, { $unset: { articlesEnable: true } });
+  },
+});

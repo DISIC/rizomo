@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#FFFFFF',
   },
   public: {
-    backgroundColor: '#011caa',
+    backgroundColor: theme.palette.primary.main,
   },
   moderate: {
-    backgroundColor: '#efac61',
+    backgroundColor: theme.palette.secondary.main,
   },
   private: {
     backgroundColor: '#cf3429',

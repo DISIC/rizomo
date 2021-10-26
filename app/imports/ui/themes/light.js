@@ -12,11 +12,14 @@ const lightTheme = createTheme({
       dark: '#212F74',
     },
     secondary: {
-      main: '#EFAC61',
+      main: '#E48231',
       light: '#FFDBA5',
     },
     tertiary: {
       main: '#fff',
+    },
+    backgroundFocus: {
+      main: '#ffe0b2',
     },
     text: {
       primary: '#040D3E',

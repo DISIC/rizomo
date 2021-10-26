@@ -150,22 +150,16 @@ function GroupsPage() {
 
   const toggleButtons = (
     <ToggleButtonGroup value={viewMode} exclusive aria-label={i18n.__('pages.GroupsPage.viewMode')}>
-      <ToggleButton
-        value="card"
-        onClick={changeViewMode}
-        title={i18n.__('pages.GroupsPage.viewCard')}
-        aria-label={i18n.__('pages.GroupsPage.viewCard')}
-      >
-        <DashboardIcon color="primary" />
-      </ToggleButton>
-      <ToggleButton
-        value="list"
-        onClick={changeViewMode}
-        title={i18n.__('pages.GroupsPage.viewList')}
-        aria-label={i18n.__('pages.GroupsPage.viewList')}
-      >
-        <ViewListIcon color="primary" />
-      </ToggleButton>
+      <Tooltip title={i18n.__('pages.GroupsPage.viewCard')}>
+        <ToggleButton value="card" onClick={changeViewMode} aria-label={i18n.__('pages.GroupsPage.viewCard')}>
+          <DashboardIcon color="primary" />
+        </ToggleButton>
+      </Tooltip>
+      <Tooltip title={i18n.__('pages.GroupsPage.viewList')}>
+        <ToggleButton value="list" onClick={changeViewMode} aria-label={i18n.__('pages.GroupsPage.viewList')}>
+          <ViewListIcon color="primary" />
+        </ToggleButton>
+      </Tooltip>
     </ToggleButtonGroup>
   );
 
@@ -228,9 +222,11 @@ function GroupsPage() {
           <Grid item xs={12} className={isMobile ? null : classes.flex}>
             <Typography variant={isMobile ? 'h6' : 'h4'} className={classes.flex}>
               {`${i18n.__('pages.GroupsPage.title')} (${total})`}
-              <IconButton onClick={toggleSearch}>
-                <SearchIcon fontSize="large" />
-              </IconButton>
+              <Tooltip title={i18n.__('pages.GroupsPage.searchGroup')}>
+                <IconButton onClick={toggleSearch}>
+                  <SearchIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
               {!isMobile && filterSwitch()}
             </Typography>
             <div className={classes.spaceBetween}>{!isMobile && toggleButtons}</div>

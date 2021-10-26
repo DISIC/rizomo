@@ -19,6 +19,12 @@ const useStyles = makeStyles((theme) => ({
     outline: 'none',
     marginRight: 25,
     fontFamily: 'WorkSansBold',
+    padding: 10,
+    '&:hover': {
+      color: theme.palette.backgroundFocus.main,
+      opacity: 1,
+      transition: 'all 300ms ease-in-out',
+    },
   },
   mobileLink: {
     flexDirection: 'column',
@@ -26,10 +32,6 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     outline: 'none',
     marginRight: 25,
-    fontFamily: 'WorkSansBold',
-  },
-  blog: {
-    color: theme.palette.tertiary.main,
     fontFamily: 'WorkSansBold',
   },
   li: {
@@ -88,7 +90,7 @@ const Footer = () => {
             Publications
           </Link>
         ) : (
-          <a href={externalBlog} className={classes.blog} target="_blank" rel="noreferrer noopener">
+          <a href={externalBlog} className={classes.link} target="_blank" rel="noreferrer noopener">
             Publications
           </a>
         )}
@@ -98,7 +100,7 @@ const Footer = () => {
         Publications
       </Link>
     ) : (
-      <a key="blogLinkKey" href={externalBlog} className={classes.blog} target="_blank" rel="noreferrer noopener">
+      <a key="blogLinkKey" href={externalBlog} className={classes.link} target="_blank" rel="noreferrer noopener">
         Publications
       </a>
     );

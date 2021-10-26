@@ -671,6 +671,9 @@
       "ValidateForm": "Validate",
       "ncloudURL": "Nextcloud URL",
       "changeURL": "Renew"
+    },
+    "SkipLink": {
+      "skipToContent": "Skip to content"
     }
   },
   "validatejs": {
@@ -790,7 +793,8 @@
       "useGallery": "Choose among image gallery",
       "structureMessage": "Check this box to link all imported articles to your current attachment structure.",
       "advancedPersonalPage": "Activate advanced personal page",
-      "languageLabel": "Change language"
+      "languageLabel": "Change language",
+      "activateArticles": "Activate articles"
     },
     "NotFound": { "backButtonLabel": "Back", "message": "Page not found !" },
     "ServicesPage": {
@@ -813,6 +817,7 @@
     "GroupsPage": {
       "title": "Explore the groups",
       "searchText": "Which group are you looking for ?",
+      "searchGroup": "Search a group",
       "viewMode": "Change view mode",
       "viewCard": "Card view",
       "viewList": "List view",
@@ -953,6 +958,7 @@
     "PersonalPage": {
       "welcome": "Welcome on your personal space",
       "searchText": "Need to find a service, group or personal link ?",
+      "searchElement": "Search element",
       "noFavYet": "Add here some elements from Applications tab",
       "unsorted": "To be sorted",
       "unsortedFav": "My Favorites",
