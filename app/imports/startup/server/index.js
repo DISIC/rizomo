@@ -1,5 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 import { Meteor } from 'meteor/meteor';
+import { WebApp } from 'meteor/webapp';
 
 // import i18n translation files
 import '../locales';
@@ -25,4 +26,6 @@ import './db-initialize/PersonalSpaces';
 
 Meteor.startup(() => {
   Migrations.migrateTo('latest');
+  // set up Default language to French in HTML attribute
+  WebApp.addHtmlAttributeHook(() => ({ lang: 'fr' }));
 });
