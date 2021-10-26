@@ -1,4 +1,4 @@
-image: hub.eole.education/proxyhub/geoffreybooth/meteor-base:2.2.3
+image: hub.eole.education/proxyhub/geoffreybooth/meteor-base:2.4
 
 stages:
   - deps
