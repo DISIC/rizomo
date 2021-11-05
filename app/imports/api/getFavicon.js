@@ -17,11 +17,20 @@ function getFavicon(url) {
           const href = l.getAttribute('href');
           if (href !== '') {
             if (href.toLowerCase().indexOf('https:') === -1 && href.toLowerCase().indexOf('http:') === -1) {
-              try {
-                const u = new URL(href, racine);
-                icons.push(u.href);
-              } catch {
-                // nothing
+              if (href[0] !== '/') {
+                try {
+                  const u = new URL(href, url);
+                  icons.push(u.href);
+                } catch {
+                  // nothing
+                }
+              } else {
+                try {
+                  const u = new URL(href, racine);
+                  icons.push(u.href);
+                } catch {
+                  // nothing
+                }
               }
             } else {
               icons.push(href);
