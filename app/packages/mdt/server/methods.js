@@ -30,9 +30,7 @@ Meteor.methods({
     return methodsArray;
   },
   'MDT.getCollections': () => collections,
-  'MDT.updateItem': ({
-    key, value, collection, itemId,
-  }) => {
+  'MDT.updateItem': ({ key, value, collection, itemId }) => {
     try {
       return collections[collection].update({ _id: itemId }, { $set: { [key]: value } });
     } catch ({ err }) {
@@ -67,7 +65,9 @@ Meteor.methods({
   },
 });
 
-Accounts.registerLoginHandler('MDT.impersonateUser', ({ userId }) => ({ userId }));
+Accounts.registerLoginHandler('MDT.impersonateUser', (options) =>
+  options.impersonateId ? { userId: options.impersonateId } : undefined,
+);
 
 // Methods Meteor
 // default_server.publish_handlers: get all publications
