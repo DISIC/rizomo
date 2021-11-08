@@ -11,7 +11,13 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import AppSettings from '../appsettings';
-import { updateAppsettings, updateIntroductionLanguage, getAppSettingsLinks } from '../methods';
+import {
+  updateAppsettings,
+  updateIntroductionLanguage,
+  getAppSettingsLinks,
+  switchMaintenanceStatus,
+  updateTextMaintenance,
+} from '../methods';
 import './publications';
 import './factories';
 
@@ -247,6 +253,47 @@ describe('appsettings', function () {
         assert.notProperty(allLinks.legal, 'content');
         assert.notProperty(allLinks.accessibility, 'content');
         assert.notProperty(allLinks.personalData, 'content');
+      });
+    });
+    describe('setSiteInMaintenance', function () {
+      it('normal users can not set site in maintenance in app settings', function () {
+        assert.throws(
+          () => {
+            switchMaintenanceStatus._execute({ userId }, {});
+          },
+          Meteor.Error,
+          /api.appsettings.switchMaintenanceStatus.notPermitted/,
+        );
+      });
+      it('admin can set site in maintenance in app settings', function () {
+        const appsett = AppSettings.findOne({
+          _id: 'settings',
+        });
+        const maintenanceTest = appsett.maintenance;
+
+        switchMaintenanceStatus._execute({ userId: adminId }, {});
+        const appsett2 = AppSettings.findOne({
+          _id: 'settings',
+        });
+        assert.equal(appsett2.maintenance, !maintenanceTest);
+      });
+    });
+    describe('setReasonOfMaintenance', function () {
+      it('normal users can not set reason of maintenance in app settings', function () {
+        assert.throws(
+          () => {
+            updateTextMaintenance._execute({ userId }, { text: 'Test de raison' });
+          },
+          Meteor.Error,
+          /api.appsettings.updateTextMaintenance.notPermitted/,
+        );
+      });
+      it('admin can set site in maintenance in app settings', function () {
+        updateTextMaintenance._execute({ userId: adminId }, { text: 'Raison de maintenance.' });
+        const appsett2 = AppSettings.findOne({
+          _id: 'settings',
+        });
+        assert.equal(appsett2.textMaintenance, 'Raison de maintenance.');
       });
     });
   });
