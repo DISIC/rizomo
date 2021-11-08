@@ -42,9 +42,20 @@
         "personalData": "Données Personnelles",
         "external_personalData": "Utiliser un lien externe pour la page Données Personnelles",
         "link_personalData": "Données Personnelles",
-        "content_personalData": "Texte des Données Personnelles"
+        "content_personalData": "Texte des Données Personnelles",
+        "maintenance": "Statut de maintenance",
+        "textMaintenance": "Raison de la maintenance"
       },
       "updateAppsettings": {
+        "notPermitted": "Vous n'avez pas les droits suffisants."
+      },
+      "updateIntroductionLanguage": {
+        "notPermitted": "Vous n'avez pas les droits suffisants."
+      },
+      "switchMaintenanceStatus":{
+        "notPermitted": "Vous n'avez pas les droits suffisants."
+      },
+      "updateTextMaintenance":{
         "notPermitted": "Vous n'avez pas les droits suffisants."
       }
     },
@@ -330,6 +341,9 @@
     }
   },
   "components": {
+    "SiteInMaintenance":{
+      "maintenanceInProgress": "Maintenance en cours"
+    },
     "BookMarkEdit": {
       "title-edit": "Modification de marque-page",
       "title-create": "Création de marque-page",
@@ -730,7 +744,11 @@
       "legal": "Mentions légales",
       "gcu": "C.G.U",
       "accessibility": "Accessibilité",
-      "personalData": "Données Personnelles"
+      "personalData": "Données Personnelles",
+      "maintenance": "Options de maintenance",
+      "toggleMaintenance": "Mettre le site en maintenance",
+      "textMaintenance": "Raison de la maintenance",
+      "buttonTextMaintenance": "Valider le message"
     },
     "SignIn": {
       "appDescription": "Les services numériques partagés des agents de l&apos;Éducation nationale",
@@ -744,7 +762,8 @@
       "keycloakError": "Erreur de connexion",
       "EmailAlreadyExists": "Erreur: Un compte existant utilise le même email",
       "loginKeycloak": "Se connecter",
-      "rememberMe": "Rester connecté(e)"
+      "rememberMe": "Rester connecté(e)",
+      "maintenanceLogin": "Site en maintenance"
     },
     "SignUp": {
       "appDescription": "Création de votre compte",
@@ -1144,7 +1163,9 @@
     }
   },
   "layouts": {
-    "MainLayout": {}
+    "MainLayout": {
+      "alertMaintenance": "Site en maintenance."
+    }
   },
   "languages": {
     "en": "Anglais",

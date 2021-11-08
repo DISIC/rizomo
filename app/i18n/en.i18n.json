@@ -42,9 +42,20 @@
         "personalData": "Personal Data",
         "external_personalData": "Use an external link for Personal Data page",
         "link_personalData": "Personal Data text page link",
-        "content_personalData": "Personal Data text"
+        "content_personalData": "Personal Data text",
+        "maintenance": "Maintenance status",
+        "textMaintenance": "Maintenance reason text"
       },
       "updateAppsettings": {
+        "notPermitted": "You don't have sufficient rights."
+      },
+      "updateIntroductionLanguage": {
+        "notPermitted": "You don't have sufficient rights."
+      },
+      "switchMaintenanceStatus":{
+        "notPermitted": "You don't have sufficient rights."
+      },
+      "updateTextMaintenance":{
         "notPermitted": "You don't have sufficient rights."
       }
     },
@@ -330,6 +341,9 @@
     }
   },
   "components": {
+    "SiteInMaintenance": {
+      "maintenanceInProgress": "Maintenance in progress"
+    },
     "BookMarkEdit": {
       "title-edit": "Modify Bookmark",
       "title-create": "Create Bookmark",
@@ -728,7 +742,11 @@
       "legal": "Legal notice",
       "gcu": "G.C.U",
       "accessibility": "Accessibility",
-      "personalData": "Personal Data"
+      "personalData": "Personal Data",
+      "maintenance": "Maintenance options",
+      "toggleMaintenance": "Put the site in maintenance",
+      "textMaintenance": "Maintenance reason",
+      "buttonTextMaintenance": "Validate message"
     },
     "SignIn": {
       "appDescription": "Digital services shared by National Education agents",
@@ -742,7 +760,8 @@
       "keycloakError": "Connection error",
       "EmailAlreadyExists": "Error: An account already exists with the same email",
       "loginKeycloak": "Login",
-      "rememberMe": "Remember me"
+      "rememberMe": "Remember me",
+      "maintenanceLogin": "Site in maintenance"
     },
     "SignUp": {
       "appDescription": "Create new account",
@@ -1140,7 +1159,9 @@
     }
   },
   "layouts": {
-    "MainLayout": {}
+    "MainLayout": {
+      "alertMaintenance": "Site in maintenance"
+    }
   },
   "languages": {
     "en": "English",

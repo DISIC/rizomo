@@ -75,8 +75,18 @@ AppSettings.schema = new SimpleSchema(
       type: SettingsType('personal_data'),
       label: getLabel('api.appsettings.labels.personal_data'),
     },
+    maintenance: {
+      type: Boolean,
+      defaultValue: false,
+      label: getLabel('api.appsettings.labels.maintenance'),
+    },
+    textMaintenance: {
+      type: String,
+      defaultValue: ' ',
+      label: getLabel('api.appsettings.labels.textMaintenance'),
+    },
   },
-  { tracker: Tracker },
+  { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
 
 AppSettings.publicFields = {
@@ -85,6 +95,8 @@ AppSettings.publicFields = {
   accessibility: 1,
   gcu: 1,
   personalData: 1,
+  maintenance: 1,
+  textMaintenance: 1,
 };
 
 AppSettings.introduction = {

@@ -5,6 +5,7 @@ import Services from './services/services';
 import Groups from './groups/groups';
 import Tags from './tags/tags';
 import logServer from './logging';
+import AppSettings from './appsettings/appsettings';
 
 Migrations.add({
   version: 1,
@@ -316,5 +317,20 @@ Migrations.add({
   },
   down: () => {
     Meteor.users.rawCollection().updateMany({}, { $unset: { articlesEnable: true } });
+  },
+});
+
+Migrations.add({
+  version: 19,
+  name: 'Add maintenance and textMaintenance field for appsettings',
+  up: () => {
+    AppSettings.find()
+      .fetch()
+      .forEach((setting) => {
+        AppSettings.update({ _id: setting._id }, { $set: { maintenance: false, textMaintenance: '' } });
+      });
+  },
+  down: () => {
+    AppSettings.rawCollection().updateMany({}, { $unset: { maintenance: true, textMaintenance: true } });
   },
 });

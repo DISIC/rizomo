@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
+import { withTracker } from 'meteor/react-meteor-data';
 import NotificationsBell from '../notifications/NotificationsBell';
 import MenuBar from './MenuBar';
 import MainMenu from './MainMenu';
 import { useAppContext } from '../../contexts/context';
+import AppSettings from '../../../api/appsettings/appsettings';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,15 +40,22 @@ const useStyles = makeStyles((theme) => ({
     alignItem: 'center',
     height: 48,
   },
+  maintenanceBar: {
+    marginTop: 50,
+  },
 }));
 
 const SMALL_LOGO = 'Logo-A.svg';
 const LONG_LOGO = 'apps-logo-sansfond.svg';
+const SMALL_LOGO_MAINTENANCE = 'Logo-A-maintenance.svg';
+const LONG_LOGO_MAINTENANCE = 'apps-logo-maintenance.svg';
 
-function TopBar({ publicMenu, root }) {
+function TopBar({ publicMenu, root, appsettings }) {
   const [{ isMobile, user, notificationPage }, dispatch] = useAppContext();
   const classes = useStyles();
-  const LOGO = `/images/${isMobile ? SMALL_LOGO : LONG_LOGO}`;
+  const LOGO = appsettings.maintenance
+    ? `/images/${isMobile ? SMALL_LOGO_MAINTENANCE : LONG_LOGO_MAINTENANCE}`
+    : `/images/${isMobile ? SMALL_LOGO : LONG_LOGO}`;
 
   const updateGlobalState = (key, value) =>
     dispatch({
@@ -71,34 +80,45 @@ function TopBar({ publicMenu, root }) {
   };
 
   return (
-    <AppBar position="fixed" className={classes.root}>
-      <Link to={root || (publicMenu ? '/public' : '/')} className={classes.imgLogo}>
-        <img src={LOGO} className={classes.imgLogo} alt="Logo" />
-      </Link>
-
-      {!isMobile && !publicMenu && <MenuBar />}
-      <div className={classes.rightContainer}>
-        {publicMenu ? null : (
-          <>
-            <MainMenu user={user} />
-            <IconButton onClick={() => handleNotifsOpen()}>
-              <NotificationsBell />
-            </IconButton>
-          </>
-        )}
-      </div>
-    </AppBar>
+    <div>
+      <AppBar position="fixed" className={classes.root}>
+        <Link to={root || (publicMenu ? '/public' : '/')} className={classes.imgLogo}>
+          <img src={LOGO} className={classes.imgLogo} alt="Logo" />
+        </Link>
+        {!isMobile && !publicMenu && <MenuBar />}
+        <div className={classes.rightContainer}>
+          {publicMenu ? null : (
+            <>
+              <MainMenu user={user} />
+              <IconButton onClick={() => handleNotifsOpen()}>
+                <NotificationsBell />
+              </IconButton>
+            </>
+          )}
+        </div>
+      </AppBar>
+    </div>
   );
 }
 
-export default TopBar;
+export default withTracker(() => {
+  const subSettings = Meteor.subscribe('appsettings.all');
+  const appsettings = AppSettings.findOne();
+  const ready = subSettings.ready();
+  return {
+    appsettings,
+    ready,
+  };
+})(TopBar);
 
 TopBar.propTypes = {
   publicMenu: PropTypes.bool,
   root: PropTypes.string,
+  appsettings: PropTypes.objectOf(PropTypes.any),
 };
 
 TopBar.defaultProps = {
   publicMenu: false,
   root: null,
+  appsettings: {},
 };

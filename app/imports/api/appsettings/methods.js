@@ -47,6 +47,53 @@ export const updateAppsettings = new ValidatedMethod({
   },
 });
 
+export const switchMaintenanceStatus = new ValidatedMethod({
+  name: 'appSettings.switchMaintenanceStatus',
+  validate: null,
+
+  run() {
+    try {
+      // check if current user is admin
+      const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+      if (!authorized) {
+        throw new Meteor.Error(
+          'api.appsettings.switchMaintenanceStatus.notPermitted',
+          i18n.__('api.users.adminNeeded'),
+        );
+      }
+      const appsettings = AppSettings.findOne({ _id: 'settings' });
+      const newValue = !(appsettings.maintenance || false);
+      return AppSettings.update({ _id: 'settings' }, { $set: { maintenance: newValue } });
+    } catch (error) {
+      throw new Meteor.Error(error, error);
+    }
+  },
+});
+
+export const updateTextMaintenance = new ValidatedMethod({
+  name: 'appSettings.updateTextMaintenance',
+  validate: new SimpleSchema({
+    text: {
+      type: String,
+      label: getLabel('api.appsettings.labels.textMaintenance'),
+      optional: true,
+    },
+  }).validator({ clean: true }),
+
+  run({ text }) {
+    try {
+      // check if current user is admin
+      const authorized = isActive(this.userId) && Roles.userIsInRole(this.userId, 'admin');
+      if (!authorized) {
+        throw new Meteor.Error('api.appsettings.updateTextMaintenance.notPermitted', i18n.__('api.users.adminNeeded'));
+      }
+      return AppSettings.update({ _id: 'settings' }, { $set: { textMaintenance: text } });
+    } catch (error) {
+      throw new Meteor.Error(error, error);
+    }
+  },
+});
+
 export const updateIntroductionLanguage = new ValidatedMethod({
   name: 'appSettings.updateIntroductionLanguage',
   validate: new SimpleSchema({
@@ -101,7 +148,10 @@ export const getAppSettingsLinks = new ValidatedMethod({
 });
 
 // Get list of all method names on User
-const LISTS_METHODS = _.pluck([updateAppsettings, updateIntroductionLanguage, getAppSettingsLinks], 'name');
+const LISTS_METHODS = _.pluck(
+  [updateAppsettings, updateIntroductionLanguage, updateTextMaintenance, switchMaintenanceStatus, getAppSettingsLinks],
+  'name',
+);
 
 if (Meteor.isServer) {
   // Only allow 5 list operations per connection per second

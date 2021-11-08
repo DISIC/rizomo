@@ -65,7 +65,7 @@ if (Meteor.settings.public.enableKeycloak === true) {
   });
 }
 
-function SignIn({ loggingIn, introduction, ready }) {
+function SignIn({ loggingIn, introduction, appsettings, ready }) {
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -168,11 +168,13 @@ function SignIn({ loggingIn, introduction, ready }) {
                 disabled={loggingIn}
                 fullWidth
                 variant="contained"
-                color="primary"
+                color={appsettings.maintenance ? 'inherit' : 'primary'}
                 className={classes.submit}
                 onClick={handleKeycloakAuth}
               >
-                {i18n.__('pages.SignIn.loginKeycloak')}
+                {appsettings.maintenance
+                  ? i18n.__('pages.SignIn.maintenanceLogin')
+                  : i18n.__('pages.SignIn.loginKeycloak')}
               </Button>
               <RememberButton />
             </>
@@ -244,7 +246,7 @@ function SignIn({ loggingIn, introduction, ready }) {
 
 export default withTracker(() => {
   const loggingIn = Meteor.loggingIn();
-  const subSettings = Meteor.subscribe('appsettings.introduction');
+  const subSettings = Meteor.subscribe('appsettings.all');
   const appsettings = AppSettings.findOne() || {};
   const ready = subSettings.ready();
   // locale may be fr-FR, en-EN, etc...
@@ -257,6 +259,7 @@ export default withTracker(() => {
   return {
     loggingIn,
     ready,
+    appsettings,
     introduction: currentEntry.content || defaultContent,
   };
 })(SignIn);
@@ -264,10 +267,12 @@ export default withTracker(() => {
 SignIn.defaultProps = {
   introduction: '',
   loggingIn: false,
+  appsettings: {},
 };
 
 SignIn.propTypes = {
   loggingIn: PropTypes.bool,
   ready: PropTypes.bool.isRequired,
+  appsettings: PropTypes.objectOf(PropTypes.any),
   introduction: PropTypes.string,
 };
