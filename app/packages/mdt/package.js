@@ -1,6 +1,6 @@
 Package.describe({
   name: 'mexar:mdt',
-  version: '0.2.0',
+  version: '0.2.1',
   // Brief, one-line summary of the package.
   summary: 'Some open source toys to play in meteor',
   // URL to the Git repository containing the source code for this package.

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  IconWrapper, ListerHeader, BigToolContainer, LedSignal, ImpersonateUserData,
-} from '../utils/styles';
+import { IconWrapper, ListerHeader, BigToolContainer, LedSignal, ImpersonateUserData } from '../utils/styles';
 import { UserImpersonnateIcon } from '../utils/icons';
 import useTracker from '../utils/useTracker';
 
@@ -17,7 +15,7 @@ const Impersonate = () => {
   const impersonateUser = (userId) => () => {
     setLoading(true);
     Accounts.callLoginMethod({
-      methodArguments: [{ userId }],
+      methodArguments: [{ impersonateId: userId }],
       userCallback() {
         setLoading(false);
         Meteor.connection.setUserId(userId);
@@ -48,8 +46,8 @@ const Impersonate = () => {
         {loading ? (
           <li>Impersonating user</li>
         ) : (
-          (users
-            && users.map(({ username, _id, emails }) => (
+          (users &&
+            users.map(({ username, _id, emails }) => (
               <li onClick={impersonateUser(_id)} key={_id}>
                 <ImpersonateUserData>
                   {username}
