@@ -24,7 +24,7 @@ ENV SCRIPTS_FOLDER /docker
 RUN apk --no-cache --virtual .node-gyp-compilation-dependencies add \
 		g++ \
 		make \
-		python \
+		python3 \
 	# And runtime dependencies, which we keep
 	&& apk --no-cache add \
 		bash \
