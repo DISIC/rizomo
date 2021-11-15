@@ -14,19 +14,14 @@ RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
 # are not taken in account with npm ci
 RUN cd $APP_SOURCE_FOLDER && meteor npm install
 
-# Rather than Node 8 latest (Alpine), you can also use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html
+# Use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html; this is expected for Meteor 2.5
 FROM hub.eole.education/proxyhub/library/node:14.18.1-alpine
 
 ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
 
-# Install OS build dependencies, which we remove later after we’ve compiled native Node extensions
-RUN apk --no-cache --virtual .node-gyp-compilation-dependencies add \
-		g++ \
-		make \
-		python3 \
-	# And runtime dependencies, which we keep
-	&& apk --no-cache add \
+# Runtime dependencies; if your dependencies need compilation (native modules such as bcrypt) or you are using Meteor <1.8.1, use app-with-native-dependencies.dockerfile instead
+RUN apk --no-cache add \
 		bash \
 		ca-certificates
 
@@ -36,8 +31,7 @@ COPY --from=0 $SCRIPTS_FOLDER $SCRIPTS_FOLDER/
 # Copy in app bundle
 COPY --from=0 $APP_BUNDLE_FOLDER/bundle $APP_BUNDLE_FOLDER/bundle/
 
-RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh --build-from-source \
-	&& apk del .node-gyp-compilation-dependencies
+RUN sh $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh
 
 # Start app
 ENTRYPOINT ["/docker/entrypoint.sh"]
