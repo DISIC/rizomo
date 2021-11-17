@@ -88,6 +88,7 @@ function MainLayout({ appsettings, ready }) {
   const [{ userId, user, loadingUser, isMobile }] = useAppContext();
   const classes = useStyles(isMobile)();
   const location = useLocation();
+  const { enableBlog } = Meteor.settings.public;
 
   const isAdmin = Roles.userIsInRole(userId, 'admin');
 
@@ -120,10 +121,12 @@ function MainLayout({ appsettings, ready }) {
                     <Route exact path="/profile" component={ProfilePage} />
                     <Route exact path="/services" component={ServicesPage} />
                     <Route exact path="/structure" component={ServicesPage} />
-                    <Route exact path="/publications" component={ArticlesPage} />
                     <Route exact path="/help" component={HelpPage} />
-                    <Route exact path="/publications/new" component={EditArticlePage} />
-                    <Route exact path="/publications/:slug" component={EditArticlePage} />
+
+                    {enableBlog && <Route exact path="/publications" component={ArticlesPage} />}
+                    {enableBlog && <Route exact path="/publications/new" component={EditArticlePage} />}
+                    {enableBlog && <Route exact path="/publications/:slug" component={EditArticlePage} />}
+
                     <Route exact path="/services/:slug" component={SingleServicePage} />
                     <Route exact path="/structure/:slug" component={SingleServicePage} />
                     <Route exact path="/groups" component={GroupsPage} />

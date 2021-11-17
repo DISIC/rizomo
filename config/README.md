@@ -1,6 +1,7 @@
 # Configuration
 
 Copy `settings-development.json.sample` to `settings-development.json` and update values matching your configuration
+
 ## public:
 
 | Key                                      | Type     | Default value                        | Description                                                                                 |
@@ -8,6 +9,7 @@ Copy `settings-development.json.sample` to `settings-development.json` and updat
 | enableKeycloak                           | boolean  | false                                | If true, keycloak is enabled                                                                |
 | keycloakUrl                              | string   | ""                                   | Keycloak URL                                                                                |
 | keycloakRealm                            | string   | ""                                   | Keycloak Realm                                                                              |
+| enableBlog                               | boolean  | false                                | enable all features and links for the blog                                                  |
 | laboiteBlogURL                           | string   | ""                                   | Laboite Blog URL                                                                            |
 | enableBBB                                | boolean  | true                                 | If true, Big Blue Button is enabled                                                         |
 | BBBUrl                                   | string   | ""                                   | Big Blue Button URL                                                                         |
@@ -33,7 +35,7 @@ Copy `settings-development.json.sample` to `settings-development.json` and updat
 | PLUGINNAME                               | object   | {}                                   | General group plugin settings, see below "nextcloud" and "rocketChat" for specific settings |
 | groupPlugins.PLUGINNAME.enable           | boolean  | false                                | If true, the group plugin is enabled                                                        |
 | groupPlugins.PLUGINNAME.URL              | string   | ""                                   | Group plugin URL                                                                            |
-| groupPlugins.PLUGINNAME.groupURL         | string   | ""                                   | [URL]/group/[GROUPSLUG]"       "[URL]/apps/files/?dir=/[GROUPNAME]                          |
+| groupPlugins.PLUGINNAME.groupURL         | string   | ""                                   | [URL]/group/[GROUPSLUG]" "[URL]/apps/files/?dir=/[GROUPNAME]                                |
 | groupPlugins.PLUGINNAME.enableChangeName | boolean  | true                                 | If true, changing the group name for this group plugin is possible                          |
 
 ## keycloak:
@@ -45,6 +47,7 @@ Copy `settings-development.json.sample` to `settings-development.json` and updat
 | adminEmails   | [string] | []            | Keycloak admin emails   |
 | adminUser     | string   | ""            | Keycloak admin user     |
 | adminPassword | string   | ""            | Keycloak admin password |
+
 ## nextcloud:
 
 | Key               | Type   | Default value | Description        |
@@ -52,12 +55,14 @@ Copy `settings-development.json.sample` to `settings-development.json` and updat
 | nextcloudUser     | string | ""            | Nextcloud user     |
 | nextcloudPassword | string | ""            | Nextcloud password |
 | nextcloudQuota    | number | "1073741824"  | Nextcloud quota    |
+
 ## rocketChat:
 
 | Key                | Type   | Default value | Description         |
 | ------------------ | ------ | ------------- | ------------------- |
 | rocketChatUser     | string | ""            | RocketChat user     |
 | rocketChatPassword | string | ""            | RocketChat password |
+
 ## smtp:
 
 | Key       | Type   | Default value                         | Description                       |
@@ -65,6 +70,7 @@ Copy `settings-development.json.sample` to `settings-development.json` and updat
 | url       | string | "smtps://USERNAME:PASSWORD@HOST:PORT" | SMTP server URI                   |
 | fromEmail | string | ""                                    | Contact mail default "from" value |
 | toEmail   | string | ""                                    | Contact mail default "to" value   |
+
 ## private:
 
 | Key              | Type     | Default value                              | Description                                      |
@@ -74,4 +80,4 @@ Copy `settings-development.json.sample` to `settings-development.json` and updat
 | minioSecret      | string   | ""                                         | Minio password                                   |
 | apiKeys          | [string] | [""]                                       | API access keys for external services            |
 | BBBSecret        | string   | ""                                         | Big Blue Button Secret                           |
-| whiteDomains     | [string] | ["^ac-[a-z-]*\\.fr", "^[a-z-]*\\.gouv.fr"] | Emails white domains for user account activation |
+| whiteDomains     | [string] | ["^ac-[a-z-]_\\.fr", "^[a-z-]_\\.gouv.fr"] | Emails white domains for user account activation |

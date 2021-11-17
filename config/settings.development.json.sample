@@ -3,6 +3,7 @@
     "enableKeycloak": false,
     "keycloakUrl": "",
     "keycloakRealm": "",
+    "enableBlog": false,
     "laboiteBlogURL": "",
     "enableBBB": false,
     "BBBUrl": "",
