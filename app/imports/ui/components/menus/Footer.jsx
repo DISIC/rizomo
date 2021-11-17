@@ -51,6 +51,7 @@ const Footer = () => {
   const [settingsData, setSettingsData] = useState([]);
   const [{ isMobile }] = useAppContext();
   const externalBlog = Meteor.settings.public.laboiteBlogURL;
+  const { enableBlog } = Meteor.settings.public;
 
   const toolbarContent = () => {
     return (
@@ -138,7 +139,7 @@ const Footer = () => {
                 {i18n.__(`components.Footer.contact`)}
               </Link>
             </li>
-            {blogLink()}
+            {enableBlog && blogLink()}
           </ul>
         </Toolbar>
       ) : (
