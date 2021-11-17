@@ -77,6 +77,7 @@ const AddressBook = ({
     history.goBack();
   };
 
+  const { enableBlog } = Meteor.settings.public;
   const authorBlogPage =
     Meteor.settings.public.laboiteBlogURL !== ''
       ? `${Meteor.settings.public.laboiteBlogURL}/authors/`
@@ -165,7 +166,7 @@ const AddressBook = ({
                         </IconButton>
                       </Tooltip>
                     ) : null}
-                    {user.articlesCount !== 0 ? (
+                    {enableBlog && user.articlesCount !== 0 ? (
                       <Tooltip title={`${i18n.__('pages.AddressBook.goToBlog')} ${user.firstName}`} aria-label="add">
                         <IconButton
                           edge="end"
