@@ -43,7 +43,9 @@ function App() {
           {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
           {externalBlog || !enableBlog ? null : <Route exact path="/public/" component={PublishersPage} />}
           {externalBlog || !enableBlog ? null : <Route exact path="/public/:userId" component={PublicArticlePage} />}
-          {externalBlog || !enableBlog ? null : <Route exact path="/public/:userId/:slug" component={PublicArticleDetailsPage} />}
+          {externalBlog || !enableBlog ? null : (
+            <Route exact path="/public/:userId/:slug" component={PublicArticleDetailsPage} />
+          )}
           <ProtectedRoute exact path="/logout" component={Logout} {...state} />
           <Route exact path="/legal/:legalKey" component={LegalPage} />
           <Route exact path="/contact" component={SignLayout} {...state} />
