@@ -6,11 +6,12 @@ import Groups from '../groups/groups';
 import logServer from '../logging';
 import { genRandomPassword } from '../utils';
 
-const rcEnabled = Meteor.settings.public.groupPlugins.rocketChat.enable;
+const rcPlugin = Meteor.settings.public.groupPlugins.rocketChat
+const rcEnabled = rcPlugin && rcPlugin.enable;
 
 class RocketChatClient {
   constructor() {
-    this.rcURL = `${Meteor.settings.public.groupPlugins.rocketChat.URL}/api/v1`;
+    this.rcURL = `${rcPlugin.URL}/api/v1`;
     this.token = null;
     this.adminId = null;
     this._setToken = this._setToken.bind(this);

@@ -4,6 +4,9 @@ import i18n from 'meteor/universe:i18n';
 import logServer from '../logging';
 import Groups from '../groups/groups';
 
+const nextcloudPlugin = Meteor.settings.public.groupPlugins.nextcloud;
+const { nextcloud } = Meteor.settings
+
 function checkFolderActive(response) {
   // checks that 'Group Folder' API is responding
   if (response.data === undefined || response.data.ocs === undefined) {
@@ -15,9 +18,9 @@ function checkFolderActive(response) {
 
 class NextcloudClient {
   constructor() {
-    const ncURL = Meteor.settings.public.groupPlugins.nextcloud.URL || '';
-    const ncUser = (Meteor.settings.nextcloud && Meteor.settings.nextcloud.nextcloudUser) || '';
-    const ncPassword = (Meteor.settings.nextcloud && Meteor.settings.nextcloud.nextcloudPassword) || '';
+    const ncURL = nextcloudPlugin && nextcloudPlugin.URL || '';
+    const ncUser = (nextcloud && nextcloud.nextcloudUser) || '';
+    const ncPassword = (nextcloud && nextcloud.nextcloudPassword) || '';
     this.nextURL = `${ncURL}/ocs/v1.php/cloud`;
     this.appsURL = `${ncURL}/apps`;
     this.basicAuth = Buffer.from(`${ncUser}:${ncPassword}`, 'binary').toString('base64');
@@ -147,7 +150,7 @@ class NextcloudClient {
 
   _addQuotaToFolder(folderId) {
     // get quota (in bytes) from settings, or -3 if not set (unlimited)
-    const quota = Meteor.settings.nextcloud.nextcloudQuota || -3;
+    const quota = nextcloud.nextcloudQuota || -3;
     return axios
       .post(
         `${this.appsURL}/groupfolders/folders/${folderId}/quota`,
@@ -293,7 +296,7 @@ class NextcloudClient {
   }
 }
 
-if (Meteor.isServer && Meteor.settings.public.groupPlugins.nextcloud.enable) {
+if (Meteor.isServer && nextcloudPlugin && nextcloudPlugin.enable) {
   const nextClient = new NextcloudClient();
   // check that api is accessible and groupFolders plugin is active
   nextClient.checkConfig();
