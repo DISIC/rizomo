@@ -149,7 +149,7 @@ const Footer = () => {
             <Link key="contactKey" className={classes.link} to="/contact">
               {i18n.__(`components.Footer.contact`)}
             </Link>
-            {blogLink()}
+            {enableBlog && blogLink()}
           </div>
         </Toolbar>
       )}
