@@ -445,6 +445,18 @@
       "inputSearchLabel": "Search..."
     },
     "MainMenu": {
+      "menuAdminGroups": "Groups Management",
+      "menuUserBookmarks": "Bookmarks",
+      "menuProfileLabel": "Profile",
+      "menuLogoutLabel": "Logout",
+      "menuMedias": "Medias Storage",
+      "menuAdminStructureUsers": "Structure Users",
+      "menuAdminStructureServices": "Structure Services",
+      "menuAdminApp": "Administration"
+    },
+    "AdminMenu": {
+      "title": "Administration",
+      "menuAdminAppSettings": "Admin Settings",
       "menuAdminServices": "Service Management",
       "menuAdminUsers": "Users Management",
       "menuAdminNextcloudUrl": "Nextcloud URL management",
@@ -452,13 +464,7 @@
       "menuAdminCategories": "Categories Management",
       "menuAdminTags": "Tags Management",
       "menuAdminGroups": "Groups Management",
-      "menuUserBookmarks": "Bookmarks",
-      "menuProfileLabel": "Profile",
-      "menuLogoutLabel": "Logout",
-      "menuMedias": "Medias Storage",
-      "menuAdminAppSettings": "Admin Settings",
-      "menuAdminStructureUsers": "Structure Users",
-      "menuAdminStructureServices": "Structure Services"
+      "menuAdminBackHome": "Back to Personnal Space"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",

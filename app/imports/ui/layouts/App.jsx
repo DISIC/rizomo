@@ -10,8 +10,11 @@ import MsgHandler from '../components/system/MsgHandler';
 import DynamicStore, { useAppContext } from '../contexts/context';
 import lightTheme from '../themes/light';
 import UploaderNotifier from '../components/uploader/UploaderNotifier';
+import AdminRoute from '../components/system/AdminRoute';
+
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));
+const AdminLayout = lazy(() => import('./AdminLayout'));
 const SignLayout = lazy(() => import('./SignLayout'));
 const LegalPage = lazy(() => import('../pages/legal/LegalPage'));
 const PublicArticlePage = lazy(() => import('../pages/articles/PublicArticlePage'));
@@ -27,7 +30,7 @@ function Logout() {
 
 function App() {
   const [state] = useAppContext();
-  const { loading } = state;
+  const { userId, loadingUser = false, loading } = state;
   const useKeycloak = Meteor.settings.public.enableKeycloak;
   const externalBlog = Meteor.settings.public.laboiteBlogURL !== '';
   const { enableBlog } = Meteor.settings.public;
@@ -49,6 +52,7 @@ function App() {
           <ProtectedRoute exact path="/logout" component={Logout} {...state} />
           <Route exact path="/legal/:legalKey" component={LegalPage} />
           <Route exact path="/contact" component={SignLayout} {...state} />
+          {!!userId && <AdminRoute path="/admin" component={AdminLayout} userId={userId} loadingUser={loadingUser} {...state} />}
           <ProtectedRoute path="/" component={MainLayout} {...state} />
         </Switch>
       </Suspense>

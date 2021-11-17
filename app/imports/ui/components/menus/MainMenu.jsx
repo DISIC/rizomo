@@ -36,36 +36,8 @@ export const adminMenu = [
     content: 'Divider',
   },
   {
-    path: '/admingroups',
-    content: 'menuAdminGroups',
-  },
-  {
-    path: '/adminservices',
-    content: 'menuAdminServices',
-  },
-  {
-    path: '/admincategories',
-    content: 'menuAdminCategories',
-  },
-  {
-    path: '/admintags',
-    content: 'menuAdminTags',
-  },
-  {
-    path: '/adminusers',
-    content: 'menuAdminUsers',
-  },
-  {
-    path: '/usersvalidation',
-    content: 'menuAdminUserValidation',
-  },
-  {
-    path: '/adminextcloudurl',
-    content: 'menuAdminNextcloudUrl',
-  },
-  {
-    path: '/settings',
-    content: 'menuAdminAppSettings',
+    path: '/admin',
+    content: 'menuAdminApp',
   },
 ];
 
@@ -123,7 +95,7 @@ const MainMenu = ({ user = {} }) => {
   };
   let menu;
   if (isAdmin) {
-    menu = [...userMenu, ...adminMenu, ...structureMenu];
+    menu = [...userMenu, ...structureMenu, ...adminMenu];
   } else if (isAdminStructure) {
     menu = [...userMenu, ...userGroups, ...structureMenu];
   } else {
