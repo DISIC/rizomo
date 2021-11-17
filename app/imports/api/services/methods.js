@@ -64,10 +64,10 @@ export const removeService = new ValidatedMethod({
     }
     // remove service from users favorites
     Meteor.users.update({ favServices: { $all: [serviceId] } }, { $pull: { favServices: serviceId } }, { multi: true });
+    Services.remove(serviceId);
     if (Meteor.isServer && !Meteor.isTest) {
       Meteor.call('files.removeFolder', { path: `services/${service._id}` });
     }
-    Services.remove(serviceId);
   },
 });
 

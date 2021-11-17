@@ -30,6 +30,7 @@ function App() {
   const { loading } = state;
   const useKeycloak = Meteor.settings.public.enableKeycloak;
   const externalBlog = Meteor.settings.public.laboiteBlogURL !== '';
+  const { enableBlog } = Meteor.settings.public;
 
   return loading ? (
     <Spinner />
@@ -40,9 +41,9 @@ function App() {
         <Switch>
           <PublicRoute exact path="/signin" component={SignLayout} {...state} />
           {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
-          {externalBlog ? null : <Route exact path="/public/" component={PublishersPage} />}
-          {externalBlog ? null : <Route exact path="/public/:userId" component={PublicArticlePage} />}
-          {externalBlog ? null : <Route exact path="/public/:userId/:slug" component={PublicArticleDetailsPage} />}
+          {externalBlog || !enableBlog ? null : <Route exact path="/public/" component={PublishersPage} />}
+          {externalBlog || !enableBlog ? null : <Route exact path="/public/:userId" component={PublicArticlePage} />}
+          {externalBlog || !enableBlog ? null : <Route exact path="/public/:userId/:slug" component={PublicArticleDetailsPage} />}
           <ProtectedRoute exact path="/logout" component={Logout} {...state} />
           <Route exact path="/legal/:legalKey" component={LegalPage} />
           <Route exact path="/contact" component={SignLayout} {...state} />
