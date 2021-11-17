@@ -56,6 +56,7 @@ export const adminMenu = [
   {
     path: '/admin/nextcloudurl',
     content: 'menuAdminNextcloudUrl',
+    hidden: !Meteor.settings.nextcloud || !!Meteor.settings.nextcloud && !Meteor.settings.nextcloud.nextcloudUser,
     icon: <HttpIcon/>
   },
   {
@@ -111,9 +112,9 @@ export default function AdminMenu({ isMobile }) {
     </Toolbar>}
     <Box sx={{ overflow: 'auto' }}>
       <List>
-        {adminMenu.map(({ content, path, icon }) => content === 'Divider' ? (
+        {adminMenu.map(({ content, path, icon, hidden }) => content === 'Divider' ? (
             <Divider key={path} />
-          ) : (
+          ) : !hidden && (
           <ListItem 
             onClick={() => handleMenuClick({ content, path })} 
             button 
