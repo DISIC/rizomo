@@ -50,7 +50,7 @@ const LONG_LOGO = 'apps-logo-sansfond.svg';
 const SMALL_LOGO_MAINTENANCE = 'Logo-A-maintenance.svg';
 const LONG_LOGO_MAINTENANCE = 'apps-logo-maintenance.svg';
 
-function TopBar({ publicMenu, root, appsettings }) {
+function TopBar({ publicMenu, root, appsettings, adminApp }) {
   const [{ isMobile, user, notificationPage }, dispatch] = useAppContext();
   const classes = useStyles();
   const LOGO = appsettings.maintenance
@@ -85,7 +85,7 @@ function TopBar({ publicMenu, root, appsettings }) {
         <Link to={root || (publicMenu ? '/public' : '/')} className={classes.imgLogo}>
           <img src={LOGO} className={classes.imgLogo} alt="Logo" />
         </Link>
-        {!isMobile && !publicMenu && <MenuBar />}
+        {!isMobile && !publicMenu && !adminApp && <MenuBar />}
         <div className={classes.rightContainer}>
           {publicMenu ? null : (
             <>
@@ -115,10 +115,12 @@ TopBar.propTypes = {
   publicMenu: PropTypes.bool,
   root: PropTypes.string,
   appsettings: PropTypes.objectOf(PropTypes.any),
+  adminApp: PropTypes.bool
 };
 
 TopBar.defaultProps = {
   publicMenu: false,
   root: null,
   appsettings: {},
+  adminApp: false
 };

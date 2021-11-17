@@ -6,7 +6,7 @@ import logServer from '../logging';
 import Groups from '../groups/groups';
 import AppRoles from '../users/users';
 
-const keycloakSettings = Meteor.settings.keycloak
+const keycloakSettings = Meteor.settings.keycloak;
 
 class KeyCloakClient {
   constructor() {
