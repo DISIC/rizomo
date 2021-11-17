@@ -123,13 +123,13 @@ function MainLayout({ appsettings, ready }) {
                     <Route exact path="/structure" component={ServicesPage} />
                     <Route exact path="/help" component={HelpPage} />
 
-                    { enableBlog && 
+                    {enableBlog && (
                       <>
                         <Route exact path="/publications" component={ArticlesPage} />
                         <Route exact path="/publications/new" component={EditArticlePage} />
                         <Route exact path="/publications/:slug" component={EditArticlePage} />
                       </>
-                    }
+                    )}
 
                     <Route exact path="/services/:slug" component={SingleServicePage} />
                     <Route exact path="/structure/:slug" component={SingleServicePage} />

@@ -92,6 +92,7 @@ const MenuBar = ({ mobile }) => {
   const history = useHistory();
   const classes = useStyles(mobile)();
   const T = i18n.createComponent('components.MenuBar');
+  const { enableBlog } = Meteor.settings.public;
   const currentLink = links.find((link) => {
     if (link.path === pathname || (pathname.search(link.path) > -1 && link.path !== '/')) {
       return true;
@@ -99,7 +100,7 @@ const MenuBar = ({ mobile }) => {
     return false;
   });
 
-  const finalLink = user.articlesEnable ? links : links.filter(({ path }) => path !== '/publications');
+  const finalLink = user.articlesEnable && enableBlog ? links : links.filter(({ path }) => path !== '/publications');
 
   function a11yProps(index) {
     return {

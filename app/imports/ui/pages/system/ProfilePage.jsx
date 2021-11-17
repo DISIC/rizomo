@@ -110,6 +110,7 @@ const ProfilePage = () => {
   const [structChecked, setStructChecked] = useState(false);
   const classes = useStyles();
   const keycloakMode = Meteor.settings.public.enableKeycloak === true;
+  const { enableBlog } = Meteor.settings.public;
   const [{ user, loadingUser, isMobile }] = useAppContext();
 
   const structureLabel = React.useRef(null);
@@ -576,20 +577,24 @@ const ProfilePage = () => {
                   }
                   label={i18n.__('pages.ProfilePage.advancedPersonalPage')}
                 />
-                <br />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      id="articlesEnable"
-                      name="articlesEnable"
-                      color="primary"
-                      checked={userData.articlesEnable}
-                      onChange={onCheckOption}
-                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                {enableBlog && (
+                  <>
+                    <br />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          id="articlesEnable"
+                          name="articlesEnable"
+                          color="primary"
+                          checked={userData.articlesEnable}
+                          onChange={onCheckOption}
+                          inputProps={{ 'aria-label': 'primary checkbox' }}
+                        />
+                      }
+                      label={i18n.__('pages.ProfilePage.activateArticles')}
                     />
-                  }
-                  label={i18n.__('pages.ProfilePage.activateArticles')}
-                />
+                  </>
+                )}
               </Grid>
             </Grid>
             <div className={classes.buttonGroup}>
