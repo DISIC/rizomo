@@ -27,7 +27,7 @@
     "msg": false
   },
   "plugins": ["meteor", "import", "prettier", "i18n", "react", "jsx"],
-  "ignorePatterns": ["packages/**/*.js", "packages/**/*.jsx"],
+  "ignorePatterns": ["packages/**/*.js", "packages/**/*.jsx", "reports"],
   "rules": {
     "no-restricted-imports": ["error", "@material-ui/core", "@material-ui/icons", "@material-ui/lab"],
     "no-underscore-dangle": "off",
