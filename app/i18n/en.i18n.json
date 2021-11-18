@@ -450,8 +450,6 @@
       "menuProfileLabel": "Profile",
       "menuLogoutLabel": "Logout",
       "menuMedias": "Medias Storage",
-      "menuAdminStructureUsers": "Structure Users",
-      "menuAdminStructureServices": "Structure Services",
       "menuAdminApp": "Administration"
     },
     "AdminMenu": {
@@ -464,6 +462,8 @@
       "menuAdminCategories": "Categories Management",
       "menuAdminTags": "Tags Management",
       "menuAdminGroups": "Groups Management",
+      "menuAdminStructureUsers": "Structure Users",
+      "menuAdminStructureServices": "Structure Services",
       "menuAdminBackHome": "Back to Personnal Space"
     },
     "NotValidatedMessage": {

@@ -60,21 +60,6 @@ export const userGroups = [
   },
 ];
 
-export const structureMenu = [
-  {
-    path: 'structDivider',
-    content: 'Divider',
-  },
-  {
-    path: '/adminstructureservices',
-    content: 'menuAdminStructureServices',
-  },
-  {
-    path: '/adminstructureusers',
-    content: 'menuAdminStructureUsers',
-  },
-];
-
 const MainMenu = ({ user = {} }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -94,10 +79,8 @@ const MainMenu = ({ user = {} }) => {
     setAnchorEl(null);
   };
   let menu;
-  if (isAdmin) {
-    menu = [...userMenu, ...structureMenu, ...adminMenu];
-  } else if (isAdminStructure) {
-    menu = [...userMenu, ...userGroups, ...structureMenu];
+  if (isAdmin || isAdminStructure) {
+    menu = [...userMenu, ...adminMenu];
   } else {
     menu = [...userMenu, ...userGroups];
   }

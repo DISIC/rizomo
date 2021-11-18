@@ -1,6 +1,6 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
@@ -22,59 +22,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Divider from '@material-ui/core/Divider';
 import { useHistory, useLocation } from 'react-router-dom';
 import updateDocumentTitle from '../../utils/updateDocumentTitle';
-
-export const adminMenu = [
-  {
-    path: '/admin/groups',
-    content: 'menuAdminGroups',
-    icon: <GroupWorkIcon />,
-  },
-  {
-    path: '/admin/services',
-    content: 'menuAdminServices',
-    icon: <SettingsInputComponentIcon />,
-  },
-  {
-    path: '/admin/categories',
-    content: 'menuAdminCategories',
-    icon: <CategoryIcon />,
-  },
-  {
-    path: '/admin/tags',
-    content: 'menuAdminTags',
-    icon: <LocalOfferIcon />,
-  },
-  {
-    path: '/admin/users',
-    content: 'menuAdminUsers',
-    icon: <PeopleAltIcon />,
-  },
-  {
-    path: '/admin/usersvalidation',
-    content: 'menuAdminUserValidation',
-    icon: <PersonAddIcon />,
-  },
-  {
-    path: '/admin/nextcloudurl',
-    content: 'menuAdminNextcloudUrl',
-    hidden: !Meteor.settings.nextcloud || (!!Meteor.settings.nextcloud && !Meteor.settings.nextcloud.nextcloudUser),
-    icon: <HttpIcon />,
-  },
-  {
-    path: '/admin/settings',
-    content: 'menuAdminAppSettings',
-    icon: <SettingsIcon />,
-  },
-  {
-    path: 'adminDivider',
-    content: 'Divider',
-  },
-  {
-    path: '/',
-    content: 'menuAdminBackHome',
-    icon: <HomeIcon />,
-  },
-];
+import { useAppContext } from '../../contexts/context';
 
 // CSS
 const useStyles = (isMobile) =>
@@ -93,15 +41,96 @@ const useStyles = (isMobile) =>
     },
   }));
 
-export default function AdminMenu({ isMobile }) {
+export default function AdminMenu() {
+  const [{ user, isMobile }] = useAppContext();
   const classes = useStyles(isMobile)();
   const { pathname } = useLocation();
   const history = useHistory();
+
+  const isAdmin = Roles.userIsInRole(user._id, 'admin');
+  const isAdminStructure = Roles.userIsInRole(user._id, 'adminStructure', user.structure);
 
   const handleMenuClick = (item) => {
     updateDocumentTitle(i18n.__(`components.MainMenu.${item.content}`));
     history.push(item.path);
   };
+  const adminMenu = [
+    {
+      path: '/admin/groups',
+      content: 'menuAdminGroups',
+      icon: <GroupWorkIcon />,
+      hidden: !isAdmin,
+    },
+    {
+      path: '/admin/services',
+      content: 'menuAdminServices',
+      icon: <SettingsInputComponentIcon />,
+      hidden: !isAdmin,
+    },
+    {
+      path: '/admin/categories',
+      content: 'menuAdminCategories',
+      icon: <CategoryIcon />,
+      hidden: !isAdmin,
+    },
+    {
+      path: '/admin/tags',
+      content: 'menuAdminTags',
+      icon: <LocalOfferIcon />,
+      hidden: !isAdmin,
+    },
+    {
+      path: '/admin/users',
+      content: 'menuAdminUsers',
+      icon: <PeopleAltIcon />,
+      hidden: !isAdmin,
+    },
+    {
+      path: '/admin/usersvalidation',
+      content: 'menuAdminUserValidation',
+      icon: <PersonAddIcon />,
+      hidden: !isAdmin,
+    },
+    {
+      path: '/admin/nextcloudurl',
+      content: 'menuAdminNextcloudUrl',
+      hidden:
+        !isAdmin &&
+        (!Meteor.settings.nextcloud || (!!Meteor.settings.nextcloud && !Meteor.settings.nextcloud.nextcloudUser)),
+      icon: <HttpIcon />,
+    },
+    {
+      path: '/admin/settings',
+      content: 'menuAdminAppSettings',
+      icon: <SettingsIcon />,
+      hidden: !isAdmin,
+    },
+    {
+      path: 'adminDivider',
+      content: 'Divider',
+    },
+    {
+      path: '/admin/structureservices',
+      content: 'menuAdminStructureServices',
+      icon: <SettingsInputComponentIcon />,
+      hidden: !isAdminStructure,
+    },
+    {
+      path: '/admin/structureusers',
+      content: 'menuAdminStructureUsers',
+      icon: <PeopleAltIcon />,
+      hidden: !isAdminStructure,
+    },
+    {
+      path: 'adminDivider2',
+      content: 'Divider',
+    },
+    {
+      path: '/',
+      content: 'menuAdminBackHome',
+      icon: <HomeIcon />,
+    },
+  ];
 
   return (
     <Drawer variant="permanent" className={classes.drawer}>
@@ -134,11 +163,3 @@ export default function AdminMenu({ isMobile }) {
     </Drawer>
   );
 }
-
-AdminMenu.propTypes = {
-  isMobile: PropTypes.bool,
-};
-
-AdminMenu.defaultProps = {
-  isMobile: false,
-};

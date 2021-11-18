@@ -7,6 +7,7 @@ import Alert from '@material-ui/lab/Alert';
 import AppSettings from '../../api/appsettings/appsettings';
 
 // components
+import AdminRoute from '../components/system/AdminRoute';
 import SkipLink from '../components/menus/SkipLink';
 import TopBar from '../components/menus/TopBar';
 import Spinner from '../components/system/Spinner';
@@ -15,22 +16,24 @@ import CustomToast from '../components/system/CustomToast';
 import { useAppContext } from '../contexts/context';
 import NoStructureSelected from '../components/system/NoStructureSelected';
 import AdminMenu from '../components/admin/AdminMenu';
+import StructureAdminRoute from '../components/system/StructureAdminRoute';
 
 // pages
 const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
 const ProfilePage = lazy(() => import('../pages/system/ProfilePage'));
 const NotFound = lazy(() => import('../pages/system/NotFound'));
 const AdminHome = lazy(() => import('../pages/admin/AdminHome'));
-const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
 const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPage'));
 const AdminTagsPage = lazy(() => import('../pages/admin/AdminTagsPage'));
-const AdminServicesPage = lazy(() => import('../pages/admin/AdminServicesPage'));
 const AdminUserValidationPage = lazy(() => import('../pages/admin/AdminUserValidationPage'));
 const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
 const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupPage'));
 const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage'));
 const AdminNextcloudUrlPage = lazy(() => import('../pages/admin/AdminNextcloudUrlPage'));
 const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'));
+const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
+const AdminServicesPage = lazy(() => import('../pages/admin/AdminServicesPage'));
+const AdminStructureUsersPage = lazy(() => import('../pages/structure/AdminStructureUsersPage'));
 
 // CSS
 const useStyles = (isMobile) =>
@@ -92,7 +95,7 @@ function AdminLayout() {
         <Spinner full />
       ) : (
         <main className={classes.content} id="main">
-          <AdminMenu isMobile={isMobile} />
+          <AdminMenu />
           <Suspense fallback={<Spinner full />}>
             {appsettings.maintenance ? (
               <Alert className={classes.alertMaintenance} variant="filled" severity="error">
@@ -102,19 +105,119 @@ function AdminLayout() {
             {user.isActive ? (
               user.structure !== undefined ? (
                 <Switch>
-                  <Route exact path="/admin" component={AdminHome} />
-                  <Route exact path="/admin/nextcloudurl" component={AdminNextcloudUrlPage} />
-                  <Route exact path="/admin/services" component={AdminServicesPage} />
-                  <Route exact path="/admin/services/new" component={AdminSingleServicePage} />
-                  <Route exact path="/admin/services/:_id" component={AdminSingleServicePage} />
-                  <Route exact path="/admin/users" component={AdminUsersPage} />
-                  <Route exact path="/admin/usersvalidation" component={AdminUserValidationPage} />
-                  <Route exact path="/admin/categories" component={AdminCategoriesPage} />
-                  <Route exact path="/admin/tags" component={AdminTagsPage} userId={userId} loadingUser={loadingUser} />
-                  <Route exact path="/admin/settings" component={AdminSettingsPage} />
-                  <Route exact path="/admin/groups" component={AdminGroupsPage} />
-                  <Route exact path="/admin/groups/new" component={AdminSingleGroupPage} />
-                  <Route exact path="/admin/groups/:_id" component={AdminSingleGroupPage} />
+                  <AdminRoute userId={userId} loadingUser={loadingUser} exact path="/admin" component={AdminHome} />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/nextcloudurl"
+                    component={AdminNextcloudUrlPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/services"
+                    component={AdminServicesPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/services/new"
+                    component={AdminSingleServicePage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/services/:_id"
+                    component={AdminSingleServicePage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/users"
+                    component={AdminUsersPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/usersvalidation"
+                    component={AdminUserValidationPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/categories"
+                    component={AdminCategoriesPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/tags"
+                    component={AdminTagsPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/settings"
+                    component={AdminSettingsPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/groups"
+                    component={AdminGroupsPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/groups/new"
+                    component={AdminSingleGroupPage}
+                  />
+                  <AdminRoute
+                    userId={userId}
+                    loadingUser={loadingUser}
+                    exact
+                    path="/admin/groups/:_id"
+                    component={AdminSingleGroupPage}
+                  />
+                  <StructureAdminRoute
+                    exact
+                    path="/admin/structureusers"
+                    component={AdminStructureUsersPage}
+                    user={user}
+                    loadingUser={loadingUser}
+                  />
+                  <StructureAdminRoute
+                    exact
+                    path="/admin/structureservices"
+                    component={AdminServicesPage}
+                    user={user}
+                    loadingUser={loadingUser}
+                  />
+                  <StructureAdminRoute
+                    exact
+                    path="/admin/structureservices/new"
+                    component={AdminSingleServicePage}
+                    user={user}
+                    loadingUser={loadingUser}
+                  />
+                  <StructureAdminRoute
+                    exact
+                    path="/admin/structureservices/:_id"
+                    component={AdminSingleServicePage}
+                    user={user}
+                    loadingUser={loadingUser}
+                  />
                   <Route component={NotFound} />
                 </Switch>
               ) : (
