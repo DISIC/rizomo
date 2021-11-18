@@ -115,12 +115,12 @@ TopBar.propTypes = {
   publicMenu: PropTypes.bool,
   root: PropTypes.string,
   appsettings: PropTypes.objectOf(PropTypes.any),
-  adminApp: PropTypes.bool
+  adminApp: PropTypes.bool,
 };
 
 TopBar.defaultProps = {
   publicMenu: false,
   root: null,
   appsettings: {},
-  adminApp: false
+  adminApp: false,
 };

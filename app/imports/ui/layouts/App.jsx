@@ -52,7 +52,9 @@ function App() {
           <ProtectedRoute exact path="/logout" component={Logout} {...state} />
           <Route exact path="/legal/:legalKey" component={LegalPage} />
           <Route exact path="/contact" component={SignLayout} {...state} />
-          {!!userId && <AdminRoute path="/admin" component={AdminLayout} userId={userId} loadingUser={loadingUser} {...state} />}
+          {!!userId && (
+            <AdminRoute path="/admin" component={AdminLayout} userId={userId} loadingUser={loadingUser} {...state} />
+          )}
           <ProtectedRoute path="/" component={MainLayout} {...state} />
         </Switch>
       </Suspense>
