@@ -29,7 +29,6 @@ const AdminUserValidationPage = lazy(() => import('../pages/admin/AdminUserValid
 const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
 const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupPage'));
 const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage'));
-const AdminStructureUsersPage = lazy(() => import('../pages/structure/AdminStructureUsersPage'));
 const AdminNextcloudUrlPage = lazy(() => import('../pages/admin/AdminNextcloudUrlPage'));
 const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'));
 
@@ -42,7 +41,7 @@ const useStyles = (isMobile) =>
     },
     content: {
       flexGrow: 1,
-      display: "flex",
+      display: 'flex',
       padding: isMobile ? null : theme.spacing(3),
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
@@ -76,7 +75,7 @@ function AdminLayout() {
       appsettings: AppSettings.findOne(),
       ready: subSettings.ready(),
     };
-  })
+  });
 
   useEffect(() => {
     // Reset focus on all location changes
@@ -88,12 +87,12 @@ function AdminLayout() {
   return (
     <div className={classes.root}>
       <SkipLink />
-      <TopBar adminApp/>
+      <TopBar adminApp />
       {loadingUser && ready ? (
         <Spinner full />
       ) : (
         <main className={classes.content} id="main">
-        <AdminMenu isMobile={isMobile}/>
+          <AdminMenu isMobile={isMobile} />
           <Suspense fallback={<Spinner full />}>
             {appsettings.maintenance ? (
               <Alert className={classes.alertMaintenance} variant="filled" severity="error">
@@ -139,4 +138,4 @@ function AdminLayout() {
   );
 }
 
-export default AdminLayout
+export default AdminLayout;

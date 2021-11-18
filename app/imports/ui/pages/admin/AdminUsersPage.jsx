@@ -236,7 +236,7 @@ const AdminUsersPage = () => {
     user: PropTypes.objectOf(PropTypes.any).isRequired,
   };
   return (
-    <Fade in  className={classes.root}>
+    <Fade in className={classes.root}>
       <div>
         <Container>
           {isLoading ? (
