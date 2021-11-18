@@ -9,13 +9,22 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import add from '@material-ui/icons/Add';
+import Fade from '@material-ui/core/Fade';
+import { makeStyles } from '@material-ui/core/styles';
 import Spinner from '../../components/system/Spinner';
 import Nextcloud from '../../../api/nextcloud/nextcloud';
 import { removeNextcloudURL } from '../../../api/nextcloud/methods';
 import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
 import AdminNextCloudUrlEdit from '../../components/admin/AdminNextcloudUrlEdit';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    marginTop: theme.spacing(3),
+  },
+}));
 function AdminNextcloudUrlPage({ loading, nextclouds }) {
+  const classes = useStyles();
   const ncloudData = {};
   const columns = [
     {
@@ -82,7 +91,7 @@ function AdminNextcloudUrlPage({ loading, nextclouds }) {
   };
 
   return (
-    <>
+    <Fade in className={classes.root}>
       {loading ? (
         <Spinner />
       ) : (
@@ -146,7 +155,7 @@ function AdminNextcloudUrlPage({ loading, nextclouds }) {
           ) : null}
         </div>
       )}
-    </>
+    </Fade>
   );
 }
 

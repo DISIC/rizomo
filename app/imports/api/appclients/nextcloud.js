@@ -5,7 +5,7 @@ import logServer from '../logging';
 import Groups from '../groups/groups';
 
 const nextcloudPlugin = Meteor.settings.public.groupPlugins.nextcloud;
-const { nextcloud } = Meteor.settings
+const { nextcloud } = Meteor.settings;
 
 function checkFolderActive(response) {
   // checks that 'Group Folder' API is responding
@@ -18,7 +18,7 @@ function checkFolderActive(response) {
 
 class NextcloudClient {
   constructor() {
-    const ncURL = nextcloudPlugin && nextcloudPlugin.URL || '';
+    const ncURL = (nextcloudPlugin && nextcloudPlugin.URL) || '';
     const ncUser = (nextcloud && nextcloud.nextcloudUser) || '';
     const ncPassword = (nextcloud && nextcloud.nextcloudPassword) || '';
     this.nextURL = `${ncURL}/ocs/v1.php/cloud`;
