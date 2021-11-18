@@ -7,9 +7,9 @@
     "test": "meteor test --once --exclude-archs 'web.browser.legacy, web.cordova' --driver-package meteortesting:mocha --allow-superuser",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "lint": "eslint . --ext js,jsx",
-    "prepare": "cd .. && husky install",
     "lintfix": "eslint --fix . --ext js,jsx",
     "visualize": "meteor --production --extra-packages bundle-visualizer --settings ../config/settings.development.json",
+    "prepare": "cd .. && husky install",
     "preinstall": "npx npm-force-resolutions"
   },
   "dependencies": {
@@ -98,6 +98,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-standard": "^4.1.0",
     "husky": "^7.0.4",
+    "jscpd": "^3.4.2",
     "npm-force-resolutions": "0.0.10",
     "prettier": "^2.4.1"
   },
