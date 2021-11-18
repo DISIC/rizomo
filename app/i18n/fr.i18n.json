@@ -857,6 +857,10 @@
       "disableFilterGroup": "Afficher tous les groupes",
       "noGroup": "Il n'y a aucun groupe à afficher."
     },
+    "AdminHome": {
+      "title":"Interface d'administration",
+      "subtitle": "Choisissez un paramètre à modifier"
+    },
     "AdminServicesPage": {
       "title": "Gestion des Services",
       "columnLogo": "Logo",

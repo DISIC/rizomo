@@ -20,6 +20,7 @@ import AdminMenu from '../components/admin/AdminMenu';
 const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
 const ProfilePage = lazy(() => import('../pages/system/ProfilePage'));
 const NotFound = lazy(() => import('../pages/system/NotFound'));
+const AdminHome = lazy(() => import('../pages/admin/AdminHome'));
 const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
 const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPage'));
 const AdminTagsPage = lazy(() => import('../pages/admin/AdminTagsPage'));
@@ -102,7 +103,7 @@ function AdminLayout() {
             {user.isActive ? (
               user.structure !== undefined ? (
                 <Switch>
-                  <Route exact path="/admin" component={() => 'landing'} />
+                  <Route exact path="/admin" component={AdminHome} />
                   <Route exact path="/admin/nextcloudurl" component={AdminNextcloudUrlPage} />
                   <Route exact path="/admin/services" component={AdminServicesPage} />
                   <Route exact path="/admin/services/new" component={AdminSingleServicePage} />

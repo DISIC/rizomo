@@ -852,6 +852,10 @@
       "disableFilterGroup": "Show all groups",
       "noGroup": "There is no group to display."
     },
+    "AdminHome": {
+      "title":"Administration Page",
+      "subtitle": "Choose a setting to change"
+    },
     "AdminServicesPage": {
       "title": "Service Management",
       "columnLogo": "Logo",
