@@ -450,8 +450,6 @@
       "menuProfileLabel": "Profil",
       "menuLogoutLabel": "Se déconnecter",
       "menuMedias": "Stockage de Médias",
-      "menuAdminStructureUsers": "Utilisateurs de la structure",
-      "menuAdminStructureServices": "Services de la structure",
       "menuAdminApp": "Administration"
     },
     "AdminMenu": {
@@ -464,6 +462,8 @@
       "menuAdminGroups": "Gestion des Groupes",
       "menuAdminUsers": "Gestion des utilisateurs",
       "menuAdminAppSettings": "Réglages Administrateurs",
+      "menuAdminStructureUsers": "Utilisateurs de la structure",
+      "menuAdminStructureServices": "Services de la structure",
       "menuAdminBackHome": "Retour à l'espace perso"
     },
     "NotValidatedMessage": {
