@@ -1,7 +1,7 @@
 {
   "name": "app",
   "private": true,
-  "version": "3.3.2",
+  "version": "3.3.3",
   "scripts": {
     "start": "meteor --exclude-archs 'web.browser.legacy, web.cordova' --settings ../config/settings.development.json",
     "test": "meteor test --once --exclude-archs 'web.browser.legacy, web.cordova' --driver-package meteortesting:mocha --allow-superuser",
