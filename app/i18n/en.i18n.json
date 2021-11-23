@@ -445,6 +445,16 @@
       "inputSearchLabel": "Search..."
     },
     "MainMenu": {
+      "menuAdminGroups": "Groups Management",
+      "menuUserBookmarks": "Bookmarks",
+      "menuProfileLabel": "Profile",
+      "menuLogoutLabel": "Logout",
+      "menuMedias": "Medias Storage",
+      "menuAdminApp": "Administration"
+    },
+    "AdminMenu": {
+      "title": "Administration",
+      "menuAdminAppSettings": "Admin Settings",
       "menuAdminServices": "Service Management",
       "menuAdminUsers": "Users Management",
       "menuAdminNextcloudUrl": "Nextcloud URL management",
@@ -452,13 +462,9 @@
       "menuAdminCategories": "Categories Management",
       "menuAdminTags": "Tags Management",
       "menuAdminGroups": "Groups Management",
-      "menuUserBookmarks": "Bookmarks",
-      "menuProfileLabel": "Profile",
-      "menuLogoutLabel": "Logout",
-      "menuMedias": "Medias Storage",
-      "menuAdminAppSettings": "Admin Settings",
       "menuAdminStructureUsers": "Structure Users",
-      "menuAdminStructureServices": "Structure Services"
+      "menuAdminStructureServices": "Structure Services",
+      "menuAdminBackHome": "Back to Personnal Space"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Your account has not been activated",
@@ -845,6 +851,10 @@
       "filterGroupLabel": "Only my groups ",
       "disableFilterGroup": "Show all groups",
       "noGroup": "There is no group to display."
+    },
+    "AdminHome": {
+      "title":"Administration Page",
+      "subtitle": "Choose a setting to change"
     },
     "AdminServicesPage": {
       "title": "Service Management",

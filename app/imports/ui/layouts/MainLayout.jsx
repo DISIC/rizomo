@@ -12,8 +12,6 @@ import AppSettings from '../../api/appsettings/appsettings';
 import SkipLink from '../components/menus/SkipLink';
 import TopBar from '../components/menus/TopBar';
 import Spinner from '../components/system/Spinner';
-import AdminRoute from '../components/system/AdminRoute';
-import StructureAdminRoute from '../components/system/StructureAdminRoute';
 import MobileMenu from '../components/menus/MobileMenu';
 import NotValidatedMessage from '../components/system/NotValidatedMessage';
 import CustomToast from '../components/system/CustomToast';
@@ -37,21 +35,12 @@ const ArticlesPage = lazy(() => import('../pages/articles/ArticlesPage'));
 const EditArticlePage = lazy(() => import('../pages/articles/EditArticlePage'));
 const MediaStoragePage = lazy(() => import('../pages/MediaStoragePage'));
 const UserBookmarksPage = lazy(() => import('../pages/users/UserBookmarksPage'));
-const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage'));
 const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
-const AdminNextcloudUrlPage = lazy(() => import('../pages/admin/AdminNextcloudUrlPage'));
 const BookmarksPage = lazy(() => import('../pages/groups/BookmarksPage'));
 
 // dynamic imports
-const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServicePage'));
-const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPage'));
-const AdminTagsPage = lazy(() => import('../pages/admin/AdminTagsPage'));
-const AdminServicesPage = lazy(() => import('../pages/admin/AdminServicesPage'));
-const AdminUserValidationPage = lazy(() => import('../pages/admin/AdminUserValidationPage'));
 const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
 const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupPage'));
-const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage'));
-const AdminStructureUsersPage = lazy(() => import('../pages/structure/AdminStructureUsersPage'));
 
 // CSS
 const useStyles = (isMobile) =>
@@ -140,87 +129,6 @@ function MainLayout({ appsettings, ready }) {
                     <Route exact path="/admingroups/:_id" component={AdminSingleGroupPage} />
                     <Route exact path="/medias" component={MediaStoragePage} />
                     <Route exact path="/userBookmarks" component={UserBookmarksPage} />
-                    <StructureAdminRoute
-                      exact
-                      path="/adminstructureusers"
-                      component={AdminStructureUsersPage}
-                      user={user}
-                      loadingUser={loadingUser}
-                    />
-                    <StructureAdminRoute
-                      exact
-                      path="/adminstructureservices"
-                      component={AdminServicesPage}
-                      user={user}
-                      loadingUser={loadingUser}
-                    />
-                    <StructureAdminRoute
-                      exact
-                      path="/adminstructureservices/new"
-                      component={AdminSingleServicePage}
-                      user={user}
-                      loadingUser={loadingUser}
-                    />
-                    <StructureAdminRoute
-                      exact
-                      path="/adminstructureservices/:_id"
-                      component={AdminSingleServicePage}
-                      user={user}
-                      loadingUser={loadingUser}
-                    />
-                    <AdminRoute
-                      exact
-                      path="/adminextcloudurl"
-                      component={AdminNextcloudUrlPage}
-                      userId={userId}
-                      loadingUser={loadingUser}
-                    />
-                    <AdminRoute
-                      exact
-                      path="/adminservices"
-                      component={AdminServicesPage}
-                      userId={userId}
-                      loadingUser={loadingUser}
-                    />
-                    <AdminRoute
-                      exact
-                      path="/adminservices/new"
-                      component={AdminSingleServicePage}
-                      userId={userId}
-                      loadingUser={loadingUser}
-                    />
-                    <AdminRoute
-                      exact
-                      path="/adminservices/:_id"
-                      component={AdminSingleServicePage}
-                      userId={userId}
-                      loadingUser={loadingUser}
-                    />
-                    <AdminRoute
-                      path="/adminusers"
-                      component={AdminUsersPage}
-                      userId={userId}
-                      loadingUser={loadingUser}
-                    />
-                    <AdminRoute
-                      path="/usersvalidation"
-                      component={AdminUserValidationPage}
-                      userId={userId}
-                      loadingUser={loadingUser}
-                    />
-                    <AdminRoute
-                      path="/admincategories"
-                      component={AdminCategoriesPage}
-                      userId={userId}
-                      loadingUser={loadingUser}
-                    />
-                    <AdminRoute path="/admintags" component={AdminTagsPage} userId={userId} loadingUser={loadingUser} />
-                    <AdminRoute
-                      path="/settings"
-                      component={AdminSettingsPage}
-                      userId={userId}
-                      loadingUser={loadingUser}
-                    />
                     <Route component={NotFound} />
                   </Switch>
                 ) : (

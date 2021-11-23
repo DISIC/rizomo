@@ -445,6 +445,15 @@
       "inputSearchLabel": "Rechercher..."
     },
     "MainMenu": {
+      "menuAdminGroups": "Gestion des Groupes",
+      "menuUserBookmarks": "Marque-pages",
+      "menuProfileLabel": "Profil",
+      "menuLogoutLabel": "Se déconnecter",
+      "menuMedias": "Stockage de Médias",
+      "menuAdminApp": "Administration"
+    },
+    "AdminMenu": {
+      "title": "Administration",
       "menuAdminServices": "Gestion des Services",
       "menuAdminUserValidation": "Validation des utilisateurs",
       "menuAdminNextcloudUrl": "Gestion des URL Nextcloud",
@@ -452,13 +461,10 @@
       "menuAdminTags": "Gestion des mots clé",
       "menuAdminGroups": "Gestion des Groupes",
       "menuAdminUsers": "Gestion des utilisateurs",
-      "menuUserBookmarks": "Marque-pages",
-      "menuProfileLabel": "Profil",
-      "menuLogoutLabel": "Se déconnecter",
-      "menuMedias": "Stockage de Médias",
       "menuAdminAppSettings": "Réglages Administrateurs",
       "menuAdminStructureUsers": "Utilisateurs de la structure",
-      "menuAdminStructureServices": "Services de la structure"
+      "menuAdminStructureServices": "Services de la structure",
+      "menuAdminBackHome": "Retour à l'espace perso"
     },
     "NotValidatedMessage": {
       "inactiveAccount": "Votre compte n'a pas été activé",
@@ -850,6 +856,10 @@
       "filterGroupLabel": "Mes groupes seulement",
       "disableFilterGroup": "Afficher tous les groupes",
       "noGroup": "Il n'y a aucun groupe à afficher."
+    },
+    "AdminHome": {
+      "title":"Interface d'administration",
+      "subtitle": "Choisissez un paramètre à modifier"
     },
     "AdminServicesPage": {
       "title": "Gestion des Services",
