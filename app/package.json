@@ -1,7 +1,7 @@
 {
   "name": "app",
   "private": true,
-  "version": "3.3.2",
+  "version": "3.3.3",
   "scripts": {
     "start": "meteor --exclude-archs 'web.browser.legacy, web.cordova' --settings ../config/settings.development.json",
     "test": "meteor test --once --exclude-archs 'web.browser.legacy, web.cordova' --driver-package meteortesting:mocha --allow-superuser",
@@ -9,7 +9,6 @@
     "lint": "eslint . --ext js,jsx",
     "lintfix": "eslint --fix . --ext js,jsx",
     "visualize": "meteor --production --extra-packages bundle-visualizer --settings ../config/settings.development.json",
-    "prepare": "cd .. && husky install",
     "preinstall": "npx npm-force-resolutions"
   },
   "dependencies": {
@@ -97,8 +96,6 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-standard": "^4.1.0",
-    "husky": "^7.0.4",
-    "jscpd": "^3.4.2",
     "npm-force-resolutions": "0.0.10",
     "prettier": "^2.4.1"
   },

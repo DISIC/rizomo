@@ -8,6 +8,7 @@ import SignUp from '../pages/system/SignUp';
 import SignIn from '../pages/system/SignIn';
 import Footer from '../components/menus/Footer';
 import Contact from '../pages/system/Contact';
+import { useAppContext } from '../contexts/context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,6 +17,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: 'url(images/bg-laboite.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundColor: theme.palette.grey[50],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  rootMobile: {
+    minHeight: 'calc(100vh - 64px)',
+    padding: '16px',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: theme.palette.primary.light,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
@@ -33,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mainFeaturedPostContent: {
     position: 'relative',
-    padding: theme.spacing(3),
+    // padding: theme.spacing(3),
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(6),
       paddingRight: 0,
@@ -43,10 +52,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignLayout() {
   const classes = useStyles();
+  const [{ isMobile }] = useAppContext();
 
   return (
     <>
-      <Grid container component="main" className={classes.root}>
+      <Grid container component="main" className={isMobile ? classes.rootMobile : classes.root}>
         <Grid container item xs={false} sm={4} md={7} spacing={4}>
           <Grid item md={12}>
             <div className={classes.mainFeaturedPostContent} />
