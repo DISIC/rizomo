@@ -494,7 +494,10 @@ export const unsetAdminStructure = new ValidatedMethod({
 
 export const setAdminOf = new ValidatedMethod({
   name: 'users.setAdminOf',
-  validate: new SimpleSchema(validateSchema).validator(),
+  validate: new SimpleSchema({
+    userId: validateSchema.userId,
+    groupId: validateSchema.groupId,
+  }).validator(),
 
   run({ userId, groupId }) {
     // check if current user has admin rights on group (or global admin)
@@ -524,7 +527,10 @@ export const setAdminOf = new ValidatedMethod({
 
 export const unsetAdminOf = new ValidatedMethod({
   name: 'users.unsetAdminOf',
-  validate: new SimpleSchema(validateSchema).validator(),
+  validate: new SimpleSchema({
+    userId: validateSchema.userId,
+    groupId: validateSchema.groupId,
+  }).validator(),
 
   run({ userId, groupId }) {
     // check if current user has admin rights on group (or global admin)
@@ -557,7 +563,10 @@ export const unsetAdminOf = new ValidatedMethod({
 
 export const setAnimatorOf = new ValidatedMethod({
   name: 'users.setAnimatorOf',
-  validate: new SimpleSchema(validateSchema).validator(),
+  validate: new SimpleSchema({
+    userId: validateSchema.userId,
+    groupId: validateSchema.groupId,
+  }).validator(),
 
   run({ userId, groupId }) {
     // check if current user has admin rights on group (or global admin)
@@ -589,7 +598,10 @@ export const setAnimatorOf = new ValidatedMethod({
 
 export const unsetAnimatorOf = new ValidatedMethod({
   name: 'users.unsetAnimatorOf',
-  validate: new SimpleSchema(validateSchema).validator(),
+  validate: new SimpleSchema({
+    userId: validateSchema.userId,
+    groupId: validateSchema.groupId,
+  }).validator(),
 
   run({ userId, groupId }) {
     // check if current user has admin rights on group (or global admin) or self removal
@@ -622,7 +634,10 @@ export const unsetAnimatorOf = new ValidatedMethod({
 
 export const setMemberOf = new ValidatedMethod({
   name: 'users.setMemberOf',
-  validate: new SimpleSchema(validateSchema).validator(),
+  validate: new SimpleSchema({
+    userId: validateSchema.userId,
+    groupId: validateSchema.groupId,
+  }).validator(),
 
   run({ userId, groupId }) {
     // check group and user existence
@@ -667,7 +682,10 @@ export const setMemberOf = new ValidatedMethod({
 
 export const unsetMemberOf = new ValidatedMethod({
   name: 'users.unsetMemberOf',
-  validate: new SimpleSchema(validateSchema).validator(),
+  validate: new SimpleSchema({
+    userId: validateSchema.userId,
+    groupId: validateSchema.groupId,
+  }).validator(),
 
   run({ userId, groupId }) {
     // check if current user has sufficient rights on group (or self remove)
@@ -702,7 +720,10 @@ export const unsetMemberOf = new ValidatedMethod({
 
 export const setCandidateOf = new ValidatedMethod({
   name: 'users.setCandidateOf',
-  validate: new SimpleSchema(validateSchema).validator(),
+  validate: new SimpleSchema({
+    userId: validateSchema.userId,
+    groupId: validateSchema.groupId,
+  }).validator(),
 
   run({ userId, groupId }) {
     // allow to set candidate for self or as admin/animator
@@ -742,7 +763,10 @@ export const setCandidateOf = new ValidatedMethod({
 
 export const unsetCandidateOf = new ValidatedMethod({
   name: 'users.unsetCandidateOf',
-  validate: new SimpleSchema(validateSchema).validator(),
+  validate: new SimpleSchema({
+    userId: validateSchema.userId,
+    groupId: validateSchema.groupId,
+  }).validator(),
 
   run({ userId, groupId }) {
     // allow to unset candidate for self or as admin/animator
