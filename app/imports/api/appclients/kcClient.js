@@ -6,6 +6,8 @@ import logServer from '../logging';
 import Groups from '../groups/groups';
 import AppRoles from '../users/users';
 
+const keycloakSettings = Meteor.settings.keycloak;
+
 class KeyCloakClient {
   constructor() {
     this.kcURL = Meteor.settings.public.keycloakUrl;
@@ -29,8 +31,7 @@ class KeyCloakClient {
   }
 
   _authenticate() {
-    const { adminUser } = Meteor.settings.keycloak;
-    const { adminPassword } = Meteor.settings.keycloak;
+    const { adminUser, adminPassword } = keycloakSettings;
     return axios.post(
       `${this.kcURL}/realms/${this.kcRealm}/protocol/openid-connect/token`,
       `username=${encodeURIComponent(adminUser)}&password=${encodeURIComponent(
@@ -119,7 +120,7 @@ class KeyCloakClient {
           },
         })
         .then((response) => {
-          this.clientId = response.data.find((client) => client.clientId === Meteor.settings.keycloak.client).id;
+          this.clientId = response.data.find((client) => client.clientId === keycloakSettings.client).id;
           logServer(i18n.__('api.keycloak.clientIdFound', { clientId: this.clientId }));
           return this.clientId;
         })

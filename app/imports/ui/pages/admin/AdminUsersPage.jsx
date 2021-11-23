@@ -236,9 +236,9 @@ const AdminUsersPage = () => {
     user: PropTypes.objectOf(PropTypes.any).isRequired,
   };
   return (
-    <Fade in>
+    <Fade in className={classes.root}>
       <div>
-        <Container className={classes.root}>
+        <Container>
           {isLoading ? (
             <Spinner />
           ) : (
