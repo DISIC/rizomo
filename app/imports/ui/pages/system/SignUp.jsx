@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
-import { withTracker } from 'meteor/react-meteor-data';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -22,8 +21,8 @@ import i18n from 'meteor/universe:i18n';
 import PropTypes from 'prop-types';
 import CustomSelect from '../../components/admin/CustomSelect';
 import { structureOptions } from '../../../api/users/structures';
-import AppSettings from '../../../api/appsettings/appsettings';
 import Spinner from '../../components/system/Spinner';
+import { mainPagesTracker, useFormStateValidator } from './SignIn';
 
 validate.options = {
   fullMessages: false,
@@ -93,12 +92,7 @@ const SignUp = ({ introduction, ready }) => {
   const history = useHistory();
   const classes = useStyles();
 
-  const [formState, setFormState] = useState({
-    isValid: false,
-    values: {},
-    touched: {},
-    errors: {},
-  });
+  const [formState, handleChange, setFormState] = useFormStateValidator(schema);
   const [values, setValues] = React.useState({
     showPassword: false,
   });
@@ -108,32 +102,6 @@ const SignUp = ({ introduction, ready }) => {
   React.useEffect(() => {
     setLabelWidth(structureLabel.current.offsetWidth);
   }, []);
-
-  useEffect(() => {
-    const errors = validate(formState.values, schema);
-
-    setFormState(() => ({
-      ...formState,
-      isValid: !errors,
-      errors: errors || {},
-    }));
-  }, [formState.values]);
-
-  const handleChange = (event) => {
-    event.persist();
-
-    setFormState(() => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true,
-      },
-    }));
-  };
 
   const handleBlurEmail = (event) => {
     if (formState.values.userName === undefined || formState.values.userName === '') {
@@ -329,20 +297,7 @@ const SignUp = ({ introduction, ready }) => {
   );
 };
 
-export default withTracker(() => {
-  const subSettings = Meteor.subscribe('appsettings.introduction');
-  const appsettings = AppSettings.findOne() || {};
-  const ready = subSettings.ready();
-  const language = i18n._locale;
-  const { introduction = [] } = appsettings;
-  const currentEntry = introduction.find((entry) => entry.language === language) || {};
-  const defaultContent = introduction.find((entry) => !!entry.content.length);
-
-  return {
-    ready,
-    introduction: currentEntry.content || defaultContent,
-  };
-})(SignUp);
+export default mainPagesTracker('introduction', SignUp);
 
 SignUp.defaultProps = {
   introduction: '',

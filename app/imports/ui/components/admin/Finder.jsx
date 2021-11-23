@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import TextField from '@material-ui/core/TextField';
@@ -9,14 +9,21 @@ import i18n from 'meteor/universe:i18n';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import debounce from '../../utils/debounce';
 
-function GroupFinder({ onSelected, hidden, opened, exclude }) {
+function Finder({ onSelected, hidden, exclude, opened, i18nCode, method }) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(false);
 
-  function searchGroup() {
-    Meteor.call('groups.findGroups', { pageSize: 50, groupId: exclude.groupId }, (error, res) => {
+  function search() {
+    const args = { filter, pageSize: 50 };
+    if (method === 'users.findUsers') {
+      args.exclude = exclude;
+    } else if (method === 'groups.findGroups') {
+      args.groupId = exclude.groupId;
+    }
+
+    Meteor.call(method, args, (error, res) => {
       if (error) {
         setLoading(false);
         msg.error(error.reason);
@@ -27,16 +34,16 @@ function GroupFinder({ onSelected, hidden, opened, exclude }) {
     });
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOpen(opened);
   }, [opened]);
 
-  const debouncedSearchUsers = debounce(searchGroup, 500);
+  const debouncedSearch = debounce(search, 500);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (hidden === false) {
       setLoading(true);
-      debouncedSearchUsers();
+      debouncedSearch();
     }
   }, [filter, hidden]);
 
@@ -55,13 +62,13 @@ function GroupFinder({ onSelected, hidden, opened, exclude }) {
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.name === value.name}
-      getOptionLabel={(option) => `${option.name}`}
-      noOptionsText={i18n.__('components.GroupFinder.noTag')}
-      clearText={i18n.__('components.GroupFinder.clear')}
-      loadingText={i18n.__('components.GroupFinder.loading')}
-      openText={i18n.__('components.GroupFinder.open')}
-      closeText={i18n.__('components.GroupFinder.close')}
+      getOptionSelected={(option, value) => option.username === value.username}
+      getOptionLabel={(option) => `${option.username} (${option.firstName || ''} ${option.lastName || ''})`}
+      noOptionsText={i18n.__(`components.${i18nCode}.noUser`)}
+      clearText={i18n.__(`components.${i18nCode}.clear`)}
+      loadingText={i18n.__(`components.${i18nCode}.loading`)}
+      openText={i18n.__(`components.${i18nCode}.open`)}
+      closeText={i18n.__(`components.${i18nCode}.close`)}
       onChange={(_, value) => onSelected(value)}
       options={options}
       loading={loading}
@@ -69,9 +76,9 @@ function GroupFinder({ onSelected, hidden, opened, exclude }) {
       renderInput={(params) => (
         <TextField
           {...params}
-          label={i18n.__('components.GroupFinder.groupLabel')}
+          label={i18n.__(`components.${i18nCode}.userLabel`)}
           variant="outlined"
-          placeholder={i18n.__('components.GroupFinder.placeholder')}
+          placeholder={i18n.__(`components.${i18nCode}.placeholder`)}
           InputProps={{
             ...params.InputProps,
             endAdornment: (
@@ -92,17 +99,19 @@ function GroupFinder({ onSelected, hidden, opened, exclude }) {
   );
 }
 
-GroupFinder.defaultProps = {
+Finder.defaultProps = {
   hidden: false,
   exclude: null,
   opened: false,
 };
 
-GroupFinder.propTypes = {
+Finder.propTypes = {
   onSelected: PropTypes.func.isRequired,
   hidden: PropTypes.bool,
   exclude: PropTypes.objectOf(PropTypes.string),
   opened: PropTypes.bool,
+  i18nCode: PropTypes.string.isRequired,
+  method: PropTypes.string.isRequired,
 };
 
-export default GroupFinder;
+export default Finder;

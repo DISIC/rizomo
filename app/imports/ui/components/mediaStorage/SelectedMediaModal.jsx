@@ -22,6 +22,7 @@ import { storageToSize } from '../../utils/filesProcess';
 import ValidationButton from '../system/ValidationButton';
 import Spinner from '../system/Spinner';
 import { PICTURES_TYPES, VIDEO_TYPES, SOUND_TYPES } from './SingleStoragefile';
+import COMMON_STYLES from '../../themes/styles';
 
 const { minioEndPoint, minioPort, minioBucket, minioSSL } = Meteor.settings.public;
 
@@ -29,36 +30,16 @@ const HOST = `http${minioSSL ? 's' : ''}://${minioEndPoint}${minioPort ? `:${min
 
 const useStyles = (isMobile) =>
   makeStyles(() => ({
-    root: {
-      width: '100%',
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
-    video: {
-      width: '100%',
-    },
+    root: COMMON_STYLES.root,
+    media: COMMON_STYLES.media,
+    video: COMMON_STYLES.video,
     actions: {
       display: 'flex',
       justifyContent: 'space-between',
     },
-    paper: {
-      overflow: 'auto',
-      position: 'absolute',
-      width: isMobile ? '95%' : '50%',
-      maxHeight: '100%',
-      top: isMobile ? 0 : '50%',
-      left: isMobile ? '2.5%' : '50%',
-      transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
-    },
-    iconWrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    alert: {
-      margin: 8,
-    },
+    paper: COMMON_STYLES.paper(isMobile, '50%'),
+    iconWrapper: COMMON_STYLES.iconWrapper,
+    alert: COMMON_STYLES.alert,
   }));
 
 export default function SelectedMediaModal({ file, onClose, onDelete, loading, objectUsed }) {

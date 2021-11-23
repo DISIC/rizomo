@@ -41,7 +41,7 @@ export const checkMeeting = new ValidatedMethod({
 
   async run({ groupId }) {
     if (!isActive(this.userId)) {
-      throw new Meteor.Error('api.groups.getMeetingURL.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
+      throw new Meteor.Error('api.groups.checkMeeting.notPermitted', i18n.__('api.users.mustBeLoggedIn'));
     }
     // check group existence and membership
     const group = Groups.findOne(groupId);
@@ -49,7 +49,7 @@ export const checkMeeting = new ValidatedMethod({
       throw new Meteor.Error('api.groups.favGroup.unknownService', i18n.__('api.groups.unknownGroup'));
     }
     if (!Roles.userIsInRole(this.userId, ['admin', 'animator', 'member'], groupId)) {
-      throw new Meteor.Error('api.groups.getMeetingURL.notPermitted', i18n.__('api.users.notPermitted'));
+      throw new Meteor.Error('api.groups.checkMeeting.notPermitted', i18n.__('api.users.notPermitted'));
     }
     const promisedResult = await BBBClient.checkRunning(group._id, group.slug);
     return promisedResult;

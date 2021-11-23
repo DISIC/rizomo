@@ -13,8 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { Roles } from 'meteor/alanning:roles';
 import add from '@material-ui/icons/Add';
 import setMaterialTableLocalization from '../initMaterialTableLocalization';
-import UserFinder from './UserFinder';
-import GroupFinder from './GroupFinder';
+import Finder from './Finder';
 import Groups from '../../../api/groups/groups';
 import { useAppContext } from '../../contexts/context';
 
@@ -161,12 +160,14 @@ const GroupsUsersList = (props) => {
     <>
       <Collapse in={showSearch} collapsedSize={0}>
         <div className={classes.adduser}>
-          <UserFinder
+          <Finder
             onSelected={setUser}
             key={finderId}
             hidden={!showSearch}
             exclude={{ groupId, role: userRole }}
             opened={showSearch}
+            i18nCode="UserFinder"
+            method="users.findUsers"
           />
           <Button variant="contained" disabled={!user} color="primary" onClick={addUser}>
             {i18n.__('components.GroupUsersList.addUserButton')}
@@ -178,12 +179,14 @@ const GroupsUsersList = (props) => {
       </Collapse>
       <Collapse in={showSearchGroup} collapsedSize={0}>
         <div className={classes.adduser}>
-          <GroupFinder
+          <Finder
             onSelected={setGroupAdd}
             key={finderId}
             hidden={!showSearchGroup}
             exclude={{ groupId, role: userRole }}
             opened={showSearchGroup}
+            i18nCode="GroupFinder"
+            method="groups.findGroups"
           />
           <Button variant="contained" disabled={!groupAdd} color="primary" onClick={addGroup}>
             {i18n.__('components.GroupUsersList.addGroupButton')}

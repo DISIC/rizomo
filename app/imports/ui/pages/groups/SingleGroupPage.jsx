@@ -39,6 +39,7 @@ import GroupAvatar from '../../components/groups/GroupAvatar';
 import { Polls } from '../../../api/polls/polls';
 import { EventsAgenda } from '../../../api/eventsAgenda/eventsAgenda';
 import Bookmarks from '../../../api/bookmarks/bookmarks';
+import COMMON_STYLES from '../../themes/styles';
 
 const useStyles = (member, candidate, type) =>
   makeStyles((theme) => ({
@@ -127,17 +128,7 @@ const useStyles = (member, candidate, type) =>
       textTransform: 'none',
       color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
     },
-    buttonText: {
-      textTransform: 'none',
-      backgroundColor:
-        member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-      color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
-      fontWeight: 'bold',
-      '&:hover': {
-        color: member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-        backgroundColor: member || candidate ? null : theme.palette.tertiary.main,
-      },
-    },
+    buttonText: COMMON_STYLES.buttonText({ member, candidate, type, theme }),
     buttonAdmin: {
       textTransform: 'none',
       backgroundColor: theme.palette.primary.main,

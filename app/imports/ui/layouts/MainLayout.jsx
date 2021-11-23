@@ -43,13 +43,17 @@ const AdminGroupsPage = lazy(() => import('../pages/admin/AdminGroupsPage'));
 const AdminSingleGroupPage = lazy(() => import('../pages/admin/AdminSingleGroupPage'));
 
 // CSS
-const useStyles = (isMobile) =>
+export const useLayoutStyles = (isMobile) =>
   makeStyles((theme) => ({
     root: {
       display: 'flex',
       position: 'relative',
     },
+    container: {
+      width: `calc(100% - ${isMobile ? 65 : 300}px)`,
+    },
     content: {
+      display: 'flex',
       flexGrow: 1,
       padding: isMobile ? null : theme.spacing(3),
       transition: theme.transitions.create('margin', {
@@ -68,14 +72,14 @@ const useStyles = (isMobile) =>
       marginLeft: 0,
     },
     alertMaintenance: {
-      marginTop: -10,
+      marginTop: isMobile ? 0 : -10,
       marginBottom: 30,
     },
   }));
 
 function MainLayout({ appsettings, ready }) {
   const [{ userId, user, loadingUser, isMobile }] = useAppContext();
-  const classes = useStyles(isMobile)();
+  const classes = useLayoutStyles(isMobile)();
   const location = useLocation();
   const { enableBlog } = Meteor.settings.public;
 

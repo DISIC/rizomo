@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -10,12 +10,11 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import i18n from 'meteor/universe:i18n';
 import { useHistory } from 'react-router-dom';
-import { withTracker } from 'meteor/react-meteor-data';
 import validate from 'validate.js';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import CustomSelect from '../../components/admin/CustomSelect';
 import { structureOptions } from '../../../api/users/structures';
-import AppSettings from '../../../api/appsettings/appsettings';
+import { mainPagesTracker, useFormStateValidator } from './SignIn';
 
 validate.options = {
   fullMessages: false,
@@ -88,45 +87,13 @@ const totalNr = rndmNr1 + rndmNr2;
 const Contact = () => {
   const history = useHistory();
   const classes = useStyles();
-
-  const [formState, setFormState] = useState({
-    isValid: false,
-    values: {},
-    touched: {},
-    errors: {},
-  });
+  const [formState, handleChange] = useFormStateValidator(schema);
 
   const structureLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
   React.useEffect(() => {
     setLabelWidth(structureLabel.current.offsetWidth);
   }, []);
-
-  useEffect(() => {
-    const errors = validate(formState.values, schema);
-
-    setFormState(() => ({
-      ...formState,
-      isValid: !errors,
-      errors: errors || {},
-    }));
-  }, [formState.values]);
-
-  const handleChange = (event) => {
-    event.persist();
-
-    setFormState(() => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true,
-      },
-    }));
-  };
 
   const hasError = (field) => !!(formState.touched[field] && formState.errors[field]);
 
@@ -294,20 +261,7 @@ const Contact = () => {
   );
 };
 
-export default withTracker(() => {
-  const subSettings = Meteor.subscribe('appsettings.introduction');
-  const appsettings = AppSettings.findOne() || {};
-  const ready = subSettings.ready();
-  const language = i18n._locale;
-  const { introduction = [] } = appsettings;
-  const currentEntry = introduction.find((entry) => entry.language === language) || {};
-  const defaultContent = introduction.find((entry) => !!entry.content.length);
-
-  return {
-    ready,
-    introduction: currentEntry.content || defaultContent,
-  };
-})(Contact);
+export default mainPagesTracker('introduction', Contact);
 
 Contact.defaultProps = {
   introduction: '',

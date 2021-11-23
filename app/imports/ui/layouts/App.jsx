@@ -10,13 +10,14 @@ import MsgHandler from '../components/system/MsgHandler';
 import DynamicStore, { useAppContext } from '../contexts/context';
 import lightTheme from '../themes/light';
 import UploaderNotifier from '../components/uploader/UploaderNotifier';
+import AdminRoute from '../components/system/AdminRoute';
 
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));
 const AdminLayout = lazy(() => import('./AdminLayout'));
 const SignLayout = lazy(() => import('./SignLayout'));
 const LegalPage = lazy(() => import('../pages/legal/LegalPage'));
-const PublicArticlePage = lazy(() => import('../pages/articles/PublicArticlePage'));
+const ArticlesPage = lazy(() => import('../pages/articles/ArticlesPage'));
 const PublicArticleDetailsPage = lazy(() => import('../pages/articles/PublicArticleDetailsPage'));
 const PublishersPage = lazy(() => import('../pages/articles/PublishersPage'));
 
@@ -31,7 +32,7 @@ function App() {
   const [state] = useAppContext();
   const { userId, loadingUser = false, loading } = state;
   const useKeycloak = Meteor.settings.public.enableKeycloak;
-  const externalBlog = Meteor.settings.public.laboiteBlogURL !== '';
+  const externalBlog = typeof Meteor.settings.public.laboiteBlogURL !== 'undefined';
   const { enableBlog } = Meteor.settings.public;
 
   return loading ? (
@@ -44,14 +45,16 @@ function App() {
           <PublicRoute exact path="/signin" component={SignLayout} {...state} />
           {useKeycloak ? null : <PublicRoute exact path="/signup" component={SignLayout} {...state} />}
           {externalBlog || !enableBlog ? null : <Route exact path="/public/" component={PublishersPage} />}
-          {externalBlog || !enableBlog ? null : <Route exact path="/public/:userId" component={PublicArticlePage} />}
+          {externalBlog || !enableBlog ? null : <Route exact path="/public/:userId" component={ArticlesPage} />}
           {externalBlog || !enableBlog ? null : (
             <Route exact path="/public/:userId/:slug" component={PublicArticleDetailsPage} />
           )}
           <ProtectedRoute exact path="/logout" component={Logout} {...state} />
           <Route exact path="/legal/:legalKey" component={LegalPage} />
           <Route exact path="/contact" component={SignLayout} {...state} />
-          <ProtectedRoute path="/admin" component={AdminLayout} userId={userId} loadingUser={loadingUser} {...state} />
+          {!!userId && (
+            <AdminRoute path="/admin" component={AdminLayout} userId={userId} loadingUser={loadingUser} {...state} />
+          )}
           <ProtectedRoute path="/" component={MainLayout} {...state} />
         </Switch>
       </Suspense>

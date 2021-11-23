@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
 
-export default withStyles((theme) => ({
+export const badgeStyle = (theme) => ({
   badge: {
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     '&::after': {
@@ -26,4 +26,6 @@ export default withStyles((theme) => ({
       opacity: 0,
     },
   },
-}))(Badge);
+});
+
+export default withStyles((theme) => badgeStyle(theme))(Badge);

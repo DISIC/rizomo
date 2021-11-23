@@ -659,7 +659,7 @@
       "OpenInWindow": "Ouvrir le média",
       "copyUrl": "Copier l'URL de ce média"
     },
-    "UserAvatarEdit": {
+    "AvatarEdit": {
       "title": "Créez votre avatar",
       "subtitle": "à patir d'une image",
       "sendImage": "Envoyer cet avatar",
@@ -678,7 +678,7 @@
       "subtitle": "depuis la galerie d'images",
       "cancel": "Annuler"
     },
-    "UserAvatarCamCapture": {
+    "AvatarCamCapture": {
       "title": "Créez votre avatar",
       "subtitle": "à partir de la webcam",
       "takePicture": "Prendre une photo",

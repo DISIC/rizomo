@@ -1,0 +1,16 @@
+{
+  "threshold": 0.2,
+  "reporters": ["console"],
+  "ignore": [
+    "**/node_modules/**",
+    "**/.meteor/**", 
+    "./packages/**", 
+    "./i18n/*.json", 
+    "**/*.svg",
+    "**.test.js",
+    "*/**/**.tests.jsx",
+    "*/**/**.tests.js"
+  ],
+  "absolute": true,
+  "minTokens": 100
+}
