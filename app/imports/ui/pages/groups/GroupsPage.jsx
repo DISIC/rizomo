@@ -5,9 +5,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Collapse from '@material-ui/core/Collapse';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import SearchIcon from '@material-ui/icons/Search';
@@ -17,7 +14,6 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import ClearIcon from '@material-ui/icons/Clear';
 import Pagination from '@material-ui/lab/Pagination';
 import i18n from 'meteor/universe:i18n';
 import { Roles } from 'meteor/alanning:roles';
@@ -28,6 +24,7 @@ import GroupDetails from '../../components/groups/GroupDetails';
 import { useAppContext } from '../../contexts/context';
 import { usePagination } from '../../utils/hooks';
 import GroupDetailsList from '../../components/groups/GroupDetailsList';
+import CollapsingSearch from '../../components/system/CollapsingSearch';
 
 const useStyles = makeStyles(() => ({
   small: {
@@ -163,43 +160,6 @@ function GroupsPage() {
     </ToggleButtonGroup>
   );
 
-  const searchField = (
-    <Grid item xs={12} sm={12} md={6} className={searchToggle ? null : classes.small}>
-      <Collapse in={searchToggle} collapsedSize={0}>
-        <TextField
-          margin="normal"
-          id="search"
-          label={i18n.__('pages.GroupsPage.searchText')}
-          name="search"
-          fullWidth
-          onChange={updateSearch}
-          onKeyDown={checkEscape}
-          type="text"
-          value={search}
-          variant="outlined"
-          inputProps={{
-            ref: inputRef,
-          }}
-          // eslint-disable-next-line react/jsx-no-duplicate-props
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-            endAdornment: search ? (
-              <InputAdornment position="end">
-                <IconButton onClick={resetSearch}>
-                  <ClearIcon />
-                </IconButton>
-              </InputAdornment>
-            ) : null,
-          }}
-        />
-      </Collapse>
-    </Grid>
-  );
-
   const filterSwitch = () => (
     <Tooltip
       title={
@@ -233,7 +193,16 @@ function GroupsPage() {
           </Grid>
         </Grid>
         <Grid container spacing={4}>
-          {searchField}
+          <CollapsingSearch
+            classes={searchToggle ? null : classes.small}
+            label={i18n.__('pages.GroupsPage.searchText')}
+            updateSearch={updateSearch}
+            checkEscape={checkEscape}
+            resetSearch={resetSearch}
+            searchToggle={searchToggle}
+            search={search}
+            inputRef={inputRef}
+          />
           {isMobile && (
             <Grid item xs={12} sm={12} className={classes.mobileButtonContainer}>
               <div />

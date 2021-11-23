@@ -14,39 +14,20 @@ import Typography from '@material-ui/core/Typography';
 
 import PropTypes from 'prop-types';
 import { useAppContext } from '../../contexts/context';
+import COMMON_STYLES from '../../themes/styles';
 
 const useStyles = (isMobile) =>
   makeStyles((theme) => ({
-    root: {
-      width: '100%',
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
-    video: {
-      width: '100%',
-    },
+    root: COMMON_STYLES.root,
+    media: COMMON_STYLES.media,
+    video: COMMON_STYLES.video,
     actions: {
       display: 'flex',
       justifyContent: 'space-between',
     },
-    paper: {
-      overflow: 'auto',
-      position: 'absolute',
-      width: isMobile ? '95%' : '50%',
-      maxHeight: '100%',
-      top: isMobile ? 0 : '50%',
-      left: isMobile ? '2.5%' : '50%',
-      transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
-    },
-    iconWrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    alert: {
-      margin: 8,
-    },
+    paper: COMMON_STYLES.paper(isMobile, '50%'),
+    iconWrapper: COMMON_STYLES.iconWrapper,
+    alert: COMMON_STYLES.alert,
     image: {
       position: 'relative',
       height: 200,
@@ -113,14 +94,19 @@ const useStyles = (isMobile) =>
     },
   }));
 
-const UserAvatarGallery = ({ open, onClose, onSendImage }) => {
+const paths = {
+  UserAvatarGallery: '/images/avatars/avatar-',
+  GroupAvatarGallery: '/images/groups/group-',
+};
+
+const AvatarGallery = ({ open, onClose, onSendImage, i18nCode }) => {
   const [{ isMobile }] = useAppContext();
   const classes = useStyles(isMobile)();
 
   const avImages = () => {
     const images = [];
-    for (let i = 1; i < 257; i += 1) {
-      images.push(`/images/avatars/avatar-${i.toString().padStart(3, '0')}.svg`);
+    for (let i = 1; i < (i18nCode === 'UserAvatarGallery' ? 257 : 330); i += 1) {
+      images.push(`${paths[i18nCode]}${i.toString().padStart(3, '0')}.svg`);
     }
     return images;
   };
@@ -135,8 +121,8 @@ const UserAvatarGallery = ({ open, onClose, onSendImage }) => {
       <div className={classes.paper}>
         <Card className={classes.root}>
           <CardHeader
-            title={i18n.__('components.UserAvatarGallery.title')}
-            subheader={i18n.__('components.UserAvatarGallery.subtitle')}
+            title={i18n.__(`components.${i18nCode}.title`)}
+            subheader={i18n.__(`components.${i18nCode}.subtitle`)}
             action={
               <IconButton onClick={onClose}>
                 <ClearIcon />
@@ -169,10 +155,11 @@ const UserAvatarGallery = ({ open, onClose, onSendImage }) => {
   );
 };
 
-UserAvatarGallery.propTypes = {
+AvatarGallery.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSendImage: PropTypes.func.isRequired,
+  i18nCode: PropTypes.string.isRequired,
 };
 
-export default UserAvatarGallery;
+export default AvatarGallery;

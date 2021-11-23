@@ -34,8 +34,8 @@ import Groups from '../../../api/groups/groups';
 import GroupsUsersList from '../../components/admin/GroupUsersList';
 import { useAppContext } from '../../contexts/context';
 import { CustomToolbar } from '../../components/system/CustomQuill';
-import GroupAvatarPicker from '../../components/groups/GroupAvatarPicker';
 import '../../utils/QuillVideo';
+import AvatarPicker from '../../components/users/AvatarPicker';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -353,7 +353,7 @@ const AdminSingleGroupPage = ({ group, ready, match: { params } }) => {
                 />
               </Grid>
               <Grid item xs={isMobile ? 12 : 6}>
-                <GroupAvatarPicker
+                <AvatarPicker
                   avatar={groupData.avatar || ''}
                   type={groupData.type}
                   group={groupData}

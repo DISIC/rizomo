@@ -23,7 +23,7 @@ import { useAppContext } from '../../contexts/context';
 import { toBase64, storageToSize } from '../../utils/filesProcess';
 import slugy from '../../utils/slugy';
 
-const useStyles = makeStyles(() => ({
+export const useAudioModalStyles = makeStyles(() => ({
   content: {
     display: 'flex',
     alignItems: 'center',
@@ -33,6 +33,9 @@ const useStyles = makeStyles(() => ({
   actions: {
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  video: {
+    width: '100%',
   },
   timeWrapper: {
     display: 'flex',
@@ -48,9 +51,9 @@ const useStyles = makeStyles(() => ({
     },
   },
 }));
-const calcultedUsedDisk = (total, currentValue) => total + currentValue.size;
+export const calcultedUsedDisk = (total, currentValue) => total + currentValue.size;
 
-const fancyTimeFormat = (time) => {
+export const fancyTimeFormat = (time) => {
   // Hours, minutes and seconds
   const hrs = Math.floor(time / 3600);
   const mins = Math.floor((time % 3600) / 60);
@@ -68,12 +71,50 @@ const fancyTimeFormat = (time) => {
   return ret;
 };
 
+export const DialogSendActionButtons = ({ changeFileName, fileName, loading, handleUpload, toggleSend, i18nCode }) => (
+  <div>
+    <TextField
+      onChange={changeFileName}
+      value={fileName}
+      disabled={loading}
+      label={i18n.__(`components.${i18nCode}.fileName`)}
+      variant="outlined"
+    />
+    {[
+      {
+        label: `components.${i18nCode}.validate`,
+        disabled: !fileName || loading,
+        onClick: handleUpload,
+        icon: <CheckIcon />,
+      },
+      {
+        label: `components.${i18nCode}.cancel`,
+        disabled: loading,
+        onClick: toggleSend,
+        icon: <CloseIcon />,
+      },
+    ].map((item) => (
+      <SingleTooltipActionButton {...item} key={item.label} />
+    ))}
+  </div>
+);
+
+export const SingleTooltipActionButton = ({ label, disabled, onClick, icon }) => (
+  <Tooltip title={i18n.__(label)}>
+    <span>
+      <IconButton aria-label={i18n.__(label)} disabled={disabled} onClick={onClick}>
+        {icon}
+      </IconButton>
+    </span>
+  </Tooltip>
+);
+
 let timer;
 const recorder = new MicRecorder({ bitRate: 128 });
 
 const AudioModal = ({ onClose, selectFile, admin }) => {
   const [, dispatch] = useAppContext();
-  const classes = useStyles();
+  const classes = useAudioModalStyles();
   const [audioBlob, setBlob] = useState(null);
   const [audioPlayer, setAudioPlayer] = useState(null);
   const [capturing, setCapturing] = useState(false);
@@ -205,83 +246,44 @@ const AudioModal = ({ onClose, selectFile, admin }) => {
       </DialogContent>
       <DialogActions className={classes.actions}>
         {send ? (
-          <div>
-            <TextField
-              onChange={changeFileName}
-              value={fileName}
-              disabled={loading}
-              label={i18n.__('components.AudioModal.fileName')}
-              variant="outlined"
-            />
-            <Tooltip title={i18n.__('components.AudioModal.validate')}>
-              <span>
-                <IconButton
-                  disabled={!fileName || loading}
-                  aria-label={i18n.__('components.AudioModal.validate')}
-                  onClick={handleUpload}
-                >
-                  <CheckIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={i18n.__('components.AudioModal.cancel')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.AudioModal.cancel')}
-                  onClick={toggleSend}
-                  disabled={loading}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-          </div>
+          <DialogSendActionButtons
+            changeFileName={changeFileName}
+            fileName={fileName}
+            loading={loading}
+            handleUpload={handleUpload}
+            toggleSend={toggleSend}
+            i18nCode="AudioModal"
+          />
         ) : (
           <div>
-            <Tooltip title={i18n.__('components.AudioModal.stop')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.AudioModal.stop')}
-                  disabled={!capturing || loading || !!audioPlayer}
-                  onClick={audioPlayer ? null : handleStopCaptureClick}
-                >
-                  <StopIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={i18n.__('components.AudioModal.start')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.AudioModal.start')}
-                  disabled={capturing || loading || !!audioPlayer}
-                  onClick={audioPlayer ? null : handleStartCaptureClick}
-                >
-                  <FiberManualRecordIcon style={{ color: capturing ? null : 'red' }} />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={i18n.__('components.AudioModal.refresh')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.AudioModal.refresh')}
-                  disabled={!audioBlob || loading || !audioPlayer}
-                  onClick={refreshAudio}
-                >
-                  <RefreshIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={i18n.__('components.AudioModal.upload')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.AudioModal.upload')}
-                  disabled={!audioBlob || loading || !audioPlayer}
-                  onClick={toggleSend}
-                >
-                  <CloudUploadIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
+            {[
+              {
+                label: 'components.AudioModal.stop',
+                disabled: !capturing || loading || !!audioPlayer,
+                onClick: audioPlayer ? null : handleStopCaptureClick,
+                icon: <StopIcon />,
+              },
+              {
+                label: 'components.AudioModal.start',
+                disabled: !capturing || loading || !!audioPlayer,
+                onClick: audioPlayer ? null : handleStartCaptureClick,
+                icon: <FiberManualRecordIcon style={{ color: capturing ? null : 'red' }} />,
+              },
+              {
+                label: 'components.AudioModal.refresh',
+                disabled: !audioBlob || loading || !audioPlayer,
+                onClick: audioPlayer ? null : refreshAudio,
+                icon: <RefreshIcon />,
+              },
+              {
+                label: 'components.AudioModal.upload',
+                disabled: !audioBlob || loading || !audioPlayer,
+                onClick: audioPlayer ? null : toggleSend,
+                icon: <CloudUploadIcon />,
+              },
+            ].map((item) => (
+              <SingleTooltipActionButton {...item} key={item.label} />
+            ))}
           </div>
         )}
 
@@ -308,4 +310,20 @@ AudioModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   selectFile: PropTypes.func.isRequired,
   admin: PropTypes.bool,
+};
+
+DialogSendActionButtons.propTypes = {
+  changeFileName: PropTypes.func.isRequired,
+  fileName: PropTypes.string.isRequired,
+  handleUpload: PropTypes.string.isRequired,
+  toggleSend: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
+  i18nCode: PropTypes.string.isRequired,
+};
+
+SingleTooltipActionButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.objectOf(PropTypes.any).isRequired,
+  disabled: PropTypes.bool.isRequired,
 };

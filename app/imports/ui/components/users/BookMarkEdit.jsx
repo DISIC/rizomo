@@ -13,44 +13,30 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { useAppContext } from '../../contexts/context';
+import COMMON_STYLES from '../../themes/styles';
 
 const useStyles = (isMobile) =>
   makeStyles(() => ({
-    root: {
-      width: '100%',
-    },
-    actions: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      overflow: 'auto',
-      position: 'absolute',
-      width: isMobile ? '95%' : '25%',
-      maxHeight: '100%',
-      top: isMobile ? 0 : '50%',
-      left: isMobile ? '2.5%' : '50%',
-      transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
-    },
-    iconWrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    groupCountInfo: {
-      marginTop: 30,
-    },
-    alert: {
-      margin: 8,
-    },
+    root: COMMON_STYLES.root,
+    actions: COMMON_STYLES.actions,
+    paper: COMMON_STYLES.paper(isMobile),
   }));
 
-const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
+const BookMarkEdit = ({ data, group, onEdit, open, onClose, method }) => {
   const [{ isMobile }] = useAppContext();
   const [url, setUrl] = useState(data.url);
   const [tag, setTag] = useState(data.tag);
   const [name, setName] = useState(data.name);
   const [isValid, setIsValid] = useState(false);
   const classes = useStyles(isMobile)();
+  const args = {
+    url,
+    name,
+    tag,
+  };
+  if (method === 'bookmark') {
+    args.groupId = group._id;
+  }
 
   useEffect(() => {
     setIsValid(!!url && !!name);
@@ -58,23 +44,14 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
 
   const changeBookmark = () => {
     if (isValid) {
-      Meteor.call(
-        'bookmark.updateURL',
-        {
-          url,
-          name,
-          tag,
-          groupId: group._id,
-        },
-        function callbackQuota(error) {
-          if (error) {
-            msg.error(i18n.__('api.bookmarks.creationFailed'));
-          } else {
-            msg.success(i18n.__('api.methods.operationSuccessMsg'));
-            onClose();
-          }
-        },
-      );
+      Meteor.call(`${method}.updateURL`, args, function callbackQuota(error) {
+        if (error) {
+          msg.error(i18n.__('api.bookmarks.creationFailed'));
+        } else {
+          msg.success(i18n.__('api.methods.operationSuccessMsg'));
+          onClose();
+        }
+      });
     } else {
       msg.error(i18n.__('api.bookmarks.creationFailed'));
     }
@@ -82,24 +59,15 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
 
   const createBookmark = () => {
     if (isValid) {
-      Meteor.call(
-        'bookmark.create',
-        {
-          url,
-          name,
-          tag,
-          groupId: group._id,
-        },
-        function callbackQuota(error, urlFinal) {
-          if (error) {
-            msg.error(i18n.__('api.bookmarks.creationFailed'));
-          } else {
-            msg.success(i18n.__('api.methods.operationSuccessMsg'));
-            Meteor.call('bookmark.getFavicon', { url: urlFinal });
-            onClose();
-          }
-        },
-      );
+      Meteor.call(`${method}.create`, args, function callbackQuota(error, urlFinal) {
+        if (error) {
+          msg.error(i18n.__('api.bookmarks.creationFailed'));
+        } else {
+          msg.success(i18n.__('api.methods.operationSuccessMsg'));
+          Meteor.call(`${method}.getFavicon`, { url: urlFinal });
+          onClose();
+        }
+      });
     } else {
       msg.error(i18n.__('api.bookmarks.creationFailed'));
     }
@@ -191,12 +159,17 @@ const BookMarkEdit = ({ data, group, onEdit, open, onClose }) => {
   );
 };
 
+BookMarkEdit.defaultProps = {
+  group: null,
+};
+
 BookMarkEdit.propTypes = {
   data: PropTypes.objectOf(PropTypes.any).isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  group: PropTypes.objectOf(PropTypes.any).isRequired,
+  group: PropTypes.objectOf(PropTypes.any),
   onEdit: PropTypes.bool.isRequired,
+  method: PropTypes.string.isRequired,
 };
 
 export default BookMarkEdit;

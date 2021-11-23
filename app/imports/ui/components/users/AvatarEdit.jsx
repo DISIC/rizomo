@@ -14,48 +14,28 @@ import Modal from '@material-ui/core/Modal';
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
 import PropTypes from 'prop-types';
 import { useAppContext } from '../../contexts/context';
+import COMMON_STYLES from '../../themes/styles';
 
 const useStyles = (isMobile) =>
   makeStyles(() => ({
-    root: {
-      width: '100%',
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
-    video: {
-      width: '100%',
-    },
-    actions: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      overflow: 'auto',
-      position: 'absolute',
-      width: isMobile ? '95%' : '50%',
-      maxHeight: '100%',
-      top: isMobile ? 0 : '50%',
-      left: isMobile ? '2.5%' : '50%',
-      transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
-    },
+    root: COMMON_STYLES.root,
+    media: COMMON_STYLES.media,
+    video: COMMON_STYLES.video,
+    actions: COMMON_STYLES.actions,
+    paper: COMMON_STYLES.paper(isMobile, '50%'),
     iconWrapper: {
       display: 'flex',
       justifyContent: 'space-evenly',
       alignItems: 'center',
     },
-    alert: {
-      margin: 8,
-    },
+    alert: COMMON_STYLES.alert,
   }));
 
-const UserAvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
+const AvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
   const [{ isMobile }] = useAppContext();
   const classes = useStyles(isMobile)();
   const [scale, setScale] = useState(1);
@@ -68,7 +48,6 @@ const UserAvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
   };
 
   const onRotate = (factor) => {
-    console.log('Rotate');
     setRotate(rotate + factor * 90);
   };
 
@@ -86,8 +65,8 @@ const UserAvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
       <div className={classes.paper}>
         <Card className={classes.root}>
           <CardHeader
-            title={i18n.__('components.UserAvatarEdit.title')}
-            subheader={i18n.__('components.UserAvatarEdit.subtitle')}
+            title={i18n.__('components.AvatarEdit.title')}
+            subheader={i18n.__('components.AvatarEdit.subtitle')}
             action={
               <IconButton onClick={onClose}>
                 <ClearIcon />
@@ -109,8 +88,8 @@ const UserAvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
           <Grid className={classes.iconWrapper} container spacing={4}>
             <Grid item xs={4}>
               <Tooltip
-                title={i18n.__('components.UserAvatarEdit.zoom')}
-                aria-label={i18n.__('components.UserAvatarEdit.zoom')}
+                title={i18n.__('components.AvatarEdit.zoom')}
+                aria-label={i18n.__('components.AvatarEdit.zoom')}
                 placement="top"
               >
                 <Grid container spacing={1}>
@@ -134,8 +113,8 @@ const UserAvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
 
             <Grid item xs={4}>
               <Tooltip
-                title={i18n.__('components.UserAvatarEdit.turnLeft')}
-                aria-label={i18n.__('components.UserAvatarEdit.turnLeft')}
+                title={i18n.__('components.AvatarEdit.turnLeft')}
+                aria-label={i18n.__('components.AvatarEdit.turnLeft')}
                 placement="top"
               >
                 <IconButton onClick={() => onRotate(-1)}>
@@ -143,8 +122,8 @@ const UserAvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
                 </IconButton>
               </Tooltip>
               <Tooltip
-                title={i18n.__('components.UserAvatarEdit.turnRight')}
-                aria-label={i18n.__('components.UserAvatarEdit.turnRight')}
+                title={i18n.__('components.AvatarEdit.turnRight')}
+                aria-label={i18n.__('components.AvatarEdit.turnRight')}
                 placement="top"
               >
                 <IconButton onClick={() => onRotate(1)}>
@@ -155,9 +134,9 @@ const UserAvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
           </Grid>
           <CardActions className={classes.actions}>
             <Button variant="contained" color="primary" onClick={onLocalSendImage}>
-              {i18n.__('components.UserAvatarEdit.sendImage')}
+              {i18n.__('components.AvatarEdit.sendImage')}
             </Button>
-            <Button onClick={onClose}>{i18n.__('components.UserAvatarEdit.cancel')}</Button>
+            <Button onClick={onClose}>{i18n.__('components.AvatarEdit.cancel')}</Button>
           </CardActions>
         </Card>
       </div>
@@ -165,11 +144,11 @@ const UserAvatarEdit = ({ open, avatar, onClose, onSendImage }) => {
   );
 };
 
-UserAvatarEdit.propTypes = {
+AvatarEdit.propTypes = {
   open: PropTypes.bool.isRequired,
   avatar: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSendImage: PropTypes.func.isRequired,
 };
 
-export default UserAvatarEdit;
+export default AvatarEdit;

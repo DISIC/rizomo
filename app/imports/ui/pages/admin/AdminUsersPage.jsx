@@ -9,7 +9,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import i18n from 'meteor/universe:i18n';
 import ListItemText from '@material-ui/core/ListItemText';
-import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@material-ui/icons/Check';
 import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
@@ -19,8 +18,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -38,6 +35,7 @@ import debounce from '../../utils/debounce';
 import { useAppContext } from '../../contexts/context';
 import UserAvatar from '../../components/users/UserAvatar';
 import AdminGroupQuota from '../../components/users/AdminGroupQuota';
+import SearchField from '../../components/system/SearchField';
 
 let userData = {};
 const useStyles = makeStyles((theme) => ({
@@ -247,30 +245,12 @@ const AdminUsersPage = () => {
                 <Typography variant={isMobile ? 'h6' : 'h4'}>{i18n.__('pages.AdminUsersPage.title')}</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
-                <TextField
-                  margin="normal"
-                  id="search"
-                  label={i18n.__('pages.AdminUsersPage.searchText')}
-                  name="search"
-                  fullWidth
-                  onChange={updateSearch}
-                  type="text"
-                  variant="outlined"
+                <SearchField
+                  updateSearch={updateSearch}
+                  search={search}
                   inputRef={searchRef}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment: search ? (
-                      <InputAdornment position="end">
-                        <IconButton onClick={resetSearch}>
-                          <ClearIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null,
-                  }}
+                  resetSearch={resetSearch}
+                  label={i18n.__('pages.AdminUsersPage.searchText')}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={6} className={classes.pagination}>

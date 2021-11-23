@@ -12,9 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import Switch from '@material-ui/core/Switch';
@@ -23,7 +20,6 @@ import LockIcon from '@material-ui/icons/Lock';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import SearchIcon from '@material-ui/icons/Search';
-import ClearIcon from '@material-ui/icons/Clear';
 import Groups from '../../api/groups/groups';
 import Services from '../../api/services/services';
 import Spinner from '../components/system/Spinner';
@@ -32,6 +28,7 @@ import PersonalZone from '../components/personalspace/PersonalZone';
 import Animation from '../components/screencast/Animation';
 import { useAppContext } from '../contexts/context';
 import UserBookmarks from '../../api/userBookmarks/userBookmarks';
+import CollapsingSearch from '../components/system/CollapsingSearch';
 
 const useStyles = (isMobile) =>
   makeStyles((theme) => ({
@@ -408,40 +405,16 @@ function PersonalPage({ personalspace, isLoading, allServices, allGroups, allLin
                 </Grid>
               </Grid>
               <Grid container spacing={4}>
-                <Grid item xs={12} sm={12} md={6} className={searchToggle ? classes.search : classes.small}>
-                  <Collapse in={searchToggle} collapsedSize={0}>
-                    <TextField
-                      margin="normal"
-                      id="search"
-                      label={i18n.__('pages.PersonalPage.searchText')}
-                      name="search"
-                      fullWidth
-                      onChange={updateSearch}
-                      onKeyDown={checkEscape}
-                      type="text"
-                      value={search}
-                      variant="outlined"
-                      inputProps={{
-                        ref: inputRef,
-                      }}
-                      // eslint-disable-next-line react/jsx-no-duplicate-props
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                        endAdornment: search ? (
-                          <InputAdornment position="end">
-                            <IconButton onClick={resetSearch}>
-                              <ClearIcon />
-                            </IconButton>
-                          </InputAdornment>
-                        ) : null,
-                      }}
-                    />
-                  </Collapse>
-                </Grid>
+                <CollapsingSearch
+                  classes={searchToggle ? classes.search : classes.small}
+                  label={i18n.__('pages.PersonalPage.searchText')}
+                  updateSearch={updateSearch}
+                  checkEscape={checkEscape}
+                  resetSearch={resetSearch}
+                  searchToggle={searchToggle}
+                  search={search}
+                  inputRef={inputRef}
+                />
               </Grid>
               {localPS.unsorted.length === 0 && localPS.sorted.length === 0 ? (
                 <Grid>

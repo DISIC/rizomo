@@ -24,6 +24,12 @@ if (Meteor.settings.public.enableKeycloak === true) {
     logServer(i18n.__('api.users.logWhiteDomains', { domains: JSON.stringify(whiteDomains) }));
   }
 }
+
+const validateSchema = {
+  userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+  groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
+  username: { type: String, min: 1, label: getLabel('api.users.labels.username') },
+};
 // users.findUsers: Returns users using pagination
 //   filter: string to search for in username/firstname/lastname/emails (case insensitive search)
 //   page: number of the page requested
@@ -142,7 +148,7 @@ export const findUsers = new ValidatedMethod({
 export const removeUser = new ValidatedMethod({
   name: 'users.removeUser',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
   }).validator(),
 
   run({ userId }) {
@@ -180,7 +186,7 @@ export const removeUser = new ValidatedMethod({
 export const setUsername = new ValidatedMethod({
   name: 'users.setUsername',
   validate: new SimpleSchema({
-    username: { type: String, min: 1, label: getLabel('api.users.labels.username') },
+    username: validateSchema.username,
   }).validator(),
 
   run({ username }) {
@@ -200,7 +206,7 @@ export const setUsername = new ValidatedMethod({
 export const checkUsername = new ValidatedMethod({
   name: 'users.checkUsername',
   validate: new SimpleSchema({
-    username: { type: String, min: 1, label: getLabel('api.users.labels.username') },
+    username: validateSchema.username,
   }).validator(),
 
   run({ username }) {
@@ -331,7 +337,7 @@ export const setEmail = new ValidatedMethod({
 export const setAdmin = new ValidatedMethod({
   name: 'users.setAdmin',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
   }).validator(),
 
   run({ userId }) {
@@ -353,7 +359,7 @@ export const setAdmin = new ValidatedMethod({
 export const setAdminStructure = new ValidatedMethod({
   name: 'users.setAdminStructure',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
   }).validator(),
 
   run({ userId }) {
@@ -377,7 +383,7 @@ export const setAdminStructure = new ValidatedMethod({
 export const setActive = new ValidatedMethod({
   name: 'users.setActive',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
   }).validator(),
 
   run({ userId }) {
@@ -416,7 +422,7 @@ export const setArticlesEnable = new ValidatedMethod({
 export const unsetActive = new ValidatedMethod({
   name: 'users.unsetActive',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
   }).validator(),
 
   run({ userId }) {
@@ -437,7 +443,7 @@ export const unsetActive = new ValidatedMethod({
 export const unsetAdmin = new ValidatedMethod({
   name: 'users.unsetAdmin',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
   }).validator(),
 
   run({ userId }) {
@@ -464,7 +470,7 @@ export const unsetAdmin = new ValidatedMethod({
 export const unsetAdminStructure = new ValidatedMethod({
   name: 'users.unsetAdminStructure',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
   }).validator(),
 
   run({ userId }) {
@@ -488,10 +494,7 @@ export const unsetAdminStructure = new ValidatedMethod({
 
 export const setAdminOf = new ValidatedMethod({
   name: 'users.setAdminOf',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator(),
+  validate: new SimpleSchema(validateSchema).validator(),
 
   run({ userId, groupId }) {
     // check if current user has admin rights on group (or global admin)
@@ -521,10 +524,7 @@ export const setAdminOf = new ValidatedMethod({
 
 export const unsetAdminOf = new ValidatedMethod({
   name: 'users.unsetAdminOf',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator(),
+  validate: new SimpleSchema(validateSchema).validator(),
 
   run({ userId, groupId }) {
     // check if current user has admin rights on group (or global admin)
@@ -557,10 +557,7 @@ export const unsetAdminOf = new ValidatedMethod({
 
 export const setAnimatorOf = new ValidatedMethod({
   name: 'users.setAnimatorOf',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator(),
+  validate: new SimpleSchema(validateSchema).validator(),
 
   run({ userId, groupId }) {
     // check if current user has admin rights on group (or global admin)
@@ -592,10 +589,7 @@ export const setAnimatorOf = new ValidatedMethod({
 
 export const unsetAnimatorOf = new ValidatedMethod({
   name: 'users.unsetAnimatorOf',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator(),
+  validate: new SimpleSchema(validateSchema).validator(),
 
   run({ userId, groupId }) {
     // check if current user has admin rights on group (or global admin) or self removal
@@ -628,10 +622,7 @@ export const unsetAnimatorOf = new ValidatedMethod({
 
 export const setMemberOf = new ValidatedMethod({
   name: 'users.setMemberOf',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator(),
+  validate: new SimpleSchema(validateSchema).validator(),
 
   run({ userId, groupId }) {
     // check group and user existence
@@ -676,10 +667,7 @@ export const setMemberOf = new ValidatedMethod({
 
 export const unsetMemberOf = new ValidatedMethod({
   name: 'users.unsetMemberOf',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator(),
+  validate: new SimpleSchema(validateSchema).validator(),
 
   run({ userId, groupId }) {
     // check if current user has sufficient rights on group (or self remove)
@@ -714,10 +702,7 @@ export const unsetMemberOf = new ValidatedMethod({
 
 export const setCandidateOf = new ValidatedMethod({
   name: 'users.setCandidateOf',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator(),
+  validate: new SimpleSchema(validateSchema).validator(),
 
   run({ userId, groupId }) {
     // allow to set candidate for self or as admin/animator
@@ -757,10 +742,7 @@ export const setCandidateOf = new ValidatedMethod({
 
 export const unsetCandidateOf = new ValidatedMethod({
   name: 'users.unsetCandidateOf',
-  validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
-    groupId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.groups.labels.id') },
-  }).validator(),
+  validate: new SimpleSchema(validateSchema).validator(),
 
   run({ userId, groupId }) {
     // allow to unset candidate for self or as admin/animator
@@ -873,7 +855,7 @@ export const setKeycloakId = new ValidatedMethod({
 export const findUser = new ValidatedMethod({
   name: 'users.findUser',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
   }).validator(),
 
   run({ userId }) {
@@ -884,7 +866,7 @@ export const findUser = new ValidatedMethod({
 export const userUpdated = new ValidatedMethod({
   name: 'users.userUpdated',
   validate: new SimpleSchema({
-    userId: { type: String, regEx: SimpleSchema.RegEx.Id, label: getLabel('api.users.labels.id') },
+    userId: validateSchema.userId,
     data: {
       type: Object,
       optional: true,

@@ -7,8 +7,6 @@ import { withTracker } from 'meteor/react-meteor-data';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import MaterialTable from '@material-table/core';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import LanguageIcon from '@material-ui/icons/Language';
 import Container from '@material-ui/core/Container';
 import { Roles } from 'meteor/alanning:roles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -20,68 +18,17 @@ import Spinner from '../../components/system/Spinner';
 import { useAppContext } from '../../contexts/context';
 import { removeBookmark, updateBookmark } from '../../../api/bookmarks/methods';
 import setMaterialTableLocalization from '../../components/initMaterialTableLocalization';
-import BookMarkEdit from '../../components/groups/BookMarkEdit';
+import BookMarkEdit from '../../components/users/BookMarkEdit';
 import Bookmarks from '../../../api/bookmarks/bookmarks';
 import Groups from '../../../api/groups/groups';
-
-const useStyles = makeStyles(() => ({
-  ErrorPage: {
-    textAlign: 'center',
-  },
-  goBackButton: {
-    marginBottom: 30,
-  },
-  link: {
-    color: 'blue',
-    textDecoration: 'underline',
-  },
-  icon: {
-    height: 25,
-    width: 25,
-  },
-}));
+import { bookmarkColumns, useBookmarkPageStyles } from '../users/UserBookmarksPage';
 
 function BookmarksPage({ loading, bookmarksList, group }) {
   const [{ userId }] = useAppContext();
   const history = useHistory();
   const [filter, setFilter] = useState(false);
-  const classes = useStyles();
-  const columns = [
-    {
-      title: i18n.__('pages.BookmarksPage.columnIcon'),
-      field: 'icon',
-      editable: 'never',
-      render: (rowData) => {
-        const { icon } = rowData;
-
-        if (icon !== '') {
-          // eslint-disable-next-line jsx-a11y/alt-text
-          return <img src={`${icon}`} className={classes.icon} />;
-        }
-        return <LanguageIcon className={classes.icon} />;
-      },
-    },
-    {
-      title: i18n.__('pages.BookmarksPage.columnName'),
-      field: 'name',
-    },
-    {
-      title: i18n.__('pages.BookmarksPage.columnUrl'),
-      field: 'url',
-      render: (rowData) => {
-        const { url } = rowData;
-        return (
-          <a href={url} className={classes.link} target="_blank" rel="noreferrer noopener">
-            {url}
-          </a>
-        );
-      },
-    },
-    {
-      title: i18n.__('pages.BookmarksPage.columnTag'),
-      field: 'tag',
-    },
-  ];
+  const classes = useBookmarkPageStyles();
+  const columns = bookmarkColumns(classes);
 
   const [editUrl, setEditUrl] = useState(false);
   const [bkData, setBkData] = useState({});
@@ -224,6 +171,7 @@ function BookmarksPage({ loading, bookmarksList, group }) {
               onEdit={onEdit}
               open={editUrl}
               onClose={() => setEditUrl(false)}
+              method="bookmark"
             />
           ) : null}
         </div>

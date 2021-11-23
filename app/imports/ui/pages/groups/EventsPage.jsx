@@ -28,7 +28,7 @@ import { usePagination } from '../../utils/hooks';
 
 import { EventsAgenda } from '../../../api/eventsAgenda/eventsAgenda';
 
-const useStyles = makeStyles((theme) => ({
+export const useEvenstPageStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     marginTop: theme.spacing(3),
@@ -60,7 +60,7 @@ const EventsPage = ({
     params: { slug },
   },
 }) => {
-  const classes = useStyles();
+  const classes = useEvenstPageStyles();
   const history = useHistory();
   const [search, setSearch] = useState('');
 

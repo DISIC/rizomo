@@ -1,7 +1,6 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { useLocation, Route, Switch } from 'react-router-dom';
 import { useTracker } from 'meteor/react-meteor-data';
-import { makeStyles } from '@material-ui/core/styles';
 import i18n from 'meteor/universe:i18n';
 import Alert from '@material-ui/lab/Alert';
 import AppSettings from '../../api/appsettings/appsettings';
@@ -17,6 +16,7 @@ import { useAppContext } from '../contexts/context';
 import NoStructureSelected from '../components/system/NoStructureSelected';
 import AdminMenu from '../components/admin/AdminMenu';
 import StructureAdminRoute from '../components/system/StructureAdminRoute';
+import { useLayoutStyles } from './MainLayout';
 
 // pages
 const NotificationsDisplay = lazy(() => import('../components/notifications/NotificationsDisplay'));
@@ -35,44 +35,9 @@ const AdminSingleServicePage = lazy(() => import('../pages/admin/AdminSingleServ
 const AdminServicesPage = lazy(() => import('../pages/admin/AdminServicesPage'));
 const AdminStructureUsersPage = lazy(() => import('../pages/structure/AdminStructureUsersPage'));
 
-// CSS
-const useStyles = (isMobile) =>
-  makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      position: 'relative',
-    },
-    container: {
-      width: `calc(100% - ${isMobile ? 65 : 300}px)`,
-    },
-    content: {
-      flexGrow: 1,
-      display: 'flex',
-      padding: isMobile ? null : theme.spacing(3),
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      overflow: 'hidden',
-      marginTop: 60,
-      marginBottom: isMobile ? 100 : 50,
-    },
-    contentShift: {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    },
-    alertMaintenance: {
-      marginTop: isMobile ? 0 : -10,
-      marginBottom: 30,
-    },
-  }));
-
 function AdminLayout() {
   const [{ userId, user, loadingUser, isMobile }] = useAppContext();
-  const classes = useStyles(isMobile)();
+  const classes = useLayoutStyles(isMobile)();
   const location = useLocation();
 
   const { appsettings = {}, ready = false } = useTracker(() => {

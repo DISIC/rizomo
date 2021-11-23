@@ -307,56 +307,9 @@ class RocketChatClient {
       });
   }
 
-  setRole(groupId, username, role, callerId) {
-    // role: boolean to set user as owner or moderator of a group
-    const APIUrl = role === 'owner' ? 'addOwner' : 'addModerator';
+  changeRole(APIUrl, setMode, groupId, username, role, callerId) {
     const displayRole = i18n.__(`api.rocketChat.${role}`);
-    return this._getToken()
-      .then((token) =>
-        this._getUserByUsername(username).then((user) => {
-          return axios
-            .post(
-              `${this.rcURL}/groups.${APIUrl}`,
-              {
-                roomName: groupId,
-                userId: user._id,
-              },
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                  'X-User-Id': this.adminId,
-                  'X-Auth-Token': token,
-                },
-              },
-            )
-            .then((response) => {
-              if (response.data && response.data.success === true) {
-                logServer(i18n.__('api.rocketChat.roleSet', { groupId, username, role: displayRole }));
-              } else {
-                logServer(
-                  `${i18n.__('api.rocketChat.setRoleError', { groupId, username, role: displayRole })} (${
-                    response.data.error
-                  })`,
-                  'error',
-                  callerId,
-                );
-              }
-              return response.data.success;
-            });
-        }),
-      )
-      .catch((error) => {
-        logServer(i18n.__('api.rocketChat.setRoleError', { groupId, username, role: displayRole }), 'error', callerId);
-        logServer(error.response && error.response.data ? error.response.data.error : error, 'error');
-        return null;
-      });
-  }
 
-  unsetRole(groupId, username, role, callerId) {
-    // role: boolean to set user as owner or moderator of a group
-    const APIUrl = role === 'owner' ? 'removeOwner' : 'removeModerator';
-    const displayRole = i18n.__(`api.rocketChat.${role}`);
     return this._getToken()
       .then((token) =>
         this._getUserByUsername(username).then((user) => {
@@ -378,12 +331,20 @@ class RocketChatClient {
             )
             .then((response) => {
               if (response.data && response.data.success === true) {
-                logServer(i18n.__('api.rocketChat.roleUnset', { groupId, username, role: displayRole }));
+                logServer(
+                  i18n.__(`api.rocketChat.${setMode ? 'roleSet' : 'roleUnset'}`, {
+                    groupId,
+                    username,
+                    role: displayRole,
+                  }),
+                );
               } else {
                 logServer(
-                  `${i18n.__('api.rocketChat.unsetRoleError', { groupId, username, role: displayRole })} (${
-                    response.data.error
-                  })`,
+                  `${i18n.__(`api.rocketChat.${setMode ? 'setRoleError' : 'unsetRoleError'}`, {
+                    groupId,
+                    username,
+                    role: displayRole,
+                  })} (${response.data.error})`,
                   'error',
                   callerId,
                 );
@@ -394,13 +355,29 @@ class RocketChatClient {
       )
       .catch((error) => {
         logServer(
-          i18n.__('api.rocketChat.unsetRoleError', { groupId, username, role: displayRole }),
+          i18n.__(`api.rocketChat.${setMode ? 'setRoleError' : 'unsetRoleError'}`, {
+            groupId,
+            username,
+            role: displayRole,
+          }),
           'error',
           callerId,
         );
         logServer(error.response && error.response.data ? error.response.data.error : error, 'error');
         return null;
       });
+  }
+
+  setRole(groupId, username, role, callerId) {
+    // role: boolean to set user as owner or moderator of a group
+    const APIUrl = role === 'owner' ? 'addOwner' : 'addModerator';
+    this.changeRole(APIUrl, true, groupId, username, role, callerId);
+  }
+
+  unsetRole(groupId, username, role, callerId) {
+    // role: boolean to set user as owner or moderator of a group
+    const APIUrl = role === 'owner' ? 'removeOwner' : 'removeModerator';
+    this.changeRole(APIUrl, false, groupId, username, role, callerId);
   }
 
   kickUser(groupId, username, callerId) {

@@ -1,12 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -15,7 +12,6 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import StopIcon from '@material-ui/icons/Stop';
 import CloseIcon from '@material-ui/icons/Close';
-import CheckIcon from '@material-ui/icons/Check';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import PropTypes from 'prop-types';
 import Webcam from 'react-webcam';
@@ -24,60 +20,19 @@ import { useAppContext } from '../../contexts/context';
 import { toBase64, storageToSize } from '../../utils/filesProcess';
 import slugy from '../../utils/slugy';
 import Spinner from './Spinner';
-
-const useStyles = makeStyles(() => ({
-  content: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  video: {
-    width: '100%',
-  },
-  timeWrapper: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    flexDirection: 'column',
-    fontWeight: 'bold',
-  },
-  title: {
-    '& h2': {
-      display: 'flex',
-      justifyContent: 'space-between',
-    },
-  },
-}));
-const calcultedUsedDisk = (total, currentValue) => total + currentValue.size;
-
-const fancyTimeFormat = (time) => {
-  // Hours, minutes and seconds
-  const hrs = Math.floor(time / 3600);
-  const mins = Math.floor((time % 3600) / 60);
-  const secs = Math.round(time % 60);
-
-  // Output like "1:01" or "4:03:59" or "123:03:59"
-  let ret = '';
-
-  if (hrs > 0) {
-    ret += `${hrs}:${mins < 10 ? '0' : ''}`;
-  }
-
-  ret += `${mins}:${secs < 10 ? '0' : ''}`;
-  ret += `${secs}`;
-  return ret;
-};
+import {
+  useAudioModalStyles,
+  calcultedUsedDisk,
+  fancyTimeFormat,
+  DialogSendActionButtons,
+  SingleTooltipActionButton,
+} from './AudioModal';
 
 let timer;
 
 const WebcamModal = ({ onClose, selectFile, admin }) => {
   const [, dispatch] = useAppContext();
-  const classes = useStyles();
+  const classes = useAudioModalStyles();
   const webcamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const [capturing, setCapturing] = useState(false);
@@ -278,83 +233,44 @@ const WebcamModal = ({ onClose, selectFile, admin }) => {
       </DialogContent>
       <DialogActions className={classes.actions}>
         {send ? (
-          <div>
-            <TextField
-              onChange={changeFileName}
-              value={fileName}
-              disabled={loading}
-              label={i18n.__('components.WebcamModal.fileName')}
-              variant="outlined"
-            />
-            <Tooltip title={i18n.__('components.WebcamModal.validate')}>
-              <span>
-                <IconButton
-                  disabled={!fileName || loading}
-                  aria-label={i18n.__('components.WebcamModal.validate')}
-                  onClick={handleUpload}
-                >
-                  <CheckIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={i18n.__('components.WebcamModal.cancel')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.WebcamModal.cancel')}
-                  onClick={toggleSend}
-                  disabled={loading}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-          </div>
+          <DialogSendActionButtons
+            changeFileName={changeFileName}
+            fileName={fileName}
+            loading={loading}
+            handleUpload={handleUpload}
+            toggleSend={toggleSend}
+            i18nCode="WebcamModal"
+          />
         ) : (
           <div>
-            <Tooltip title={i18n.__('components.WebcamModal.stop')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.WebcamModal.stop')}
-                  disabled={!tested || !capturing || loading}
-                  onClick={handleStopCaptureClick}
-                >
-                  <StopIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={i18n.__('components.WebcamModal.start')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.WebcamModal.start')}
-                  disabled={!tested || capturing || (!capturing && size > 0) || loading}
-                  onClick={handleStartCaptureClick}
-                >
-                  <FiberManualRecordIcon style={{ color: capturing ? null : 'red' }} />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={i18n.__('components.WebcamModal.refresh')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.WebcamModal.refresh')}
-                  disabled={!tested || recordedChunks.length === 0 || loading}
-                  onClick={refreshVideo}
-                >
-                  <RefreshIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={i18n.__('components.WebcamModal.upload')}>
-              <span>
-                <IconButton
-                  aria-label={i18n.__('components.WebcamModal.upload')}
-                  disabled={!tested || recordedChunks.length === 0 || loading}
-                  onClick={toggleSend}
-                >
-                  <CloudUploadIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
+            {[
+              {
+                label: 'components.WebcamModal.stop',
+                disabled: !tested || !capturing || loading,
+                onClick: handleStopCaptureClick,
+                icon: <StopIcon />,
+              },
+              {
+                label: 'components.WebcamModal.start',
+                disabled: !tested || capturing || (!capturing && size > 0) || loading,
+                onClick: handleStartCaptureClick,
+                icon: <FiberManualRecordIcon style={{ color: capturing ? null : 'red' }} />,
+              },
+              {
+                label: 'components.WebcamModal.refresh',
+                disabled: !tested || recordedChunks.length === 0 || loading,
+                onClick: refreshVideo,
+                icon: <RefreshIcon />,
+              },
+              {
+                label: 'components.WebcamModal.upload',
+                disabled: !tested || recordedChunks.length === 0 || loading,
+                onClick: toggleSend,
+                icon: <CloudUploadIcon />,
+              },
+            ].map((item) => (
+              <SingleTooltipActionButton {...item} key={item.label} />
+            ))}
             <FormControl>
               <InputLabel>{i18n.__('components.WebcamModal.quality')}</InputLabel>
               <Select value={quality} onChange={changeQuality} disabled={loading}>

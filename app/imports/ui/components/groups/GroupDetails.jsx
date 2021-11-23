@@ -25,6 +25,7 @@ import GroupAvatar from './GroupAvatar';
 import { useAppContext } from '../../contexts/context';
 import Spinner from '../system/Spinner';
 import GroupBadge from './GroupBadge';
+import COMMON_STYLES from '../../themes/styles';
 
 const useStyles = ({ type }, member, candidate, isShort) =>
   makeStyles((theme) => ({
@@ -96,17 +97,7 @@ const useStyles = ({ type }, member, candidate, isShort) =>
       paddingTop: theme.spacing(1),
       display: 'flex',
     },
-    buttonText: {
-      textTransform: 'none',
-      backgroundColor:
-        member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-      color: member ? 'green' : candidate ? theme.palette.secondary.main : theme.palette.tertiary.main,
-      fontWeight: 'bold',
-      '&:hover': {
-        color: member || candidate ? null : type === 0 ? theme.palette.primary.main : theme.palette.secondary.main,
-        backgroundColor: member || candidate ? null : theme.palette.tertiary.main,
-      },
-    },
+    buttonText: COMMON_STYLES.buttonText({ member, candidate, type, theme }),
     paperChip: {
       display: 'flex',
       justifyContent: 'left',

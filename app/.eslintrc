@@ -31,6 +31,7 @@
   "rules": {
     "no-restricted-imports": ["error", "@material-ui/core", "@material-ui/icons", "@material-ui/lab"],
     "no-underscore-dangle": "off",
+    "react/no-danger": "off",
     "react/jsx-props-no-spreading": "off",
     "no-nested-ternary": "off",
     "prettier/prettier": "error",

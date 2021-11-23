@@ -65,20 +65,15 @@ if (Meteor.settings.public.enableKeycloak === true) {
   });
 }
 
-function SignIn({ loggingIn, introduction, appsettings, ready }) {
-  const classes = useStyles();
-
+export const useFormStateValidator = (formSchema) => {
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
     touched: {},
     errors: {},
   });
-
-  const [rememberMe, setRememberMe] = useState(true);
-
   useEffect(() => {
-    const errors = validate(formState.values, schema);
+    const errors = validate(formState.values, formSchema);
 
     setFormState(() => ({
       ...formState,
@@ -102,6 +97,16 @@ function SignIn({ loggingIn, introduction, appsettings, ready }) {
       },
     }));
   };
+
+  return [formState, handleChange, setFormState];
+};
+
+function SignIn({ loggingIn, introduction, appsettings, ready }) {
+  const classes = useStyles();
+
+  const [formState, handleChange] = useFormStateValidator(schema);
+
+  const [rememberMe, setRememberMe] = useState(true);
 
   const checkRememberMe = () => {
     window.localStorage.setItem('rememberMe', rememberMe);
@@ -244,25 +249,29 @@ function SignIn({ loggingIn, introduction, appsettings, ready }) {
   );
 }
 
-export default withTracker(() => {
-  const loggingIn = Meteor.loggingIn();
-  const subSettings = Meteor.subscribe('appsettings.all');
-  const appsettings = AppSettings.findOne() || {};
-  const ready = subSettings.ready();
-  // locale may be fr-FR, en-EN, etc...
-  // laboite only manages fr, en, ...
-  const language = i18n.getLocale().split('-')[0];
-  const { introduction = [] } = appsettings;
-  const currentEntry = introduction.find((entry) => entry.language === language) || {};
-  const defaultContent = introduction.find((entry) => !!entry.content.length);
+export const mainPagesTracker = (settingsSegment = 'all', component) => {
+  return withTracker(() => {
+    const loggingIn = Meteor.loggingIn();
+    const subSettings = Meteor.subscribe(`appsettings.${settingsSegment}`);
+    const appsettings = AppSettings.findOne() || {};
+    const ready = subSettings.ready();
+    // locale may be fr-FR, en-EN, etc...
+    // laboite only manages fr, en, ...
+    const language = i18n.getLocale().split('-')[0];
+    const { introduction = [] } = appsettings;
+    const currentEntry = introduction.find((entry) => entry.language === language) || {};
+    const defaultContent = introduction.find((entry) => !!entry.content.length);
 
-  return {
-    loggingIn,
-    ready,
-    appsettings,
-    introduction: currentEntry.content || defaultContent,
-  };
-})(SignIn);
+    return {
+      loggingIn,
+      ready,
+      appsettings,
+      introduction: currentEntry.content || defaultContent,
+    };
+  })(component);
+};
+
+export default mainPagesTracker('all', SignIn);
 
 SignIn.defaultProps = {
   introduction: '',

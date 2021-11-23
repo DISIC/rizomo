@@ -1,54 +1,30 @@
 import React, { useState } from 'react';
+import Card from '@material-ui/core/Card';
 import i18n from 'meteor/universe:i18n';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import Modal from '@material-ui/core/Modal';
+import CardHeader from '@material-ui/core/CardHeader';
 import ClearIcon from '@material-ui/icons/Clear';
+import IconButton from '@material-ui/core/IconButton';
+import Modal from '@material-ui/core/Modal';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 import { useAppContext } from '../../contexts/context';
+import COMMON_STYLES from '../../themes/styles';
 
 const useStyles = (isMobile) =>
   makeStyles(() => ({
-    root: {
-      width: '100%',
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
-    video: {
-      width: '100%',
-    },
-    actions: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      overflow: 'auto',
-      position: 'absolute',
-      width: isMobile ? '95%' : '50%',
-      maxHeight: '100%',
-      top: isMobile ? 0 : '50%',
-      left: isMobile ? '2.5%' : '50%',
-      transform: isMobile ? 'translateY(50%)' : 'translate(-50%, -50%)',
-    },
-    iconWrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    groupCountInfo: {
-      marginTop: 30,
-    },
-    alert: {
-      margin: 8,
-    },
+    root: COMMON_STYLES.root,
+    media: COMMON_STYLES.media,
+    video: COMMON_STYLES.video,
+    actions: COMMON_STYLES.actions,
+    paper: COMMON_STYLES.paper(isMobile, '50%'),
+    iconWrapper: COMMON_STYLES.iconWrapper,
+    groupCountInfo: COMMON_STYLES.groupCountInfo,
+    alert: COMMON_STYLES.alert,
   }));
 
 const AdminGroupQuota = ({ data, open, onClose }) => {
