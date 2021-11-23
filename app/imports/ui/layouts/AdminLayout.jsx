@@ -109,7 +109,7 @@ function AdminLayout() {
               {user.isActive ? (
                 user.structure !== undefined ? (
                   <Switch>
-                    <AdminRoute userId={userId} loadingUser={loadingUser} exact path="/admin" component={AdminHome} />
+                    <Route userId={userId} loadingUser={loadingUser} exact path="/admin" component={AdminHome} />
                     <AdminRoute
                       userId={userId}
                       loadingUser={loadingUser}
