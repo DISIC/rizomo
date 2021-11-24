@@ -1,9 +1,11 @@
 {
   "public": {
+    "appName": "LaBoîte",
     "enableKeycloak": false,
     "keycloakUrl": "",
     "keycloakRealm": "",
     "enableBlog": false,
+    "theme": "laboite",
     "laboiteBlogURL": "",
     "enableBBB": false,
     "BBBUrl": "",

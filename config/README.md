@@ -9,6 +9,8 @@ Copy `settings-development.json.sample` to `settings-development.json` and updat
 | enableKeycloak                           | boolean  | false                                | If true, keycloak is enabled                                                                |
 | keycloakUrl                              | string   | ""                                   | Keycloak URL                                                                                |
 | keycloakRealm                            | string   | ""                                   | Keycloak Realm                                                                              |
+| theme                                    | string   | "laboite"                            | laboite or rizomo theme                                                                     |
+| appName                                  | string   | "LaBoîte"                            | Application Name                                                                            |
 | enableBlog                               | boolean  | false                                | enable all features and links for the blog                                                  |
 | laboiteBlogURL                           | string   | ""                                   | Laboite Blog URL                                                                            |
 | enableBBB                                | boolean  | true                                 | If true, Big Blue Button is enabled                                                         |

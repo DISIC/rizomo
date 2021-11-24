@@ -1,8 +1,8 @@
 function updateDocumentTitle(title) {
   if (!title || title === '') {
-    document.title = 'LaBoîte';
+    document.title = Meteor.settings.public.appName || 'LaBoîte';
   } else {
-    document.title = `LaBoîte - ${title}`;
+    document.title = `${Meteor.settings.public.appName || 'LaBoîte'} - ${title}`;
   }
 }
 export default updateDocumentTitle;
