@@ -4,6 +4,7 @@
     "keycloakUrl": "",
     "keycloakRealm": "",
     "enableBlog": false,
+    "theme": "laboite",
     "laboiteBlogURL": "",
     "enableBBB": false,
     "BBBUrl": "",
