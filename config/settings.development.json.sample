@@ -1,5 +1,6 @@
 {
   "public": {
+    "appName": "LaBoîte",
     "enableKeycloak": false,
     "keycloakUrl": "",
     "keycloakRealm": "",
