@@ -10,6 +10,7 @@ import MsgHandler from '../components/system/MsgHandler';
 import DynamicStore, { useAppContext } from '../contexts/context';
 import lightTheme from '../themes/light';
 import UploaderNotifier from '../components/uploader/UploaderNotifier';
+import updateDocumentTitle from '../utils/updateDocumentTitle';
 
 // dynamic imports
 const MainLayout = lazy(() => import('./MainLayout'));
@@ -33,6 +34,9 @@ function App() {
   const useKeycloak = Meteor.settings.public.enableKeycloak;
   const externalBlog = typeof Meteor.settings.public.laboiteBlogURL !== 'undefined';
   const { enableBlog } = Meteor.settings.public;
+  useEffect(() => {
+    updateDocumentTitle();
+  }, []);
 
   return loading ? (
     <Spinner />

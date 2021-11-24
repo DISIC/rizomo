@@ -9,12 +9,13 @@ import SignIn from '../pages/system/SignIn';
 import Footer from '../components/menus/Footer';
 import Contact from '../pages/system/Contact';
 import { useAppContext } from '../contexts/context';
+import { THEMES } from '../themes/light';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: 'calc(100vh - 64px)',
     padding: '16px',
-    backgroundImage: 'url(images/bg-laboite.jpg)',
+    backgroundImage: THEMES[Meteor.settings.public.theme || 'laboite'].signinBackground,
     backgroundRepeat: 'no-repeat',
     backgroundColor: theme.palette.grey[50],
     backgroundSize: 'cover',

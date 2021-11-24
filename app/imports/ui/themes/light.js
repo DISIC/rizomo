@@ -1,7 +1,8 @@
 import { createTheme } from '@material-ui/core/styles';
 
-const THEMES = {
+export const THEMES = {
   laboite: {
+    signinBackground: 'url(images/bg-laboite.jpg)',
     shape: {
       borderRadius: 8,
     },
@@ -52,6 +53,7 @@ const THEMES = {
     },
   },
   rizomo: {
+    signinBackground: '',
     shape: {
       borderRadius: 2,
     },
