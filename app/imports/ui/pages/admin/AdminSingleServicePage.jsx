@@ -126,7 +126,7 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { path, par
   const [content, setContent] = useState('');
   const history = useHistory();
   const classes = useStyles();
-  const structureMode = path.startsWith('/adminstructureservices');
+  const structureMode = path.startsWith('/admin/structureservices');
   const [{ user }] = useAppContext();
 
   const removeUndefined = () => {
@@ -147,7 +147,7 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { path, par
 
   const onCancel = () => {
     removeUndefined();
-    history.push(structureMode ? '/adminstructureservices' : '/adminservices');
+    history.push(structureMode ? '/admin/structureservices' : '/admin/services');
   };
 
   // useEffect(() => removeUndefined, []); // TO UNDERSTAND :)
@@ -252,7 +252,7 @@ const AdminSingleServicePage = ({ categories, service, ready, match: { path, par
         setLoading(false);
       } else {
         msg.success(i18n.__('api.methods.operationSuccessMsg'));
-        history.push(structureMode ? '/adminstructureservices' : '/adminservices');
+        history.push(structureMode ? '/admin/structureservices' : '/admin/services');
       }
     });
   };

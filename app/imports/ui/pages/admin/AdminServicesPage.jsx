@@ -88,14 +88,14 @@ function AdminServicesPage({ services, loading, structureMode }) {
                   icon: 'edit',
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_editTooltip'),
                   onClick: (event, rowData) => {
-                    history.push(`/admin${urlStruct}services/${rowData._id}`);
+                    history.push(`/admin/${urlStruct}services/${rowData._id}`);
                   },
                 },
                 {
                   icon: 'add',
                   tooltip: i18n.__('pages.AdminServicesPage.materialTableLocalization.body_addTooltip'),
                   isFreeAction: true,
-                  onClick: () => history.push(`/admin${urlStruct}services/new`),
+                  onClick: () => history.push(`/admin/${urlStruct}services/new`),
                 },
               ]}
               editable={{
@@ -132,7 +132,7 @@ AdminServicesPage.propTypes = {
 };
 
 export default withTracker(({ match: { path } }) => {
-  const structureMode = path === '/adminstructureservices';
+  const structureMode = path === '/admin/structureservices';
   const servicesHandle = Meteor.subscribe(structureMode ? 'services.structure' : 'services.all');
   const loading = !servicesHandle.ready();
   let services;
